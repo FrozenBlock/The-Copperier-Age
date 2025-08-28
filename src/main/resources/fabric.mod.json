@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${version}",
+  "name": "The Copperier Age",
+  "description": "Enhances the visuals and scope of the Copper Age drop.",
+  "authors": [
+    "Lunade"
+  ],
+  "contributors": [
+    "zhen",
+    "voxelotl",
+    "Lufurrius"
+  ],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/the-copperier-age",
+    "sources": "https://github.com/FrozenBlock/TheCopperierAge",
+    "issues": "https://github.com/FrozenBlock/TheCopperierAge/issues"
+  },
+  "license": "FrozenBlock Modding Oasis License v1.0",
+  "icon": "assets/thecopperierage/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.frozenblock.thecopperierage.TheCopperierAge"
+    ],
+    "client": [
+      "net.frozenblock.thecopperierage.TheCopperierAgeClient"
+    ],
+    "fabric-datagen": [
+      "net.frozenblock.thecopperierage.datagen.TCADataGenerator"
+    ]
+  },
+  "mixins": [
+    "thecopperierage.mixins.json"
+  ],
+  "accessWidener": "thecopperierage.accesswidener",
+  "depends": {
+    "frozenlib": "${frozenlib_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}",
+    "java": ">=21"
+  },
+  "suggests": {
+    "cloth-config": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "X": "https://x.com/FB_Oasis",
+        "Bluesky": "https://bsky.app/profile/frozenblock.bsky.social",
+        "modmenu.discord": "https://discord.gg/frozenblock",
+        "modmenu.modrinth": "https://modrinth.com/organization/frozenblock",
+        "modmenu.youtube": "https://www.youtube.com/@frozenblockmoddingoasismod",
+        "modmenu.kofi": "https://ko-fi.com/frozenblock"
+      },
+      "badges": [
+        "frozenblock"
+      ]
+    },
+    "frozenlib_registry": {
+      "mod_protocol": $protocol_version
+    },
+    "lithium:options": {
+      "mixin.world.raycast": false
+    }
+  }
+}

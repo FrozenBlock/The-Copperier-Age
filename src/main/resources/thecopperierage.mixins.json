@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.8.5",
+  "package": "net.frozenblock.thecopperierage.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "client.copper_fire.BaseFireBlockMixin"
+  ],
+  "client": [
+    "client.copper_fire.CampfireBlockMixin",
+    "client.copper_fire.LavaParticleMixin",
+    "client.copper_fire.LavaParticleProviderMixin",
+    "client.copper_fire.TorchBlockMixin",
+    "client.copper_fire.WallTorchBlockMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

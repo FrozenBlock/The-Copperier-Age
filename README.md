@@ -1,6 +1,6 @@
-# Wilder Wild
+# The Copperier Age
 
 
-Wilder Wild overhauls the Wild Update, adding features and improving existing ones.
+The Copperier Age enhances the visuals and scope of The Copper Age drop.
 
-Modrinth: https://modrinth.com/mod/wilder-wild
+Modrinth: https://modrinth.com/mod/the-copperier-age

@@ -1,4 +1,15 @@
 {
+  "item.thecopperierage.copper_horn": "Copper Horn",
+  "instrument.thecopperierage.clarinet_copper_horn": "Clarinet",
+  "instrument.thecopperierage.recorder_copper_horn": "Recorder",
+  "instrument.thecopperierage.flute_copper_horn": "Flute",
+  "instrument.thecopperierage.oboe_copper_horn": "Oboe",
+  "instrument.thecopperierage.sax_copper_horn": "Saxophone",
+  "instrument.thecopperierage.trombone_copper_horn": "Trombone",
+  "instrument.thecopperierage.trumpet_copper_horn": "Trumpet",
+  "instrument.thecopperierage.tuba_copper_horn": "Tuba",
+  "subtitles.item.copper_horn.call": "Copper Horn plays",
+
   "block.thecopperierage.copper_fire": "Cupric Fire",
   "block.thecopperierage.copper_campfire": "Cupric Campfire"
 }

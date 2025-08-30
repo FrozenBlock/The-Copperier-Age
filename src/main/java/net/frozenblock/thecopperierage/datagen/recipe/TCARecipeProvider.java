@@ -1,0 +1,57 @@
+/*
+ * Copyright 2025 FrozenBlock
+ * This file is part of Wilder Wild.
+ *
+ * This program is free software; you can modify it under
+ * the terms of version 1 of the FrozenBlock Modding Oasis License
+ * as published by FrozenBlock Modding Oasis.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * FrozenBlock Modding Oasis License for more details.
+ *
+ * You should have received a copy of the FrozenBlock Modding Oasis License
+ * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
+ */
+
+package net.frozenblock.thecopperierage.datagen.recipe;
+
+import java.util.concurrent.CompletableFuture;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.frozenblock.lib.recipe.api.RecipeExportNamespaceFix;
+import net.frozenblock.thecopperierage.TCAConstants;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.RecipeProvider;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
+public final class TCARecipeProvider extends FabricRecipeProvider {
+
+	public TCARecipeProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+		super(output, registries);
+	}
+
+	@Contract("_, _ -> new")
+	@Override
+	protected @NotNull RecipeProvider createRecipeProvider(HolderLookup.Provider registries, RecipeOutput exporter) {
+		return new RecipeProvider(registries, exporter) {
+			@Override
+			public void buildRecipes() {
+				RecipeExportNamespaceFix.setCurrentGeneratingModId(TCAConstants.MOD_ID);
+
+				CopperHornRecipeProvider.buildRecipes(this, registries, exporter);
+
+				RecipeExportNamespaceFix.clearCurrentGeneratingModId();
+			}
+		};
+	}
+
+	@Override
+	@NotNull
+	public String getName() {
+		return "The Copperier Age Recipes";
+	}
+}

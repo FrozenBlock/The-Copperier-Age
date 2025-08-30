@@ -1,0 +1,8 @@
+{
+  "description": {
+    "translate": "instrument.thecopperierage.sax_copper_horn"
+  },
+  "range": 64.0,
+  "sound_event": "thecopperierage:item.copper_horn.saxophone",
+  "use_duration": 32767.0
+}

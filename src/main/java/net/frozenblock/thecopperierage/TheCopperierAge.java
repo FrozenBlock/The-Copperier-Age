@@ -17,6 +17,8 @@
 
 package net.frozenblock.thecopperierage;
 
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.ModContainer;
 import net.frozenblock.lib.entrypoint.api.FrozenModInitializer;
 import net.frozenblock.lib.feature_flag.api.FeatureFlagApi;
@@ -26,6 +28,7 @@ import net.frozenblock.thecopperierage.registry.TCACreativeInventorySorting;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.frozenblock.thecopperierage.registry.TCAParticleTypes;
 import net.frozenblock.thecopperierage.registry.TCASounds;
+import net.minecraft.network.chat.Component;
 
 public final class TheCopperierAge extends FrozenModInitializer {
 
@@ -48,6 +51,13 @@ public final class TheCopperierAge extends FrozenModInitializer {
 		TCABlocks.registerBlockProperties();
 
 		TCAModIntegrations.init();
+
+		ResourceManagerHelper.registerBuiltinResourcePack(
+			TCAConstants.id("copperier_copper"),
+			container,
+			Component.translatable("pack.thecopperierage.copperier_copper"),
+			ResourcePackActivationType.DEFAULT_ENABLED
+		);
 	}
 
 

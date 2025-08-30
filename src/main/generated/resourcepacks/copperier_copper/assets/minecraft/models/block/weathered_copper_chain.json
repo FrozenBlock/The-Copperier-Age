@@ -1,0 +1,6 @@
+{
+  "parent": "thecopperierage:block/template_copper_chain",
+  "textures": {
+    "texture": "minecraft:block/weathered_copper_chain"
+  }
+}

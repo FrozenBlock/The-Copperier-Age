@@ -23,6 +23,7 @@ import net.frozenblock.lib.feature_flag.api.FeatureFlagApi;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.datagen.loot.TCABlockLootProvider;
 import net.frozenblock.thecopperierage.datagen.model.TCAModelProvider;
+import net.frozenblock.thecopperierage.datagen.model.TCAPackModelProvider;
 import net.frozenblock.thecopperierage.datagen.recipe.TCARecipeProvider;
 import net.frozenblock.thecopperierage.datagen.tag.TCABlockTagProvider;
 import net.frozenblock.thecopperierage.datagen.tag.TCAInstrumentTagProvider;
@@ -38,10 +39,11 @@ public final class TCADataGenerator implements DataGeneratorEntrypoint {
 	public void onInitializeDataGenerator(@NotNull FabricDataGenerator dataGenerator) {
 		FeatureFlagApi.rebuild();
 		final FabricDataGenerator.Pack pack = dataGenerator.createPack();
+		final FabricDataGenerator.Pack copperierCopper = dataGenerator.createBuiltinResourcePack(TCAConstants.id("copperier_copper"));
 
 		// ASSETS
-
 		pack.addProvider(TCAModelProvider::new);
+		copperierCopper.addProvider(TCAPackModelProvider::new);
 
 		// DATA
 

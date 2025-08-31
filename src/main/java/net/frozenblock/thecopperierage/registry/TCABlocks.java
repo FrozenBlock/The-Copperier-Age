@@ -22,6 +22,7 @@ import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.fabricmc.fabric.api.registry.FuelRegistryEvents;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.TCAFeatureFlags;
+import net.frozenblock.thecopperierage.block.CupricFireBlock;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -48,6 +49,14 @@ public final class TCABlocks {
 			.requiresCorrectToolForDrops()
 			.strength(4.75F, 3F)
 			.sound(SoundType.NETHER_ORE)
+	);
+
+	public static final CupricFireBlock CUPRIC_FIRE = register("cupric_fire",
+		CupricFireBlock::new,
+		BlockBehaviour.Properties.of()
+			.mapColor(MapColor.COLOR_LIGHT_GREEN)
+			.lightLevel(blockStatex -> 15)
+			.noCollision()
 	);
 
 	private TCABlocks() {

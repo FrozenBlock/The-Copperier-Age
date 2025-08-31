@@ -20,12 +20,15 @@ package net.frozenblock.thecopperierage.datagen.tag;
 import java.util.concurrent.CompletableFuture;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.frozenblock.thecopperierage.registry.TCABlocks;
+import net.frozenblock.thecopperierage.tag.TCABlockTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 
 public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvider {
@@ -46,6 +49,7 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 		this.valueLookupBuilder(BlockTags.CAMPFIRES);
 
 		this.valueLookupBuilder(BlockTags.FIRE);
+
 	}
 
 	@NotNull

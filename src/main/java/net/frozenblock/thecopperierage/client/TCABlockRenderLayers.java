@@ -1,6 +1,6 @@
 /*
  * Copyright 2025 FrozenBlock
- * This file is part of The Copperier Age.
+ * This file is part of Netherier Nether.
  *
  * This program is free software; you can modify it under
  * the terms of version 1 of the FrozenBlock Modding Oasis License
@@ -15,24 +15,19 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage;
+package net.frozenblock.thecopperierage.client;
+
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.frozenblock.lib.menu.api.SplashTextAPI;
-import net.frozenblock.thecopperierage.client.TCABlockRenderLayers;
-import net.frozenblock.thecopperierage.client.TCAParticleEngine;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
+import net.frozenblock.thecopperierage.registry.TCABlocks;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 
 @Environment(EnvType.CLIENT)
-public final class TheCopperierAgeClient implements ClientModInitializer {
-
-	@Override
-	public void onInitializeClient() {
-		SplashTextAPI.addSplashLocation(TCAConstants.id("texts/splashes.txt"));
-
-		TCAParticleEngine.init();
-		TCABlockRenderLayers.init();
+public final class TCABlockRenderLayers {
+	public static void init() {
+		BlockRenderLayerMap.putBlock(TCABlocks.CUPRIC_FIRE, ChunkSectionLayer.CUTOUT);
 	}
-
 }

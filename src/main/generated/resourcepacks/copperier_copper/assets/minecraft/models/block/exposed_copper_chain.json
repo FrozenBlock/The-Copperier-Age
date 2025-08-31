@@ -1,6 +1,6 @@
 {
   "parent": "thecopperierage:block/template_copper_chain",
   "textures": {
-    "texture": "thecopperierage:block/exposed_copper_chain"
+    "texture": "minecraft:block/exposed_copper_chain"
   }
 }

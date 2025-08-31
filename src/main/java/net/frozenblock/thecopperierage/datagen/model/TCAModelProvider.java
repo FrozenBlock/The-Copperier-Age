@@ -22,6 +22,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.frozenblock.thecopperierage.TCAConstants;
+import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
@@ -41,6 +42,9 @@ public final class TCAModelProvider extends FabricModelProvider {
 
 	@Override
 	public void generateBlockStateModels(@NotNull BlockModelGenerators generator) {
+		generator.createFloorFireModels(TCABlocks.CUPRIC_FIRE);
+		generator.createSideFireModels(TCABlocks.CUPRIC_FIRE);
+		generator.createTopFireModels(TCABlocks.CUPRIC_FIRE);
 	}
 
 	@Override

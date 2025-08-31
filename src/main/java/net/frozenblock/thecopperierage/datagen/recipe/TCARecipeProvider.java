@@ -22,9 +22,13 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.frozenblock.lib.recipe.api.RecipeExportNamespaceFix;
 import net.frozenblock.thecopperierage.TCAConstants;
+import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -43,6 +47,15 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 				RecipeExportNamespaceFix.setCurrentGeneratingModId(TCAConstants.MOD_ID);
 
 				CopperHornRecipeProvider.buildRecipes(this, registries, exporter);
+
+				this.shaped(RecipeCategory.TOOLS, TCAItems.WRENCH)
+					.group("wrench")
+					.define('#', Ingredient.of(Items.COPPER_INGOT))
+					.pattern("# #")
+					.pattern(" # ")
+					.pattern(" # ")
+					.unlockedBy(RecipeProvider.getHasName(Items.COPPER_INGOT), this.has(Items.COPPER_INGOT))
+					.save(exporter);
 
 				RecipeExportNamespaceFix.clearCurrentGeneratingModId();
 			}

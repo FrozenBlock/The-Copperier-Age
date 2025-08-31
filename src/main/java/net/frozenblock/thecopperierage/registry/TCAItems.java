@@ -20,6 +20,7 @@ package net.frozenblock.thecopperierage.registry;
 import java.util.function.Function;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.item.CopperHornItem;
+import net.frozenblock.thecopperierage.item.WrenchItem;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -30,6 +31,13 @@ import net.minecraft.world.item.component.InstrumentComponent;
 import org.jetbrains.annotations.NotNull;
 
 public final class TCAItems {
+
+	public static final WrenchItem WRENCH = register("wrench",
+		WrenchItem::new,
+		new Item.Properties()
+			.stacksTo(1)
+			.durability(128)
+	);
 
 	// INSTRUMENT
 	public static final ResourceKey<Instrument> SAX_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("sax_copper_horn"));
@@ -43,7 +51,9 @@ public final class TCAItems {
 
 	public static final CopperHornItem COPPER_HORN = register("copper_horn",
 		CopperHornItem::new,
-		new Item.Properties().stacksTo(1).component(DataComponents.INSTRUMENT, new InstrumentComponent(SAX_COPPER_HORN))
+		new Item.Properties()
+			.stacksTo(1)
+			.component(DataComponents.INSTRUMENT, new InstrumentComponent(SAX_COPPER_HORN))
 	);
 
 	private TCAItems() {

@@ -32,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
 public final class TCACreativeInventorySorting {
 
 	public static void init() {
-		// HORNS
+		addBeforeInToolsAndUtilities(Items.BRUSH, TCAItems.WRENCH);
 		addInstrumentBefore(Items.MUSIC_DISC_13, TCAItems.COPPER_HORN, TCAInstrumentTags.COPPER_HORNS, CreativeModeTabs.TOOLS_AND_UTILITIES);
 	}
 

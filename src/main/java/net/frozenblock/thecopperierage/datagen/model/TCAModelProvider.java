@@ -27,6 +27,7 @@ import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
+import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
@@ -45,6 +46,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 	@Override
 	public void generateItemModels(@NotNull ItemModelGenerators generator) {
 		generateCopperHorn(generator, TCAItems.COPPER_HORN);
+		generator.generateFlatItem(TCAItems.WRENCH, ModelTemplates.FLAT_HANDHELD_ITEM);
 	}
 
 	private static void generateCopperHorn(@NotNull ItemModelGenerators generator, Item item) {

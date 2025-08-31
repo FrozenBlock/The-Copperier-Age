@@ -20,6 +20,7 @@ package net.frozenblock.thecopperierage.datagen.tag;
 import java.util.concurrent.CompletableFuture;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -50,5 +51,8 @@ public final class TCAItemTagProvider extends FabricTagProvider.ItemTagProvider 
 		this.valueLookupBuilder(ItemTags.LANTERNS);
 
 		this.valueLookupBuilder(ItemTags.BUTTONS);
+
+		this.valueLookupBuilder(ItemTags.DURABILITY_ENCHANTABLE)
+			.add(TCAItems.WRENCH);
 	}
 }

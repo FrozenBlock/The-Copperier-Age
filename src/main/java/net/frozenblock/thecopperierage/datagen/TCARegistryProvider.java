@@ -1,6 +1,6 @@
 /*
  * Copyright 2025 FrozenBlock
- * This file is part of Wilder Wild.
+ * This file is part of The Copperier Age.
  *
  * This program is free software; you can modify it under
  * the terms of version 1 of the FrozenBlock Modding Oasis License

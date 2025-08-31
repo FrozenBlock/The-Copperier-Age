@@ -30,7 +30,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.RailBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
@@ -85,8 +84,8 @@ public class WrenchItem extends Item {
 			}
 		}
 
-		if (block instanceof RailBlock railBlock) {
-			final Property<RailShape> property = railBlock.getShapeProperty();
+		if (block instanceof BaseRailBlock baseRailBlock) {
+			final Property<RailShape> property = baseRailBlock.getShapeProperty();
 			BlockState newState = state.cycle(property);
 			while (newState != state) {
 				if (!BaseRailBlock.shouldBeRemoved(pos, level, newState.getValue(property))) {

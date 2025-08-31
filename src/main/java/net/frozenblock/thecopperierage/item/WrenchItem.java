@@ -28,9 +28,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -39,6 +42,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 public class WrenchItem extends Item {
@@ -52,38 +56,62 @@ public class WrenchItem extends Item {
 		final Level level = context.getLevel();
 		final BlockPos pos = context.getClickedPos();
 		final BlockState state = level.getBlockState(pos);
+		final Block block = state.getBlock();
+
+		if (block instanceof DoorBlock doorBlock && !doorBlock.type().canOpenByHand()) return InteractionResult.FAIL;
+		if (block instanceof TrapDoorBlock trapDoorBlock && !trapDoorBlock.getType().canOpenByHand()) return InteractionResult.FAIL;
+
+		if (state.is(BlockTags.DOORS)) {
+			Optional<DoubleBlockHalf> optionalHalf = state.getOptionalValue(DoorBlock.HALF);
+			if (optionalHalf.isPresent()) {
+				final DoubleBlockHalf doubleBlockHalf = optionalHalf.get();
+				final BlockPos otherPos = pos.relative(doubleBlockHalf.getDirectionToOther());
+				Function<BlockState, BlockState> halfStateMutator = otherState -> otherState.trySetValue(DoorBlock.HALF, doubleBlockHalf.getOtherHalf());
+				final BlockState flippedHingeState = state.cycle(DoorBlock.HINGE);
+				if (level.getBlockState(otherPos).is(state.getBlock())) {
+					return onSuccessfulWrench(
+						context,
+						level,
+						pos,
+						() -> {
+							level.setBlock(pos, flippedHingeState, Block.UPDATE_ALL);
+							level.setBlock(otherPos, halfStateMutator.apply(flippedHingeState), Block.UPDATE_ALL);
+						}
+					);
+				}
+			}
+		}
 
 		List<Function<BlockState, BlockState>> states = getPossibleBlockStates(
 			state,
 			getReorientedFace(context.getClickedFace(), state),
 			context.isSecondaryUseActive()
 		);
-
 		if (states.isEmpty()) return InteractionResult.PASS;
 
 		for (Function<BlockState, BlockState> mutator : states) {
 			final BlockState newState = mutator.apply(state);
-			if (newState != state) {
-				if (newState.canSurvive(level, pos)) {
-					final Player player = context.getPlayer();
-					level.playSound(player, pos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1F, 1F);
-					if (!level.isClientSide()) {
-						changeIntoState(context, newState);
-						if (player != null) context.getItemInHand().hurtAndBreak(1, player, context.getHand());
-					}
-
-					return InteractionResult.SUCCESS;
-				}
+			if (newState != state && newState.canSurvive(level, pos)) {
+				return onSuccessfulWrench(context, level, pos, () -> changeIntoState(context, newState));
 			}
 		}
 
 		return InteractionResult.FAIL;
 	}
 
+	public static InteractionResult onSuccessfulWrench(@NotNull UseOnContext context, @NotNull Level level, BlockPos pos, Runnable serverRunnable) {
+		final Player player = context.getPlayer();
+		level.playSound(player, pos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1F, 1F);
+		if (!level.isClientSide()) {
+			serverRunnable.run();
+			if (player != null) context.getItemInHand().hurtAndBreak(1, player, context.getHand());
+		}
+
+		return InteractionResult.SUCCESS;
+	}
+
 	public static Direction getReorientedFace(Direction direction, @NotNull BlockState state) {
 		if (state.is(BlockTags.FENCE_GATES)) return direction.getOpposite();
-		if (state.is(BlockTags.TRAPDOORS)) return direction.getOpposite();
-		if (state.is(BlockTags.DOORS)) return direction.getOpposite();
 		return direction;
 	}
 

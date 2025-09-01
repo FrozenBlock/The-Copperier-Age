@@ -18,7 +18,6 @@
 package net.frozenblock.thecopperierage.client;
 
 
-import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
@@ -28,6 +27,6 @@ import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 @Environment(EnvType.CLIENT)
 public final class TCABlockRenderLayers {
 	public static void init() {
-		BlockRenderLayerMap.putBlock(TCABlocks.CUPRIC_FIRE, ChunkSectionLayer.CUTOUT);
+		BlockRenderLayerMap.putBlock(TCABlocks.COPPER_FIRE, ChunkSectionLayer.CUTOUT);
 	}
 }

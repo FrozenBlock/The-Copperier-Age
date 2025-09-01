@@ -26,6 +26,8 @@ import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.MultiVariant;
+import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
 import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
@@ -42,15 +44,26 @@ public final class TCAModelProvider extends FabricModelProvider {
 
 	@Override
 	public void generateBlockStateModels(@NotNull BlockModelGenerators generator) {
-		generator.createFloorFireModels(TCABlocks.CUPRIC_FIRE);
-		generator.createSideFireModels(TCABlocks.CUPRIC_FIRE);
-		generator.createTopFireModels(TCABlocks.CUPRIC_FIRE);
+		createCopperFire(generator);
 	}
 
 	@Override
 	public void generateItemModels(@NotNull ItemModelGenerators generator) {
 		generateCopperHorn(generator, TCAItems.COPPER_HORN);
 		generator.generateFlatItem(TCAItems.WRENCH, ModelTemplates.FLAT_HANDHELD_ITEM);
+	}
+
+	private static void createCopperFire(@NotNull BlockModelGenerators generator) {
+		MultiVariant floorModels = generator.createFloorFireModels(TCABlocks.COPPER_FIRE);
+		MultiVariant sideModels = generator.createSideFireModels(TCABlocks.COPPER_FIRE);
+		generator.blockStateOutput.accept(
+			MultiPartGenerator.multiPart(TCABlocks.COPPER_FIRE)
+				.with(floorModels)
+				.with(sideModels)
+				.with(sideModels.with(BlockModelGenerators.Y_ROT_90))
+				.with(sideModels.with(BlockModelGenerators.Y_ROT_180))
+				.with(sideModels.with(BlockModelGenerators.Y_ROT_270))
+		);
 	}
 
 	private static void generateCopperHorn(@NotNull ItemModelGenerators generator, Item item) {

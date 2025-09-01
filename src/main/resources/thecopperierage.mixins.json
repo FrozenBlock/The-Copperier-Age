@@ -4,11 +4,10 @@
   "package": "net.frozenblock.thecopperierage.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "accessor.FireBlockAccessor",
-    "block.BaseFireBlockMixin",
-    "client.copper_fire.BaseFireBlockMixin"
+    "block.BaseFireBlockMixin"
   ],
   "client": [
+    "client.copper_fire.BaseFireBlockMixin",
     "client.copper_fire.CampfireBlockMixin",
     "client.copper_fire.LavaParticleMixin",
     "client.copper_fire.LavaParticleProviderMixin",

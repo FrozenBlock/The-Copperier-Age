@@ -22,37 +22,25 @@ import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.fabricmc.fabric.api.registry.FuelRegistryEvents;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.TCAFeatureFlags;
-import net.frozenblock.thecopperierage.block.CupricFireBlock;
+import net.frozenblock.thecopperierage.block.CopperFireBlock;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import java.util.function.Function;
 
 public final class TCABlocks {
 
-	public static final Block BLACKSTONE_QUARTZ_ORE = register("blackstone_quartz_ore",
-		properties -> new DropExperienceBlock(UniformInt.of(2, 5), properties),
-		BlockBehaviour.Properties.of()
-			.mapColor(MapColor.NETHER)
-			.instrument(NoteBlockInstrument.BASEDRUM)
-			.requiresCorrectToolForDrops()
-			.strength(4.75F, 3F)
-			.sound(SoundType.NETHER_ORE)
-	);
-
-	public static final CupricFireBlock CUPRIC_FIRE = register("cupric_fire",
-		CupricFireBlock::new,
+	public static final CopperFireBlock COPPER_FIRE = register("copper_fire",
+		CopperFireBlock::new,
 		BlockBehaviour.Properties.of()
 			.mapColor(MapColor.COLOR_LIGHT_GREEN)
 			.lightLevel(blockStatex -> 15)

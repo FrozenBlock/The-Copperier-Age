@@ -23,7 +23,6 @@ import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCAParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.level.block.BaseFireBlock;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -43,7 +42,7 @@ public class BaseFireBlockMixin {
 		@Local(argsOnly = true) BlockState state
 	) {
 		// TODO: Config
-		if (!state.is(TCABlocks.CUPRIC_FIRE)) return original;
+		if (!state.is(TCABlocks.COPPER_FIRE)) return original;
 		return TCAParticleTypes.LARGE_COPPER_SMOKE;
 	}
 

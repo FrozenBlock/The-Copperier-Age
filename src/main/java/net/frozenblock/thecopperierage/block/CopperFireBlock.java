@@ -21,43 +21,57 @@ import com.mojang.serialization.MapCodec;
 import net.frozenblock.thecopperierage.tag.TCABlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
-public class CupricFireBlock extends BaseFireBlock {
-    public static final MapCodec<CupricFireBlock> CODEC = simpleCodec(CupricFireBlock::new);
+public class CopperFireBlock extends BaseFireBlock {
+    public static final MapCodec<CopperFireBlock> CODEC = simpleCodec(CopperFireBlock::new);
 
-    public CupricFireBlock(BlockBehaviour.Properties properties) {
-        super(properties, 1.0f);
+    public CopperFireBlock(BlockBehaviour.Properties properties) {
+        super(properties, 1F);
     }
 
     @Override
-    public MapCodec<CupricFireBlock> codec() {
+    public @NotNull MapCodec<CopperFireBlock> codec() {
         return CODEC;
     }
 
-    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos) {
-        return this.canSurvive(state, world, pos) ? this.defaultBlockState() : Blocks.AIR.defaultBlockState();
-    }
+	@Override
+	protected BlockState updateShape(
+		BlockState state,
+		LevelReader level,
+		ScheduledTickAccess scheduledTickAccess,
+		BlockPos pos,
+		Direction direction,
+		BlockPos neighborPos,
+		BlockState neighborState,
+		RandomSource randomSource
+	) {
+		return this.canSurvive(state, level, pos) ? this.defaultBlockState() : Blocks.AIR.defaultBlockState();
+	}
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
-        return canSurviveOnBlock(world.getBlockState(pos.below()));
+    public boolean canSurvive(@NotNull BlockState state, @NotNull LevelReader level, @NotNull BlockPos pos) {
+        return canSurviveOnBlock(level, pos.below());
     }
 
-    public static boolean canSurviveOnBlock(BlockState blockState) {
-        return blockState.is(BlockTags.COPPER);
+    public static boolean canSurviveOnBlock(@NotNull BlockGetter level, BlockPos pos) {
+		BlockState state = level.getBlockState(pos);
+        if (!state.is(TCABlockTags.COPPER_FIRE_BASE_BLOCKS)) return false;
+		return state.isFaceSturdy(level, pos, Direction.UP);
     }
 
     @Override

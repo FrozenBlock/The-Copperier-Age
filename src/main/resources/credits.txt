@@ -1,6 +1,9 @@
 Lufurrius
- - Copper Chain Retextures
+ - Initial Copper Chain Retextures
 
 Zhen/zntm
  - Wrench Concept & Texture
  - Copper Fire Textures
+ - Copper Chain Retextures Retexture
+ - Copper Armor Item Retextures
+ - Copper Tool Retextures

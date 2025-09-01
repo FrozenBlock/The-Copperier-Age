@@ -1,6 +1,7 @@
 {
   "parent": "thecopperierage:block/template_copper_lantern",
   "textures": {
+    "bars": "minecraft:block/copper_chain",
     "lantern": "minecraft:block/copper_lantern"
   }
 }

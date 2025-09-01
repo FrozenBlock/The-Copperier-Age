@@ -1,11 +1,11 @@
 Lufurrius
- - Copper Chain Retextures
+ - Initial Copper Chain Retextures
 
 Zhen/zntm
  - Wrench Concept & Texture
- - Copper Fire Textures
  - Copper Sword, Axe, Pickaxe, Shovel, & Hoe Retextures
  - Copper Helmet, Chestplate, Leggings, & Boots Item Retextures
+ - Final Copper Chain Retextures (Based On Lufurrius's)
 
 Voxelotl
- - New Copper Lantern Models & Textures
+ - New Copper Lantern Remodels & Retextures

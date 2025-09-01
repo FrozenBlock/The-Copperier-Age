@@ -7,3 +7,6 @@ Zhen/zntm
  - Copper Chain Retextures Retexture
  - Copper Armor Item Retextures
  - Copper Tool Retextures
+
+Voxelotl
+ - Copper Lantern Retextures and Remodels

@@ -24,14 +24,19 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
+import static net.minecraft.client.data.models.BlockModelGenerators.createBooleanModelDispatch;
+import static net.minecraft.client.data.models.model.TextureMapping.getBlockTexture;
 
 @Environment(EnvType.CLIENT)
 public final class TCAPackModelProvider extends FabricModelProvider {
@@ -39,6 +44,16 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 		Optional.of(TCAConstants.id("block/template_copper_chain")),
 		Optional.empty(),
 		TextureSlot.TEXTURE
+	);
+	private static final ModelTemplate COPPER_LANTERN_MODEL = new ModelTemplate(
+		Optional.of(TCAConstants.id("block/template_copper_lantern")),
+		Optional.empty(),
+		TextureSlot.LANTERN
+	);
+	private static final ModelTemplate HANGING_COPPER_LANTERN_MODEL = new ModelTemplate(
+		Optional.of(TCAConstants.id("block/template_hanging_copper_lantern")),
+		Optional.of("_hanging"),
+		TextureSlot.LANTERN
 	);
 	public static final TexturedModel.Provider COPPER_CHAIN_PROVIDER = TexturedModel.createDefault(TextureMapping::defaultTexture, COPPER_CHAIN_MODEL);
 
@@ -52,6 +67,10 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 		generateCopperChain(generator, Blocks.COPPER_CHAIN.exposed());
 		generateCopperChain(generator, Blocks.COPPER_CHAIN.weathered());
 		generateCopperChain(generator, Blocks.COPPER_CHAIN.oxidized());
+		generateCopperLantern(generator, Blocks.COPPER_LANTERN.unaffected());
+		generateCopperLantern(generator, Blocks.COPPER_LANTERN.exposed());
+		generateCopperLantern(generator, Blocks.COPPER_LANTERN.weathered());
+		generateCopperLantern(generator, Blocks.COPPER_LANTERN.oxidized());
 	}
 
 	@Override
@@ -62,4 +81,13 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 		COPPER_CHAIN_PROVIDER.create(chain, generator.modelOutput);
 	}
 
+	public static void generateCopperLantern(@NotNull BlockModelGenerators generator, Block block) {
+		TextureMapping textureMapping = new TextureMapping().put(TextureSlot.LANTERN, getBlockTexture(block));
+		ResourceLocation lanternModel = COPPER_LANTERN_MODEL.create(block, textureMapping, generator.modelOutput);
+		ResourceLocation hangingLanternModel = HANGING_COPPER_LANTERN_MODEL.create(block, textureMapping, generator.modelOutput);
+
+		generator.blockStateOutput.accept(
+			MultiVariantGenerator.dispatch(block).with(createBooleanModelDispatch(BlockStateProperties.HANGING, BlockModelGenerators.plainVariant(hangingLanternModel), BlockModelGenerators.plainVariant(lanternModel)))
+		);
+	}
 }

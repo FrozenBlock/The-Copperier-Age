@@ -1,0 +1,6 @@
+{
+  "parent": "thecopperierage:block/template_copper_lantern",
+  "textures": {
+    "lantern": "minecraft:block/weathered_copper_lantern"
+  }
+}

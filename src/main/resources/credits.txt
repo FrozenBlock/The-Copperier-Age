@@ -4,3 +4,8 @@ Lufurrius
 Zhen/zntm
  - Wrench Concept & Texture
  - Copper Fire Textures
+ - Copper Sword, Axe, Pickaxe, Shovel, & Hoe Retextures
+ - Copper Helmet, Chestplate, Leggings, & Boots Item Retextures
+
+Voxelotl
+ - New Copper Lantern Models & Textures

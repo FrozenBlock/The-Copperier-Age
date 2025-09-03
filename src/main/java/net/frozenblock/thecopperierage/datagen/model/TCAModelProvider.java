@@ -36,6 +36,7 @@ import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
@@ -50,7 +51,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 	@Override
 	public void generateBlockStateModels(@NotNull BlockModelGenerators generator) {
 		createCopperFire(generator);
-		createGearbox(generator);
+		createGearbox(generator, TCABlocks.GEARBOX);
 	}
 
 	@Override
@@ -72,13 +73,13 @@ public final class TCAModelProvider extends FabricModelProvider {
 		);
 	}
 
-	private static void createGearbox(@NotNull BlockModelGenerators generator) {
-		MultiVariant model = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(TCABlocks.GEARBOX));
-		MultiVariant counter = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(TCABlocks.GEARBOX, "_counter_clockwise"));
-		MultiVariant clockwise = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(TCABlocks.GEARBOX, "_clockwise"));
+	private static void createGearbox(@NotNull BlockModelGenerators generator, Block block) {
+		MultiVariant model = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(block));
+		MultiVariant counter = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(block, "_counter_clockwise"));
+		MultiVariant clockwise = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(block, "_clockwise"));
 
 		generator.blockStateOutput.accept(
-			MultiVariantGenerator.dispatch(TCABlocks.GEARBOX)
+			MultiVariantGenerator.dispatch(block)
 				.with(
 					PropertyDispatch.initial(GearboxBlock.POWER)
 						.select(15, counter)

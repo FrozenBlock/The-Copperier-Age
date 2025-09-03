@@ -28,10 +28,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Set;
 
 public class GearboxBlockEvaluator {
-	protected final GearboxBlock gearboxBlock;
 
-	public GearboxBlockEvaluator(GearboxBlock gearboxBlock) {
-		this.gearboxBlock = gearboxBlock;
+	public GearboxBlockEvaluator() {
 	}
 
 	public void updatePowerStrength(Level level, BlockPos pos, @NotNull BlockState state) {
@@ -43,24 +41,26 @@ public class GearboxBlockEvaluator {
 			set.add(pos);
 
 			for (Direction direction : Direction.values()) set.add(pos.relative(direction));
-			for (BlockPos offsetPos : set) level.updateNeighborsAt(offsetPos, this.gearboxBlock);
+			for (BlockPos offsetPos : set) level.updateNeighborsAt(offsetPos, state.getBlock());
 		}
 	}
 
 	protected boolean hasBlockSignal(Level level, BlockPos pos, BlockState state) {
-		return this.gearboxBlock.hasBlockSignal(level, pos, state);
+		if (!(state.getBlock() instanceof GearboxBlock gearboxBlock)) return false;
+		return gearboxBlock.hasBlockSignal(level, pos, state);
 	}
 
 	protected int getGearboxPower(BlockPos pos, @NotNull BlockState state, Direction facing) {
-		if (!state.is(this.gearboxBlock)) return 0;
+		if (!(state.getBlock() instanceof GearboxBlock)) return 0;
 		return state.getValue(GearboxBlock.FACING) == facing ? state.getValue(GearboxBlock.POWER) : 0;
 	}
 
 	protected int getIncomingGearboxPower(Level level, BlockPos pos, @NotNull BlockState state) {
+		if (!(state.getBlock() instanceof GearboxBlock gearboxBlock)) return 0;
 		int power = 0;
 
 		final Direction facing = state.getValue(GearboxBlock.FACING);
-		for (Direction direction : this.gearboxBlock.getInputDirections(facing, false)) {
+		for (Direction direction : gearboxBlock.getInputDirections(facing, false)) {
 			final BlockPos offsetPos = pos.relative(direction);
 			final BlockState offsetState = level.getBlockState(offsetPos);
 			power = Math.max(power, this.getGearboxPower(offsetPos, offsetState, facing));

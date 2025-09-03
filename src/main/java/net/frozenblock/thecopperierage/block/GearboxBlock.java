@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
 public class GearboxBlock extends DirectionalBlock {
     public static final MapCodec<GearboxBlock> CODEC = simpleCodec(GearboxBlock::new);
 	public static final IntegerProperty POWER = BlockStateProperties.POWER;
-	private final GearboxBlockEvaluator evaluator = new GearboxBlockEvaluator(this);
+	private static final GearboxBlockEvaluator EVALUATOR = new GearboxBlockEvaluator();
 
     public GearboxBlock(Properties properties) {
         super(properties);
@@ -67,7 +67,7 @@ public class GearboxBlock extends DirectionalBlock {
 	}
 
 	public void updatePowerStrength(Level level, BlockPos pos, BlockState state) {
-		this.evaluator.updatePowerStrength(level, pos, state);
+		EVALUATOR.updatePowerStrength(level, pos, state);
 	}
 
 	@Override

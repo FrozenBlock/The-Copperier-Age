@@ -16,6 +16,13 @@
   "block.thecopperierage.copper_campfire": "Copper Campfire",
 
   "block.thecopperierage.gearbox": "Gearbox",
+  "block.thecopperierage.exposed_gearbox": "Exposed Gearbox",
+  "block.thecopperierage.weathered_gearbox": "Weathered Gearbox",
+  "block.thecopperierage.oxidized_gearbox": "Oxidized Gearbox",
+  "block.thecopperierage.waxed_gearbox": "Waxed Gearbox",
+  "block.thecopperierage.waxed_exposed_gearbox": "Waxed Exposed Gearbox",
+  "block.thecopperierage.waxed_weathered_gearbox": "Waxed Weathered Gearbox",
+  "block.thecopperierage.waxed_oxidized_gearbox": "Waxed Oxidized Gearbox",
 
   "pack.thecopperierage.copperier_copper": "Copperier Copper"
 }

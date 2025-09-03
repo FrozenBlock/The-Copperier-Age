@@ -25,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 
 public final class TCABlockTags {
 	public static final TagKey<Block> COPPER_FIRE_BASE_BLOCKS = bind("copper_fire_base_blocks");
+	public static final TagKey<Block> GEARBOXES = bind("gearboxes");
 
 	private TCABlockTags() {
 		throw new UnsupportedOperationException("TCABlockTags contains only static declarations.");

@@ -38,7 +38,7 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 	}
 
 	@Override
-	protected void addTags(@NotNull HolderLookup.Provider arg) {
+	protected void addTags(@NotNull HolderLookup.Provider registries) {
 		this.valueLookupBuilder(BlockTags.COPPER);
 
 		this.valueLookupBuilder(BlockTags.LANTERNS);
@@ -55,8 +55,11 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 		this.valueLookupBuilder(BlockTags.MINEABLE_WITH_PICKAXE)
 			.add(TCABlocks.GEARBOX);
 
+		this.valueLookupBuilder(TCABlockTags.GEARBOXES)
+			.add(TCABlocks.GEARBOX);
+
 		TagAppender<Block, Block> tagAppender = this.valueLookupBuilder(TCABlockTags.COPPER_FIRE_BASE_BLOCKS);
-		arg.lookupOrThrow(Registries.BLOCK)
+		registries.lookupOrThrow(Registries.BLOCK)
 			.listElements()
 			.forEach(block -> {
 				final ResourceLocation location = block.key().location();

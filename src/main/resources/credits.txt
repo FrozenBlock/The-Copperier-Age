@@ -1,5 +1,7 @@
 Lufurrius
  - Initial Copper Chain Retextures
+ - Initial Gearbox Concept
+ - Gearbox Textures
 
 Zhen/zntm
  - Wrench Concept & Texture
@@ -9,3 +11,9 @@ Zhen/zntm
 
 Voxelotl
  - New Copper Lantern Remodels & Retextures
+
+Willow/Pictochats
+ - Gearbox Brainstorming
+
+Kokoroto
+ - Gearbox Brainstorming

@@ -65,7 +65,7 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.define('R', Ingredient.of(Items.REDSTONE))
 					.pattern("XXX")
 					.pattern("#X#")
-					.pattern("XRX")
+					.pattern("#R#")
 					.unlockedBy(RecipeProvider.getHasName(Items.REDSTONE), this.has(Items.REDSTONE))
 					.save(exporter);
 

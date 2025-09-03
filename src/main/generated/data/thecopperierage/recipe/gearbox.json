@@ -10,7 +10,7 @@
   "pattern": [
     "XXX",
     "#X#",
-    "XRX"
+    "#R#"
   ],
   "result": {
     "count": 1,

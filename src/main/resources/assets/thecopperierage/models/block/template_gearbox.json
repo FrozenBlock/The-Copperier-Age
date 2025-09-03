@@ -2,10 +2,8 @@
 	"parent": "minecraft:block/block",
 	"textures": {
 		"bottom": "thecopperierage:block/gearbox_bottom",
-		"particle": "thecopperierage:block/gearbox_side",
-		"side": "thecopperierage:block/gearbox_side",
-		"front": "thecopperierage:block/gearbox_top"
-	},
+    "particle": "#side"
+  },
 	"elements": [
 		{
 			"from": [0, 0, 0],

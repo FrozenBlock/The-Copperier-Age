@@ -20,10 +20,12 @@ package net.frozenblock.thecopperierage.registry;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityType;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.fabricmc.fabric.api.registry.FuelRegistryEvents;
+import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.TCAFeatureFlags;
 import net.frozenblock.thecopperierage.block.CopperFireBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
+import net.frozenblock.thecopperierage.block.WeatheringGearboxBlock;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -48,9 +50,12 @@ public final class TCABlocks {
 			.noCollision()
 	);
 
-	public static final GearboxBlock GEARBOX = register("gearbox",
+	public static final WeatheringCopperBlocks GEARBOX = WeatheringCopperBlocks.create(
+		"gearbox",
+		TCABlocks::register,
 		GearboxBlock::new,
-		BlockBehaviour.Properties.of()
+		WeatheringGearboxBlock::new,
+		(weatherState) -> BlockBehaviour.Properties.of()
 			.mapColor(MapColor.STONE)
 			.strength(1.5F)
 			.isRedstoneConductor(Blocks::never)
@@ -112,6 +117,8 @@ public final class TCABlocks {
 		hangingSign.addSupportedBlock(WILTED_HANGING_SIGN);
 		hangingSign.addSupportedBlock(WILTED_WALL_HANGING_SIGN);
 		 */
+
+		OxidizableBlocksRegistry.registerCopperBlockSet(GEARBOX);
 
 		registerComposting();
 		registerFlammability();

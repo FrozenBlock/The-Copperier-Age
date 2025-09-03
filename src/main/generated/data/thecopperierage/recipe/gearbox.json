@@ -4,12 +4,13 @@
   "group": "gearbox",
   "key": {
     "#": "minecraft:cobblestone",
+    "-": "minecraft:copper_ingot",
     "R": "minecraft:redstone",
-    "X": "minecraft:copper_ingot"
+    "X": "minecraft:copper_block"
   },
   "pattern": [
     "XXX",
-    "#X#",
+    "#-#",
     "#R#"
   ],
   "result": {

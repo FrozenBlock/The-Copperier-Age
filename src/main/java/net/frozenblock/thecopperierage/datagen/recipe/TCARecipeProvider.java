@@ -30,6 +30,8 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -58,20 +60,33 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.unlockedBy(RecipeProvider.getHasName(Items.COPPER_INGOT), this.has(Items.COPPER_INGOT))
 					.save(exporter);
 
-				this.shaped(RecipeCategory.REDSTONE, TCABlocks.GEARBOX)
-					.group("gearbox")
-					.define('X', Ingredient.of(Items.COPPER_INGOT))
-					.define('#', Ingredient.of(Items.COBBLESTONE))
-					.define('R', Ingredient.of(Items.REDSTONE))
-					.pattern("XXX")
-					.pattern("#X#")
-					.pattern("#R#")
-					.unlockedBy(RecipeProvider.getHasName(Items.REDSTONE), this.has(Items.REDSTONE))
-					.save(exporter);
+				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.unaffected(), Blocks.COPPER_BLOCK);
+				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.exposed(), Blocks.EXPOSED_COPPER);
+				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.weathered(), Blocks.WEATHERED_COPPER);
+				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.oxidized(), Blocks.OXIDIZED_COPPER);
+
+				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.waxed(), Blocks.WAXED_COPPER_BLOCK);
+				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.waxedExposed(), Blocks.WAXED_EXPOSED_COPPER);
+				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.waxedWeathered(), Blocks.WAXED_WEATHERED_COPPER);
+				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.waxedOxidized(), Blocks.WAXED_OXIDIZED_COPPER);
 
 				RecipeExportNamespaceFix.clearCurrentGeneratingModId();
 			}
 		};
+	}
+
+	private static void createGearboxRecipe(@NotNull RecipeProvider recipeProvider, RecipeOutput exporter, Block gearboxBlock, Block copperBlock) {
+		recipeProvider.shaped(RecipeCategory.REDSTONE, gearboxBlock)
+			.group("gearbox")
+			.define('X', Ingredient.of(copperBlock))
+			.define('-', Ingredient.of(Items.COPPER_INGOT))
+			.define('#', Ingredient.of(Items.COBBLESTONE))
+			.define('R', Ingredient.of(Items.REDSTONE))
+			.pattern("XXX")
+			.pattern("#-#")
+			.pattern("#R#")
+			.unlockedBy(RecipeProvider.getHasName(copperBlock), recipeProvider.has(copperBlock))
+			.save(exporter);
 	}
 
 	@Override

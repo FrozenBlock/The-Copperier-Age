@@ -56,7 +56,7 @@ public class GearboxBlock extends DirectionalBlock {
     }
 
     @Override
-    public @NotNull MapCodec<GearboxBlock> codec() {
+    public @NotNull MapCodec<? extends GearboxBlock> codec() {
         return CODEC;
     }
 

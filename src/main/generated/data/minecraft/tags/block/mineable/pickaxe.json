@@ -1,5 +1,8 @@
 {
   "values": [
-    "thecopperierage:gearbox"
+    {
+      "id": "#thecopperierage:gearboxes",
+      "required": false
+    }
   ]
 }

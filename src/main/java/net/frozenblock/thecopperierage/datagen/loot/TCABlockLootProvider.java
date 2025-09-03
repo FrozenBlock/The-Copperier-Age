@@ -20,6 +20,7 @@ package net.frozenblock.thecopperierage.datagen.loot;
 import java.util.concurrent.CompletableFuture;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
+import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -35,6 +36,7 @@ public final class TCABlockLootProvider extends FabricBlockLootTableProvider {
 	public void generate() {
 		HolderLookup.RegistryLookup<Enchantment> registryLookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
 
+		TCABlocks.GEARBOX.forEach(this::dropSelf);
 	}
 
 }

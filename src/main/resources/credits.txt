@@ -1,13 +1,14 @@
 Lufurrius
  - Initial Copper Chain Retextures
  - Initial Gearbox Concept
- - Gearbox Textures
+ - Initial Gearbox Textures
 
 Zhen/zntm
  - Wrench Concept & Texture
  - Copper Sword, Axe, Pickaxe, Shovel, & Hoe Retextures
  - Copper Helmet, Chestplate, Leggings, & Boots Item Retextures
  - Final Copper Chain Retextures (Based On Lufurrius's)
+ - Final Gearbox Retextures (Based On Lufurrius's)
 
 Voxelotl
  - New Copper Lantern Remodels & Retextures

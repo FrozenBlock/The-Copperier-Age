@@ -33,6 +33,7 @@ import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 
 public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvider {
+
 	public TCABlockTagProvider(@NotNull FabricDataOutput output, @NotNull CompletableFuture<HolderLookup.Provider> registries) {
 		super(output, registries);
 	}
@@ -52,13 +53,13 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 		this.valueLookupBuilder(BlockTags.FIRE)
 			.add(TCABlocks.COPPER_FIRE);
 
-		this.valueLookupBuilder(BlockTags.MINEABLE_WITH_PICKAXE)
-			.add(TCABlocks.GEARBOX);
+		TagAppender<Block, Block> gearboxesTag = this.valueLookupBuilder(TCABlockTags.GEARBOXES);
+		TCABlocks.GEARBOX.forEach(gearboxesTag::add);
 
-		this.valueLookupBuilder(TCABlockTags.GEARBOXES)
-			.add(TCABlocks.GEARBOX);
+		this.builder(BlockTags.MINEABLE_WITH_PICKAXE)
+			.addOptionalTag(TCABlockTags.GEARBOXES);
 
-		TagAppender<Block, Block> tagAppender = this.valueLookupBuilder(TCABlockTags.COPPER_FIRE_BASE_BLOCKS);
+		TagAppender<Block, Block> copperFireBaseBlocksTag = this.valueLookupBuilder(TCABlockTags.COPPER_FIRE_BASE_BLOCKS);
 		registries.lookupOrThrow(Registries.BLOCK)
 			.listElements()
 			.forEach(block -> {
@@ -78,7 +79,7 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 				if (path.contains("pressure_plate")) return;
 				if (path.contains("chest")) return;
 
-				tagAppender.add(block.value());
+				copperFireBaseBlocksTag.add(block.value());
 			});
 	}
 

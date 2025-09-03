@@ -1,5 +1,12 @@
 {
   "values": [
-    "thecopperierage:gearbox"
+    "thecopperierage:gearbox",
+    "thecopperierage:exposed_gearbox",
+    "thecopperierage:weathered_gearbox",
+    "thecopperierage:oxidized_gearbox",
+    "thecopperierage:waxed_gearbox",
+    "thecopperierage:waxed_exposed_gearbox",
+    "thecopperierage:waxed_weathered_gearbox",
+    "thecopperierage:waxed_oxidized_gearbox"
   ]
 }

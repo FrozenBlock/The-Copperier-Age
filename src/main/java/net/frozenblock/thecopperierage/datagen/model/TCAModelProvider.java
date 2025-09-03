@@ -33,13 +33,17 @@ import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
+import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.renderer.block.model.VariantMutator;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
+import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
 public final class TCAModelProvider extends FabricModelProvider {
@@ -51,6 +55,22 @@ public final class TCAModelProvider extends FabricModelProvider {
 		.select(Direction.WEST, BlockModelGenerators.Y_ROT_270)
 		.select(Direction.EAST, BlockModelGenerators.Y_ROT_90);
 
+	private static final ModelTemplate GEARBOX_MODEL = new ModelTemplate(
+		Optional.of(TCAConstants.id("block/template_gearbox")),
+		Optional.empty(),
+		TextureSlot.SIDE, TextureSlot.FRONT
+	);
+	private static final ModelTemplate GEARBOX_COUNTER_CLOCKWISE_MODEL = new ModelTemplate(
+		Optional.of(TCAConstants.id("block/template_gearbox_on")),
+		Optional.of("_counter_clockwise"),
+		TextureSlot.SIDE, TextureSlot.FRONT
+	);
+	private static final ModelTemplate GEARBOX_CLOCKWISE_MODEL = new ModelTemplate(
+		Optional.of(TCAConstants.id("block/template_gearbox_on")),
+		Optional.of("_clockwise"),
+		TextureSlot.SIDE, TextureSlot.FRONT
+	);
+
 	public TCAModelProvider(FabricDataOutput output) {
 		super(output);
 	}
@@ -58,7 +78,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 	@Override
 	public void generateBlockStateModels(@NotNull BlockModelGenerators generator) {
 		createCopperFire(generator);
-		createGearbox(generator, TCABlocks.GEARBOX);
+		TCABlocks.GEARBOX.waxedMapping().forEach((block, waxedBlock) -> createGearbox(generator, block, waxedBlock));
 	}
 
 	@Override
@@ -80,30 +100,48 @@ public final class TCAModelProvider extends FabricModelProvider {
 		);
 	}
 
-	private static void createGearbox(@NotNull BlockModelGenerators generator, Block block) {
-		MultiVariant model = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(block));
-		MultiVariant counter = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(block, "_counter_clockwise"));
-		MultiVariant clockwise = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(block, "_clockwise"));
+	private static void createGearbox(@NotNull BlockModelGenerators generator, @NotNull Block block, @NotNull Block waxedBlock) {
+		TextureMapping mapping = new TextureMapping()
+			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"))
+			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(block, "_top"));
+		MultiVariant model = BlockModelGenerators.plainVariant(GEARBOX_MODEL.create(block, mapping, generator.modelOutput));
 
+		TextureMapping counterMapping = new TextureMapping()
+			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side_counter_clockwise"))
+			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(block, "_top_counter_clockwise"));
+		MultiVariant counterModel = BlockModelGenerators.plainVariant(GEARBOX_COUNTER_CLOCKWISE_MODEL.create(block, counterMapping, generator.modelOutput));
+
+		TextureMapping clockwiseMapping = new TextureMapping()
+			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side_clockwise"))
+			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(block, "_top_clockwise"));
+		MultiVariant clockwiseModel = BlockModelGenerators.plainVariant(GEARBOX_CLOCKWISE_MODEL.create(block, clockwiseMapping, generator.modelOutput));
+
+		generator.itemModelOutput.copy(block.asItem(), waxedBlock.asItem());
+
+		dispatchGearboxStates(generator, block, model, counterModel, clockwiseModel);
+		dispatchGearboxStates(generator, waxedBlock, model, counterModel, clockwiseModel);
+	}
+
+	private static void dispatchGearboxStates(@NotNull BlockModelGenerators generator, Block block, MultiVariant model, MultiVariant counterModel, MultiVariant clockwiseModel) {
 		generator.blockStateOutput.accept(
 			MultiVariantGenerator.dispatch(block)
 				.with(
 					PropertyDispatch.initial(GearboxBlock.POWER)
-						.select(15, counter)
-						.select(14, clockwise)
-						.select(13, counter)
-						.select(12, clockwise)
-						.select(11, counter)
-						.select(10, clockwise)
-						.select(9, counter)
-						.select(8, clockwise)
-						.select(7, counter)
-						.select(6, clockwise)
-						.select(5, counter)
-						.select(4, clockwise)
-						.select(3, counter)
-						.select(2, clockwise)
-						.select(1, counter)
+						.select(15, counterModel)
+						.select(14, clockwiseModel)
+						.select(13, counterModel)
+						.select(12, clockwiseModel)
+						.select(11, counterModel)
+						.select(10, clockwiseModel)
+						.select(9, counterModel)
+						.select(8, clockwiseModel)
+						.select(7, counterModel)
+						.select(6, clockwiseModel)
+						.select(5, counterModel)
+						.select(4, clockwiseModel)
+						.select(3, counterModel)
+						.select(2, clockwiseModel)
+						.select(1, counterModel)
 						.select(0, model)
 				)
 				.with(GEARBOX_ROTATION)

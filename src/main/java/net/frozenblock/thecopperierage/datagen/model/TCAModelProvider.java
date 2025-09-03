@@ -34,15 +34,22 @@ import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.renderer.block.model.VariantMutator;
 import net.minecraft.client.renderer.item.ItemModel;
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 
 @Environment(EnvType.CLIENT)
 public final class TCAModelProvider extends FabricModelProvider {
+	private static final PropertyDispatch<VariantMutator> GEARBOX_ROTATION = PropertyDispatch.modify(GearboxBlock.FACING)
+		.select(Direction.DOWN, BlockModelGenerators.X_ROT_90)
+		.select(Direction.UP, BlockModelGenerators.X_ROT_270.then(BlockModelGenerators.Y_ROT_180))
+		.select(Direction.NORTH, BlockModelGenerators.NOP)
+		.select(Direction.SOUTH, BlockModelGenerators.Y_ROT_180)
+		.select(Direction.WEST, BlockModelGenerators.Y_ROT_270)
+		.select(Direction.EAST, BlockModelGenerators.Y_ROT_90);
 
 	public TCAModelProvider(FabricDataOutput output) {
 		super(output);
@@ -99,7 +106,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 						.select(1, counter)
 						.select(0, model)
 				)
-				.with(BlockModelGenerators.ROTATION_FACING)
+				.with(GEARBOX_ROTATION)
 		);
 	}
 

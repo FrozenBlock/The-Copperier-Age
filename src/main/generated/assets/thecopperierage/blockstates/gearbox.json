@@ -242,67 +242,83 @@
     },
     "facing=up,power=0": {
       "model": "thecopperierage:block/gearbox",
-      "x": 270
+      "x": 270,
+      "y": 180
     },
     "facing=up,power=1": {
       "model": "thecopperierage:block/gearbox_counter_clockwise",
-      "x": 270
+      "x": 270,
+      "y": 180
     },
     "facing=up,power=10": {
       "model": "thecopperierage:block/gearbox_clockwise",
-      "x": 270
+      "x": 270,
+      "y": 180
     },
     "facing=up,power=11": {
       "model": "thecopperierage:block/gearbox_counter_clockwise",
-      "x": 270
+      "x": 270,
+      "y": 180
     },
     "facing=up,power=12": {
       "model": "thecopperierage:block/gearbox_clockwise",
-      "x": 270
+      "x": 270,
+      "y": 180
     },
     "facing=up,power=13": {
       "model": "thecopperierage:block/gearbox_counter_clockwise",
-      "x": 270
+      "x": 270,
+      "y": 180
     },
     "facing=up,power=14": {
       "model": "thecopperierage:block/gearbox_clockwise",
-      "x": 270
+      "x": 270,
+      "y": 180
     },
     "facing=up,power=15": {
       "model": "thecopperierage:block/gearbox_counter_clockwise",
-      "x": 270
+      "x": 270,
+      "y": 180
     },
     "facing=up,power=2": {
       "model": "thecopperierage:block/gearbox_clockwise",
-      "x": 270
+      "x": 270,
+      "y": 180
     },
     "facing=up,power=3": {
       "model": "thecopperierage:block/gearbox_counter_clockwise",
-      "x": 270
+      "x": 270,
+      "y": 180
     },
     "facing=up,power=4": {
       "model": "thecopperierage:block/gearbox_clockwise",
-      "x": 270
+      "x": 270,
+      "y": 180
     },
     "facing=up,power=5": {
       "model": "thecopperierage:block/gearbox_counter_clockwise",
-      "x": 270
+      "x": 270,
+      "y": 180
     },
     "facing=up,power=6": {
       "model": "thecopperierage:block/gearbox_clockwise",
-      "x": 270
+      "x": 270,
+      "y": 180
     },
     "facing=up,power=7": {
       "model": "thecopperierage:block/gearbox_counter_clockwise",
-      "x": 270
+      "x": 270,
+      "y": 180
     },
     "facing=up,power=8": {
       "model": "thecopperierage:block/gearbox_clockwise",
-      "x": 270
+      "x": 270,
+      "y": 180
     },
     "facing=up,power=9": {
       "model": "thecopperierage:block/gearbox_counter_clockwise",
-      "x": 270
+      "x": 270,
+      "y": 180
     },
     "facing=west,power=0": {
       "model": "thecopperierage:block/gearbox",

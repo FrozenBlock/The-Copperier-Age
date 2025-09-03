@@ -60,7 +60,7 @@ public class GearboxBlockEvaluator {
 		int power = 0;
 
 		final Direction facing = state.getValue(GearboxBlock.FACING);
-		for (Direction direction : gearboxBlock.getInputDirections(facing, false)) {
+		for (Direction direction : gearboxBlock.getInputDirections(facing)) {
 			final BlockPos offsetPos = pos.relative(direction);
 			final BlockState offsetState = level.getBlockState(offsetPos);
 			power = Math.max(power, this.getGearboxPower(offsetPos, offsetState, facing));

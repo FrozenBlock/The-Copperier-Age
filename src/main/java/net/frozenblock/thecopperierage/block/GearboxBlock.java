@@ -38,7 +38,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class GearboxBlock extends DirectionalBlock {
@@ -93,7 +92,7 @@ public class GearboxBlock extends DirectionalBlock {
 	}
 
 	private void updateNeighborsOfNeighboringGearBoxes(Level level, BlockPos pos, Direction facing) {
-		for (Direction direction : this.getInputDirections(facing, false)) this.checkCornerChangeAt(level, pos.relative(direction), facing);
+		for (Direction direction : this.getInputDirections(facing)) this.checkCornerChangeAt(level, pos.relative(direction), facing);
 	}
 
 	private void checkCornerChangeAt(@NotNull Level level, BlockPos pos, Direction originalFacing) {
@@ -107,20 +106,15 @@ public class GearboxBlock extends DirectionalBlock {
 		for (Direction direction : Direction.values()) level.updateNeighborsAt(pos.relative(direction), this);
 	}
 
-	public List<Direction> getInputDirections(@NotNull Direction facing, boolean isForRedstone) {
-		final Direction facingAway = facing.getOpposite();
-
-		Predicate<Direction> filterPredicate = isForRedstone
-			? direction ->  direction != facingAway
-			: direction -> direction.getAxis() != facingAway.getAxis();
-
+	public List<Direction> getInputDirections(@NotNull Direction facing) {
+		final Direction.Axis axis = facing.getAxis();
 		return Arrays.stream(Direction.values())
-			.filter(filterPredicate)
+			.filter(direction -> direction.getAxis() != axis)
 			.collect(Collectors.toList());
 	}
 
 	public boolean hasBlockSignal(@NotNull Level level, BlockPos pos, @NotNull BlockState state) {
-		for (Direction direction : this.getInputDirections(state.getValue(FACING), true)) {
+		for (Direction direction : this.getInputDirections(state.getValue(FACING))) {
 			final int blockPower = level.getSignal(pos.relative(direction), direction);
 			if (blockPower > 0) return true;
 		}

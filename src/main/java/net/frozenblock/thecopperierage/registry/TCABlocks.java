@@ -23,6 +23,7 @@ import net.fabricmc.fabric.api.registry.FuelRegistryEvents;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.TCAFeatureFlags;
 import net.frozenblock.thecopperierage.block.CopperFireBlock;
+import net.frozenblock.thecopperierage.block.GearboxBlock;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -45,6 +46,13 @@ public final class TCABlocks {
 			.mapColor(MapColor.COLOR_LIGHT_GREEN)
 			.lightLevel(blockStatex -> 15)
 			.noCollision()
+	);
+
+	public static final GearboxBlock GEARBOX = register("gearbox",
+		GearboxBlock::new,
+		BlockBehaviour.Properties.of()
+			.mapColor(MapColor.STONE)
+			.strength(1.5F)
 	);
 
 	private TCABlocks() {

@@ -27,12 +27,12 @@ accessible field net/minecraft/data/DataGenerator vanillaPackOutput Lnet/minecra
 accessible method net/minecraft/data/DataGenerator$PackGenerator <init> (Lnet/minecraft/data/DataGenerator;ZLjava/lang/String;Lnet/minecraft/data/PackOutput;)V
 accessible method net/minecraft/data/loot/EntityLootSubProvider shouldSmeltLoot ()Lnet/minecraft/world/level/storage/loot/predicates/AnyOfCondition$Builder;
 accessible field net/minecraft/data/loot/EntityLootSubProvider registries Lnet/minecraft/core/HolderLookup$Provider;
-accessible field net/minecraft/data/loot/BlockLootSubProvider NORMAL_LEAVES_STICK_CHANCES [F
 accessible field net/minecraft/client/data/models/BlockModelGenerators itemModelOutput Lnet/minecraft/client/data/models/ItemModelOutput;
 accessible field net/minecraft/client/data/models/ItemModelGenerators itemModelOutput Lnet/minecraft/client/data/models/ItemModelOutput;
 accessible field net/minecraft/client/data/models/BlockModelGenerators$BlockFamilyProvider skipGeneratingModelsFor Ljava/util/Set;
 accessible class net/minecraft/client/data/models/BlockModelGenerators$BlockStateGeneratorSupplier
 accessible method net/minecraft/client/data/models/BlockModelGenerators createMirroredCubeGenerator (Lnet/minecraft/world/level/block/Block;Lnet/minecraft/client/renderer/block/model/Variant;Lnet/minecraft/client/data/models/model/TextureMapping;Ljava/util/function/BiConsumer;)Lnet/minecraft/client/data/models/blockstates/BlockModelDefinitionGenerator;
+accessible field net/minecraft/client/data/models/BlockModelGenerators ROTATION_FACING Lnet/minecraft/client/data/models/blockstates/PropertyDispatch;
 
 # Particles
 accessible field net/minecraft/client/particle/Particle xd D

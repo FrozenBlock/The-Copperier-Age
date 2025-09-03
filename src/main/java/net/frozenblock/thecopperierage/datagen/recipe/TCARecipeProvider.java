@@ -77,7 +77,6 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 
 	private static void createGearboxRecipe(@NotNull RecipeProvider recipeProvider, RecipeOutput exporter, Block gearboxBlock, Block copperBlock) {
 		recipeProvider.shaped(RecipeCategory.REDSTONE, gearboxBlock)
-			.group("gearbox")
 			.define('X', Ingredient.of(copperBlock))
 			.define('-', Ingredient.of(Items.COPPER_INGOT))
 			.define('#', Ingredient.of(Items.COBBLESTONE))

@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
-  "group": "gearbox",
   "key": {
     "#": "minecraft:cobblestone",
     "-": "minecraft:copper_ingot",

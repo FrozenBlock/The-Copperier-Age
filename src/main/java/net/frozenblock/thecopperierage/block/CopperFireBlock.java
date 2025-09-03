@@ -83,7 +83,7 @@ public class CopperFireBlock extends BaseFireBlock {
     protected void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity, InsideBlockEffectApplier insideBlockEffectApplier) {
         super.entityInside(blockState, level, blockPos, entity, insideBlockEffectApplier);
         if (!level.isClientSide() && entity instanceof LivingEntity livingEntity) {
-            livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 100));
+            livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 119));
         }
     }
 }

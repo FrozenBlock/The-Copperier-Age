@@ -1,8 +1,0 @@
-{
-  "parent": "thecopperierage:block/gearbox",
-  "textures": {
-    "bottom": "thecopperierage:block/gearbox_bottom_on",
-    "side": "thecopperierage:block/gearbox_side_active",
-    "front": "thecopperierage:block/gearbox_top_active"
-  }
-}

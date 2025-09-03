@@ -17,15 +17,15 @@
 
 package net.frozenblock.thecopperierage.block.gearbox;
 
-import com.google.common.collect.Sets;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.redstone.ExperimentalRedstoneUtils;
+import net.minecraft.world.level.redstone.Orientation;
 import org.jetbrains.annotations.NotNull;
-import java.util.Set;
 
 public class GearboxBlockEvaluator {
 
@@ -37,15 +37,26 @@ public class GearboxBlockEvaluator {
 		if (state.getValue(GearboxBlock.POWER) != newPower) {
 			if (level.getBlockState(pos) == state) level.setBlock(pos, state.setValue(GearboxBlock.POWER, newPower), Block.UPDATE_CLIENTS);
 
-			Set<BlockPos> set = Sets.newHashSet();
-			set.add(pos);
+			final Direction facing = state.getValue(GearboxBlock.FACING);
+			final Direction behind = facing.getOpposite();
+			final Orientation orientation = ExperimentalRedstoneUtils.initialOrientation(level, behind, null);
 
-			for (Direction direction : Direction.values()) set.add(pos.relative(direction));
-			for (BlockPos offsetPos : set) level.updateNeighborsAt(offsetPos, state.getBlock());
+			level.updateNeighborsAtExceptFromFacing(
+				pos.relative(behind),
+				state.getBlock(),
+				facing,
+				orientation
+			);
+			level.updateNeighborsAtExceptFromFacing(
+				pos,
+				state.getBlock(),
+				facing,
+				orientation
+			);
 		}
 	}
 
-	protected boolean hasBlockSignal(Level level, BlockPos pos, BlockState state) {
+	protected boolean hasBlockSignal(Level level, BlockPos pos, @NotNull BlockState state) {
 		if (!(state.getBlock() instanceof GearboxBlock gearboxBlock)) return false;
 		return gearboxBlock.hasBlockSignal(level, pos, state);
 	}

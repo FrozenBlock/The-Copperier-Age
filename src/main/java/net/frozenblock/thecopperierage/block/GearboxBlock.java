@@ -76,40 +76,27 @@ public class GearboxBlock extends DirectionalBlock {
 	}
 
 	@Override
-	protected void onPlace(@NotNull BlockState state, Level level, BlockPos pos, @NotNull BlockState replacingState, boolean bl) {
-		if (state.is(replacingState.getBlock()) || level.isClientSide()) return;
-		this.updatePowerStrength(level, pos, state);
-		this.updateNeighborsOfNeighboringGearBoxes(level, pos, state.getValue(FACING));
+	protected void onPlace(@NotNull BlockState state, @NotNull Level level, BlockPos pos, @NotNull BlockState replacingState, boolean bl) {
+		if (level.isClientSide() || state.is(replacingState.getBlock())) return;
+		level.scheduleTick(pos, this, 1);
 	}
 
 	@Override
-	protected void neighborChanged(BlockState state, @NotNull Level level, BlockPos pos, Block block, @Nullable Orientation orientation, boolean movedByPiston) {
-		if (level.isClientSide()) return;
+	protected void neighborChanged(
+		BlockState state,
+		@NotNull Level level,
+		@NotNull BlockPos pos,
+		Block block,
+		@Nullable Orientation orientation,
+		boolean movedByPiston
+	) {
+		if (level.isClientSide() || level.getBlockTicks().hasScheduledTick(pos, this)) return;
 		level.scheduleTick(pos, this, 1);
 	}
 
 	@Override
 	protected void affectNeighborsAfterRemoval(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, boolean bl) {
-		if (!bl) {
-			for (Direction direction : Direction.values()) level.updateNeighborsAt(pos.relative(direction), this);
-			this.updatePowerStrength(level, pos, state);
-			this.updateNeighborsOfNeighboringGearBoxes(level, pos, state.getValue(FACING));
-		}
-	}
-
-	private void updateNeighborsOfNeighboringGearBoxes(Level level, BlockPos pos, Direction facing) {
-		for (Direction direction : this.getInputDirections(facing)) this.checkCornerChangeAt(level, pos.relative(direction), facing);
-	}
-
-	private void checkCornerChangeAt(@NotNull Level level, BlockPos pos, Direction originalFacing) {
-		final BlockState state = level.getBlockState(pos);
-		if (!state.is(this)) return;
-
-		final Direction facing = state.getValue(FACING);
-		if (facing != originalFacing) return;
-
-		level.updateNeighborsAt(pos, this);
-		for (Direction direction : Direction.values()) level.updateNeighborsAt(pos.relative(direction), this);
+		if (!bl) this.updatePowerStrength(level, pos, state);
 	}
 
 	public List<Direction> getInputDirections(@NotNull Direction facing) {
@@ -133,13 +120,24 @@ public class GearboxBlock extends DirectionalBlock {
 	}
 
 	@Override
-	protected int getDirectSignal(@NotNull BlockState blockState, BlockGetter level, BlockPos pos, Direction direction) {
+	protected int getDirectSignal(@NotNull BlockState blockState, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull Direction direction) {
 		return blockState.getSignal(level, pos, direction);
 	}
 
 	@Override
-	protected int getSignal(@NotNull BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+	protected int getSignal(@NotNull BlockState state, BlockGetter level, BlockPos pos, @NotNull Direction direction) {
 		return state.getValue(POWER) > 0 && state.getValue(FACING) == direction ? 15 : 0;
+	}
+
+	@Override
+	protected boolean hasAnalogOutputSignal(BlockState state) {
+		return true;
+	}
+
+	@Override
+	protected int getAnalogOutputSignal(@NotNull BlockState state, Level level, BlockPos pos, @NotNull Direction direction) {
+		if (direction == state.getValue(FACING).getOpposite()) return 0;
+		return state.getValue(POWER);
 	}
 
 	@Override

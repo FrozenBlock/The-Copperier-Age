@@ -52,6 +52,9 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 		this.valueLookupBuilder(BlockTags.FIRE)
 			.add(TCABlocks.COPPER_FIRE);
 
+		this.valueLookupBuilder(BlockTags.MINEABLE_WITH_PICKAXE)
+			.add(TCABlocks.GEARBOX);
+
 		TagAppender<Block, Block> tagAppender = this.valueLookupBuilder(TCABlockTags.COPPER_FIRE_BASE_BLOCKS);
 		arg.lookupOrThrow(Registries.BLOCK)
 			.listElements()

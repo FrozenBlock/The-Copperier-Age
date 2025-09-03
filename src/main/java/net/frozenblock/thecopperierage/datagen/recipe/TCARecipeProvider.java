@@ -22,6 +22,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.frozenblock.lib.recipe.api.RecipeExportNamespaceFix;
 import net.frozenblock.thecopperierage.TCAConstants;
+import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -55,6 +56,17 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.pattern(" # ")
 					.pattern(" # ")
 					.unlockedBy(RecipeProvider.getHasName(Items.COPPER_INGOT), this.has(Items.COPPER_INGOT))
+					.save(exporter);
+
+				this.shaped(RecipeCategory.REDSTONE, TCABlocks.GEARBOX)
+					.group("gearbox")
+					.define('X', Ingredient.of(Items.COPPER_INGOT))
+					.define('#', Ingredient.of(Items.COBBLESTONE))
+					.define('R', Ingredient.of(Items.REDSTONE))
+					.pattern("XXX")
+					.pattern("#X#")
+					.pattern("XRX")
+					.unlockedBy(RecipeProvider.getHasName(Items.REDSTONE), this.has(Items.REDSTONE))
 					.save(exporter);
 
 				RecipeExportNamespaceFix.clearCurrentGeneratingModId();

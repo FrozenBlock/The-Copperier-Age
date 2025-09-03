@@ -53,6 +53,7 @@ public final class TCABlocks {
 		BlockBehaviour.Properties.of()
 			.mapColor(MapColor.STONE)
 			.strength(1.5F)
+			.isRedstoneConductor(Blocks::never)
 	);
 
 	private TCABlocks() {

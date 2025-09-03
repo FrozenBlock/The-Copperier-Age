@@ -22,6 +22,7 @@ import net.frozenblock.thecopperierage.block.gearbox.GearboxBlockEvaluator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -70,6 +71,11 @@ public class GearboxBlock extends DirectionalBlock {
 	}
 
 	@Override
+	protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+		this.updatePowerStrength(level, pos, state);
+	}
+
+	@Override
 	protected void onPlace(@NotNull BlockState state, Level level, BlockPos pos, @NotNull BlockState replacingState, boolean bl) {
 		if (state.is(replacingState.getBlock()) || level.isClientSide()) return;
 		this.updatePowerStrength(level, pos, state);
@@ -79,7 +85,7 @@ public class GearboxBlock extends DirectionalBlock {
 	@Override
 	protected void neighborChanged(BlockState state, @NotNull Level level, BlockPos pos, Block block, @Nullable Orientation orientation, boolean movedByPiston) {
 		if (level.isClientSide()) return;
-		this.updatePowerStrength(level, pos, state);
+		level.scheduleTick(pos, this, 1);
 	}
 
 	@Override

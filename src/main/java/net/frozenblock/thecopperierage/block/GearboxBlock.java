@@ -70,6 +70,11 @@ public class GearboxBlock extends DirectionalBlock {
 		EVALUATOR.updatePowerStrength(level, pos, state);
 	}
 
+	public void updateNeighboringBlocks(Level level, BlockPos pos, BlockState state) {
+		EVALUATOR.updateNeighboringBlocks(level, pos, state);
+	}
+
+
 	@Override
 	protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		this.updatePowerStrength(level, pos, state);
@@ -96,7 +101,7 @@ public class GearboxBlock extends DirectionalBlock {
 
 	@Override
 	protected void affectNeighborsAfterRemoval(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, boolean bl) {
-		if (!bl) this.updatePowerStrength(level, pos, state);
+		if (!bl) this.updateNeighboringBlocks(level, pos, state);
 	}
 
 	public List<Direction> getInputDirections(@NotNull Direction facing) {

@@ -36,24 +36,17 @@ public class GearboxBlockEvaluator {
 		final int newPower = this.calculateTargetStrength(level, pos, state);
 		if (state.getValue(GearboxBlock.POWER) != newPower) {
 			if (level.getBlockState(pos) == state) level.setBlock(pos, state.setValue(GearboxBlock.POWER, newPower), Block.UPDATE_CLIENTS);
-
-			final Direction facing = state.getValue(GearboxBlock.FACING);
-			final Direction behind = facing.getOpposite();
-			final Orientation orientation = ExperimentalRedstoneUtils.initialOrientation(level, behind, null);
-
-			level.updateNeighborsAtExceptFromFacing(
-				pos.relative(behind),
-				state.getBlock(),
-				facing,
-				orientation
-			);
-			level.updateNeighborsAtExceptFromFacing(
-				pos,
-				state.getBlock(),
-				facing,
-				orientation
-			);
+			this.updateNeighboringBlocks(level, pos, state);
 		}
+	}
+
+	public void updateNeighboringBlocks(Level level, @NotNull BlockPos pos, @NotNull BlockState state) {
+		final Direction facing = state.getValue(GearboxBlock.FACING);
+		final Direction behind = facing.getOpposite();
+		final Orientation orientation = ExperimentalRedstoneUtils.initialOrientation(level, behind, null);
+
+		level.updateNeighborsAtExceptFromFacing(pos.relative(behind), state.getBlock(), facing, orientation);
+		level.updateNeighborsAtExceptFromFacing(pos, state.getBlock(), facing, orientation);
 	}
 
 	protected boolean hasBlockSignal(Level level, BlockPos pos, @NotNull BlockState state) {

@@ -27,6 +27,9 @@ import org.jetbrains.annotations.NotNull;
 
 public final class TCASounds {
 
+	// BLOCK
+	public static final SoundEvent BLOCK_GEARBOX_IDLE = register("block.gearbox.idle");
+
 	// ITEM
 	public static final Holder.Reference<SoundEvent> ITEM_COPPER_HORN_SAX = registerForHolder("item.copper_horn.saxophone");
 	public static final Holder.Reference<SoundEvent> ITEM_COPPER_HORN_TUBA = registerForHolder("item.copper_horn.tuba");
@@ -36,6 +39,8 @@ public final class TCASounds {
 	public static final Holder.Reference<SoundEvent> ITEM_COPPER_HORN_CLARINET = registerForHolder("item.copper_horn.clarinet");
 	public static final Holder.Reference<SoundEvent> ITEM_COPPER_HORN_TRUMPET = registerForHolder("item.copper_horn.trumpet");
 	public static final Holder.Reference<SoundEvent> ITEM_COPPER_HORN_TROMBONE = registerForHolder("item.copper_horn.trombone");
+
+	public static final SoundEvent ITEM_WRENCH_USE = register("item.wrench.use");
 
 	private TCASounds() {
 		throw new UnsupportedOperationException("TCASounds contains only static declarations.");

@@ -19,9 +19,11 @@ package net.frozenblock.thecopperierage.block;
 
 import com.mojang.serialization.MapCodec;
 import net.frozenblock.thecopperierage.block.gearbox.GearboxBlockEvaluator;
+import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -66,6 +68,24 @@ public class GearboxBlock extends DirectionalBlock {
 		return this.defaultBlockState().setValue(FACING, facing);
 	}
 
+	@Override
+	public void animateTick(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+		final int power =  state.getValue(POWER);
+		if (power % 2 == 0) return;
+		if (random.nextFloat() > 0.05F) return;
+
+		level.playLocalSound(
+			pos.getX() + 0.5D,
+			pos.getY() + 0.5D,
+			pos.getZ() + 0.5D,
+			TCASounds.BLOCK_GEARBOX_IDLE,
+			SoundSource.BLOCKS,
+			0.1F,
+			0.1F + (power / 5F) + (random.nextFloat() * 0.1F),
+			false
+		);
+	}
+
 	public void updatePowerStrength(Level level, BlockPos pos, BlockState state) {
 		EVALUATOR.updatePowerStrength(level, pos, state);
 	}
@@ -73,7 +93,6 @@ public class GearboxBlock extends DirectionalBlock {
 	public void updateNeighboringBlocks(Level level, BlockPos pos, BlockState state) {
 		EVALUATOR.updateNeighboringBlocks(level, pos, state);
 	}
-
 
 	@Override
 	protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {

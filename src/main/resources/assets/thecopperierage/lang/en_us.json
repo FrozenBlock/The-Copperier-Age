@@ -11,6 +11,7 @@
   "subtitles.item.copper_horn.call": "Copper Horn plays",
 
   "item.thecopperierage.wrench": "Wrench",
+  "subtitles.item.wrench.use": "Wrench used",
 
   "block.thecopperierage.copper_fire": "Copper Fire",
   "block.thecopperierage.copper_campfire": "Copper Campfire",
@@ -23,6 +24,7 @@
   "block.thecopperierage.waxed_exposed_gearbox": "Waxed Exposed Gearbox",
   "block.thecopperierage.waxed_weathered_gearbox": "Waxed Weathered Gearbox",
   "block.thecopperierage.waxed_oxidized_gearbox": "Waxed Oxidized Gearbox",
+  "subtitles.block.gearbox.idle": "Gears mesh",
 
   "pack.thecopperierage.copperier_copper": "Copperier Copper"
 }

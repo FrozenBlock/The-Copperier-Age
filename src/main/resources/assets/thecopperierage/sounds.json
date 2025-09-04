@@ -1,4 +1,33 @@
 {
+  "block.gearbox.idle": {
+    "sounds": [
+      {
+        "attenuation_distance": 8,
+        "name": "thecopperierage:block/gearbox/idle1"
+      },
+      {
+        "attenuation_distance": 8,
+        "name": "thecopperierage:block/gearbox/idle2"
+      },
+      {
+        "attenuation_distance": 8,
+        "name": "thecopperierage:block/gearbox/idle3"
+      },
+      {
+        "attenuation_distance": 8,
+        "name": "thecopperierage:block/gearbox/idle4"
+      },
+      {
+        "attenuation_distance": 8,
+        "name": "thecopperierage:block/gearbox/idle5"
+      },
+      {
+        "attenuation_distance": 8,
+        "name": "thecopperierage:block/gearbox/idle6"
+      }
+    ],
+    "subtitle": "subtitles.block.gearbox.idle"
+  },
   "item.copper_horn.recorder": {
     "sounds": [
       {
@@ -70,5 +99,15 @@
       }
     ],
     "subtitle": "subtitles.item.copper_horn.call"
+  },
+  "item.wrench.use": {
+    "sounds": [
+      "thecopperierage:item/wrench/wrench1",
+      "thecopperierage:item/wrench/wrench2",
+      "thecopperierage:item/wrench/wrench3",
+      "thecopperierage:item/wrench/wrench4",
+      "thecopperierage:item/wrench/wrench5"
+    ],
+    "subtitle": "subtitles.item.wrench.use"
   }
 }

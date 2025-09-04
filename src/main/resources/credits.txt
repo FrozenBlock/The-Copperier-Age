@@ -9,6 +9,8 @@ Zhen/zntm
  - Copper Helmet, Chestplate, Leggings, & Boots Item Retextures
  - Final Copper Chain Retextures (Based On Lufurrius's)
  - Final Gearbox Retextures (Based On Lufurrius's)
+ - Wrench Usage Sounds
+ - Gearbox Idle Sounds
 
 Voxelotl
  - New Copper Lantern Remodels & Retextures

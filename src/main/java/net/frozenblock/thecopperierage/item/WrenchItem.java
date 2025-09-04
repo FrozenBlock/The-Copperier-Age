@@ -17,9 +17,9 @@
 
 package net.frozenblock.thecopperierage.item;
 
+import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionResult;
@@ -39,6 +39,7 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.redstone.ExperimentalRedstoneUtils;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -121,8 +122,10 @@ public class WrenchItem extends Item {
 		directionsToTry.add(reorientedA.getOpposite());
 
 		final Direction reorientedB = getReorientedFace(context.getHorizontalDirection(), state);
-		directionsToTry.add(reorientedB);
-		directionsToTry.add(reorientedB.getOpposite());
+		if (reorientedA.getAxis() != reorientedB.getAxis()) {
+			directionsToTry.add(reorientedB);
+			directionsToTry.add(reorientedB.getOpposite());
+		}
 
 		boolean triedToSet = false;
 		for (Direction direction : directionsToTry) {
@@ -142,7 +145,7 @@ public class WrenchItem extends Item {
 
 	public static InteractionResult onSuccessfulWrench(@NotNull UseOnContext context, @NotNull Level level, BlockPos pos, Runnable serverRunnable) {
 		final Player player = context.getPlayer();
-		level.playSound(player, pos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1F, 1F);
+		level.playSound(player, pos, TCASounds.ITEM_WRENCH_USE, SoundSource.BLOCKS, 0.75F, 0.9F + (level.random.nextFloat() * 0.2F));
 		if (!level.isClientSide()) {
 			serverRunnable.run();
 			if (player != null) context.getItemInHand().hurtAndBreak(1, player, context.getHand());
@@ -197,6 +200,12 @@ public class WrenchItem extends Item {
 
 		BlockState newState = Block.updateFromNeighbourShapes(state, level, pos);
 		level.setBlock(pos, newState, 276);
+		level.updateNeighborsAt(pos, newState.getBlock());
+		for (Direction direction : Direction.values()) {
+			final BlockPos offsetPos = pos.relative(direction);
+			final BlockState offsetState = level.getBlockState(offsetPos);
+			level.neighborChanged(pos, offsetState.getBlock(), ExperimentalRedstoneUtils.initialOrientation(level, direction.getOpposite(), null));
+		}
 		level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(context.getPlayer(), state));
 	}
 }

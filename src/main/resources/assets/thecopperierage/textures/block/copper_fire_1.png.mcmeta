@@ -1,3 +1,6 @@
 {
-  "animation": {}
+  "animation": {},
+  "glowtone_emissive": {
+    "light_emission": 15
+  }
 }

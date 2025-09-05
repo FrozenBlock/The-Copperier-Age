@@ -26,7 +26,10 @@ import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 
 @Environment(EnvType.CLIENT)
 public final class TCABlockRenderLayers {
+
 	public static void init() {
 		BlockRenderLayerMap.putBlock(TCABlocks.COPPER_FIRE, ChunkSectionLayer.CUTOUT);
+		TCABlocks.GEARBOX.forEach(block -> BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT));
 	}
+
 }

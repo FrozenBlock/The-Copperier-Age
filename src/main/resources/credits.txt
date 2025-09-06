@@ -11,6 +11,7 @@ Zhen/zntm
  - Final Gearbox Retextures (Based On Lufurrius's)
  - Wrench Usage Sounds
  - Gearbox Idle Sounds
+ - Green Copper Bulb Textures
 
 Voxelotl
  - New Copper Lantern Remodels & Retextures

@@ -1,6 +1,6 @@
 # Contributing
 
-By contributing to Wilder Wild, you agree with the [Developer Certificate of Origin (DCO)][DCO].
+By contributing to The Copperier Age, you agree with the [Developer Certificate of Origin (DCO)][DCO].
 
 ## Conventions
 
@@ -22,10 +22,10 @@ than browsing files.
 
 ### Spelling
 
-Use American English to keep consistency across Wilder Wild.
+Use American English to keep consistency across The Copperier Age.
 
 If there is more than one acceptable spelling of the same word, first check if one word is already
-being used in Wilder Wild, FrozenLib, or in Mojang's Mappings, and if not, use the spelling that is most commonly used.
+being used in The Copperier Age, FrozenLib, or in Mojang's Mappings, and if not, use the spelling that is most commonly used.
 
 ### Abbreviations
 
@@ -56,17 +56,17 @@ Avoid the use of abbreviations in javadocs, except if they describe the name of 
 `@ModifyConstant` should never be used in a case where a `ModifyExpressionValue` could be used.
 
 The `$` character can be used in mixins to mark a semantic separation in the name.
-It allows to separate the actual name of the variable and the namespace, `wilderWild`.
+It allows to separate the actual name of the variable and the namespace, `theCopperierAge`.
 
-Fields marked as `@Unique` must be prefixed with `wilderWild$` or `WILDERWILD$` if the field is static and final.
+Fields marked as `@Unique` must be prefixed with `theCopperierAge$` or `THECOPPERIERAGE$` if the field is static and final.
 
-Methods marked with `@Unique` must be prefixed with `wilderWild$`.
+Methods marked with `@Unique` must be prefixed with `theCopperierAge$`.
 
 Injector or modifier methods do not need to be prefixed. Fabric takes care of that.
 
 ## Licensing & DCO
 
-Wilder Wild is licensed under [FrozenBlock Modding Oasis License][LICENSE], and it has a [Developer Certificate of Origin (DCO)][DCO], which you are required to agree with to contribute.
+The Copperier Age is licensed under [FrozenBlock Modding Oasis License][LICENSE], and it has a [Developer Certificate of Origin (DCO)][DCO], which you are required to agree with to contribute.
 Specifying the commit author may be sufficient, but a [sign-off can be also added](https://git-scm.com/docs/git-commit#Documentation/git-commit.txt--s).
 Legal names are not required.
 
@@ -74,6 +74,6 @@ Legal names are not required.
 
 **Note: This document is currently incomplete.**
 
-[LICENSE]: ./LICENSE.md "Wilder Wild license file"
+[LICENSE]: ./LICENSE.md "The Copperier Age license file"
 
 [DCO]: ./DEVELOPER_CERTIFICATE_OF_ORIGIN.md "Developer Certificate of Origin file"

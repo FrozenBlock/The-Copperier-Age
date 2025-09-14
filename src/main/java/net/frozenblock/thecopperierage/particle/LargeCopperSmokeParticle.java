@@ -26,6 +26,7 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
 @Environment(EnvType.CLIENT)
 public class LargeCopperSmokeParticle extends LargeSmokeParticle {
@@ -37,10 +38,10 @@ public class LargeCopperSmokeParticle extends LargeSmokeParticle {
 	protected LargeCopperSmokeParticle(
 		ClientLevel level,
 		double x, double y, double z,
-		double xSpeed, double ySpeed, double zSpeed,
-		SpriteSet sprites
+		double xd, double yd, double zd,
+		SpriteSet spriteSet
 	) {
-		super(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
+		super(level, x, y, z, xd, yd, zd, spriteSet);
 		this.targetGColor = this.gCol;
 		this.gCol = this.startGColor = Math.min(this.targetGColor + 0.2F, 1F);
 		this.colorLerpEndsAt = this.lifetime / 2;
@@ -60,20 +61,21 @@ public class LargeCopperSmokeParticle extends LargeSmokeParticle {
 	}
 
 	public static class Provider implements ParticleProvider<SimpleParticleType> {
-		private final SpriteSet sprites;
+		private final SpriteSet spriteSet;
 
 		public Provider(SpriteSet spriteSet) {
-			this.sprites = spriteSet;
+			this.spriteSet = spriteSet;
 		}
 
 		@Override
 		public Particle createParticle(
 			SimpleParticleType simpleParticleType,
-			ClientLevel clientLevel,
+			ClientLevel level,
 			double x, double y, double z,
-			double xSpeed, double ySpeed, double zSpeed
+			double xd, double yd, double zd,
+			RandomSource random
 		) {
-			return new LargeCopperSmokeParticle(clientLevel, x, y, z, xSpeed, ySpeed, zSpeed, this.sprites);
+			return new LargeCopperSmokeParticle(level, x, y, z, xd, yd, zd, this.spriteSet);
 		}
 	}
 

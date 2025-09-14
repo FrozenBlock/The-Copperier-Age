@@ -26,6 +26,7 @@ import net.minecraft.client.particle.SmokeParticle;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
 @Environment(EnvType.CLIENT)
 public class CopperSmokeParticle extends SmokeParticle {
@@ -39,9 +40,9 @@ public class CopperSmokeParticle extends SmokeParticle {
 		double x, double y, double z,
 		double xSpeed, double ySpeed, double zSpeed,
 		float quadSizeMultiplier,
-		SpriteSet sprites
+		SpriteSet spriteSet
 	) {
-		super(level, x, y, z, xSpeed, ySpeed, zSpeed, quadSizeMultiplier, sprites);
+		super(level, x, y, z, xSpeed, ySpeed, zSpeed, quadSizeMultiplier, spriteSet);
 		this.targetGColor = this.gCol;
 		this.gCol = this.startGColor = Math.min(this.targetGColor + 0.2F, 1F);
 		this.colorLerpEndsAt = this.lifetime;
@@ -62,20 +63,21 @@ public class CopperSmokeParticle extends SmokeParticle {
 	}
 
 	public static class Provider implements ParticleProvider<SimpleParticleType> {
-		private final SpriteSet sprites;
+		private final SpriteSet spriteSet;
 
 		public Provider(SpriteSet spriteSet) {
-			this.sprites = spriteSet;
+			this.spriteSet = spriteSet;
 		}
 
 		@Override
 		public Particle createParticle(
 			SimpleParticleType simpleParticleType,
-			ClientLevel clientLevel,
+			ClientLevel level,
 			double x, double y, double z,
-			double xSpeed, double ySpeed, double zSpeed
+			double xd, double yd, double zd,
+			RandomSource random
 		) {
-			return new CopperSmokeParticle(clientLevel, x, y, z, xSpeed, ySpeed, zSpeed, 1F, this.sprites);
+			return new CopperSmokeParticle(level, x, y, z, xd, yd, zd, 1F, this.spriteSet);
 		}
 	}
 

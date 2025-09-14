@@ -24,8 +24,10 @@ import net.minecraft.client.particle.CampfireSmokeParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
 @Environment(EnvType.CLIENT)
 public class CopperCampfireSmokeParticle extends CampfireSmokeParticle {
@@ -39,10 +41,11 @@ public class CopperCampfireSmokeParticle extends CampfireSmokeParticle {
 	protected CopperCampfireSmokeParticle(
 		ClientLevel level,
 		double x, double y, double z,
-		double xSpeed, double ySpeed, double zSpeed,
-		boolean isSignal
+		double xd, double yd, double zd,
+		boolean isSignal,
+		TextureAtlasSprite sprite
 	) {
-		super(level, x, y, z, xSpeed, ySpeed, zSpeed, isSignal);
+		super(level, x, y, z, xd, yd, zd, isSignal, sprite);
 		this.targetRColor = this.rCol;
 		this.rCol = this.startRColor = Math.max(this.targetRColor - 0.3F, 0F);
 		this.targetBColor = this.bCol;
@@ -66,44 +69,44 @@ public class CopperCampfireSmokeParticle extends CampfireSmokeParticle {
 
 	@Environment(EnvType.CLIENT)
 	public static class CosyProvider implements ParticleProvider<SimpleParticleType> {
-		private final SpriteSet sprites;
+		private final SpriteSet spriteSet;
 
 		public CosyProvider(SpriteSet spriteSet) {
-			this.sprites = spriteSet;
+			this.spriteSet = spriteSet;
 		}
 
 		@Override
 		public Particle createParticle(
 			SimpleParticleType simpleParticleType,
-			ClientLevel clientLevel,
-			double d, double e, double f,
-			double g, double h, double i
+			ClientLevel level,
+			double x, double y, double z,
+			double xd, double yd, double zd,
+			RandomSource random
 		) {
-			CopperCampfireSmokeParticle particle = new CopperCampfireSmokeParticle(clientLevel, d, e, f, g, h, i, false);
+			CopperCampfireSmokeParticle particle = new CopperCampfireSmokeParticle(level, x, y, z, xd, yd, zd, false, this.spriteSet.get(random));
 			particle.setAlpha(0.9F);
-			particle.pickSprite(this.sprites);
 			return particle;
 		}
 	}
 
 	@Environment(EnvType.CLIENT)
 	public static class SignalProvider implements ParticleProvider<SimpleParticleType> {
-		private final SpriteSet sprites;
+		private final SpriteSet spriteSet;
 
 		public SignalProvider(SpriteSet spriteSet) {
-			this.sprites = spriteSet;
+			this.spriteSet = spriteSet;
 		}
 
 		@Override
 		public Particle createParticle(
 			SimpleParticleType simpleParticleType,
-			ClientLevel clientLevel,
-			double d, double e, double f,
-			double g, double h, double i
+			ClientLevel level,
+			double x, double y, double z,
+			double xd, double yd, double zd,
+			RandomSource random
 		) {
-			CopperCampfireSmokeParticle particle = new CopperCampfireSmokeParticle(clientLevel, d, e, f, g, h, i, true);
+			CopperCampfireSmokeParticle particle = new CopperCampfireSmokeParticle(level, x, y, z, xd, yd, zd, true, this.spriteSet.get(random));
 			particle.setAlpha(0.95F);
-			particle.pickSprite(this.sprites);
 			return particle;
 		}
 	}

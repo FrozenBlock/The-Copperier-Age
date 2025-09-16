@@ -124,9 +124,7 @@ public class FrozenLibIntegration extends ModIntegration {
 			final BlockState state = level.getBlockState(pos);
 
 			if (state.getBlock() instanceof CopperFanBlock) {
-				Direction direction = state.getValue(CopperFanBlock.FACING);
-				if (reverse) direction = direction.getOpposite();
-
+				final Direction direction = state.getValue(CopperFanBlock.FACING);
 				Vec3 movement = Vec3.atLowerCornerOf(direction.getUnitVec3i());
 				double strength = fanDistance - Math.min(windTarget.distanceTo(windOrigin), fanDistance);
 				double intensity = strength / fanDistance;

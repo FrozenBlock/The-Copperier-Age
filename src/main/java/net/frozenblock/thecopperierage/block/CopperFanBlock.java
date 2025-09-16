@@ -21,6 +21,7 @@ import com.mojang.serialization.MapCodec;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
+import net.frozenblock.lib.particle.client.options.WindParticleOptions;
 import net.frozenblock.lib.wind.api.WindDisturbance;
 import net.frozenblock.lib.wind.api.WindDisturbanceLogic;
 import net.frozenblock.lib.wind.api.WindManager;
@@ -32,6 +33,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
@@ -65,7 +67,7 @@ public class CopperFanBlock extends DirectionalBlock {
 	public static final double BASE_WIND_INTENSITY = 0.5D;
 	public static final double FAN_DISTANCE_REVERSE = 5D;
 	public static final int FAN_DISTANCE_IN_BLOCKS_REVERSE = 4;
-	public static final double PUSH_INTENSITY_REVERSE = 0.75D;
+	public static final double PUSH_INTENSITY_REVERSE = 0.075D;
 	public static final double BASE_WIND_INTENSITY_REVERSE = 0.3D;
     public static final MapCodec<CopperFanBlock> CODEC = simpleCodec(CopperFanBlock::new);
 	private static final WindDisturbanceLogic<? extends CopperFanBlock> DUMMY_WIND_LOGIC = new WindDisturbanceLogic<>((source, level1, windOrigin, affectedArea, windTarget) -> WindDisturbance.DUMMY_RESULT);
@@ -90,26 +92,6 @@ public class CopperFanBlock extends DirectionalBlock {
 	public BlockState getStateForPlacement(@NotNull BlockPlaceContext blockPlaceContext) {
 		final Direction facing = blockPlaceContext.getNearestLookingDirection().getOpposite();
 		return this.defaultBlockState().setValue(FACING, facing);
-	}
-
-	@Override
-	public void animateTick(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
-		/*
-		final int power =  state.getValue(POWER);
-		if (power % 2 == 0) return;
-		if (random.nextFloat() > 0.05F) return;
-
-		level.playLocalSound(
-			pos.getX() + 0.5D,
-			pos.getY() + 0.5D,
-			pos.getZ() + 0.5D,
-			TCASounds.BLOCK_GEARBOX_IDLE,
-			SoundSource.BLOCKS,
-			0.1F,
-			0.1F + (power / 5F) + (random.nextFloat() * 0.1F),
-			false
-		);
-		 */
 	}
 
 	@Override
@@ -190,20 +172,29 @@ public class CopperFanBlock extends DirectionalBlock {
 
 		final int fanDistanceInBlocks = !reverse ? FAN_DISTANCE_IN_BLOCKS : FAN_DISTANCE_IN_BLOCKS_REVERSE;
 		for (int i = 0; i < fanDistanceInBlocks; i++) {
-			if (!level.hasChunkAt(mutablePos.move(direction))) continue;
+			final boolean isFirstSearch = i == 0;
+			if (!level.hasChunkAt(mutablePos.move(direction))) break;
 
 			final BlockState state = level.getBlockState(mutablePos);
-			if (!canFanPassThrough(level, mutablePos, state, direction)) break;
+			if (!canFanPassThrough(level, mutablePos, state, direction)) {
+				if (isFirstSearch) return;
+				break;
+			}
 
 			if (!level.getFluidState(mutablePos).isEmpty()) {
-				if (cutoffPos.isEmpty()) cutoffPos = Optional.of(mutablePos.immutable());
+				if (isFirstSearch) return;
+				cutoffPos = Optional.of(mutablePos.immutable());
+				break;
 			}
 		}
 
-		mutablePos.move(direction.getOpposite());
-		AABB blowingArea = cutoffPos.map(blockPos ->
-				aabb(pos, blockPos.immutable().relative(direction.getOpposite())))
-			.orElseGet(() -> aabb(pos, mutablePos.immutable()));
+		final Direction oppositeDirection = direction.getOpposite();
+		mutablePos.move(oppositeDirection);
+
+		final BlockPos posWithCutoff = cutoffPos
+			.map(blockPos -> blockPos.immutable().relative(oppositeDirection))
+			.orElse(mutablePos.immutable());
+		AABB blowingArea = aabb(pos, posWithCutoff);
 
 		List<Entity> entities = level.getEntities(
 			EntityTypeTest.forClass(Entity.class),
@@ -226,11 +217,39 @@ public class CopperFanBlock extends DirectionalBlock {
 			windManager.addWindDisturbance(windDisturbance);
 		} else if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
 			addWindDisturbanceToClient(windDisturbance);
+			final RandomSource random = level.getRandom();
+			if (random.nextFloat() <= (!reverse ? 0.35F : 0.2F)) {
+				Vec3 particlePos;
+				Vec3 particleVelocity;
+				if (!reverse) {
+					particlePos = getParticlePos(pos, direction, random);
+					particleVelocity = getParticleVelocity(direction, random, 0.5D, 0.7D);
+					particleVelocity = particleVelocity.add(getVelocityFromDistance(pos, direction, particlePos, random, 0.175D));
+				} else {
+					final BlockPos startPos = pos.relative(direction);
+					final BlockPos endPos = posWithCutoff.relative(direction);
+					final BlockPos particleBlockPos = BlockPos.containing(Mth.lerp(random.nextDouble(), startPos.getCenter(), endPos.getCenter()));
+
+					particlePos = getParticlePos(particleBlockPos, direction, random);
+					particleVelocity = getParticleVelocity(oppositeDirection, random, 0.3D, 0.5D);
+					particleVelocity = particleVelocity.add(getVelocityFromDistance(pos, oppositeDirection, particlePos, random, 0.1D));
+				}
+
+				level.addAlwaysVisibleParticle(
+					new WindParticleOptions(12, particleVelocity),
+					particlePos.x,
+					particlePos.y,
+					particlePos.z,
+					0D,
+					0D,
+					0D
+				);
+			}
 		}
 
 		final double fanDistance = !reverse ? FAN_DISTANCE : FAN_DISTANCE_REVERSE;
 		final double pushIntensity = !reverse ? PUSH_INTENSITY : PUSH_INTENSITY_REVERSE;
-		final Vec3 movement = Vec3.atLowerCornerOf((!reverse ? direction : direction.getOpposite()).getUnitVec3i());
+		final Vec3 movement = Vec3.atLowerCornerOf((!reverse ? direction : oppositeDirection).getUnitVec3i());
 		for (Entity entity : entities) {
 			AABB boundingBox = entity.getBoundingBox();
 			if (!blowingArea.intersects(boundingBox)) continue;
@@ -260,6 +279,67 @@ public class CopperFanBlock extends DirectionalBlock {
 				entity.setDeltaMovement(deltaMovement);
 			}
 		}
+	}
+
+	@NotNull
+	public static Vec3 getParticleVelocity(@NotNull Direction direction, @NotNull RandomSource random, double min, double max) {
+		double difference = max - min;
+		double velocity = min + (random.nextDouble() * difference);
+		double x = direction.getStepX() * velocity;
+		double y = direction.getStepY() * velocity;
+		double z = direction.getStepZ() * velocity;
+		return new Vec3(x, y, z);
+	}
+
+	@NotNull
+	public static Vec3 getVelocityFromDistance(BlockPos pos, Direction direction, @NotNull Vec3 vec3, @NotNull RandomSource random, double max) {
+		return vec3.subtract(getParticlePosWithoutRandom(pos, direction, random)).scale(random.nextDouble() * max);
+	}
+
+	@NotNull
+	public static Vec3 getParticlePosWithoutRandom(BlockPos pos, Direction direction, RandomSource random) {
+		return Vec3.atLowerCornerOf(pos).add(
+			getParticleOffsetX(direction, random, false),
+			getParticleOffsetY(direction, random, false),
+			getParticleOffsetZ(direction, random, false)
+		);
+	}
+
+	@NotNull
+	public static Vec3 getParticlePos(BlockPos pos, Direction direction, RandomSource random) {
+		return Vec3.atLowerCornerOf(pos).add(
+			getParticleOffsetX(direction, random, true),
+			getParticleOffsetY(direction, random, true),
+			getParticleOffsetZ(direction, random, true)
+		);
+	}
+
+	private static double getRandomParticleOffset(@NotNull RandomSource random) {
+		return random.nextDouble() / 3D * (random.nextBoolean() ? 1D : -1D);
+	}
+
+	private static double getParticleOffsetX(@NotNull Direction direction, RandomSource random, boolean useRandom) {
+		return switch (direction) {
+			case UP, DOWN, SOUTH, NORTH -> 0.5D + (useRandom ? getRandomParticleOffset(random) : 0D);
+			case EAST -> 1.05D;
+			case WEST -> -0.05D;
+		};
+	}
+
+	private static double getParticleOffsetY(@NotNull Direction direction, RandomSource random, boolean useRandom) {
+		return switch (direction) {
+			case DOWN -> -0.05D;
+			case UP -> 1.05D;
+			case NORTH, WEST, EAST, SOUTH -> 0.5D + (useRandom ? getRandomParticleOffset(random) : 0D);
+		};
+	}
+
+	private static double getParticleOffsetZ(@NotNull Direction direction, RandomSource random, boolean useRandom) {
+		return switch (direction) {
+			case UP, DOWN, EAST, WEST -> 0.5D + (useRandom ? getRandomParticleOffset(random) : 0D);
+			case NORTH -> -0.05D;
+			case SOUTH -> 1.05D;
+		};
 	}
 
 	@Override

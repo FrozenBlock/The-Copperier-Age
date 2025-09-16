@@ -1,0 +1,6 @@
+{
+  "parent": "thecopperierage:block/template_gearbox",
+  "textures": {
+    "front": "thecopperierage:block/copper_fan_top_powered"
+  }
+}

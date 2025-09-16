@@ -26,6 +26,18 @@
   "block.thecopperierage.waxed_oxidized_gearbox": "Waxed Oxidized Gearbox",
   "subtitles.block.gearbox.idle": "Gears mesh",
 
+  "block.thecopperierage.copper_fan": "Copper Fan",
+  "block.thecopperierage.exposed_copper_fan": "Exposed Copper Fan",
+  "block.thecopperierage.weathered_copper_fan": "Weathered Copper Fan",
+  "block.thecopperierage.oxidized_copper_fan": "Oxidized Copper Fan",
+  "block.thecopperierage.waxed_copper_fan": "Waxed Copper Fan",
+  "block.thecopperierage.waxed_exposed_copper_fan": "Waxed Exposed Copper Fan",
+  "block.thecopperierage.waxed_weathered_copper_fan": "Waxed Weathered Copper Fan",
+  "block.thecopperierage.waxed_oxidized_copper_fan": "Waxed Oxidized Copper Fan",
+  "subtitles.block.copper_fan.on": "Fan powered",
+  "subtitles.block.copper_fan.off": "Fan unpowered",
+  "subtitles.block.copper_fan.idle": "Fan blows",
+
   "pack.thecopperierage.copperier_copper": "Copperier Copper",
   "pack.thecopperierage.green_copper_bulbs": "Green Copper Bulbs"
 }

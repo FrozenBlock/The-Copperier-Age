@@ -3,6 +3,10 @@
     {
       "id": "#thecopperierage:gearboxes",
       "required": false
+    },
+    {
+      "id": "#thecopperierage:copper_fans",
+      "required": false
     }
   ]
 }

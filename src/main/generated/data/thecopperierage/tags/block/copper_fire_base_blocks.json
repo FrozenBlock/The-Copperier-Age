@@ -56,6 +56,14 @@
     "minecraft:waxed_exposed_copper_bulb",
     "minecraft:waxed_weathered_copper_bulb",
     "minecraft:waxed_oxidized_copper_bulb",
-    "minecraft:raw_copper_block"
+    "minecraft:raw_copper_block",
+    "thecopperierage:copper_fan",
+    "thecopperierage:exposed_copper_fan",
+    "thecopperierage:weathered_copper_fan",
+    "thecopperierage:oxidized_copper_fan",
+    "thecopperierage:waxed_copper_fan",
+    "thecopperierage:waxed_exposed_copper_fan",
+    "thecopperierage:waxed_weathered_copper_fan",
+    "thecopperierage:waxed_oxidized_copper_fan"
   ]
 }

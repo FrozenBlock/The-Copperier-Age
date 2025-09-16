@@ -57,11 +57,15 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 		TagAppender<Block, Block> gearboxesTag = this.valueLookupBuilder(TCABlockTags.GEARBOXES);
 		TCABlocks.GEARBOX.forEach(gearboxesTag::add);
 
+		TagAppender<Block, Block> copperFansTag = this.valueLookupBuilder(TCABlockTags.COPPER_FANS);
+		TCABlocks.COPPER_FAN.forEach(copperFansTag::add);
+
 		this.valueLookupBuilder(BlockTags.MINEABLE_WITH_AXE)
 			.add(TCABlocks.COPPER_CAMPFIRE);
 
 		this.builder(BlockTags.MINEABLE_WITH_PICKAXE)
-			.addOptionalTag(TCABlockTags.GEARBOXES);
+			.addOptionalTag(TCABlockTags.GEARBOXES)
+			.addOptionalTag(TCABlockTags.COPPER_FANS);
 
 		TagAppender<Block, Block> copperFireBaseBlocksTag = this.valueLookupBuilder(TCABlockTags.COPPER_FIRE_BASE_BLOCKS);
 		registries.lookupOrThrow(Registries.BLOCK)

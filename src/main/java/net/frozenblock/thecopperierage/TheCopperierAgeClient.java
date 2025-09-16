@@ -23,6 +23,7 @@ import net.fabricmc.api.Environment;
 import net.frozenblock.lib.menu.api.SplashTextAPI;
 import net.frozenblock.thecopperierage.client.TCABlockRenderLayers;
 import net.frozenblock.thecopperierage.client.TCAParticleEngine;
+import net.frozenblock.thecopperierage.networking.TCAClientNetworking;
 
 @Environment(EnvType.CLIENT)
 public final class TheCopperierAgeClient implements ClientModInitializer {
@@ -33,6 +34,7 @@ public final class TheCopperierAgeClient implements ClientModInitializer {
 
 		TCAParticleEngine.init();
 		TCABlockRenderLayers.init();
+		TCAClientNetworking.registerPacketReceivers();
 	}
 
 }

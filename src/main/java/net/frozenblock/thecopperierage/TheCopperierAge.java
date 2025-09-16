@@ -23,6 +23,7 @@ import net.fabricmc.loader.api.ModContainer;
 import net.frozenblock.lib.entrypoint.api.FrozenModInitializer;
 import net.frozenblock.lib.feature_flag.api.FeatureFlagApi;
 import net.frozenblock.thecopperierage.mod_compat.TCAModIntegrations;
+import net.frozenblock.thecopperierage.networking.TCANetworking;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCACreativeInventorySorting;
 import net.frozenblock.thecopperierage.registry.TCAItems;
@@ -45,12 +46,10 @@ public final class TheCopperierAge extends FrozenModInitializer {
 		TCAItems.registerItems();
 		TCASounds.init();
 		TCACreativeInventorySorting.init();
-
 		TCAParticleTypes.registerParticles();
-
 		TCABlocks.registerBlockProperties();
-
 		TCAModIntegrations.init();
+		TCANetworking.init();
 
 		ResourceManagerHelper.registerBuiltinResourcePack(
 			TCAConstants.id("copperier_copper"),

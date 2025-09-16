@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": "minecraft:cobblestone",
+    "O": "minecraft:wind_charge",
+    "R": "minecraft:redstone",
+    "X": "minecraft:waxed_exposed_copper"
+  },
+  "pattern": [
+    "###",
+    "XOX",
+    "XRX"
+  ],
+  "result": {
+    "count": 2,
+    "id": "thecopperierage:waxed_exposed_copper_fan"
+  }
+}

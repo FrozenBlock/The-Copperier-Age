@@ -37,6 +37,7 @@ public final class TCABlockLootProvider extends FabricBlockLootTableProvider {
 		HolderLookup.RegistryLookup<Enchantment> registryLookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
 
 		TCABlocks.GEARBOX.forEach(this::dropSelf);
+		TCABlocks.COPPER_FAN.forEach(this::dropSelf);
 	}
 
 }

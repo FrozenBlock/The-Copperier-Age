@@ -1,0 +1,7 @@
+{
+  "parent": "thecopperierage:block/template_copper_fan",
+  "textures": {
+    "bottom": "thecopperierage:block/copper_fan_bottom",
+    "side": "thecopperierage:block/copper_fan_side"
+  }
+}

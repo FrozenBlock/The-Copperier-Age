@@ -23,8 +23,10 @@ import net.fabricmc.fabric.api.registry.FuelRegistryEvents;
 import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.TCAFeatureFlags;
+import net.frozenblock.thecopperierage.block.CopperFanBlock;
 import net.frozenblock.thecopperierage.block.CopperFireBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
+import net.frozenblock.thecopperierage.block.WeatheringCopperFanBlock;
 import net.frozenblock.thecopperierage.block.WeatheringGearboxBlock;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -68,6 +70,17 @@ public final class TCABlocks {
 		TCABlocks::register,
 		GearboxBlock::new,
 		WeatheringGearboxBlock::new,
+		(weatherState) -> BlockBehaviour.Properties.of()
+			.mapColor(MapColor.STONE)
+			.strength(1.5F)
+			.isRedstoneConductor(Blocks::never)
+	);
+
+	public static final WeatheringCopperBlocks COPPER_FAN = WeatheringCopperBlocks.create(
+		"copper_fan",
+		TCABlocks::register,
+		CopperFanBlock::new,
+		WeatheringCopperFanBlock::new,
 		(weatherState) -> BlockBehaviour.Properties.of()
 			.mapColor(MapColor.STONE)
 			.strength(1.5F)

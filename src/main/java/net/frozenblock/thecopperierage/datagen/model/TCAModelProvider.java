@@ -22,6 +22,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.frozenblock.thecopperierage.TCAConstants;
+import net.frozenblock.thecopperierage.block.CopperFanBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCAItems;
@@ -71,6 +72,17 @@ public final class TCAModelProvider extends FabricModelProvider {
 		TextureSlot.SIDE, TextureSlot.FRONT
 	);
 
+	private static final ModelTemplate COPPER_FAN_MODEL = new ModelTemplate(
+		Optional.of(TCAConstants.id("block/template_copper_fan")),
+		Optional.empty(),
+		TextureSlot.SIDE, TextureSlot.BOTTOM
+	);
+	private static final ModelTemplate COPPER_FAN_POWERED_MODEL = new ModelTemplate(
+		Optional.of(TCAConstants.id("block/template_copper_fan_powered")),
+		Optional.of("_powered"),
+		TextureSlot.SIDE, TextureSlot.BOTTOM
+	);
+
 	public TCAModelProvider(FabricDataOutput output) {
 		super(output);
 	}
@@ -80,6 +92,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 		createCopperFire(generator);
 		generator.createCampfires(TCABlocks.COPPER_CAMPFIRE);
 		TCABlocks.GEARBOX.waxedMapping().forEach((block, waxedBlock) -> createGearbox(generator, block, waxedBlock));
+		TCABlocks.COPPER_FAN.waxedMapping().forEach((block, waxedBlock) -> createCopperFan(generator, block, waxedBlock));
 	}
 
 	@Override
@@ -148,6 +161,33 @@ public final class TCAModelProvider extends FabricModelProvider {
 				.with(GEARBOX_ROTATION)
 		);
 	}
+
+	private static void createCopperFan(@NotNull BlockModelGenerators generator, @NotNull Block block, @NotNull Block waxedBlock) {
+		TextureMapping mapping = new TextureMapping()
+			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"))
+			.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_bottom"));
+
+		MultiVariant model = BlockModelGenerators.plainVariant(COPPER_FAN_MODEL.create(block, mapping, generator.modelOutput));
+		MultiVariant poweredModel = BlockModelGenerators.plainVariant(COPPER_FAN_POWERED_MODEL.create(block, mapping, generator.modelOutput));
+
+		generator.itemModelOutput.copy(block.asItem(), waxedBlock.asItem());
+
+		dispatchCopperFanStates(generator, block, model, poweredModel);
+		dispatchCopperFanStates(generator, waxedBlock, model, poweredModel);
+	}
+
+	private static void dispatchCopperFanStates(@NotNull BlockModelGenerators generator, Block block, MultiVariant model, MultiVariant poweredModel) {
+		generator.blockStateOutput.accept(
+			MultiVariantGenerator.dispatch(block)
+				.with(
+					PropertyDispatch.initial(CopperFanBlock.POWERED)
+						.select(false, model)
+						.select(true, poweredModel)
+				)
+				.with(BlockModelGenerators.ROTATION_FACING)
+		);
+	}
+
 
 	private static void generateCopperHorn(@NotNull ItemModelGenerators generator, Item item) {
 		ItemModel.Unbaked unbaked = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item));

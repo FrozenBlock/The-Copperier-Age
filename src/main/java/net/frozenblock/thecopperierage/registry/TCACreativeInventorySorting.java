@@ -33,6 +33,7 @@ public final class TCACreativeInventorySorting {
 
 	public static void init() {
 		TCABlocks.GEARBOX.forEach(block -> addBeforeInRedstoneBlocks(Items.PISTON, block));
+		TCABlocks.COPPER_FAN.forEach(block -> addAfterInRedstoneBlocks(Items.HONEY_BLOCK, block));
 		addAfterInFunctionalBlocks(Items.SOUL_CAMPFIRE, TCABlocks.COPPER_CAMPFIRE);
 		addBeforeInToolsAndUtilities(Items.BRUSH, TCAItems.WRENCH);
 		addInstrumentBefore(Items.MUSIC_DISC_13, TCAItems.COPPER_HORN, TCAInstrumentTags.COPPER_HORNS, CreativeModeTabs.TOOLS_AND_UTILITIES);
@@ -81,6 +82,10 @@ public final class TCACreativeInventorySorting {
 
 	private static void addBeforeInRedstoneBlocks(ItemLike comparedItem, ItemLike item) {
 		FrozenCreativeTabs.addBefore(comparedItem, item, CreativeModeTabs.REDSTONE_BLOCKS);
+	}
+
+	private static void addAfterInRedstoneBlocks(ItemLike comparedItem, ItemLike item) {
+		FrozenCreativeTabs.addAfter(comparedItem, item, CreativeModeTabs.REDSTONE_BLOCKS);
 	}
 
 	private static void addInToolsAndUtilities(ItemLike item) {

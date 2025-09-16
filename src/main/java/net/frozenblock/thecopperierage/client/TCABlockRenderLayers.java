@@ -29,6 +29,7 @@ public final class TCABlockRenderLayers {
 
 	public static void init() {
 		BlockRenderLayerMap.putBlock(TCABlocks.COPPER_FIRE, ChunkSectionLayer.CUTOUT);
+		BlockRenderLayerMap.putBlock(TCABlocks.COPPER_CAMPFIRE, ChunkSectionLayer.CUTOUT);
 		TCABlocks.GEARBOX.forEach(block -> BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT));
 	}
 

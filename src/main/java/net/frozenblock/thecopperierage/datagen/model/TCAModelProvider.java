@@ -78,6 +78,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 	@Override
 	public void generateBlockStateModels(@NotNull BlockModelGenerators generator) {
 		createCopperFire(generator);
+		generator.createCampfires(TCABlocks.COPPER_CAMPFIRE);
 		TCABlocks.GEARBOX.waxedMapping().forEach((block, waxedBlock) -> createGearbox(generator, block, waxedBlock));
 	}
 

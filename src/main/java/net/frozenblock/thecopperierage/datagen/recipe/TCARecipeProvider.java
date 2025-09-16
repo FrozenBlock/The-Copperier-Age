@@ -28,6 +28,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
@@ -59,6 +60,16 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.pattern(" # ")
 					.unlockedBy(RecipeProvider.getHasName(Items.COPPER_INGOT), this.has(Items.COPPER_INGOT))
 					.save(exporter);
+
+				this.shaped(RecipeCategory.DECORATIONS, TCABlocks.COPPER_CAMPFIRE)
+					.define('L', ItemTags.LOGS)
+					.define('S', Items.STICK)
+					.define('C', Items.COPPER_NUGGET)
+					.pattern(" S ")
+					.pattern("SCS")
+					.pattern("LLL")
+					.unlockedBy("has_copper_nugget", this.has(Items.COPPER_NUGGET))
+					.save(this.output);
 
 				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.unaffected(), Blocks.COPPER_BLOCK);
 				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.exposed(), Blocks.EXPOSED_COPPER);

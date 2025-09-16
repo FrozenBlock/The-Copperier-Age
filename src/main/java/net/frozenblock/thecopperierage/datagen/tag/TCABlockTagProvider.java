@@ -48,13 +48,17 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 
 		this.valueLookupBuilder(BlockTags.PRESSURE_PLATES);
 
-		this.valueLookupBuilder(BlockTags.CAMPFIRES);
+		this.valueLookupBuilder(BlockTags.CAMPFIRES)
+			.add(TCABlocks.COPPER_CAMPFIRE);
 
 		this.valueLookupBuilder(BlockTags.FIRE)
 			.add(TCABlocks.COPPER_FIRE);
 
 		TagAppender<Block, Block> gearboxesTag = this.valueLookupBuilder(TCABlockTags.GEARBOXES);
 		TCABlocks.GEARBOX.forEach(gearboxesTag::add);
+
+		this.valueLookupBuilder(BlockTags.MINEABLE_WITH_AXE)
+			.add(TCABlocks.COPPER_CAMPFIRE);
 
 		this.builder(BlockTags.MINEABLE_WITH_PICKAXE)
 			.addOptionalTag(TCABlockTags.GEARBOXES);
@@ -78,6 +82,7 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 				if (path.contains("button")) return;
 				if (path.contains("pressure_plate")) return;
 				if (path.contains("chest")) return;
+				if (path.contains("campfire")) return;
 
 				copperFireBaseBlocksTag.add(block.value());
 			});

@@ -33,6 +33,7 @@ public final class TCACreativeInventorySorting {
 
 	public static void init() {
 		TCABlocks.GEARBOX.forEach(block -> addBeforeInRedstoneBlocks(Items.PISTON, block));
+		addAfterInFunctionalBlocks(Items.SOUL_CAMPFIRE, TCABlocks.COPPER_CAMPFIRE);
 		addBeforeInToolsAndUtilities(Items.BRUSH, TCAItems.WRENCH);
 		addInstrumentBefore(Items.MUSIC_DISC_13, TCAItems.COPPER_HORN, TCAInstrumentTags.COPPER_HORNS, CreativeModeTabs.TOOLS_AND_UTILITIES);
 	}

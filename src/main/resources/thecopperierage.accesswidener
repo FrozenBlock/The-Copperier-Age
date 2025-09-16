@@ -32,17 +32,15 @@ accessible field net/minecraft/client/data/models/BlockModelGenerators itemModel
 accessible field net/minecraft/client/data/models/ItemModelGenerators itemModelOutput Lnet/minecraft/client/data/models/ItemModelOutput;
 accessible field net/minecraft/client/data/models/BlockModelGenerators$BlockFamilyProvider skipGeneratingModelsFor Ljava/util/Set;
 accessible class net/minecraft/client/data/models/BlockModelGenerators$BlockStateGeneratorSupplier
-accessible method net/minecraft/client/data/models/BlockModelGenerators createMirroredCubeGenerator (Lnet/minecraft/world/level/block/Block;Lnet/minecraft/client/renderer/block/model/Variant;Lnet/minecraft/client/data/models/model/TextureMapping;Ljava/util/function/BiConsumer;)Lnet/minecraft/client/data/models/blockstates/BlockModelDefinitionGenerator;
 accessible field net/minecraft/client/data/models/BlockModelGenerators ROTATION_FACING Lnet/minecraft/client/data/models/blockstates/PropertyDispatch;
 
 # Particles
 accessible field net/minecraft/client/particle/Particle xd D
 accessible field net/minecraft/client/particle/Particle yd D
 accessible field net/minecraft/client/particle/Particle zd D
-accessible method net/minecraft/client/particle/FlameParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDD)V
+accessible method net/minecraft/client/particle/FlameParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V
 accessible field net/minecraft/client/particle/Particle gravity F
 accessible field net/minecraft/client/particle/Particle friction F
-accessible method net/minecraft/client/particle/BubblePopParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/client/particle/SpriteSet;)V
-accessible method net/minecraft/client/particle/SuspendedParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/client/particle/SpriteSet;DDD)V
+accessible method net/minecraft/client/particle/SuspendedParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V
 accessible field net/minecraft/client/particle/Particle stoppedByCollision Z
 accessible method net/minecraft/client/particle/CampfireSmokeParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDZLnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V

@@ -23,11 +23,11 @@ import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCAParticleTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
@@ -49,7 +49,7 @@ public class CampfireBlockMixin {
 	private SimpleParticleType theCopperierAge$spawnCopperLava(
 		SimpleParticleType original, @Local(argsOnly = true) BlockState state
 	) {
-		return state.is(Blocks.SOUL_CAMPFIRE) ? TCAParticleTypes.COPPER_LAVA : original;
+		return state.is(TCABlocks.COPPER_CAMPFIRE) ? TCAParticleTypes.COPPER_LAVA : original;
 	}
 
 	@Inject(method = "makeParticles", at = @At("HEAD"))
@@ -72,7 +72,7 @@ public class CampfireBlockMixin {
 		@Share("theCopperierAge$blockState") LocalRef<BlockState> state
 	) {
 		// TODO: Config
-		return state.get().is(Blocks.SOUL_CAMPFIRE) ? TCAParticleTypes.COPPER_CAMPFIRE_SIGNAL_SMOKE : original;
+		return state.get().is(TCABlocks.COPPER_CAMPFIRE) ? TCAParticleTypes.COPPER_CAMPFIRE_SIGNAL_SMOKE : original;
 	}
 
 	@ModifyExpressionValue(
@@ -87,7 +87,7 @@ public class CampfireBlockMixin {
 		@Share("theCopperierAge$blockState") LocalRef<BlockState> state
 	) {
 		// TODO: Config
-		return state.get().is(Blocks.SOUL_CAMPFIRE) ? TCAParticleTypes.COPPER_CAMPFIRE_COSY_SMOKE : original;
+		return state.get().is(TCABlocks.COPPER_CAMPFIRE) ? TCAParticleTypes.COPPER_CAMPFIRE_COSY_SMOKE : original;
 	}
 
 	@ModifyExpressionValue(
@@ -102,7 +102,7 @@ public class CampfireBlockMixin {
 		@Share("theCopperierAge$blockState") LocalRef<BlockState> state
 	) {
 		// TODO: Config
-		return state.get().is(Blocks.SOUL_CAMPFIRE) ? TCAParticleTypes.COPPER_SMOKE : original;
+		return state.get().is(TCABlocks.COPPER_CAMPFIRE) ? TCAParticleTypes.COPPER_SMOKE : original;
 	}
 
 }

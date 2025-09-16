@@ -37,6 +37,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import java.util.function.Function;
 
@@ -46,8 +47,20 @@ public final class TCABlocks {
 		CopperFireBlock::new,
 		BlockBehaviour.Properties.of()
 			.mapColor(MapColor.COLOR_LIGHT_GREEN)
-			.lightLevel(blockStatex -> 15)
+			.lightLevel(state -> 15)
 			.noCollision()
+	);
+
+	public static final CampfireBlock COPPER_CAMPFIRE = register("copper_campfire",
+		properties -> new CampfireBlock(true, 1, properties),
+		BlockBehaviour.Properties.of()
+			.mapColor(MapColor.PODZOL)
+			.instrument(NoteBlockInstrument.BASS)
+			.strength(2F)
+			.sound(SoundType.WOOD)
+			.lightLevel(Blocks.litBlockEmission(15))
+			.noOcclusion()
+			.ignitedByLava()
 	);
 
 	public static final WeatheringCopperBlocks GEARBOX = WeatheringCopperBlocks.create(
@@ -107,20 +120,10 @@ public final class TCABlocks {
 	public static void registerBlockProperties() {
 		registerDispenses();
 
-		var sign = (FabricBlockEntityType) BlockEntityType.SIGN;
-		var hangingSign = (FabricBlockEntityType) BlockEntityType.HANGING_SIGN;
-
-		/*
-		sign.addSupportedBlock(WILTED_SIGN);
-		sign.addSupportedBlock(WILTED_WALL_SIGN);
-
-		hangingSign.addSupportedBlock(WILTED_HANGING_SIGN);
-		hangingSign.addSupportedBlock(WILTED_WALL_HANGING_SIGN);
-		 */
+		BlockEntityType.CAMPFIRE.addSupportedBlock(TCABlocks.COPPER_CAMPFIRE);
 
 		OxidizableBlocksRegistry.registerCopperBlockSet(GEARBOX);
 
-		registerComposting();
 		registerFlammability();
 		registerFuels();
 		registerBonemeal();
@@ -128,11 +131,6 @@ public final class TCABlocks {
 	}
 
 	private static void registerDispenses() {
-	}
-
-
-	private static void registerComposting() {
-
 	}
 
 	private static void registerFlammability() {

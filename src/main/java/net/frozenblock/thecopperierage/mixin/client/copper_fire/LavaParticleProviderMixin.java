@@ -34,7 +34,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public class LavaParticleProviderMixin {
 
 	@ModifyReturnValue(
-		method = "createParticle(Lnet/minecraft/core/particles/SimpleParticleType;Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDD)Lnet/minecraft/client/particle/Particle;",
+		method = "createParticle(Lnet/minecraft/core/particles/SimpleParticleType;Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/util/RandomSource;)Lnet/minecraft/client/particle/Particle;",
 		at = @At("RETURN")
 	)
 	public Particle theCopperierAge$setAsCopperLava(

@@ -61,11 +61,11 @@ import java.util.Optional;
 public class CopperFanBlock extends DirectionalBlock {
 	public static final double FAN_DISTANCE = 9D;
 	public static final int FAN_DISTANCE_IN_BLOCKS = 8;
-	public static final double PUSH_INTENSITY = 0.1D;
+	public static final double PUSH_INTENSITY = 0.15D;
 	public static final double BASE_WIND_INTENSITY = 0.5D;
 	public static final double FAN_DISTANCE_REVERSE = 5D;
 	public static final int FAN_DISTANCE_IN_BLOCKS_REVERSE = 4;
-	public static final double PUSH_INTENSITY_REVERSE = 0.05D;
+	public static final double PUSH_INTENSITY_REVERSE = 0.75D;
 	public static final double BASE_WIND_INTENSITY_REVERSE = 0.3D;
     public static final MapCodec<CopperFanBlock> CODEC = simpleCodec(CopperFanBlock::new);
 	private static final WindDisturbanceLogic<? extends CopperFanBlock> DUMMY_WIND_LOGIC = new WindDisturbanceLogic<>((source, level1, windOrigin, affectedArea, windTarget) -> WindDisturbance.DUMMY_RESULT);

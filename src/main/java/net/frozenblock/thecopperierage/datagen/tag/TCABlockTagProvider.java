@@ -20,6 +20,7 @@ package net.frozenblock.thecopperierage.datagen.tag;
 import java.util.concurrent.CompletableFuture;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.frozenblock.lib.tag.api.FrozenBlockTags;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.tag.TCABlockTags;
 import net.minecraft.core.HolderLookup;
@@ -65,6 +66,9 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 
 		this.builder(BlockTags.MINEABLE_WITH_PICKAXE)
 			.addOptionalTag(TCABlockTags.GEARBOXES)
+			.addOptionalTag(TCABlockTags.COPPER_FANS);
+
+		this.builder(FrozenBlockTags.BLOWING_CAN_PASS_THROUGH)
 			.addOptionalTag(TCABlockTags.COPPER_FANS);
 
 		TagAppender<Block, Block> copperFireBaseBlocksTag = this.valueLookupBuilder(TCABlockTags.COPPER_FIRE_BASE_BLOCKS);

@@ -22,6 +22,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.frozenblock.lib.particle.client.options.WindParticleOptions;
+import net.frozenblock.lib.wind.api.BlowingHelper;
 import net.frozenblock.lib.wind.api.WindDisturbance;
 import net.frozenblock.lib.wind.api.WindDisturbanceLogic;
 import net.frozenblock.lib.wind.api.WindManager;
@@ -40,12 +41,10 @@ import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.block.SupportType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -147,12 +146,6 @@ public class CopperFanBlock extends DirectionalBlock {
 		this.handleBlowing(level, pos, facing.getOpposite(), true);
 	}
 
-	public static boolean canFanPassThrough(LevelReader level, BlockPos pos, @NotNull BlockState state, @NotNull Direction direction) {
-		return !((state.isFaceSturdy(level, pos, direction.getOpposite(), SupportType.CENTER)));
-			//&& !state.is(WWBlockTags.GEYSER_CAN_PASS_THROUGH))
-			//|| state.is(WWBlockTags.GEYSER_CANNOT_PASS_THROUGH));
-	}
-
 	@NotNull
 	@Contract("_, _ -> new")
 	private static AABB aabb(@NotNull BlockPos startPos, @NotNull BlockPos endPos) {
@@ -176,7 +169,7 @@ public class CopperFanBlock extends DirectionalBlock {
 			if (!level.hasChunkAt(mutablePos.move(direction))) break;
 
 			final BlockState state = level.getBlockState(mutablePos);
-			if (!canFanPassThrough(level, mutablePos, state, direction)) {
+			if (!BlowingHelper.canBlowingPassThrough(level, mutablePos, state, direction)) {
 				if (isFirstSearch) return;
 				break;
 			}
@@ -230,7 +223,7 @@ public class CopperFanBlock extends DirectionalBlock {
 					final BlockPos endPos = posWithCutoff.relative(direction);
 					final BlockPos particleBlockPos = BlockPos.containing(Mth.lerp(random.nextDouble(), startPos.getCenter(), endPos.getCenter()));
 
-					particlePos = getParticlePos(particleBlockPos, direction, random);
+					particlePos = getParticlePos(particleBlockPos, oppositeDirection, random);
 					particleVelocity = getParticleVelocity(oppositeDirection, random, 0.2D, 0.4D);
 					particleVelocity = particleVelocity.add(getVelocityFromDistance(pos, oppositeDirection, particlePos, random, 0.1D));
 				}

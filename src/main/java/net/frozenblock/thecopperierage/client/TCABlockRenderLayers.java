@@ -17,7 +17,6 @@
 
 package net.frozenblock.thecopperierage.client;
 
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;

@@ -49,13 +49,6 @@ val frozenlib_version: String by project
 val modmenu_version: String by project
 val cloth_config_version: String by project
 val copperpipes_version: String by project
-val terrablender_version: String by project
-val fallingleaves_version: String by project
-val particlerain_version: String by project
-
-val biolith_version: String by project
-val run_biolith: String by project
-val shouldRunBiolith = run_biolith == "true"
 
 val sodium_version: String by project
 val run_sodium: String by project
@@ -209,26 +202,11 @@ dependencies {
         exclude(group = "com.terraformersmc")
     }
 
-    // TerraBlender
-    modCompileOnlyApi("com.github.glitchfiend:TerraBlender-fabric:${terrablender_version}")
-
-    // Particle Rain
-    modCompileOnly("maven.modrinth:particle-rain:${particlerain_version}")
-
-    // Biolith
-    if (shouldRunBiolith)
-        modImplementation("maven.modrinth:biolith:${biolith_version}")
-    else
-        modCompileOnly("maven.modrinth:biolith:${biolith_version}")
-
     // Sodium
     if (shouldRunSodium)
         modImplementation("maven.modrinth:sodium:${sodium_version}")
     else
         modCompileOnly("maven.modrinth:sodium:${sodium_version}")
-
-    // FallingLeaves
-    modCompileOnly("maven.modrinth:fallingleaves:${fallingleaves_version}")
 
     "datagenImplementation"(sourceSets.main.get().output)
 }

@@ -81,7 +81,7 @@ public class GearboxBlock extends DirectionalBlock {
 			TCASounds.BLOCK_GEARBOX_IDLE,
 			SoundSource.BLOCKS,
 			0.1F,
-			0.1F + (power / 5F) + (random.nextFloat() * 0.1F),
+			0.15F + (power / 25F) + (random.nextFloat() * 0.1F),
 			false
 		);
 	}

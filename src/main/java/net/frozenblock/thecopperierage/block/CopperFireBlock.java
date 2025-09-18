@@ -75,15 +75,18 @@ public class CopperFireBlock extends BaseFireBlock {
     }
 
     @Override
-    protected boolean canBurn(BlockState blockState) {
+    protected boolean canBurn(BlockState state) {
         return true;
     }
 
+	public static void poisonEntity(@NotNull Level level, Entity entity) {
+		if (level.isClientSide() || !(entity instanceof LivingEntity livingEntity)) return;
+		livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 119));
+	}
+
     @Override
-    protected void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity, InsideBlockEffectApplier insideBlockEffectApplier) {
-        super.entityInside(blockState, level, blockPos, entity, insideBlockEffectApplier);
-        if (!level.isClientSide() && entity instanceof LivingEntity livingEntity) {
-            livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 119));
-        }
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier insideBlockEffectApplier) {
+        super.entityInside(state, level, pos, entity, insideBlockEffectApplier);
+        poisonEntity(level, entity);
     }
 }

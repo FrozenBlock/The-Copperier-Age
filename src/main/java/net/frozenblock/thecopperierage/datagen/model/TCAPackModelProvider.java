@@ -24,14 +24,18 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.MultiVariant;
+import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
 import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
+import static net.minecraft.client.data.models.BlockModelGenerators.*;
 
 @Environment(EnvType.CLIENT)
 public final class TCAPackModelProvider extends FabricModelProvider {
@@ -50,6 +54,42 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 		Optional.of("_hanging"),
 		TextureSlot.LANTERN, TextureSlot.BARS
 	);
+
+	private static final ModelTemplate COPPER_BARS_CAP_MODEL = new ModelTemplate(
+		Optional.of(TCAConstants.id("block/template_copper_bars_cap")),
+		Optional.of("_cap"),
+		TextureSlot.BARS, TextureSlot.EDGE
+	);
+
+	private static final ModelTemplate COPPER_BARS_CAP_ALT_MODEL = new ModelTemplate(
+		Optional.of(TCAConstants.id("block/template_copper_bars_cap_alt")),
+		Optional.of("_cap_alt"),
+		TextureSlot.BARS, TextureSlot.EDGE
+	);
+
+	private static final ModelTemplate COPPER_BARS_POST_MODEL = new ModelTemplate(
+		Optional.of(TCAConstants.id("block/template_copper_bars_post")),
+		Optional.of("_post"),
+		TextureSlot.BARS, TextureSlot.EDGE
+	);
+
+	private static final ModelTemplate COPPER_BARS_POST_ENDS_MODEL = new ModelTemplate(
+		Optional.of(TCAConstants.id("block/template_copper_bars_post_ends")),
+		Optional.of("_post_ends"),
+		TextureSlot.BARS, TextureSlot.EDGE
+	);
+
+	private static final ModelTemplate COPPER_BARS_SIDE_MODEL = new ModelTemplate(
+		Optional.of(TCAConstants.id("block/template_copper_bars_side")),
+		Optional.of("_side"),
+		TextureSlot.BARS, TextureSlot.EDGE
+	);
+
+	private static final ModelTemplate COPPER_BARS_SIDE_ALT_MODEL = new ModelTemplate(
+		Optional.of(TCAConstants.id("block/template_copper_bars_side_alt")),
+		Optional.of("_side_alt"),
+		TextureSlot.BARS, TextureSlot.EDGE
+	);
 	public static final TexturedModel.Provider COPPER_CHAIN_PROVIDER = TexturedModel.createDefault(TextureMapping::defaultTexture, COPPER_CHAIN_MODEL);
 
 	public TCAPackModelProvider(FabricDataOutput output) {
@@ -66,6 +106,10 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 		generateCopperLantern(generator, Blocks.COPPER_LANTERN.exposed(), Blocks.COPPER_CHAIN.exposed());
 		generateCopperLantern(generator, Blocks.COPPER_LANTERN.weathered(), Blocks.COPPER_CHAIN.weathered());
 		generateCopperLantern(generator, Blocks.COPPER_LANTERN.oxidized(), Blocks.COPPER_CHAIN.oxidized());
+		generateCopperBars(generator, Blocks.COPPER_BARS.unaffected());
+		generateCopperBars(generator, Blocks.COPPER_BARS.exposed());
+		generateCopperBars(generator, Blocks.COPPER_BARS.weathered());
+		generateCopperBars(generator, Blocks.COPPER_BARS.oxidized());
 	}
 
 	@Override
@@ -83,6 +127,64 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 
 		COPPER_LANTERN_MODEL.create(lantern, textureMapping, generator.modelOutput);
 		HANGING_COPPER_LANTERN_MODEL.create(lantern, textureMapping, generator.modelOutput);
+	}
+
+	public static void generateCopperBars(@NotNull BlockModelGenerators generator, Block block) {
+		TextureMapping textureMapping = new TextureMapping()
+			.put(TextureSlot.BARS, TextureMapping.getBlockTexture(block))
+			.put(TextureSlot.EDGE, TextureMapping.getBlockTexture(block, "_edge"));
+
+		MultiVariant multiVariant = plainVariant(COPPER_BARS_POST_ENDS_MODEL.create(block, textureMapping, generator.modelOutput));
+		MultiVariant multiVariant2 = plainVariant(COPPER_BARS_POST_MODEL.create(block, textureMapping, generator.modelOutput));
+		MultiVariant multiVariant3 = plainVariant(COPPER_BARS_CAP_MODEL.create(block, textureMapping, generator.modelOutput));
+		MultiVariant multiVariant4 = plainVariant(COPPER_BARS_CAP_ALT_MODEL.create(block, textureMapping, generator.modelOutput));
+		MultiVariant multiVariant5 = plainVariant(COPPER_BARS_SIDE_MODEL.create(block, textureMapping, generator.modelOutput));
+		MultiVariant multiVariant6 = plainVariant(COPPER_BARS_SIDE_ALT_MODEL.create(block, textureMapping, generator.modelOutput));
+
+		generator.blockStateOutput
+			.accept(
+				MultiPartGenerator.multiPart(block)
+					.with(multiVariant)
+					.with(
+						condition()
+							.term(BlockStateProperties.NORTH, false)
+							.term(BlockStateProperties.EAST, false)
+							.term(BlockStateProperties.SOUTH, false)
+							.term(BlockStateProperties.WEST, false),
+						multiVariant2
+					).with(
+						condition()
+							.term(BlockStateProperties.NORTH, true)
+							.term(BlockStateProperties.EAST, false)
+							.term(BlockStateProperties.SOUTH, false)
+							.term(BlockStateProperties.WEST, false),
+						multiVariant3
+					).with(
+						condition()
+							.term(BlockStateProperties.NORTH, false)
+							.term(BlockStateProperties.EAST, true)
+							.term(BlockStateProperties.SOUTH, false)
+							.term(BlockStateProperties.WEST, false),
+						multiVariant3.with(Y_ROT_90)
+					).with(
+						condition()
+							.term(BlockStateProperties.NORTH, false)
+							.term(BlockStateProperties.EAST, false)
+							.term(BlockStateProperties.SOUTH, true)
+							.term(BlockStateProperties.WEST, false),
+						multiVariant4
+					).with(
+						condition()
+							.term(BlockStateProperties.NORTH, false)
+							.term(BlockStateProperties.EAST, false)
+							.term(BlockStateProperties.SOUTH, false)
+							.term(BlockStateProperties.WEST, true),
+						multiVariant4.with(Y_ROT_90)
+					)
+					.with(condition().term(BlockStateProperties.NORTH, true), multiVariant5)
+					.with(condition().term(BlockStateProperties.EAST, true), multiVariant5.with(Y_ROT_90))
+					.with(condition().term(BlockStateProperties.SOUTH, true), multiVariant6)
+					.with(condition().term(BlockStateProperties.WEST, true), multiVariant6.with(Y_ROT_90)));
 	}
 
 }

@@ -5,7 +5,8 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "block.BaseFireBlockMixin",
-    "block.CampfireBlockMixin"
+    "block.CampfireBlockMixin",
+    "block.RedstoneWireBlockMixin"
   ],
   "client": [
     "client.copper_fire.BaseFireBlockMixin",

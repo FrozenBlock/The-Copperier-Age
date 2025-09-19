@@ -26,6 +26,7 @@ import net.frozenblock.thecopperierage.TCAFeatureFlags;
 import net.frozenblock.thecopperierage.block.CopperFanBlock;
 import net.frozenblock.thecopperierage.block.CopperFireBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
+import net.frozenblock.thecopperierage.block.RedstonePumpkinBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperFanBlock;
 import net.frozenblock.thecopperierage.block.WeatheringGearboxBlock;
 import net.minecraft.core.Registry;
@@ -73,6 +74,17 @@ public final class TCABlocks {
 			.strength(1.0F)
 			.sound(SoundType.WOOD)
 			.lightLevel(blockStatex -> 15)
+			.isValidSpawn(Blocks::always)
+			.pushReaction(PushReaction.DESTROY)
+	);
+
+	public static final RedstonePumpkinBlock REDSTONE_JACK_O_LANTERN = register("redstone_jack_o_lantern",
+		RedstonePumpkinBlock::new,
+		BlockBehaviour.Properties.of()
+			.mapColor(MapColor.COLOR_ORANGE)
+			.strength(1.0F)
+			.sound(SoundType.WOOD)
+			.lightLevel(blockStatex -> 7)
 			.isValidSpawn(Blocks::always)
 			.pushReaction(PushReaction.DESTROY)
 	);

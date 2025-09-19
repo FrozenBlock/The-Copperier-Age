@@ -41,6 +41,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import java.util.function.Function;
 
 public final class TCABlocks {
@@ -63,6 +64,17 @@ public final class TCABlocks {
 			.lightLevel(Blocks.litBlockEmission(15))
 			.noOcclusion()
 			.ignitedByLava()
+	);
+
+	public static final CarvedPumpkinBlock COPPER_JACK_O_LANTERN = register("copper_jack_o_lantern",
+		CarvedPumpkinBlock::new,
+		BlockBehaviour.Properties.of()
+			.mapColor(MapColor.COLOR_ORANGE)
+			.strength(1.0F)
+			.sound(SoundType.WOOD)
+			.lightLevel(blockStatex -> 15)
+			.isValidSpawn(Blocks::always)
+			.pushReaction(PushReaction.DESTROY)
 	);
 
 	public static final WeatheringCopperBlocks GEARBOX = WeatheringCopperBlocks.create(

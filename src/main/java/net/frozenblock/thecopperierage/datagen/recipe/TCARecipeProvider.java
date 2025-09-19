@@ -71,6 +71,14 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.unlockedBy("has_copper_nugget", this.has(Items.COPPER_NUGGET))
 					.save(this.output);
 
+				this.shaped(RecipeCategory.BUILDING_BLOCKS, TCABlocks.COPPER_JACK_O_LANTERN)
+					.define('#', Items.CARVED_PUMPKIN)
+					.define('i', Items.COPPER_TORCH)
+					.pattern("#")
+					.pattern("i")
+					.unlockedBy("has_copper_nugget", this.has(Items.COPPER_NUGGET))
+					.save(this.output);
+
 				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.unaffected(), Blocks.COPPER_BLOCK);
 				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.exposed(), Blocks.EXPOSED_COPPER);
 				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.weathered(), Blocks.WEATHERED_COPPER);

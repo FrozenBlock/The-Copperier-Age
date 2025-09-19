@@ -62,7 +62,11 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 		TCABlocks.COPPER_FAN.forEach(copperFansTag::add);
 
 		this.valueLookupBuilder(BlockTags.MINEABLE_WITH_AXE)
-			.add(TCABlocks.COPPER_CAMPFIRE);
+			.add(TCABlocks.COPPER_CAMPFIRE)
+			.add(TCABlocks.COPPER_JACK_O_LANTERN);
+
+		this.valueLookupBuilder(BlockTags.SWORD_EFFICIENT)
+			.add(TCABlocks.COPPER_JACK_O_LANTERN);
 
 		this.builder(BlockTags.MINEABLE_WITH_PICKAXE)
 			.addOptionalTag(TCABlockTags.GEARBOXES)

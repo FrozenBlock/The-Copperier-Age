@@ -1,0 +1,6 @@
+{
+  "parent": "thecopperierage:block/template_copper_button_pressed",
+  "textures": {
+    "texture": "thecopperierage:block/copper_button"
+  }
+}

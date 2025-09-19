@@ -29,6 +29,7 @@ import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.MultiVariant;
+import net.minecraft.client.data.models.blockstates.BlockModelDefinitionGenerator;
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
@@ -44,6 +45,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
@@ -84,6 +87,17 @@ public final class TCAModelProvider extends FabricModelProvider {
 		TextureSlot.SIDE, TextureSlot.BOTTOM
 	);
 
+	private static final ModelTemplate COPPER_BUTTON_MODEL = new ModelTemplate(
+		Optional.of(TCAConstants.id("block/template_copper_button")),
+		Optional.empty(),
+		TextureSlot.TEXTURE
+	);
+	private static final ModelTemplate COPPER_BUTTON_PRESSED_MODEL = new ModelTemplate(
+		Optional.of(TCAConstants.id("block/template_copper_button_pressed")),
+		Optional.of("_pressed"),
+		TextureSlot.TEXTURE
+	);
+
 	public TCAModelProvider(FabricDataOutput output) {
 		super(output);
 	}
@@ -96,6 +110,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 		generator.createCampfires(TCABlocks.COPPER_CAMPFIRE);
 		TCABlocks.GEARBOX.waxedMapping().forEach((block, waxedBlock) -> createGearbox(generator, block, waxedBlock));
 		TCABlocks.COPPER_FAN.waxedMapping().forEach((block, waxedBlock) -> createCopperFan(generator, block, waxedBlock));
+		TCABlocks.COPPER_BUTTON.waxedMapping().forEach((block, waxedBlock) -> createCopperButton(generator, block, waxedBlock));
 	}
 
 	@Override
@@ -196,5 +211,41 @@ public final class TCAModelProvider extends FabricModelProvider {
 		ItemModel.Unbaked unbaked = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item));
 		ItemModel.Unbaked unbaked2 = ItemModelUtils.plainModel(TCAConstants.id("item/copper_horn_tooting"));
 		generator.generateBooleanDispatch(item, ItemModelUtils.isUsingItem(), unbaked2, unbaked);
+	}
+
+	private static void createCopperButton(@NotNull BlockModelGenerators generator, @NotNull Block block, @NotNull Block waxedBlock) {
+		TextureMapping mapping = TextureMapping.defaultTexture(block);
+		MultiVariant model = BlockModelGenerators.plainVariant(COPPER_BUTTON_MODEL.create(block, mapping, generator.modelOutput));
+		MultiVariant pressedModel = BlockModelGenerators.plainVariant(COPPER_BUTTON_PRESSED_MODEL.create(block, mapping, generator.modelOutput));
+
+		generator.itemModelOutput.copy(block.asItem(), waxedBlock.asItem());
+
+		dispatchCopperButtonStates(generator, block, model, pressedModel);
+		dispatchCopperButtonStates(generator, waxedBlock, model, pressedModel);
+	}
+
+	private static void dispatchCopperButtonStates(@NotNull BlockModelGenerators generator, Block block, MultiVariant model, MultiVariant pressedModel) {
+		BlockModelDefinitionGenerator buttonGenerator = createCopperButton(block, model, pressedModel);
+		generator.blockStateOutput.accept(buttonGenerator);
+	}
+
+	public static BlockModelDefinitionGenerator createCopperButton(Block block, MultiVariant multiVariant, MultiVariant multiVariant2) {
+		return MultiVariantGenerator.dispatch(block)
+			.with(PropertyDispatch.initial(BlockStateProperties.POWERED)
+				.select(false, multiVariant)
+				.select(true, multiVariant2))
+			.with(PropertyDispatch.modify(BlockStateProperties.ATTACH_FACE, BlockStateProperties.HORIZONTAL_FACING)
+				.select(AttachFace.FLOOR, Direction.EAST, BlockModelGenerators.Y_ROT_90)
+				.select(AttachFace.FLOOR, Direction.WEST, BlockModelGenerators.Y_ROT_270)
+				.select(AttachFace.FLOOR, Direction.SOUTH, BlockModelGenerators.Y_ROT_180)
+				.select(AttachFace.FLOOR, Direction.NORTH, BlockModelGenerators.NOP)
+				.select(AttachFace.WALL, Direction.EAST, BlockModelGenerators.Y_ROT_90.then(BlockModelGenerators.X_ROT_90))
+				.select(AttachFace.WALL, Direction.WEST, BlockModelGenerators.Y_ROT_270.then(BlockModelGenerators.X_ROT_90))
+				.select(AttachFace.WALL, Direction.SOUTH, BlockModelGenerators.Y_ROT_180.then(BlockModelGenerators.X_ROT_90))
+				.select(AttachFace.WALL, Direction.NORTH, BlockModelGenerators.X_ROT_90.then(BlockModelGenerators.UV_LOCK))
+				.select(AttachFace.CEILING, Direction.EAST, BlockModelGenerators.Y_ROT_270.then(BlockModelGenerators.X_ROT_180))
+				.select(AttachFace.CEILING, Direction.WEST, BlockModelGenerators.Y_ROT_90.then(BlockModelGenerators.X_ROT_180))
+				.select(AttachFace.CEILING, Direction.SOUTH, BlockModelGenerators.X_ROT_180)
+				.select(AttachFace.CEILING, Direction.NORTH, BlockModelGenerators.Y_ROT_180.then(BlockModelGenerators.X_ROT_180)));
 	}
 }

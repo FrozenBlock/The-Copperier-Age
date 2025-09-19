@@ -23,10 +23,12 @@ import net.fabricmc.fabric.api.registry.FuelRegistryEvents;
 import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.TCAFeatureFlags;
+import net.frozenblock.thecopperierage.block.CopperButtonBlock;
 import net.frozenblock.thecopperierage.block.CopperFanBlock;
 import net.frozenblock.thecopperierage.block.CopperFireBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
 import net.frozenblock.thecopperierage.block.RedstonePumpkinBlock;
+import net.frozenblock.thecopperierage.block.WeatheringCopperButtonBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperFanBlock;
 import net.frozenblock.thecopperierage.block.WeatheringGearboxBlock;
 import net.minecraft.core.Registry;
@@ -111,6 +113,18 @@ public final class TCABlocks {
 			.isRedstoneConductor(Blocks::never)
 	);
 
+	public static final WeatheringCopperBlocks COPPER_BUTTON = TCABlocksHelper.create(
+		"copper_button",
+		TCABlocks::register,
+		CopperButtonBlock.Waxed::new,
+		WeatheringCopperButtonBlock::new,
+		(weatherState) -> BlockBehaviour.Properties.of()
+			.mapColor(MapColor.STONE)
+			.strength(0.5F)
+			.noCollision()
+			.pushReaction(PushReaction.DESTROY)
+	);
+
 	private TCABlocks() {
 		throw new UnsupportedOperationException("TCABlocks contains only static declarations.");
 	}
@@ -160,6 +174,8 @@ public final class TCABlocks {
 		BlockEntityType.CAMPFIRE.addSupportedBlock(TCABlocks.COPPER_CAMPFIRE);
 
 		OxidizableBlocksRegistry.registerCopperBlockSet(GEARBOX);
+		OxidizableBlocksRegistry.registerCopperBlockSet(COPPER_FAN);
+		OxidizableBlocksRegistry.registerCopperBlockSet(COPPER_BUTTON);
 
 		registerFlammability();
 		registerFuels();

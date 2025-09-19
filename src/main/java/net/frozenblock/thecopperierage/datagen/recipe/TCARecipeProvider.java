@@ -87,6 +87,13 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.unlockedBy("has_redstone", this.has(Items.REDSTONE))
 					.save(this.output);
 
+				this.shaped(RecipeCategory.BUILDING_BLOCKS, TCABlocks.COPPER_BUTTON.unaffected())
+					.define('#', Ingredient.of(Items.COPPER_NUGGET))
+					.pattern("##")
+					.pattern("##")
+					.unlockedBy("has_copper_nugget", this.has(Items.COPPER_NUGGET))
+					.save(this.output);
+
 				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.unaffected(), Blocks.COPPER_BLOCK);
 				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.exposed(), Blocks.EXPOSED_COPPER);
 				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.weathered(), Blocks.WEATHERED_COPPER);
@@ -106,6 +113,21 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.waxedExposed(), Blocks.WAXED_EXPOSED_COPPER);
 				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.waxedWeathered(), Blocks.WAXED_WEATHERED_COPPER);
 				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.waxedOxidized(), Blocks.WAXED_OXIDIZED_COPPER);
+
+				createWaxingRecipe(this, exporter, TCABlocks.COPPER_BUTTON.waxed(), TCABlocks.COPPER_BUTTON.unaffected());
+				createWaxingRecipe(this, exporter, TCABlocks.COPPER_BUTTON.waxedExposed(), TCABlocks.COPPER_BUTTON.exposed());
+				createWaxingRecipe(this, exporter, TCABlocks.COPPER_BUTTON.waxedWeathered(), TCABlocks.COPPER_BUTTON.weathered());
+				createWaxingRecipe(this, exporter, TCABlocks.COPPER_BUTTON.waxedOxidized(), TCABlocks.COPPER_BUTTON.oxidized());
+
+				createWaxingRecipe(this, exporter, TCABlocks.GEARBOX.waxed(), TCABlocks.GEARBOX.unaffected());
+				createWaxingRecipe(this, exporter, TCABlocks.GEARBOX.waxedExposed(), TCABlocks.GEARBOX.exposed());
+				createWaxingRecipe(this, exporter, TCABlocks.GEARBOX.waxedWeathered(), TCABlocks.GEARBOX.weathered());
+				createWaxingRecipe(this, exporter, TCABlocks.GEARBOX.waxedOxidized(), TCABlocks.GEARBOX.oxidized());
+
+				createWaxingRecipe(this, exporter, TCABlocks.COPPER_FAN.waxed(), TCABlocks.COPPER_FAN.unaffected());
+				createWaxingRecipe(this, exporter, TCABlocks.COPPER_FAN.waxedExposed(), TCABlocks.COPPER_FAN.exposed());
+				createWaxingRecipe(this, exporter, TCABlocks.COPPER_FAN.waxedWeathered(), TCABlocks.COPPER_FAN.weathered());
+				createWaxingRecipe(this, exporter, TCABlocks.COPPER_FAN.waxedOxidized(), TCABlocks.COPPER_FAN.oxidized());
 
 				RecipeExportNamespaceFix.clearCurrentGeneratingModId();
 			}
@@ -136,6 +158,14 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 			.pattern("XRX")
 			.unlockedBy(RecipeProvider.getHasName(copperBlock), recipeProvider.has(copperBlock))
 			.save(exporter);
+	}
+
+	private static void createWaxingRecipe(@NotNull RecipeProvider recipeProvider, RecipeOutput exporter, Block waxedCopperBlock, Block copperBlock) {
+		recipeProvider.shapeless(RecipeCategory.BUILDING_BLOCKS, waxedCopperBlock, 1)
+			.requires(Ingredient.of(copperBlock))
+			.requires(Ingredient.of(Items.HONEYCOMB))
+			.unlockedBy(RecipeProvider.getHasName(copperBlock), recipeProvider.has(copperBlock))
+			.save(exporter, waxedCopperBlock.asItem() + "_from_waxing");
 	}
 
 	@Override

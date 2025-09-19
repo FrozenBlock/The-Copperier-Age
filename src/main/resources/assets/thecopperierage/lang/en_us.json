@@ -41,6 +41,15 @@
   "subtitles.block.copper_fan.off": "Fan unpowered",
   "subtitles.block.copper_fan.idle": "Fan blows",
 
+  "block.thecopperierage.copper_button": "Copper Button",
+  "block.thecopperierage.exposed_copper_button": "Exposed Copper Button",
+  "block.thecopperierage.weathered_copper_button": "Weathered Copper Button",
+  "block.thecopperierage.oxidized_copper_button": "Oxidized Copper Button",
+  "block.thecopperierage.waxed_copper_button": "Waxed Copper Button",
+  "block.thecopperierage.waxed_exposed_copper_button": "Waxed Exposed Copper Button",
+  "block.thecopperierage.waxed_weathered_copper_button": "Waxed Weathered Copper Button",
+  "block.thecopperierage.waxed_oxidized_copper_button": "Waxed Oxidized Copper Button",
+
   "pack.thecopperierage.copperier_copper": "Copperier Copper",
   "pack.thecopperierage.green_copper_bulbs": "Green Copper Bulbs"
 }

@@ -7,6 +7,10 @@
     {
       "id": "#thecopperierage:copper_fans",
       "required": false
+    },
+    {
+      "id": "#thecopperierage:copper_buttons",
+      "required": false
     }
   ]
 }

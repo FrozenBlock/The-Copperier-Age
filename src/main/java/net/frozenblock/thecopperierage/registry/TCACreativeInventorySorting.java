@@ -35,6 +35,16 @@ public final class TCACreativeInventorySorting {
 	public static void init() {
 		TCABlocks.GEARBOX.forEach(block -> addBeforeInRedstoneBlocks(Items.PISTON, block));
 		TCABlocks.COPPER_FAN.forEach(block -> addAfterInRedstoneBlocks(Items.HONEY_BLOCK, block));
+		TCABlocks.COPPER_BUTTON.forEach(block -> addAfterInRedstoneBlocks(Items.STONE_BUTTON, block));
+
+		addAfterInBuildingBlocks(Items.COPPER_BLOCK, TCABlocks.COPPER_BUTTON.unaffected());
+		addAfterInBuildingBlocks(Items.WAXED_COPPER_BLOCK, TCABlocks.COPPER_BUTTON.waxed());
+		addAfterInBuildingBlocks(Items.EXPOSED_COPPER, TCABlocks.COPPER_BUTTON.exposed());
+		addAfterInBuildingBlocks(Items.WAXED_EXPOSED_COPPER, TCABlocks.COPPER_BUTTON.exposed());
+		addAfterInBuildingBlocks(Items.WEATHERED_COPPER, TCABlocks.COPPER_BUTTON.weathered());
+		addAfterInBuildingBlocks(Items.WAXED_WEATHERED_COPPER, TCABlocks.COPPER_BUTTON.waxedWeathered());
+		addAfterInBuildingBlocks(Items.OXIDIZED_COPPER, TCABlocks.COPPER_BUTTON.oxidized());
+		addAfterInBuildingBlocks(Items.WAXED_OXIDIZED_COPPER, TCABlocks.COPPER_BUTTON.waxedOxidized());
 		addAfterInFunctionalBlocks(Items.SOUL_CAMPFIRE, TCABlocks.COPPER_CAMPFIRE);
 		addBeforeInToolsAndUtilities(Items.BRUSH, TCAItems.WRENCH);
 		addInstrumentBefore(Items.MUSIC_DISC_13, TCAItems.COPPER_HORN, TCAInstrumentTags.COPPER_HORNS, CreativeModeTabs.TOOLS_AND_UTILITIES);

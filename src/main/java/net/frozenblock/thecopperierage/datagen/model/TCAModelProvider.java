@@ -25,6 +25,7 @@ import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.CopperFanBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
 import net.frozenblock.thecopperierage.client.renderer.item.properties.select.OxidizedItemsEnabled;
+import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.minecraft.client.data.models.BlockModelGenerators;
@@ -364,9 +365,9 @@ public final class TCAModelProvider extends FabricModelProvider {
 				ItemModelUtils.rangeSelect(
 					new Damage(true),
 					unaffected,
-					ItemModelUtils.override(exposed, 0.45F),
-					ItemModelUtils.override(weathered, 0.65F),
-					ItemModelUtils.override(oxidized, 0.85F)
+					ItemModelUtils.override(exposed, OxidizableItemHelper.EXPOSED_THRESHOLD),
+					ItemModelUtils.override(weathered, OxidizableItemHelper.WEATHERED_THRESHOLD),
+					ItemModelUtils.override(oxidized, OxidizableItemHelper.OXIDIZED_THRESHOLD)
 				)
 			)
 		);

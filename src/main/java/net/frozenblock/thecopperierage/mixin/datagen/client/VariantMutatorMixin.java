@@ -33,6 +33,6 @@ public interface VariantMutatorMixin {
 
     @Inject(method = "then", at = @At("HEAD"), cancellable = true)
     private void theCopperierAge$removeButtonUVLockIfGeneratingPack(VariantMutator variantMutator, CallbackInfoReturnable<VariantMutator> info) {
-		if (TCAPackModelProvider.GENERATING_COPPER_BUTTON && variantMutator == BlockModelGenerators.UV_LOCK) info.setReturnValue(variantMutator);
+		if (TCAPackModelProvider.GENERATING_COPPER_BUTTON && variantMutator == BlockModelGenerators.UV_LOCK) info.setReturnValue(VariantMutator.class.cast(this));
     }
 }

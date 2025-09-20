@@ -26,9 +26,11 @@ import net.frozenblock.thecopperierage.TCAFeatureFlags;
 import net.frozenblock.thecopperierage.block.CopperButtonBlock;
 import net.frozenblock.thecopperierage.block.CopperFanBlock;
 import net.frozenblock.thecopperierage.block.CopperFireBlock;
+import net.frozenblock.thecopperierage.block.CopperPressurePlateBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
 import net.frozenblock.thecopperierage.block.RedstonePumpkinBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperButtonBlock;
+import net.frozenblock.thecopperierage.block.WeatheringCopperPressurePlateBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperFanBlock;
 import net.frozenblock.thecopperierage.block.WeatheringGearboxBlock;
 import net.minecraft.core.Registry;
@@ -119,7 +121,19 @@ public final class TCABlocks {
 		CopperButtonBlock.Waxed::new,
 		WeatheringCopperButtonBlock::new,
 		(weatherState) -> BlockBehaviour.Properties.of()
-			.mapColor(MapColor.STONE)
+			.mapColor(MapColor.NONE)
+			.strength(0.5F)
+			.noCollision()
+			.pushReaction(PushReaction.DESTROY)
+	);
+
+	public static final WeatheringCopperBlocks COPPER_PRESSURE_PLATE = TCABlocksHelper.create(
+		"copper_pressure_plate",
+		TCABlocks::register,
+		CopperPressurePlateBlock.Waxed::new,
+		WeatheringCopperPressurePlateBlock::new,
+		(weatherState) -> BlockBehaviour.Properties.of()
+			.mapColor(MapColor.NONE)
 			.strength(0.5F)
 			.noCollision()
 			.pushReaction(PushReaction.DESTROY)

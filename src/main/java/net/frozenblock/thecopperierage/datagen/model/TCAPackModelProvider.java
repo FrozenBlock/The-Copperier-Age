@@ -101,6 +101,7 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 		Optional.of("_inventory"),
 		TextureSlot.TEXTURE
 	);
+	public static boolean GENERATING_COPPER_BUTTON = false;
 
 	public TCAPackModelProvider(FabricDataOutput output) {
 		super(output);
@@ -199,11 +200,9 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 	}
 
 	private static void createCopperButtonOverrides(@NotNull BlockModelGenerators generator, @NotNull Block block, @NotNull Block waxedBlock) {
-		final TextureMapping mapping = TextureMapping.defaultTexture(block);
-		COPPER_BUTTON_MODEL.create(block, mapping, generator.modelOutput);
-		COPPER_BUTTON_PRESSED_MODEL.create(block, mapping, generator.modelOutput);
-
-		COPPER_BUTTON_INVENTORY_MODEL.create(block, mapping, generator.modelOutput);
+		GENERATING_COPPER_BUTTON = true;
+		TCAModelProvider.createCopperButton(generator, block, waxedBlock, block, COPPER_BUTTON_MODEL, COPPER_BUTTON_PRESSED_MODEL, COPPER_BUTTON_INVENTORY_MODEL);
+		GENERATING_COPPER_BUTTON = false;
 	}
 
 }

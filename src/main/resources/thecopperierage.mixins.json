@@ -14,7 +14,8 @@
     "client.copper_fire.LavaParticleMixin",
     "client.copper_fire.LavaParticleProviderMixin",
     "client.copper_fire.TorchBlockMixin",
-    "client.copper_fire.WallTorchBlockMixin"
+    "client.copper_fire.WallTorchBlockMixin",
+    "datagen.client.VariantMutatorMixin"
   ],
   "injectors": {
     "defaultRequire": 1

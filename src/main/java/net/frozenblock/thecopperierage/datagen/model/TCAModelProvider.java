@@ -213,15 +213,27 @@ public final class TCAModelProvider extends FabricModelProvider {
 	}
 
 	private static void createCopperButton(@NotNull BlockModelGenerators generator, @NotNull Block block, @NotNull Block waxedBlock, Block originalBlock) {
+		createCopperButton(generator, block, waxedBlock, originalBlock, ModelTemplates.BUTTON, ModelTemplates.BUTTON_PRESSED, ModelTemplates.BUTTON_INVENTORY);
+	}
+
+	static void createCopperButton(
+		@NotNull BlockModelGenerators generator,
+		@NotNull Block block,
+		@NotNull Block waxedBlock,
+		Block originalBlock,
+		@NotNull ModelTemplate modelTemplate,
+		@NotNull ModelTemplate pressedTemplate,
+		@NotNull ModelTemplate inventoryTemplate
+	) {
 		final TextureMapping mapping = TextureMapping.defaultTexture(originalBlock);
-		MultiVariant model = BlockModelGenerators.plainVariant(ModelTemplates.BUTTON.create(block, mapping, generator.modelOutput));
-		MultiVariant pressedModel = BlockModelGenerators.plainVariant(ModelTemplates.BUTTON_PRESSED.create(block, mapping, generator.modelOutput));
+		MultiVariant model = BlockModelGenerators.plainVariant(modelTemplate.create(block, mapping, generator.modelOutput));
+		MultiVariant pressedModel = BlockModelGenerators.plainVariant(pressedTemplate.create(block, mapping, generator.modelOutput));
 
 		generator.blockStateOutput.accept(BlockModelGenerators.createButton(block, model, pressedModel));
 		generator.blockStateOutput.accept(BlockModelGenerators.createButton(waxedBlock, model, pressedModel));
 
 		generator.itemModelOutput.copy(block.asItem(), waxedBlock.asItem());
-		final ResourceLocation itemModel = ModelTemplates.BUTTON_INVENTORY.create(block, mapping, generator.modelOutput);
+		final ResourceLocation itemModel = inventoryTemplate.create(block, mapping, generator.modelOutput);
 		generator.registerSimpleItemModel(block, itemModel);
 	}
 }

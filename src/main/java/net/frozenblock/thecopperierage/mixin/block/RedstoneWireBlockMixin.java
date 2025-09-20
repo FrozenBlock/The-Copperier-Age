@@ -31,24 +31,27 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class RedstoneWireBlockMixin {
 
     @Inject(method = "shouldConnectTo(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/Direction;)Z", at = @At("HEAD"), cancellable = true)
-    private static void theCopperierAge$handleRedstonePumpkinConnections(BlockState blockState, Direction direction, CallbackInfoReturnable<Boolean> cir) {
-        if (blockState.getBlock() instanceof RedstonePumpkinBlock) {
+    private static void theCopperierAge$handleRedstonePumpkinAndGearboxConnections(BlockState state, Direction direction, CallbackInfoReturnable<Boolean> info) {
+        if (state.getBlock() instanceof RedstonePumpkinBlock) {
             if (direction == null) {
-                cir.setReturnValue(false);
+				info.setReturnValue(false);
                 return;
             }
             // Only allow connection if this direction matches the output face of the redstone pumpkin
-            Direction outputFace = blockState.getValue(RedstonePumpkinBlock.FACING).getOpposite();
-            cir.setReturnValue(direction == outputFace);
+            Direction outputFace = state.getValue(RedstonePumpkinBlock.FACING).getOpposite();
+			info.setReturnValue(direction == outputFace);
+			return;
         }
-		if (blockState.getBlock() instanceof GearboxBlock) {
+
+		if (state.getBlock() instanceof GearboxBlock) {
 			if (direction == null) {
-				cir.setReturnValue(false);
+				info.setReturnValue(false);
 				return;
 			}
 			// Only allow connection if this direction doesn't match the top face of the gearbox
-			Direction outputFace = blockState.getValue(GearboxBlock.FACING).getOpposite();
-			cir.setReturnValue(direction != outputFace);
+			Direction outputFace = state.getValue(GearboxBlock.FACING).getOpposite();
+			info.setReturnValue(direction != outputFace);
+			return;
 		}
     }
 }

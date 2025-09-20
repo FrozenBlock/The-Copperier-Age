@@ -45,9 +45,11 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 
 		this.valueLookupBuilder(BlockTags.LANTERNS);
 
-		this.valueLookupBuilder(BlockTags.BUTTONS);
+		this.builder(BlockTags.BUTTONS)
+			.addOptionalTag(TCABlockTags.COPPER_BUTTONS);
 
-		this.valueLookupBuilder(BlockTags.PRESSURE_PLATES);
+		this.builder(BlockTags.PRESSURE_PLATES)
+			.addOptionalTag(TCABlockTags.COPPER_PRESSURE_PLATES);
 
 		this.valueLookupBuilder(BlockTags.CAMPFIRES)
 			.add(TCABlocks.COPPER_CAMPFIRE);
@@ -103,6 +105,7 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 				if (path.contains("pressure_plate")) return;
 				if (path.contains("chest")) return;
 				if (path.contains("campfire")) return;
+				if (path.contains("jack_o_lantern")) return;
 
 				copperFireBaseBlocksTag.add(block.value());
 			});

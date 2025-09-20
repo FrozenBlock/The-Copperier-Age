@@ -31,6 +31,7 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.Contract;
@@ -72,18 +73,18 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.save(this.output);
 
 				this.shaped(RecipeCategory.BUILDING_BLOCKS, TCABlocks.COPPER_JACK_O_LANTERN)
-					.define('#', Items.CARVED_PUMPKIN)
-					.define('i', Items.COPPER_TORCH)
-					.pattern("#")
-					.pattern("i")
+					.define('A', Items.CARVED_PUMPKIN)
+					.define('B', Items.COPPER_TORCH)
+					.pattern("A")
+					.pattern("B")
 					.unlockedBy("has_copper_nugget", this.has(Items.COPPER_NUGGET))
 					.save(this.output);
 
 				this.shaped(RecipeCategory.BUILDING_BLOCKS, TCABlocks.REDSTONE_JACK_O_LANTERN)
-					.define('#', Items.CARVED_PUMPKIN)
-					.define('i', Items.REDSTONE_TORCH)
-					.pattern("#")
-					.pattern("i")
+					.define('A', Items.CARVED_PUMPKIN)
+					.define('B', Items.REDSTONE_TORCH)
+					.pattern("A")
+					.pattern("B")
 					.unlockedBy("has_redstone", this.has(Items.REDSTONE))
 					.save(this.output);
 
@@ -94,11 +95,7 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.unlockedBy("has_copper_nugget", this.has(Items.COPPER_NUGGET))
 					.save(this.output);
 
-				this.shaped(RecipeCategory.BUILDING_BLOCKS, TCABlocks.WEIGHTED_PRESSURE_PLATE.unaffected())
-						.define('#', Ingredient.of(Items.COPPER_INGOT))
-						.pattern("##")
-						.unlockedBy("has_copper_ingot", this.has(Items.COPPER_INGOT))
-						.save(this.output);
+				createCopperPressurePlateRecipe(this, exporter, TCABlocks.WEIGHTED_PRESSURE_PLATE.unaffected(), Items.COPPER_INGOT);
 
 				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.unaffected(), Blocks.COPPER_BLOCK);
 				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.exposed(), Blocks.EXPOSED_COPPER);
@@ -123,6 +120,14 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 				RecipeExportNamespaceFix.clearCurrentGeneratingModId();
 			}
 		};
+	}
+
+	private static void createCopperPressurePlateRecipe(@NotNull RecipeProvider recipeProvider, RecipeOutput exporter, Block pressurePlateBlock, ItemLike ingredient) {
+		recipeProvider.shaped(RecipeCategory.BUILDING_BLOCKS, pressurePlateBlock)
+			.define('#', Ingredient.of(ingredient))
+			.pattern("##")
+			.unlockedBy(RecipeProvider.getHasName(ingredient), recipeProvider.has(ingredient))
+			.save(exporter);
 	}
 
 	private static void createGearboxRecipe(@NotNull RecipeProvider recipeProvider, RecipeOutput exporter, Block gearboxBlock, Block copperBlock) {

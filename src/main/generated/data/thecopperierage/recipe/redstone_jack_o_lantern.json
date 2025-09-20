@@ -2,12 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": "minecraft:carved_pumpkin",
-    "i": "minecraft:redstone_torch"
+    "A": "minecraft:carved_pumpkin",
+    "B": "minecraft:redstone_torch"
   },
   "pattern": [
-    "#",
-    "i"
+    "A",
+    "B"
   ],
   "result": {
     "count": 1,

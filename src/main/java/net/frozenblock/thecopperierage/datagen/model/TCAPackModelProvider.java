@@ -36,6 +36,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
+import java.util.function.Function;
 import static net.minecraft.client.data.models.BlockModelGenerators.*;
 
 @Environment(EnvType.CLIENT)
@@ -117,10 +118,7 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 		generateCopperLantern(generator, Blocks.COPPER_LANTERN.exposed(), Blocks.COPPER_CHAIN.exposed());
 		generateCopperLantern(generator, Blocks.COPPER_LANTERN.weathered(), Blocks.COPPER_CHAIN.weathered());
 		generateCopperLantern(generator, Blocks.COPPER_LANTERN.oxidized(), Blocks.COPPER_CHAIN.oxidized());
-		generateCopperBars(generator, Blocks.COPPER_BARS.unaffected());
-		generateCopperBars(generator, Blocks.COPPER_BARS.exposed());
-		generateCopperBars(generator, Blocks.COPPER_BARS.weathered());
-		generateCopperBars(generator, Blocks.COPPER_BARS.oxidized());
+		Blocks.COPPER_BARS.waxedMapping().forEach((block, waxedBlock) -> generateCopperBars(generator, block, waxedBlock));
 		TCABlocks.COPPER_BUTTON.waxedMapping().forEach((block, waxedBlock) -> createCopperButtonOverrides(generator, block, waxedBlock));
 	}
 
@@ -141,62 +139,64 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 		HANGING_COPPER_LANTERN_MODEL.create(lantern, textureMapping, generator.modelOutput);
 	}
 
-	public static void generateCopperBars(@NotNull BlockModelGenerators generator, Block block) {
+	public static void generateCopperBars(@NotNull BlockModelGenerators generator, Block block, Block waxedBlock) {
 		TextureMapping textureMapping = new TextureMapping()
 			.put(TextureSlot.BARS, TextureMapping.getBlockTexture(block))
 			.put(TextureSlot.EDGE, TextureMapping.getBlockTexture(block, "_edge"));
 
-		MultiVariant multiVariant = plainVariant(COPPER_BARS_POST_ENDS_MODEL.create(block, textureMapping, generator.modelOutput));
-		MultiVariant multiVariant2 = plainVariant(COPPER_BARS_POST_MODEL.create(block, textureMapping, generator.modelOutput));
-		MultiVariant multiVariant3 = plainVariant(COPPER_BARS_CAP_MODEL.create(block, textureMapping, generator.modelOutput));
-		MultiVariant multiVariant4 = plainVariant(COPPER_BARS_CAP_ALT_MODEL.create(block, textureMapping, generator.modelOutput));
-		MultiVariant multiVariant5 = plainVariant(COPPER_BARS_SIDE_MODEL.create(block, textureMapping, generator.modelOutput));
-		MultiVariant multiVariant6 = plainVariant(COPPER_BARS_SIDE_ALT_MODEL.create(block, textureMapping, generator.modelOutput));
+		MultiVariant postEnds = plainVariant(COPPER_BARS_POST_ENDS_MODEL.create(block, textureMapping, generator.modelOutput));
+		MultiVariant post = plainVariant(COPPER_BARS_POST_MODEL.create(block, textureMapping, generator.modelOutput));
+		MultiVariant cap = plainVariant(COPPER_BARS_CAP_MODEL.create(block, textureMapping, generator.modelOutput));
+		MultiVariant capAlt = plainVariant(COPPER_BARS_CAP_ALT_MODEL.create(block, textureMapping, generator.modelOutput));
+		MultiVariant side = plainVariant(COPPER_BARS_SIDE_MODEL.create(block, textureMapping, generator.modelOutput));
+		MultiVariant sideAlt = plainVariant(COPPER_BARS_SIDE_ALT_MODEL.create(block, textureMapping, generator.modelOutput));
 
-		generator.blockStateOutput
-			.accept(
-				MultiPartGenerator.multiPart(block)
-					.with(multiVariant)
-					.with(
-						condition()
-							.term(BlockStateProperties.NORTH, false)
-							.term(BlockStateProperties.EAST, false)
-							.term(BlockStateProperties.SOUTH, false)
-							.term(BlockStateProperties.WEST, false),
-						multiVariant2
-					).with(
-						condition()
-							.term(BlockStateProperties.NORTH, true)
-							.term(BlockStateProperties.EAST, false)
-							.term(BlockStateProperties.SOUTH, false)
-							.term(BlockStateProperties.WEST, false),
-						multiVariant3
-					).with(
-						condition()
-							.term(BlockStateProperties.NORTH, false)
-							.term(BlockStateProperties.EAST, true)
-							.term(BlockStateProperties.SOUTH, false)
-							.term(BlockStateProperties.WEST, false),
-						multiVariant3.with(Y_ROT_90)
-					).with(
-						condition()
-							.term(BlockStateProperties.NORTH, false)
-							.term(BlockStateProperties.EAST, false)
-							.term(BlockStateProperties.SOUTH, true)
-							.term(BlockStateProperties.WEST, false),
-						multiVariant4
-					).with(
-						condition()
-							.term(BlockStateProperties.NORTH, false)
-							.term(BlockStateProperties.EAST, false)
-							.term(BlockStateProperties.SOUTH, false)
-							.term(BlockStateProperties.WEST, true),
-						multiVariant4.with(Y_ROT_90)
-					)
-					.with(condition().term(BlockStateProperties.NORTH, true), multiVariant5)
-					.with(condition().term(BlockStateProperties.EAST, true), multiVariant5.with(Y_ROT_90))
-					.with(condition().term(BlockStateProperties.SOUTH, true), multiVariant6)
-					.with(condition().term(BlockStateProperties.WEST, true), multiVariant6.with(Y_ROT_90)));
+		Function<MultiPartGenerator, MultiPartGenerator> barsDispatcher = multiPartGenerator -> {
+			return multiPartGenerator.with(postEnds)
+				.with(
+					condition()
+						.term(BlockStateProperties.NORTH, false)
+						.term(BlockStateProperties.EAST, false)
+						.term(BlockStateProperties.SOUTH, false)
+						.term(BlockStateProperties.WEST, false),
+					post
+				).with(
+					condition()
+						.term(BlockStateProperties.NORTH, true)
+						.term(BlockStateProperties.EAST, false)
+						.term(BlockStateProperties.SOUTH, false)
+						.term(BlockStateProperties.WEST, false),
+					cap
+				).with(
+					condition()
+						.term(BlockStateProperties.NORTH, false)
+						.term(BlockStateProperties.EAST, true)
+						.term(BlockStateProperties.SOUTH, false)
+						.term(BlockStateProperties.WEST, false),
+					cap.with(Y_ROT_90)
+				).with(
+					condition()
+						.term(BlockStateProperties.NORTH, false)
+						.term(BlockStateProperties.EAST, false)
+						.term(BlockStateProperties.SOUTH, true)
+						.term(BlockStateProperties.WEST, false),
+					capAlt
+				).with(
+					condition()
+						.term(BlockStateProperties.NORTH, false)
+						.term(BlockStateProperties.EAST, false)
+						.term(BlockStateProperties.SOUTH, false)
+						.term(BlockStateProperties.WEST, true),
+					capAlt.with(Y_ROT_90)
+				)
+				.with(condition().term(BlockStateProperties.NORTH, true), side)
+				.with(condition().term(BlockStateProperties.EAST, true), side.with(Y_ROT_90))
+				.with(condition().term(BlockStateProperties.SOUTH, true), sideAlt)
+				.with(condition().term(BlockStateProperties.WEST, true), sideAlt.with(Y_ROT_90));
+		};
+
+		generator.blockStateOutput.accept(barsDispatcher.apply(MultiPartGenerator.multiPart(block)));
+		generator.blockStateOutput.accept(barsDispatcher.apply(MultiPartGenerator.multiPart(waxedBlock)));
 	}
 
 	private static void createCopperButtonOverrides(@NotNull BlockModelGenerators generator, @NotNull Block block, @NotNull Block waxedBlock) {

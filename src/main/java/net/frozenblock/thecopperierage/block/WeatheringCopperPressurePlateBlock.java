@@ -25,11 +25,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 public class WeatheringCopperPressurePlateBlock extends CopperPressurePlateBlock implements WeatheringCopper {
-	private final WeatherState weatherState;
 
 	public WeatheringCopperPressurePlateBlock(WeatherState weatherState, Properties properties) {
 		super(weatherState, properties);
-		this.weatherState = weatherState;
 	}
 
 	@Override

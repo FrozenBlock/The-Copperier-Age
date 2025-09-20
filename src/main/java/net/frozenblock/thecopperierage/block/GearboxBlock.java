@@ -18,6 +18,9 @@
 package net.frozenblock.thecopperierage.block;
 
 import com.mojang.serialization.MapCodec;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import net.frozenblock.thecopperierage.block.gearbox.GearboxBlockEvaluator;
 import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.minecraft.core.BlockPos;
@@ -39,9 +42,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.redstone.Orientation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class GearboxBlock extends DirectionalBlock {
     public static final MapCodec<GearboxBlock> CODEC = simpleCodec(GearboxBlock::new);

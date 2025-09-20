@@ -30,10 +30,7 @@ public class RedstonePumpkinBlock extends CarvedPumpkinBlock {
 
     public RedstonePumpkinBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(
-            this.stateDefinition.any()
-                .setValue(FACING, Direction.NORTH)
-        );
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
     @Override
@@ -42,7 +39,7 @@ public class RedstonePumpkinBlock extends CarvedPumpkinBlock {
     }
 
     @Override
-    protected boolean isSignalSource(BlockState state) {
+    protected boolean isSignalSource(@NotNull BlockState state) {
         return true;
     }
 

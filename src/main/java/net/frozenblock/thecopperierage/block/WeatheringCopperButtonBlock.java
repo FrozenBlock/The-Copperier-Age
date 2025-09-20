@@ -32,7 +32,7 @@ public class WeatheringCopperButtonBlock extends CopperButtonBlock implements We
 		instance -> instance.group(
 			WeatherState.CODEC.fieldOf("weathering_state").forGetter(WeatheringCopperButtonBlock::getAge),
 			propertiesCodec()
-		).apply(instance, (weatherState, properties) -> new WeatheringCopperButtonBlock(weatherState, properties))
+		).apply(instance, WeatheringCopperButtonBlock::new)
 	);
 	private final WeatheringCopper.WeatherState weatherState;
 
@@ -52,7 +52,7 @@ public class WeatheringCopperButtonBlock extends CopperButtonBlock implements We
 	}
 
 	@Override
-	public WeatheringCopper.@NotNull WeatherState getAge() {
+	public @NotNull WeatheringCopper.WeatherState getAge() {
 		return this.weatherState;
 	}
 }

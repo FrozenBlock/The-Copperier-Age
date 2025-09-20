@@ -33,24 +33,55 @@ import org.jetbrains.annotations.NotNull;
 public final class TCACreativeInventorySorting {
 
 	public static void init() {
-		TCABlocks.GEARBOX.forEach(block -> addBeforeInRedstoneBlocks(Items.PISTON, block));
-		TCABlocks.COPPER_FAN.forEach(block -> addAfterInRedstoneBlocks(Items.HONEY_BLOCK, block));
-		TCABlocks.COPPER_BUTTON.forEach(block -> addAfterInRedstoneBlocks(Items.STONE_BUTTON, block));
-		TCABlocks.WEIGHTED_PRESSURE_PLATE.forEach(block -> addAfterInRedstoneBlocks(Items.HEAVY_WEIGHTED_PRESSURE_PLATE, block));
+		// GEARBOX
+		addBeforeInRedstoneBlocks(Items.REPEATER, TCABlocks.GEARBOX.waxed());
+
+		addAfterInBuildingBlocks(Items.COPPER_BULB, TCABlocks.GEARBOX.unaffected());
+		addAfterInBuildingBlocks(Items.WAXED_COPPER_BULB, TCABlocks.GEARBOX.waxed());
+		addAfterInBuildingBlocks(Items.EXPOSED_COPPER_BULB, TCABlocks.GEARBOX.exposed());
+		addAfterInBuildingBlocks(Items.WAXED_EXPOSED_COPPER_BULB, TCABlocks.GEARBOX.waxedExposed());
+		addAfterInBuildingBlocks(Items.WEATHERED_COPPER_BULB, TCABlocks.GEARBOX.weathered());
+		addAfterInBuildingBlocks(Items.WAXED_WEATHERED_COPPER_BULB, TCABlocks.GEARBOX.waxedWeathered());
+		addAfterInBuildingBlocks(Items.OXIDIZED_COPPER_BULB, TCABlocks.GEARBOX.oxidized());
+		addAfterInBuildingBlocks(Items.WAXED_OXIDIZED_COPPER_BULB, TCABlocks.GEARBOX.waxedOxidized());
+
+		// FAN
+		addBeforeInRedstoneBlocks(Items.RAIL, TCABlocks.COPPER_FAN.waxed());
+
+		addAfterInBuildingBlocks(TCABlocks.GEARBOX.unaffected(), TCABlocks.COPPER_FAN.unaffected());
+		addAfterInBuildingBlocks(TCABlocks.GEARBOX.waxed(), TCABlocks.COPPER_FAN.waxed());
+		addAfterInBuildingBlocks(TCABlocks.GEARBOX.exposed(), TCABlocks.COPPER_FAN.exposed());
+		addAfterInBuildingBlocks(TCABlocks.GEARBOX.waxedExposed(), TCABlocks.COPPER_FAN.waxedExposed());
+		addAfterInBuildingBlocks(TCABlocks.GEARBOX.weathered(), TCABlocks.COPPER_FAN.weathered());
+		addAfterInBuildingBlocks(TCABlocks.GEARBOX.waxedWeathered(), TCABlocks.COPPER_FAN.waxedWeathered());
+		addAfterInBuildingBlocks(TCABlocks.GEARBOX.oxidized(), TCABlocks.COPPER_FAN.oxidized());
+		addAfterInBuildingBlocks(TCABlocks.GEARBOX.waxedOxidized(), TCABlocks.COPPER_FAN.waxedOxidized());
+
+		// BUTTON
+		addAfterInRedstoneBlocks(Items.STONE_BUTTON, TCABlocks.COPPER_BUTTON.waxed());
+		addAfterInRedstoneBlocks(TCABlocks.COPPER_BUTTON.waxed(), TCABlocks.COPPER_BUTTON.waxedExposed());
+		addAfterInRedstoneBlocks(TCABlocks.COPPER_BUTTON.waxedExposed(), TCABlocks.COPPER_BUTTON.waxedWeathered());
+		addAfterInRedstoneBlocks(TCABlocks.COPPER_BUTTON.waxedWeathered(), TCABlocks.COPPER_BUTTON.waxedOxidized());
 
 		addAfterInBuildingBlocks(Items.COPPER_TRAPDOOR, TCABlocks.COPPER_BUTTON.unaffected());
 		addAfterInBuildingBlocks(Items.WAXED_COPPER_TRAPDOOR, TCABlocks.COPPER_BUTTON.waxed());
 		addAfterInBuildingBlocks(Items.EXPOSED_COPPER_TRAPDOOR, TCABlocks.COPPER_BUTTON.exposed());
-		addAfterInBuildingBlocks(Items.WAXED_EXPOSED_COPPER_TRAPDOOR, TCABlocks.COPPER_BUTTON.exposed());
+		addAfterInBuildingBlocks(Items.WAXED_EXPOSED_COPPER_TRAPDOOR, TCABlocks.COPPER_BUTTON.waxedExposed());
 		addAfterInBuildingBlocks(Items.WEATHERED_COPPER_TRAPDOOR, TCABlocks.COPPER_BUTTON.weathered());
 		addAfterInBuildingBlocks(Items.WAXED_WEATHERED_COPPER_TRAPDOOR, TCABlocks.COPPER_BUTTON.waxedWeathered());
 		addAfterInBuildingBlocks(Items.OXIDIZED_COPPER_TRAPDOOR, TCABlocks.COPPER_BUTTON.oxidized());
 		addAfterInBuildingBlocks(Items.WAXED_OXIDIZED_COPPER_TRAPDOOR, TCABlocks.COPPER_BUTTON.waxedOxidized());
 
+		// PRESSURE PLATE
+		addAfterInRedstoneBlocks(Items.HEAVY_WEIGHTED_PRESSURE_PLATE, TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed());
+		addAfterInRedstoneBlocks(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed(), TCABlocks.WEIGHTED_PRESSURE_PLATE.waxedExposed());
+		addAfterInRedstoneBlocks(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxedExposed(), TCABlocks.WEIGHTED_PRESSURE_PLATE.waxedWeathered());
+		addAfterInRedstoneBlocks(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxedWeathered(), TCABlocks.WEIGHTED_PRESSURE_PLATE.waxedOxidized());
+
 		addAfterInBuildingBlocks(Items.COPPER_TRAPDOOR, TCABlocks.WEIGHTED_PRESSURE_PLATE.unaffected());
 		addAfterInBuildingBlocks(Items.WAXED_COPPER_TRAPDOOR, TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed());
 		addAfterInBuildingBlocks(Items.EXPOSED_COPPER_TRAPDOOR, TCABlocks.WEIGHTED_PRESSURE_PLATE.exposed());
-		addAfterInBuildingBlocks(Items.WAXED_EXPOSED_COPPER_TRAPDOOR, TCABlocks.WEIGHTED_PRESSURE_PLATE.exposed());
+		addAfterInBuildingBlocks(Items.WAXED_EXPOSED_COPPER_TRAPDOOR, TCABlocks.WEIGHTED_PRESSURE_PLATE.waxedExposed());
 		addAfterInBuildingBlocks(Items.WEATHERED_COPPER_TRAPDOOR, TCABlocks.WEIGHTED_PRESSURE_PLATE.weathered());
 		addAfterInBuildingBlocks(Items.WAXED_WEATHERED_COPPER_TRAPDOOR, TCABlocks.WEIGHTED_PRESSURE_PLATE.waxedWeathered());
 		addAfterInBuildingBlocks(Items.OXIDIZED_COPPER_TRAPDOOR, TCABlocks.WEIGHTED_PRESSURE_PLATE.oxidized());

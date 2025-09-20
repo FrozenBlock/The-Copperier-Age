@@ -22,6 +22,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.frozenblock.thecopperierage.TCAConstants;
+import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.MultiVariant;
@@ -44,6 +45,7 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 		Optional.empty(),
 		TextureSlot.TEXTURE
 	);
+	public static final TexturedModel.Provider COPPER_CHAIN_PROVIDER = TexturedModel.createDefault(TextureMapping::defaultTexture, COPPER_CHAIN_MODEL);
 	private static final ModelTemplate COPPER_LANTERN_MODEL = new ModelTemplate(
 		Optional.of(TCAConstants.id("block/template_copper_lantern")),
 		Optional.empty(),
@@ -54,43 +56,51 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 		Optional.of("_hanging"),
 		TextureSlot.LANTERN, TextureSlot.BARS
 	);
-
 	private static final ModelTemplate COPPER_BARS_CAP_MODEL = new ModelTemplate(
 		Optional.of(TCAConstants.id("block/template_copper_bars_cap")),
 		Optional.of("_cap"),
 		TextureSlot.BARS, TextureSlot.EDGE
 	);
-
 	private static final ModelTemplate COPPER_BARS_CAP_ALT_MODEL = new ModelTemplate(
 		Optional.of(TCAConstants.id("block/template_copper_bars_cap_alt")),
 		Optional.of("_cap_alt"),
 		TextureSlot.BARS, TextureSlot.EDGE
 	);
-
 	private static final ModelTemplate COPPER_BARS_POST_MODEL = new ModelTemplate(
 		Optional.of(TCAConstants.id("block/template_copper_bars_post")),
 		Optional.of("_post"),
 		TextureSlot.BARS, TextureSlot.EDGE
 	);
-
 	private static final ModelTemplate COPPER_BARS_POST_ENDS_MODEL = new ModelTemplate(
 		Optional.of(TCAConstants.id("block/template_copper_bars_post_ends")),
 		Optional.of("_post_ends"),
 		TextureSlot.BARS, TextureSlot.EDGE
 	);
-
 	private static final ModelTemplate COPPER_BARS_SIDE_MODEL = new ModelTemplate(
 		Optional.of(TCAConstants.id("block/template_copper_bars_side")),
 		Optional.of("_side"),
 		TextureSlot.BARS, TextureSlot.EDGE
 	);
-
 	private static final ModelTemplate COPPER_BARS_SIDE_ALT_MODEL = new ModelTemplate(
 		Optional.of(TCAConstants.id("block/template_copper_bars_side_alt")),
 		Optional.of("_side_alt"),
 		TextureSlot.BARS, TextureSlot.EDGE
 	);
-	public static final TexturedModel.Provider COPPER_CHAIN_PROVIDER = TexturedModel.createDefault(TextureMapping::defaultTexture, COPPER_CHAIN_MODEL);
+	private static final ModelTemplate COPPER_BUTTON_MODEL = new ModelTemplate(
+		Optional.of(TCAConstants.id("block/template_copper_button")),
+		Optional.empty(),
+		TextureSlot.TEXTURE
+	);
+	private static final ModelTemplate COPPER_BUTTON_PRESSED_MODEL = new ModelTemplate(
+		Optional.of(TCAConstants.id("block/template_copper_button_pressed")),
+		Optional.of("_pressed"),
+		TextureSlot.TEXTURE
+	);
+	private static final ModelTemplate COPPER_BUTTON_INVENTORY_MODEL = new ModelTemplate(
+		Optional.of(TCAConstants.id("block/template_copper_button_inventory")),
+		Optional.of("_inventory"),
+		TextureSlot.TEXTURE
+	);
 
 	public TCAPackModelProvider(FabricDataOutput output) {
 		super(output);
@@ -110,6 +120,7 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 		generateCopperBars(generator, Blocks.COPPER_BARS.exposed());
 		generateCopperBars(generator, Blocks.COPPER_BARS.weathered());
 		generateCopperBars(generator, Blocks.COPPER_BARS.oxidized());
+		TCABlocks.COPPER_BUTTON.waxedMapping().forEach((block, waxedBlock) -> createCopperButtonOverrides(generator, block, waxedBlock));
 	}
 
 	@Override
@@ -185,6 +196,14 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 					.with(condition().term(BlockStateProperties.EAST, true), multiVariant5.with(Y_ROT_90))
 					.with(condition().term(BlockStateProperties.SOUTH, true), multiVariant6)
 					.with(condition().term(BlockStateProperties.WEST, true), multiVariant6.with(Y_ROT_90)));
+	}
+
+	private static void createCopperButtonOverrides(@NotNull BlockModelGenerators generator, @NotNull Block block, @NotNull Block waxedBlock) {
+		final TextureMapping mapping = TextureMapping.defaultTexture(block);
+		COPPER_BUTTON_MODEL.create(block, mapping, generator.modelOutput);
+		COPPER_BUTTON_PRESSED_MODEL.create(block, mapping, generator.modelOutput);
+
+		COPPER_BUTTON_INVENTORY_MODEL.create(block, mapping, generator.modelOutput);
 	}
 
 }

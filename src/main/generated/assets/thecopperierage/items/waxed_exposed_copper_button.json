@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "thecopperierage:block/exposed_copper_button"
+    "model": "thecopperierage:block/exposed_copper_button_inventory"
   }
 }

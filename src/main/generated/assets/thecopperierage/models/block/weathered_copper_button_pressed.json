@@ -1,6 +1,6 @@
 {
-  "parent": "thecopperierage:block/template_copper_button_pressed",
+  "parent": "minecraft:block/button_pressed",
   "textures": {
-    "texture": "thecopperierage:block/weathered_copper_button"
+    "texture": "minecraft:block/weathered_copper"
   }
 }

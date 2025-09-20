@@ -17,7 +17,6 @@
 
 package net.frozenblock.thecopperierage.registry;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityType;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.fabricmc.fabric.api.registry.FuelRegistryEvents;
 import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry;
@@ -127,8 +126,8 @@ public final class TCABlocks {
 			.pushReaction(PushReaction.DESTROY)
 	);
 
-	public static final WeatheringCopperBlocks COPPER_PRESSURE_PLATE = TCABlocksHelper.create(
-		"copper_pressure_plate",
+	public static final WeatheringCopperBlocks WEIGHTED_PRESSURE_PLATE = TCABlocksHelper.create(
+		"weighted_pressure_plate",
 		TCABlocks::register,
 		CopperPressurePlateBlock.Waxed::new,
 		WeatheringCopperPressurePlateBlock::new,

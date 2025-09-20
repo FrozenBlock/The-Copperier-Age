@@ -28,6 +28,7 @@ public final class TCABlockTags {
 	public static final TagKey<Block> GEARBOXES = bind("gearboxes");
 	public static final TagKey<Block> COPPER_FANS = bind("copper_fans");
 	public static final TagKey<Block> COPPER_BUTTONS = bind("copper_buttons");
+	public static final TagKey<Block> COPPER_PRESSURE_PLATES = bind("copper_pressure_plates");
 
 	private TCABlockTags() {
 		throw new UnsupportedOperationException("TCABlockTags contains only static declarations.");

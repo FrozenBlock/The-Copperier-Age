@@ -64,6 +64,9 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 		TagAppender<Block, Block> copperButtonsTag = this.valueLookupBuilder(TCABlockTags.COPPER_BUTTONS);
 		TCABlocks.COPPER_BUTTON.forEach(copperButtonsTag::add);
 
+		TagAppender<Block, Block> copperPressurePlatesTag = this.valueLookupBuilder(TCABlockTags.COPPER_PRESSURE_PLATES);
+		TCABlocks.WEIGHTED_PRESSURE_PLATE.forEach(copperPressurePlatesTag::add);
+
 		this.valueLookupBuilder(BlockTags.MINEABLE_WITH_AXE)
 			.add(TCABlocks.COPPER_CAMPFIRE)
 			.add(TCABlocks.COPPER_JACK_O_LANTERN, TCABlocks.REDSTONE_JACK_O_LANTERN);
@@ -74,7 +77,8 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 		this.builder(BlockTags.MINEABLE_WITH_PICKAXE)
 			.addOptionalTag(TCABlockTags.GEARBOXES)
 			.addOptionalTag(TCABlockTags.COPPER_FANS)
-			.addOptionalTag(TCABlockTags.COPPER_BUTTONS);
+			.addOptionalTag(TCABlockTags.COPPER_BUTTONS)
+			.addOptionalTag(TCABlockTags.COPPER_PRESSURE_PLATES);
 
 		this.builder(FrozenBlockTags.BLOWING_CAN_PASS_THROUGH)
 			.addOptionalTag(TCABlockTags.COPPER_FANS);

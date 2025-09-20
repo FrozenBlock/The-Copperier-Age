@@ -11,6 +11,10 @@
     {
       "id": "#thecopperierage:copper_buttons",
       "required": false
+    },
+    {
+      "id": "#thecopperierage:copper_pressure_plates",
+      "required": false
     }
   ]
 }

@@ -50,6 +50,15 @@
   "block.thecopperierage.waxed_weathered_copper_button": "Waxed Weathered Copper Button",
   "block.thecopperierage.waxed_oxidized_copper_button": "Waxed Oxidized Copper Button",
 
+  "block.thecopperierage.weighted_pressure_plate": "Weighted Pressure Plate",
+  "block.thecopperierage.exposed_weighted_pressure_plate": "Exposed Weighted Pressure Plate",
+  "block.thecopperierage.weathered_weighted_pressure_plate": "Weathered Weighted Pressure Plate",
+  "block.thecopperierage.oxidized_weighted_pressure_plate": "Oxidized Weighted Pressure Plate",
+  "block.thecopperierage.waxed_weighted_pressure_plate": "Waxed Weighted Pressure Plate",
+  "block.thecopperierage.waxed_exposed_weighted_pressure_plate": "Waxed Exposed Weighted Pressure Plate",
+  "block.thecopperierage.waxed_weathered_weighted_pressure_plate": "Waxed Weathered Weighted Pressure Plate",
+  "block.thecopperierage.waxed_oxidized_weighted_pressure_plate": "Waxed Oxidized Weighted Pressure Plate",
+
   "pack.thecopperierage.copperier_copper": "Copperier Copper",
   "pack.thecopperierage.green_copper_bulbs": "Green Copper Bulbs"
 }

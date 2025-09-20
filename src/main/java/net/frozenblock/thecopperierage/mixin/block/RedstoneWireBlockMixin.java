@@ -17,6 +17,7 @@
 
 package net.frozenblock.thecopperierage.mixin.block;
 
+import net.frozenblock.thecopperierage.block.GearboxBlock;
 import net.frozenblock.thecopperierage.block.RedstonePumpkinBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.RedStoneWireBlock;
@@ -40,5 +41,14 @@ public class RedstoneWireBlockMixin {
             Direction outputFace = blockState.getValue(RedstonePumpkinBlock.FACING).getOpposite();
             cir.setReturnValue(direction == outputFace);
         }
+		if (blockState.getBlock() instanceof GearboxBlock) {
+			if (direction == null) {
+				cir.setReturnValue(false);
+				return;
+			}
+			// Only allow connection if this direction doesn't match the top face of the gearbox
+			Direction outputFace = blockState.getValue(GearboxBlock.FACING).getOpposite();
+			cir.setReturnValue(direction != outputFace);
+		}
     }
 }

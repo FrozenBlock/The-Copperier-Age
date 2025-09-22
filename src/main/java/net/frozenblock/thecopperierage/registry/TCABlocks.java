@@ -75,7 +75,7 @@ public final class TCABlocks {
 		CarvedPumpkinBlock::new,
 		BlockBehaviour.Properties.of()
 			.mapColor(MapColor.COLOR_ORANGE)
-			.strength(1.0F)
+			.strength(1F)
 			.sound(SoundType.WOOD)
 			.lightLevel(blockStatex -> 15)
 			.isValidSpawn(Blocks::always)
@@ -86,7 +86,7 @@ public final class TCABlocks {
 		RedstonePumpkinBlock::new,
 		BlockBehaviour.Properties.of()
 			.mapColor(MapColor.COLOR_ORANGE)
-			.strength(1.0F)
+			.strength(1F)
 			.sound(SoundType.WOOD)
 			.lightLevel(blockStatex -> 7)
 			.isValidSpawn(Blocks::always)

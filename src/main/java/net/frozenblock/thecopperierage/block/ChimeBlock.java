@@ -25,6 +25,8 @@ import net.frozenblock.thecopperierage.registry.TCABlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -43,6 +45,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -57,11 +61,11 @@ public class ChimeBlock extends BaseEntityBlock {
 	private static final VoxelShape SUPPORT_CHAIN_SHAPE = Block.box(7D, 12D, 7D, 9D, 16D, 9D);
 	private static final VoxelShape BAR_SHAPE = Block.box(7D, 10D, 0D, 9D, 12D, 16D);
 	private static final VoxelShape CHIMES_SHAPE = Shapes.or(
-		makeChimeTubeShape(1D, 6D),
-		makeChimeTubeShape(4D, 4D),
+		makeChimeTubeShape(1D, 5D),
+		makeChimeTubeShape(4D, 0D),
 		makeChimeTubeShape(7D, 2D),
-		makeChimeTubeShape(10D, 0D),
-		makeChimeTubeShape(13D, 5D)
+		makeChimeTubeShape(10D, 4D),
+		makeChimeTubeShape(13D, 6D)
 	);
 	private static final VoxelShape ENTITY_INSIDE_SHAPE = Block.box(7D, 0D, 0D, 9D, 10D, 16D);
 	private static final VoxelShape SHAPE_CEILING_NO_CHIMES = Shapes.or(SUPPORT_CHAIN_SHAPE, BAR_SHAPE);
@@ -123,7 +127,7 @@ public class ChimeBlock extends BaseEntityBlock {
 		}
 
 		BlockState state = this.defaultBlockState()
-			.setValue(FACING, direction.getOpposite())
+			.setValue(FACING, direction)
 			.setValue(ATTACHMENT, ChimeAttachType.WALL);
 		if (state.canSurvive(level, pos)) return state;
 
@@ -162,7 +166,7 @@ public class ChimeBlock extends BaseEntityBlock {
 
 	private static Direction getConnectedDirection(@NotNull BlockState state) {
 		if (state.getValue(ATTACHMENT) == ChimeAttachType.CEILING) return Direction.DOWN;
-		return state.getValue(FACING).getOpposite();
+		return state.getValue(FACING);
 	}
 
 	@Override
@@ -175,6 +179,25 @@ public class ChimeBlock extends BaseEntityBlock {
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
 		return createTickerHelper(blockEntityType, TCABlockEntityTypes.CHIME, ChimeBlockEntity::tick);
+	}
+
+	@Override
+	public void entityInside(
+		@NotNull BlockState state,
+		@NotNull Level level,
+		@NotNull BlockPos pos,
+		@NotNull Entity entity,
+		InsideBlockEffectApplier insideBlockEffectApplier
+	) {
+		AABB shape = ENTITY_INSIDE_SHAPES.get(state.getValue(FACING)).bounds().move(pos);
+		if (!shape.intersects(entity.getBoundingBox())) return;
+
+		final Vec3 movement = entity.getDeltaMovement();
+		final double length = movement.length();
+		if (length == 0D) return;
+
+		if (!(level.getBlockEntity(pos) instanceof ChimeBlockEntity chime)) return;
+		chime.addEntityInfluence(movement.normalize().scale(Math.min(1D, length * 2D)));
 	}
 
 	@Override

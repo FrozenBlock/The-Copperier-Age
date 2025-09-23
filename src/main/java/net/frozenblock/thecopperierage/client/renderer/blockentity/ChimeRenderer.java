@@ -33,6 +33,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Con
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -56,7 +57,8 @@ public class ChimeRenderer<T extends ChimeBlockEntity> implements BlockEntityRen
 		poseStack.pushPose();
 		poseStack.translate(0.5F, 1.5F, 0.5F);
 		poseStack.mulPose(Axis.XP.rotationDegrees(-180F));
-		poseStack.mulPose(Axis.YP.rotationDegrees(renderState.blockYRot));
+		final Direction direction = renderState.direction.getAxis() == Direction.Axis.Z ? renderState.direction.getOpposite() : renderState.direction;
+		poseStack.mulPose(Axis.YP.rotationDegrees(-direction.toYRot()));
 
 		submitNodeCollector.submitModel(
 			this.model,
@@ -91,7 +93,7 @@ public class ChimeRenderer<T extends ChimeBlockEntity> implements BlockEntityRen
 		renderState.extractTexture(state);
 		renderState.ageInTicks = chime.age + partialTick;
 		renderState.hanging = state.getValue(ChimeBlock.ATTACHMENT) == ChimeAttachType.CEILING;
-		renderState.blockYRot = -state.getValue(ChimeBlock.FACING).toYRot();
+		renderState.direction = state.getValue(ChimeBlock.FACING);
 		renderState.chimeMovement = chime.getLerpedInfluence(partialTick);
 	}
 

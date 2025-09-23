@@ -22,6 +22,7 @@ import net.fabricmc.api.Environment;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
@@ -35,7 +36,7 @@ public class ChimeRenderState extends BlockEntityRenderState {
 	public RenderType renderType;
 	public float ageInTicks;
 	public boolean hanging;
-	public float blockYRot;
+	public Direction direction;
 	public Vec3 chimeMovement;
 
 	public void extractTexture(BlockState state) {

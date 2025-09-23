@@ -19,6 +19,7 @@ package net.frozenblock.thecopperierage.block.entity;
 
 import net.frozenblock.lib.wind.api.WindManager;
 import net.frozenblock.lib.wind.client.impl.ClientWindManager;
+import net.frozenblock.thecopperierage.block.ChimeBlock;
 import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChimeBlockEntity extends BlockEntity {
-	public List<AbstractInfluence> influences;
+	private final List<AbstractInfluence> influences;
 	protected Vec3 prevInfluence = Vec3.ZERO;
 	protected Vec3 influence = Vec3.ZERO;
 	public int age;
@@ -49,9 +50,13 @@ public class ChimeBlockEntity extends BlockEntity {
 		chime.influences.forEach(influence -> influence.tick(level, pos));
 		chime.influences.removeIf(AbstractInfluence::shouldRemove);
 
-		chime.influence = chime.getAverageInfluence();
+		chime.influence = chime.getAverageInfluence().yRot(state.getValue(ChimeBlock.FACING).toYRot() * Mth.DEG_TO_RAD);
 
 		chime.age += 1;
+	}
+
+	public void addEntityInfluence(Vec3 influence) {
+		this.influences.add(new EntityInfluence(influence));
 	}
 
 	public Vec3 getAverageInfluence() {
@@ -96,7 +101,7 @@ public class ChimeBlockEntity extends BlockEntity {
 		@Override
 		public void tick(Level level, BlockPos pos) {
 			final Vec3 targetWind = this.getWind(level, pos);
-			this.wind = this.wind.add(targetWind.subtract(this.wind).scale(0.1D));
+			this.wind = this.wind.add(targetWind.subtract(this.wind).scale(0.025D));
 		}
 
 		@Override

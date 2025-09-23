@@ -6,6 +6,7 @@
   "mixins": [
     "block.BaseFireBlockMixin",
     "block.CampfireBlockMixin",
+    "block.RedstoneWireBlockMixin",
     "item.ItemStackMixin"
   ],
   "client": [
@@ -16,7 +17,8 @@
     "client.copper_fire.TorchBlockMixin",
     "client.copper_fire.WallTorchBlockMixin",
     "client.oxidized_armor.EquipmentLayerRendererMixin",
-    "client.oxidized_items.SelectItemModelPropertiesMixin"
+    "client.oxidized_items.SelectItemModelPropertiesMixin",
+    "datagen.client.VariantMutatorMixin"
   ],
   "injectors": {
     "defaultRequire": 1

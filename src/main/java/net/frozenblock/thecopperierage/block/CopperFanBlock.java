@@ -18,6 +18,8 @@
 package net.frozenblock.thecopperierage.block;
 
 import com.mojang.serialization.MapCodec;
+import java.util.List;
+import java.util.Optional;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
@@ -56,8 +58,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import java.util.List;
-import java.util.Optional;
 
 public class CopperFanBlock extends DirectionalBlock {
 	public static final double FAN_DISTANCE = 9D;

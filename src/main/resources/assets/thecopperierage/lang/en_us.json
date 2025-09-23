@@ -15,6 +15,9 @@
 
   "block.thecopperierage.copper_fire": "Copper Fire",
   "block.thecopperierage.copper_campfire": "Copper Campfire",
+  "block.thecopperierage.copper_jack_o_lantern": "Copper Jack o'Lantern",
+
+  "block.thecopperierage.redstone_jack_o_lantern": "Redstone Jack o'Lantern",
 
   "block.thecopperierage.gearbox": "Gearbox",
   "block.thecopperierage.exposed_gearbox": "Exposed Gearbox",
@@ -37,6 +40,24 @@
   "subtitles.block.copper_fan.on": "Fan powered",
   "subtitles.block.copper_fan.off": "Fan unpowered",
   "subtitles.block.copper_fan.idle": "Fan blows",
+
+  "block.thecopperierage.copper_button": "Copper Button",
+  "block.thecopperierage.exposed_copper_button": "Exposed Copper Button",
+  "block.thecopperierage.weathered_copper_button": "Weathered Copper Button",
+  "block.thecopperierage.oxidized_copper_button": "Oxidized Copper Button",
+  "block.thecopperierage.waxed_copper_button": "Waxed Copper Button",
+  "block.thecopperierage.waxed_exposed_copper_button": "Waxed Exposed Copper Button",
+  "block.thecopperierage.waxed_weathered_copper_button": "Waxed Weathered Copper Button",
+  "block.thecopperierage.waxed_oxidized_copper_button": "Waxed Oxidized Copper Button",
+
+  "block.thecopperierage.weighted_pressure_plate": "Weighted Pressure Plate",
+  "block.thecopperierage.exposed_weighted_pressure_plate": "Exposed Weighted Pressure Plate",
+  "block.thecopperierage.weathered_weighted_pressure_plate": "Weathered Weighted Pressure Plate",
+  "block.thecopperierage.oxidized_weighted_pressure_plate": "Oxidized Weighted Pressure Plate",
+  "block.thecopperierage.waxed_weighted_pressure_plate": "Waxed Weighted Pressure Plate",
+  "block.thecopperierage.waxed_exposed_weighted_pressure_plate": "Waxed Exposed Weighted Pressure Plate",
+  "block.thecopperierage.waxed_weathered_weighted_pressure_plate": "Waxed Weathered Weighted Pressure Plate",
+  "block.thecopperierage.waxed_oxidized_weighted_pressure_plate": "Waxed Oxidized Weighted Pressure Plate",
 
   "pack.thecopperierage.copperier_copper": "Copperier Copper",
   "pack.thecopperierage.green_copper_bulbs": "Green Copper Bulbs"

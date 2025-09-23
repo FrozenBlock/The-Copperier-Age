@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "A": "minecraft:carved_pumpkin",
+    "B": "minecraft:redstone_torch"
+  },
+  "pattern": [
+    "A",
+    "B"
+  ],
+  "result": {
+    "count": 1,
+    "id": "thecopperierage:redstone_jack_o_lantern"
+  }
+}

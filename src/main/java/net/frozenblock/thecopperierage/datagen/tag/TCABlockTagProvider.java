@@ -45,9 +45,11 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 
 		this.valueLookupBuilder(BlockTags.LANTERNS);
 
-		this.valueLookupBuilder(BlockTags.BUTTONS);
+		this.builder(BlockTags.BUTTONS)
+			.addOptionalTag(TCABlockTags.COPPER_BUTTONS);
 
-		this.valueLookupBuilder(BlockTags.PRESSURE_PLATES);
+		this.builder(BlockTags.PRESSURE_PLATES)
+			.addOptionalTag(TCABlockTags.COPPER_PRESSURE_PLATES);
 
 		this.valueLookupBuilder(BlockTags.CAMPFIRES)
 			.add(TCABlocks.COPPER_CAMPFIRE);
@@ -61,12 +63,24 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 		TagAppender<Block, Block> copperFansTag = this.valueLookupBuilder(TCABlockTags.COPPER_FANS);
 		TCABlocks.COPPER_FAN.forEach(copperFansTag::add);
 
+		TagAppender<Block, Block> copperButtonsTag = this.valueLookupBuilder(TCABlockTags.COPPER_BUTTONS);
+		TCABlocks.COPPER_BUTTON.forEach(copperButtonsTag::add);
+
+		TagAppender<Block, Block> copperPressurePlatesTag = this.valueLookupBuilder(TCABlockTags.COPPER_PRESSURE_PLATES);
+		TCABlocks.WEIGHTED_PRESSURE_PLATE.forEach(copperPressurePlatesTag::add);
+
 		this.valueLookupBuilder(BlockTags.MINEABLE_WITH_AXE)
-			.add(TCABlocks.COPPER_CAMPFIRE);
+			.add(TCABlocks.COPPER_CAMPFIRE)
+			.add(TCABlocks.COPPER_JACK_O_LANTERN, TCABlocks.REDSTONE_JACK_O_LANTERN);
+
+		this.valueLookupBuilder(BlockTags.SWORD_EFFICIENT)
+			.add(TCABlocks.COPPER_JACK_O_LANTERN, TCABlocks.REDSTONE_JACK_O_LANTERN);
 
 		this.builder(BlockTags.MINEABLE_WITH_PICKAXE)
 			.addOptionalTag(TCABlockTags.GEARBOXES)
-			.addOptionalTag(TCABlockTags.COPPER_FANS);
+			.addOptionalTag(TCABlockTags.COPPER_FANS)
+			.addOptionalTag(TCABlockTags.COPPER_BUTTONS)
+			.addOptionalTag(TCABlockTags.COPPER_PRESSURE_PLATES);
 
 		this.builder(FrozenBlockTags.BLOWING_CAN_PASS_THROUGH)
 			.addOptionalTag(TCABlockTags.COPPER_FANS);
@@ -91,9 +105,14 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 				if (path.contains("pressure_plate")) return;
 				if (path.contains("chest")) return;
 				if (path.contains("campfire")) return;
+				if (path.contains("jack_o_lantern")) return;
 
 				copperFireBaseBlocksTag.add(block.value());
 			});
+
+		// WILDER WILD
+		this.valueLookupBuilder(getTag("wilderwild:sound/melon"))
+			.add(TCABlocks.COPPER_JACK_O_LANTERN, TCABlocks.REDSTONE_JACK_O_LANTERN);
 	}
 
 	@NotNull

@@ -55,6 +55,7 @@ import net.minecraft.world.item.equipment.EquipmentAssets;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Contract;
+import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,9 +111,26 @@ public final class TCAModelProvider extends FabricModelProvider {
 	@Override
 	public void generateBlockStateModels(@NotNull BlockModelGenerators generator) {
 		createCopperFire(generator);
+		generator.createPumpkinVariant(TCABlocks.COPPER_JACK_O_LANTERN, TextureMapping.column(Blocks.PUMPKIN));
+		generator.createPumpkinVariant(TCABlocks.REDSTONE_JACK_O_LANTERN, TextureMapping.column(Blocks.PUMPKIN));
 		generator.createCampfires(TCABlocks.COPPER_CAMPFIRE);
+
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.unaffected(), Blocks.COPPER_BLOCK);
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed(), Blocks.COPPER_BLOCK);
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.exposed(), Blocks.EXPOSED_COPPER);
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxedExposed(), Blocks.EXPOSED_COPPER);
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.weathered(), Blocks.WEATHERED_COPPER);
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxedWeathered(), Blocks.WEATHERED_COPPER);
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.oxidized(), Blocks.OXIDIZED_COPPER);
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxedOxidized(), Blocks.OXIDIZED_COPPER);
+
 		TCABlocks.GEARBOX.waxedMapping().forEach((block, waxedBlock) -> createGearbox(generator, block, waxedBlock));
 		TCABlocks.COPPER_FAN.waxedMapping().forEach((block, waxedBlock) -> createCopperFan(generator, block, waxedBlock));
+
+		createCopperButton(generator, TCABlocks.COPPER_BUTTON.unaffected(), TCABlocks.COPPER_BUTTON.waxed(), Blocks.COPPER_BLOCK);
+		createCopperButton(generator, TCABlocks.COPPER_BUTTON.exposed(), TCABlocks.COPPER_BUTTON.waxedExposed(), Blocks.EXPOSED_COPPER);
+		createCopperButton(generator, TCABlocks.COPPER_BUTTON.weathered(), TCABlocks.COPPER_BUTTON.waxedWeathered(), Blocks.WEATHERED_COPPER);
+		createCopperButton(generator, TCABlocks.COPPER_BUTTON.oxidized(), TCABlocks.COPPER_BUTTON.waxedOxidized(), Blocks.OXIDIZED_COPPER);
 	}
 
 	@Override
@@ -371,5 +389,30 @@ public final class TCAModelProvider extends FabricModelProvider {
 				)
 			)
 		);
+	}
+
+	private static void createCopperButton(@NotNull BlockModelGenerators generator, @NotNull Block block, @NotNull Block waxedBlock, Block originalBlock) {
+		createCopperButton(generator, block, waxedBlock, originalBlock, ModelTemplates.BUTTON, ModelTemplates.BUTTON_PRESSED, ModelTemplates.BUTTON_INVENTORY);
+	}
+
+	static void createCopperButton(
+		@NotNull BlockModelGenerators generator,
+		@NotNull Block block,
+		@NotNull Block waxedBlock,
+		Block originalBlock,
+		@NotNull ModelTemplate modelTemplate,
+		@NotNull ModelTemplate pressedTemplate,
+		@NotNull ModelTemplate inventoryTemplate
+	) {
+		final TextureMapping mapping = TextureMapping.defaultTexture(originalBlock);
+		MultiVariant model = BlockModelGenerators.plainVariant(modelTemplate.create(block, mapping, generator.modelOutput));
+		MultiVariant pressedModel = BlockModelGenerators.plainVariant(pressedTemplate.create(block, mapping, generator.modelOutput));
+
+		generator.blockStateOutput.accept(BlockModelGenerators.createButton(block, model, pressedModel));
+		generator.blockStateOutput.accept(BlockModelGenerators.createButton(waxedBlock, model, pressedModel));
+
+		generator.itemModelOutput.copy(block.asItem(), waxedBlock.asItem());
+		final ResourceLocation itemModel = inventoryTemplate.create(block, mapping, generator.modelOutput);
+		generator.registerSimpleItemModel(block, itemModel);
 	}
 }

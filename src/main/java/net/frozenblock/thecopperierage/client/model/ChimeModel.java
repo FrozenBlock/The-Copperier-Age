@@ -225,7 +225,7 @@ public class ChimeModel extends Model<ChimeRenderState> {
 			chime.xRot += chimeRotA.getFirst();
 			chime.zRot += chimeRotA.getSecond();
 
-			final Pair<Float, Float> chimeRotB = getRotationForMovement(movementOffset + 0.5F, renderState.ageInTicks, chimeMovement);
+			final Pair<Float, Float> chimeRotB = getRotationForMovement(movementOffset - 0.5F, renderState.ageInTicks, chimeMovement);
 			tube.xRot += chimeRotB.getFirst();
 			tube.zRot += chimeRotB.getSecond();
 		}

@@ -106,6 +106,11 @@ public final class TCAModelProvider extends FabricModelProvider {
 		TCABlocks.GEARBOX.waxedMapping().forEach((block, waxedBlock) -> createGearbox(generator, block, waxedBlock));
 		TCABlocks.COPPER_FAN.waxedMapping().forEach((block, waxedBlock) -> createCopperFan(generator, block, waxedBlock));
 
+		createChime(generator, TCABlocks.CHIME.unaffected(), TCABlocks.CHIME.waxed(), Blocks.COPPER_BLOCK);
+		createChime(generator, TCABlocks.CHIME.exposed(), TCABlocks.CHIME.waxedExposed(), Blocks.EXPOSED_COPPER);
+		createChime(generator, TCABlocks.CHIME.weathered(), TCABlocks.CHIME.waxedWeathered(), Blocks.WEATHERED_COPPER);
+		createChime(generator, TCABlocks.CHIME.oxidized(), TCABlocks.CHIME.waxedOxidized(), Blocks.OXIDIZED_COPPER);
+
 		createCopperButton(generator, TCABlocks.COPPER_BUTTON.unaffected(), TCABlocks.COPPER_BUTTON.waxed(), Blocks.COPPER_BLOCK);
 		createCopperButton(generator, TCABlocks.COPPER_BUTTON.exposed(), TCABlocks.COPPER_BUTTON.waxedExposed(), Blocks.EXPOSED_COPPER);
 		createCopperButton(generator, TCABlocks.COPPER_BUTTON.weathered(), TCABlocks.COPPER_BUTTON.waxedWeathered(), Blocks.WEATHERED_COPPER);
@@ -205,6 +210,14 @@ public final class TCAModelProvider extends FabricModelProvider {
 		);
 	}
 
+	public static void createChime(@NotNull BlockModelGenerators generator, Block unaffected, Block waxed, Block particleBlock) {
+		MultiVariant model = generator.createParticleOnlyBlockModel(unaffected, particleBlock);
+		generator.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(unaffected, model));
+		generator.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(waxed, model));
+
+		generator.itemModelOutput.copy(unaffected.asItem(), waxed.asItem());
+		generator.registerSimpleFlatItemModel(unaffected.asItem());
+	}
 
 	private static void generateCopperHorn(@NotNull ItemModelGenerators generator, Item item) {
 		ItemModel.Unbaked unbaked = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item));

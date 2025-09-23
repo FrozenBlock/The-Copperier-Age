@@ -20,12 +20,14 @@ package net.frozenblock.thecopperierage.registry;
 import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.TCAFeatureFlags;
+import net.frozenblock.thecopperierage.block.ChimeBlock;
 import net.frozenblock.thecopperierage.block.CopperButtonBlock;
 import net.frozenblock.thecopperierage.block.CopperFanBlock;
 import net.frozenblock.thecopperierage.block.CopperFireBlock;
 import net.frozenblock.thecopperierage.block.CopperPressurePlateBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
 import net.frozenblock.thecopperierage.block.RedstonePumpkinBlock;
+import net.frozenblock.thecopperierage.block.WeatheringChimeBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperButtonBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperPressurePlateBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperFanBlock;
@@ -113,6 +115,18 @@ public final class TCABlocks {
 			.mapColor(MapColor.STONE)
 			.strength(1.5F)
 			.isRedstoneConductor(Blocks::never)
+	);
+
+	public static final WeatheringCopperBlocks CHIME = WeatheringCopperBlocks.create(
+		"chime",
+		TCABlocks::register,
+		ChimeBlock::new,
+		WeatheringChimeBlock::new,
+		(weatherState) -> BlockBehaviour.Properties.of()
+			.requiresCorrectToolForDrops()
+			.strength(5F, 6F)
+			.sound(SoundType.COPPER)
+			//.noOcclusion()
 	);
 
 	public static final WeatheringCopperBlocks COPPER_BUTTON = createWeatheringCopperSet(

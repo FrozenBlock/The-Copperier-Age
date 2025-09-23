@@ -13,6 +13,15 @@
   "item.thecopperierage.wrench": "Wrench",
   "subtitles.item.wrench.use": "Wrench used",
 
+  "block.thecopperierage.chime": "Chime",
+  "block.thecopperierage.exposed_chime": "Exposed Chime",
+  "block.thecopperierage.weathered_chime": "Weathered Chime",
+  "block.thecopperierage.oxidized_chime": "Oxidized Chime",
+  "block.thecopperierage.waxed_chime": "Waxed Chime",
+  "block.thecopperierage.waxed_exposed_chime": "Waxed Exposed Chime",
+  "block.thecopperierage.waxed_weathered_chime": "Waxed Weathered Chime",
+  "block.thecopperierage.waxed_oxidized_chime": "Waxed Oxidized Chime",
+
   "block.thecopperierage.copper_fire": "Copper Fire",
   "block.thecopperierage.copper_campfire": "Copper Campfire",
   "block.thecopperierage.copper_jack_o_lantern": "Copper Jack o'Lantern",

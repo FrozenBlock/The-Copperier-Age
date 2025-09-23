@@ -86,6 +86,14 @@ public final class OxidizableItemHelper {
 		return 0F;
 	}
 
+	public static <T> T getValueForOxidization(ItemStack stack, T unaffected, T exposed, T weathered, T oxidized) {
+		final float oxidizeProgress = getOxidizeProgress(stack);
+		if (oxidizeProgress == 0.35F) return exposed;
+		if (oxidizeProgress == 0.65F) return weathered;
+		if (oxidizeProgress == 1F) return oxidized;
+		return unaffected;
+	}
+
 	public static void onDamageUpdated(@NotNull ItemStack stack, int damageValue) {
 		// TODO: Config
 		final Item item = stack.getItem();

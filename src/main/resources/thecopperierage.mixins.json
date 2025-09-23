@@ -15,6 +15,7 @@
     "client.copper_fire.LavaParticleProviderMixin",
     "client.copper_fire.TorchBlockMixin",
     "client.copper_fire.WallTorchBlockMixin",
+    "client.oxidized_armor.EquipmentLayerRendererMixin",
     "client.oxidized_items.SelectItemModelPropertiesMixin"
   ],
   "injectors": {

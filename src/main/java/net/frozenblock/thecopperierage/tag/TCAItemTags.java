@@ -24,7 +24,7 @@ import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
 
 public final class TCAItemTags {
-	public static final TagKey<Item> TEST = bind("test");
+	public static final TagKey<Item> OXIDIZABLE_EQUIPMENT = bind("oxidizable_equipment");
 
 	private TCAItemTags() {
 		throw new UnsupportedOperationException("TCAItemTags contains only static declarations.");

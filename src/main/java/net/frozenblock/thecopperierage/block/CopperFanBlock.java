@@ -21,7 +21,7 @@ import com.mojang.serialization.MapCodec;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
-import net.frozenblock.lib.particle.client.options.WindParticleOptions;
+import net.frozenblock.lib.particle.options.WindParticleOptions;
 import net.frozenblock.lib.wind.api.BlowingHelper;
 import net.frozenblock.lib.wind.api.WindDisturbance;
 import net.frozenblock.lib.wind.api.WindDisturbanceLogic;

@@ -1,8 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "redstone",
+  "category": "misc",
   "key": {
-    "-": "minecraft:copper_block",
+    "-": "minecraft:copper_ingot",
     "T": "minecraft:iron_chain",
     "V": "minecraft:amethyst_shard"
   },

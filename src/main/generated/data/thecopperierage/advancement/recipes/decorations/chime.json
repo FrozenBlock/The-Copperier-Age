@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_exposed_copper": {
+    "has_amethyst_shard": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:exposed_copper"
+            "items": "minecraft:amethyst_shard"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thecopperierage:exposed_chime"
+        "recipe": "thecopperierage:chime"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_exposed_copper"
+      "has_amethyst_shard"
     ]
   ],
   "rewards": {
     "recipes": [
-      "thecopperierage:exposed_chime"
+      "thecopperierage:chime"
     ]
   }
 }

@@ -75,7 +75,6 @@ public class ChimeBlockEntity extends BlockEntity {
 			.filter(abstractInfluence -> {
 				return abstractInfluence instanceof EntityInfluence entityInfluence
 					&& entityInfluence.isSoundBearing()
-					&& entityInfluence.getEntity() == entity
 					&& entityInfluence.getTicksSinceStart() <= 30;
 			})
 			.toList();

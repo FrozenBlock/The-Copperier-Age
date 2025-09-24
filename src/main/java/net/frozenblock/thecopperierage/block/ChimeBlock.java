@@ -201,7 +201,7 @@ public class ChimeBlock extends BaseEntityBlock {
 		final double strength = (chimeCenter.y() - hitResult.getLocation().y()) * 1.25F;
 
 		return chime.addEntityInfluence(level, pos, player, difference.normalize().scale(strength), true)
-			? InteractionResult.SUCCESS_SERVER
+			? InteractionResult.SUCCESS
 			: InteractionResult.CONSUME;
 	}
 

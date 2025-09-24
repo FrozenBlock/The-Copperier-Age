@@ -28,6 +28,25 @@
     ],
     "subtitle": "subtitles.block.gearbox.idle"
   },
+  "block.chime.ambient.idle": {
+    "sounds": [
+      "thecopperierage:block/chime/ambient1",
+      "thecopperierage:block/chime/ambient2",
+      "thecopperierage:block/chime/ambient3",
+      "thecopperierage:block/chime/ambient4",
+      "thecopperierage:block/chime/ambient5",
+      "thecopperierage:block/chime/ambient6",
+      "thecopperierage:block/chime/ambient7",
+      "thecopperierage:block/chime/ambient8",
+      "thecopperierage:block/chime/ambient9",
+      "thecopperierage:block/chime/ambient10",
+      "thecopperierage:block/chime/ambient11",
+      "thecopperierage:block/chime/ambient12",
+      "thecopperierage:block/chime/ambient13",
+      "thecopperierage:block/chime/ambient14"
+    ],
+    "subtitle": "subtitles.block.chime.ambient.idle"
+  },
   "item.copper_horn.recorder": {
     "sounds": [
       {

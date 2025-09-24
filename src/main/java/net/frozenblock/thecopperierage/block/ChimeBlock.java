@@ -22,8 +22,11 @@ import net.frozenblock.thecopperierage.block.entity.ChimeBlockEntity;
 import net.frozenblock.thecopperierage.block.state.properties.ChimeAttachType;
 import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
 import net.frozenblock.thecopperierage.registry.TCABlockStateProperties;
+import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.InsideBlockEffectApplier;
@@ -202,8 +205,17 @@ public class ChimeBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-		// TODO: Sounds
+	public void animateTick(BlockState state, @NotNull Level level, BlockPos pos, RandomSource random) {
+		if (!(level.getBlockEntity(pos) instanceof ChimeBlockEntity chime)) return;
+
+		Vec3 influence = chime.getLerpedInfluence(1F);
+		final float influenceSpeed = Math.min(1F, (float) influence.length());
+
+		if (random.nextDouble() > influenceSpeed * 0.2D) return;
+
+		final float volume = Mth.lerp(influenceSpeed, 0.1F, 1F);
+		final float pitch = Mth.lerp(influenceSpeed, 0.75F, 1.1F) + (random.nextFloat() * 0.1F * influenceSpeed);
+		level.playLocalSound(pos, TCASounds.BLOCK_CHIME_AMBIENT_IDLE, SoundSource.AMBIENT, volume, pitch, false);
 	}
 
 	protected static @NotNull VoxelShape makeChimeTubeShape(double zStart, double yStart) {

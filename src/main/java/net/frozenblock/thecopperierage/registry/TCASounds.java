@@ -29,6 +29,7 @@ public final class TCASounds {
 
 	// BLOCK
 	public static final SoundEvent BLOCK_GEARBOX_IDLE = register("block.gearbox.idle");
+	public static final SoundEvent BLOCK_CHIME_AMBIENT_IDLE = register("block.chime.ambient.idle");
 
 	// ITEM
 	public static final Holder.Reference<SoundEvent> ITEM_COPPER_HORN_SAX = registerForHolder("item.copper_horn.saxophone");

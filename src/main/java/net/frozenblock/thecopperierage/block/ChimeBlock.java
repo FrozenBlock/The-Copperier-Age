@@ -218,10 +218,6 @@ public class ChimeBlock extends BaseEntityBlock {
 		level.playLocalSound(pos, TCASounds.BLOCK_CHIME_AMBIENT_IDLE, SoundSource.AMBIENT, volume, pitch, false);
 	}
 
-	protected static @NotNull VoxelShape makeChimeTubeShape(double zStart, double yStart) {
-		return Block.box(7D, yStart, zStart, 9D, 10D, zStart + 2D);
-	}
-
 	@Contract(pure = true)
 	private static Map<Direction, VoxelShape> selectShapeListFromType(
 		@NotNull ChimeShapeType shapeType,

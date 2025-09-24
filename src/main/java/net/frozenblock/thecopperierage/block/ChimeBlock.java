@@ -67,7 +67,7 @@ public class ChimeBlock extends BaseEntityBlock {
 		makeChimeTubeShape(4D, 0D),
 		makeChimeTubeShape(1D, 5D)
 	);
-	private static final VoxelShape OUTLINE_SHAPE = Block.box(7D, 0D, 7D, 9D, 12D, 16D);
+	private static final VoxelShape OUTLINE_SHAPE = Block.box(7D, 0D, 0D, 9D, 12D, 16D);
 	private static final Map<Direction, VoxelShape> CEILING_SHAPES_OUTLINE = Shapes.rotateHorizontal(Shapes.or(SUPPORT_CHAIN_SHAPE, OUTLINE_SHAPE));
 	private static final Map<Direction, VoxelShape> CEILING_SHAPES_COLLISION = Shapes.rotateHorizontal(Shapes.or(SUPPORT_CHAIN_SHAPE, BAR_SHAPE));
 	private static final Map<Direction, VoxelShape> CEILING_SHAPES_VISUAL = Shapes.rotateHorizontal(Shapes.or(SUPPORT_CHAIN_SHAPE, BAR_SHAPE, CHIMES_SHAPE));

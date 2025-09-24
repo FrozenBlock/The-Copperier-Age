@@ -197,7 +197,7 @@ public class ChimeBlock extends BaseEntityBlock {
 
 		final Vec3 playerPos = player.getEyePosition();
 		final Vec3 chimeCenter = pos.getCenter();
-		final Vec3 difference = playerPos.subtract(chimeCenter);
+		final Vec3 difference = chimeCenter.subtract(playerPos);
 		final double strength = (chimeCenter.y() - hitResult.getLocation().y()) * 1.25F;
 
 		return chime.addEntityInfluence(level, pos, player, difference.normalize().scale(strength), true)

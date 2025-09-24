@@ -95,6 +95,7 @@ public class ChimeBlockEntity extends BlockEntity {
 
 	public static class WindInfluence extends AbstractInfluence {
 		private Vec3 wind;
+		private boolean isFirstTick = true;
 
 		public WindInfluence() {
 			this.wind = Vec3.ZERO;
@@ -103,7 +104,8 @@ public class ChimeBlockEntity extends BlockEntity {
 		@Override
 		public void tick(Level level, BlockPos pos) {
 			final Vec3 targetWind = this.getWind(level, pos);
-			this.wind = this.wind.add(targetWind.subtract(this.wind).scale(0.025D));
+			this.wind = this.wind.add(targetWind.subtract(this.wind).scale( this.isFirstTick ? 0.9D : 0.025D));
+			this.isFirstTick = false;
 		}
 
 		@Override

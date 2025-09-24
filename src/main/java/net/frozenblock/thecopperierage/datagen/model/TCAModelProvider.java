@@ -127,8 +127,8 @@ public final class TCAModelProvider extends FabricModelProvider {
 	}
 
 	private static void createCopperFire(@NotNull BlockModelGenerators generator) {
-		MultiVariant floorModels = generator.createFloorFireModels(TCABlocks.COPPER_FIRE);
-		MultiVariant sideModels = generator.createSideFireModels(TCABlocks.COPPER_FIRE);
+		final MultiVariant floorModels = generator.createFloorFireModels(TCABlocks.COPPER_FIRE);
+		final MultiVariant sideModels = generator.createSideFireModels(TCABlocks.COPPER_FIRE);
 		generator.blockStateOutput.accept(
 			MultiPartGenerator.multiPart(TCABlocks.COPPER_FIRE)
 				.with(floorModels)
@@ -140,20 +140,20 @@ public final class TCAModelProvider extends FabricModelProvider {
 	}
 
 	private static void createGearbox(@NotNull BlockModelGenerators generator, @NotNull Block block, @NotNull Block waxedBlock) {
-		TextureMapping mapping = new TextureMapping()
+		final TextureMapping mapping = new TextureMapping()
 			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"))
 			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(block, "_top"));
-		MultiVariant model = BlockModelGenerators.plainVariant(GEARBOX_MODEL.create(block, mapping, generator.modelOutput));
+		final MultiVariant model = BlockModelGenerators.plainVariant(GEARBOX_MODEL.create(block, mapping, generator.modelOutput));
 
-		TextureMapping counterMapping = new TextureMapping()
+		final TextureMapping counterMapping = new TextureMapping()
 			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side_counter_clockwise"))
 			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(block, "_top_counter_clockwise"));
-		MultiVariant counterModel = BlockModelGenerators.plainVariant(GEARBOX_COUNTER_CLOCKWISE_MODEL.create(block, counterMapping, generator.modelOutput));
+		final MultiVariant counterModel = BlockModelGenerators.plainVariant(GEARBOX_COUNTER_CLOCKWISE_MODEL.create(block, counterMapping, generator.modelOutput));
 
-		TextureMapping clockwiseMapping = new TextureMapping()
+		final TextureMapping clockwiseMapping = new TextureMapping()
 			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side_clockwise"))
 			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(block, "_top_clockwise"));
-		MultiVariant clockwiseModel = BlockModelGenerators.plainVariant(GEARBOX_CLOCKWISE_MODEL.create(block, clockwiseMapping, generator.modelOutput));
+		final MultiVariant clockwiseModel = BlockModelGenerators.plainVariant(GEARBOX_CLOCKWISE_MODEL.create(block, clockwiseMapping, generator.modelOutput));
 
 		generator.itemModelOutput.copy(block.asItem(), waxedBlock.asItem());
 
@@ -188,12 +188,12 @@ public final class TCAModelProvider extends FabricModelProvider {
 	}
 
 	private static void createCopperFan(@NotNull BlockModelGenerators generator, @NotNull Block block, @NotNull Block waxedBlock) {
-		TextureMapping mapping = new TextureMapping()
+		final TextureMapping mapping = new TextureMapping()
 			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"))
 			.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_bottom"));
 
-		MultiVariant model = BlockModelGenerators.plainVariant(COPPER_FAN_MODEL.create(block, mapping, generator.modelOutput));
-		MultiVariant poweredModel = BlockModelGenerators.plainVariant(COPPER_FAN_POWERED_MODEL.create(block, mapping, generator.modelOutput));
+		final MultiVariant model = BlockModelGenerators.plainVariant(COPPER_FAN_MODEL.create(block, mapping, generator.modelOutput));
+		final MultiVariant poweredModel = BlockModelGenerators.plainVariant(COPPER_FAN_POWERED_MODEL.create(block, mapping, generator.modelOutput));
 
 		generator.itemModelOutput.copy(block.asItem(), waxedBlock.asItem());
 
@@ -214,8 +214,8 @@ public final class TCAModelProvider extends FabricModelProvider {
 	}
 
 	public static void createChime(@NotNull BlockModelGenerators generator, Block block, Block waxed) {
-		MultiVariant particleOnly = generator.createParticleOnlyBlockModel(block, block);
-		MultiVariant bar = BlockModelGenerators.plainVariant(CHIME_BAR_MODEL.create(block, TextureMapping.defaultTexture(block), generator.modelOutput));
+		final MultiVariant particleOnly = generator.createParticleOnlyBlockModel(block, block);
+		final MultiVariant bar = BlockModelGenerators.plainVariant(CHIME_BAR_MODEL.create(block, TextureMapping.defaultTexture(block), generator.modelOutput));
 
 		dispatchChimeStates(generator, block, particleOnly, bar);
 		dispatchChimeStates(generator, waxed, particleOnly, bar);
@@ -255,14 +255,13 @@ public final class TCAModelProvider extends FabricModelProvider {
 		@NotNull ModelTemplate inventoryTemplate
 	) {
 		final TextureMapping mapping = TextureMapping.defaultTexture(originalBlock);
-		MultiVariant model = BlockModelGenerators.plainVariant(modelTemplate.create(block, mapping, generator.modelOutput));
-		MultiVariant pressedModel = BlockModelGenerators.plainVariant(pressedTemplate.create(block, mapping, generator.modelOutput));
+		final MultiVariant model = BlockModelGenerators.plainVariant(modelTemplate.create(block, mapping, generator.modelOutput));
+		final MultiVariant pressedModel = BlockModelGenerators.plainVariant(pressedTemplate.create(block, mapping, generator.modelOutput));
 
 		generator.blockStateOutput.accept(BlockModelGenerators.createButton(block, model, pressedModel));
 		generator.blockStateOutput.accept(BlockModelGenerators.createButton(waxedBlock, model, pressedModel));
 
 		generator.itemModelOutput.copy(block.asItem(), waxedBlock.asItem());
-		final ResourceLocation itemModel = inventoryTemplate.create(block, mapping, generator.modelOutput);
-		generator.registerSimpleItemModel(block, itemModel);
+		generator.registerSimpleItemModel(block, inventoryTemplate.create(block, mapping, generator.modelOutput));
 	}
 }

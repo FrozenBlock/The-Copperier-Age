@@ -131,7 +131,7 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 	}
 
 	private static void generateCopperLantern(@NotNull BlockModelGenerators generator, Block lantern, Block chain) {
-		TextureMapping textureMapping = new TextureMapping()
+		final TextureMapping textureMapping = new TextureMapping()
 			.put(TextureSlot.LANTERN, TextureMapping.getBlockTexture(lantern))
 			.put(TextureSlot.BARS, TextureMapping.getBlockTexture(chain));
 
@@ -140,16 +140,16 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 	}
 
 	public static void generateCopperBars(@NotNull BlockModelGenerators generator, Block block, Block waxedBlock) {
-		TextureMapping textureMapping = new TextureMapping()
+		final TextureMapping textureMapping = new TextureMapping()
 			.put(TextureSlot.BARS, TextureMapping.getBlockTexture(block))
 			.put(TextureSlot.EDGE, TextureMapping.getBlockTexture(block, "_edge"));
 
-		MultiVariant postEnds = plainVariant(COPPER_BARS_POST_ENDS_MODEL.create(block, textureMapping, generator.modelOutput));
-		MultiVariant post = plainVariant(COPPER_BARS_POST_MODEL.create(block, textureMapping, generator.modelOutput));
-		MultiVariant cap = plainVariant(COPPER_BARS_CAP_MODEL.create(block, textureMapping, generator.modelOutput));
-		MultiVariant capAlt = plainVariant(COPPER_BARS_CAP_ALT_MODEL.create(block, textureMapping, generator.modelOutput));
-		MultiVariant side = plainVariant(COPPER_BARS_SIDE_MODEL.create(block, textureMapping, generator.modelOutput));
-		MultiVariant sideAlt = plainVariant(COPPER_BARS_SIDE_ALT_MODEL.create(block, textureMapping, generator.modelOutput));
+		final MultiVariant postEnds = plainVariant(COPPER_BARS_POST_ENDS_MODEL.create(block, textureMapping, generator.modelOutput));
+		final MultiVariant post = plainVariant(COPPER_BARS_POST_MODEL.create(block, textureMapping, generator.modelOutput));
+		final MultiVariant cap = plainVariant(COPPER_BARS_CAP_MODEL.create(block, textureMapping, generator.modelOutput));
+		final MultiVariant capAlt = plainVariant(COPPER_BARS_CAP_ALT_MODEL.create(block, textureMapping, generator.modelOutput));
+		final MultiVariant side = plainVariant(COPPER_BARS_SIDE_MODEL.create(block, textureMapping, generator.modelOutput));
+		final MultiVariant sideAlt = plainVariant(COPPER_BARS_SIDE_ALT_MODEL.create(block, textureMapping, generator.modelOutput));
 
 		Function<MultiPartGenerator, MultiPartGenerator> barsDispatcher = multiPartGenerator -> {
 			return multiPartGenerator.with(postEnds)

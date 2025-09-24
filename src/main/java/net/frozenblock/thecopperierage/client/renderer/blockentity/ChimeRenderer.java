@@ -94,7 +94,7 @@ public class ChimeRenderer<T extends ChimeBlockEntity> implements BlockEntityRen
 		renderState.ageInTicks = chime.age + partialTick;
 		renderState.hanging = state.getValue(ChimeBlock.ATTACHMENT) == ChimeAttachType.CEILING;
 		renderState.direction = state.getValue(ChimeBlock.FACING);
-		renderState.chimeMovement = chime.getLerpedInfluence(partialTick);
+		renderState.chimeMovement = chime.getLerpedInfluence(partialTick).scale(0.4D);
 	}
 
 }

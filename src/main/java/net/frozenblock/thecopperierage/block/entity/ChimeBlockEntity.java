@@ -59,17 +59,16 @@ public class ChimeBlockEntity extends BlockEntity {
 	}
 
 	public void addInfluence(@NotNull Level level, BlockPos pos, Vec3 influence, boolean playsSound) {
-		if (!level.isClientSide() && playsSound) {
-			final float influenceSpeed = Math.clamp((float) influence.length(), 0.02F, 1.2F);
-			final float volume = Mth.lerp(influenceSpeed, 0.1F, 0.6F);
-			final float pitch = Mth.lerp(influenceSpeed, 0.75F, 1.2F);
-			level.playSound(null, pos, TCASounds.BLOCK_CHIME_DISTURB, SoundSource.BLOCKS, volume, pitch);
-		}
 		this.influences.add(new VectorBasedInfluence(influence));
+		if (level.isClientSide() || !playsSound) return;
+
+		final float influenceSpeed = Math.clamp((float) this.getAverageInfluence().length(), 0.02F, 1.2F);
+		final float volume = Mth.lerp(influenceSpeed, 0.1F, 0.6F);
+		final float pitch = Mth.lerp(influenceSpeed, 0.75F, 1.2F);
+		level.playSound(null, pos, TCASounds.BLOCK_CHIME_DISTURB, SoundSource.BLOCKS, volume, pitch);
 	}
 
 	public boolean addEntityInfluence(@NotNull Level level, BlockPos pos, Entity entity, Vec3 influence, boolean cancelIfSoundCannotPlay) {
-		boolean canPlaySound = false;
 		List<AbstractInfluence> entityInfluences = this.influences
 			.stream()
 			.filter(abstractInfluence -> {
@@ -78,7 +77,8 @@ public class ChimeBlockEntity extends BlockEntity {
 					&& entityInfluence.getTicksSinceStart() <= 30;
 			})
 			.toList();
-		if (entityInfluences.isEmpty()) canPlaySound = true;
+
+		final boolean canPlaySound = entityInfluences.isEmpty();
 		if (cancelIfSoundCannotPlay && !canPlaySound) return false;
 		this.influences.add(new EntityInfluence(entity, influence, canPlaySound));
 
@@ -89,7 +89,7 @@ public class ChimeBlockEntity extends BlockEntity {
 			level.playSound(entity, pos, TCASounds.BLOCK_CHIME_DISTURB, SoundSource.BLOCKS, volume, pitch);
 		}
 
-		return canPlaySound || level.isClientSide();
+		return canPlaySound;
 	}
 
 	public Vec3 getAverageInfluence() {

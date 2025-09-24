@@ -64,7 +64,7 @@ public class ChimeRenderer<T extends ChimeBlockEntity> implements BlockEntityRen
 			this.model,
 			renderState,
 			poseStack,
-			renderState.renderType,
+			this.model.renderType(renderState.texture),
 			renderState.lightCoords,
 			OverlayTexture.NO_OVERLAY,
 			0,

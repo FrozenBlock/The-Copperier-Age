@@ -2,6 +2,7 @@ Lufurrius
  - Initial Copper Chain Retextures
  - Initial Gearbox Concept
  - Initial Gearbox Textures
+ - Copper Pressure Plate Concept
 
 Zhen/zntm
  - Wrench Concept & Texture

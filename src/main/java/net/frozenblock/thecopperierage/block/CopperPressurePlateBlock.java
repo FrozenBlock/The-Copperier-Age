@@ -24,6 +24,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.npc.InventoryCarrier;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.ContainerEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -81,11 +84,17 @@ public class CopperPressurePlateBlock extends BasePressurePlateBlock {
 				if (!livingEntity.getItemBySlot(slot).isEmpty()) occupiedSlots += 1;
 			}
 
-			/*
 			if (entity instanceof Player player) {
 				for (ItemStack stack : player.getInventory().getNonEquipmentItems()) if (!stack.isEmpty()) occupiedSlots += 1;
 			}
-			 */
+
+			if (entity instanceof AbstractHorse horse) {
+				for (ItemStack stack : horse.inventory) if (!stack.isEmpty()) occupiedSlots += 1;
+			}
+
+			if (entity instanceof InventoryCarrier inventoryCarrier) {
+				for (ItemStack stack : inventoryCarrier.getInventory()) if (!stack.isEmpty()) occupiedSlots += 1;
+			}
 		}
 
 		if (entity instanceof ContainerEntity containerEntity) {

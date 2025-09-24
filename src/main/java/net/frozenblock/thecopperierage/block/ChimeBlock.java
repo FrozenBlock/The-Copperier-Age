@@ -213,7 +213,7 @@ public class ChimeBlock extends BaseEntityBlock {
 
 		if (random.nextFloat() >= influenceSpeed * 0.425F) return;
 
-		final float volume = Mth.lerp(influenceSpeed, 0.05F, 0.6F);
+		final float volume = Mth.lerp(influenceSpeed, 0.1F, 1F);
 		final float pitch = Mth.lerp(influenceSpeed, 0.75F, 1.2F);
 		level.playLocalSound(pos, TCASounds.BLOCK_CHIME_AMBIENT_IDLE, SoundSource.AMBIENT, volume, pitch, false);
 	}

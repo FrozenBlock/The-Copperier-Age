@@ -205,16 +205,16 @@ public class ChimeBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public void animateTick(BlockState state, @NotNull Level level, BlockPos pos, RandomSource random) {
+	public void animateTick(BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
 		if (!(level.getBlockEntity(pos) instanceof ChimeBlockEntity chime)) return;
 
 		Vec3 influence = chime.getLerpedInfluence(1F);
 		final float influenceSpeed = Math.min(1F, (float) influence.length());
 
-		if (random.nextFloat() >= influenceSpeed * 0.3F) return;
+		if (random.nextFloat() >= influenceSpeed * 0.35F) return;
 
 		final float volume = Mth.lerp(influenceSpeed, 0.05F, 0.6F);
-		final float pitch = Mth.lerp(influenceSpeed, 0.75F, 1.15F);
+		final float pitch = Mth.lerp(influenceSpeed, 0.75F, 1.2F);
 		level.playLocalSound(pos, TCASounds.BLOCK_CHIME_AMBIENT_IDLE, SoundSource.AMBIENT, volume, pitch, false);
 	}
 

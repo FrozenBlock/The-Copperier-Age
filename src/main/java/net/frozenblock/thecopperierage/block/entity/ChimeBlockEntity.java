@@ -69,12 +69,14 @@ public class ChimeBlockEntity extends BlockEntity {
 
 		for (AbstractInfluence influence : this.influences) {
 			final Vec3 movement = influence.getInfluence();
-			double weight = movement.length();
+			final double weight = movement.length();
 			sumOfWeights += weight;
 			x += weight * movement.x;
 			y += weight * movement.y;
 			z += weight * movement.z;
 		}
+
+		if (sumOfWeights <= 0) return Vec3.ZERO;
 
 		final double finalX = x / sumOfWeights;
 		final double finalY = y / sumOfWeights;

@@ -211,7 +211,7 @@ public class ChimeBlock extends BaseEntityBlock {
 		Vec3 influence = chime.getLerpedInfluence(1F);
 		final float influenceSpeed = Math.clamp((float) influence.length(), 0.02F, 1.2F);
 
-		if (random.nextFloat() >= influenceSpeed * 0.425F) return;
+		if (random.nextFloat() >= influenceSpeed * 0.25F) return;
 
 		final float volume = Mth.lerp(influenceSpeed, 0.1F, 1F);
 		final float pitch = Mth.lerp(influenceSpeed, 0.75F, 1.2F);

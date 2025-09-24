@@ -235,7 +235,7 @@ public class ChimeModel extends Model<ChimeRenderState> {
 
 	@Contract("_, _, _ -> null")
 	private static @NotNull Pair<Float, Float> getRotationForMovement(float animationOffset, float ageInTicks, @NotNull Vec3 movement) {
-		final float yAge = ageInTicks * 0.5F;
+		final float yAge = ageInTicks * 0.4F;
 
 		final float zMovement =Mth.clamp((float) movement.z + (Mth.cos(yAge) * (float) movement.y * 0.5F), -0.5F, 0.5F);
 		final float xRotOffset = Math.min(1F, Mth.abs(zMovement));

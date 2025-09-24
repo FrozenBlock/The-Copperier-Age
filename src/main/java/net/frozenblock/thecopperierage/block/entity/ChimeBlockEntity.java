@@ -50,7 +50,9 @@ public class ChimeBlockEntity extends BlockEntity {
 		chime.influences.forEach(influence -> influence.tick(level, pos));
 		chime.influences.removeIf(AbstractInfluence::shouldRemove);
 
-		chime.influence = chime.getAverageInfluence().yRot(state.getValue(ChimeBlock.FACING).toYRot() * Mth.DEG_TO_RAD);
+		chime.influence = chime.getAverageInfluence()
+			.scale(0.4D)
+			.yRot(state.getValue(ChimeBlock.FACING).toYRot() * Mth.DEG_TO_RAD);
 
 		chime.age += 1;
 	}

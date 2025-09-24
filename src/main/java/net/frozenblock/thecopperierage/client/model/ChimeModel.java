@@ -199,14 +199,14 @@ public class ChimeModel extends Model<ChimeRenderState> {
 		super.setupAnim(renderState);
 
 		final Vec3 movement = renderState.chimeMovement;
-		final Vec3 chimeMovement = movement.scale(0.4D);
+		final float animProgress = renderState.ageInTicks * 0.15F;
 
 		if (renderState.hanging) {
-			final Pair<Float, Float> supportRot = getRotationForMovement(0F, renderState.ageInTicks, chimeMovement);
+			final Pair<Float, Float> supportRot = getRotationForMovement(0F, animProgress, movement);
 			this.support.xRot += supportRot.getFirst();
 			this.support.zRot += supportRot.getSecond();
 
-			final Pair<Float, Float> barRot = getRotationForMovement(-1F, renderState.ageInTicks, chimeMovement);
+			final Pair<Float, Float> barRot = getRotationForMovement(-1F, animProgress, movement);
 			this.bar.xRot += barRot.getFirst();
 			this.bar.zRot += barRot.getSecond();
 
@@ -221,11 +221,11 @@ public class ChimeModel extends Model<ChimeRenderState> {
 			final ModelPart chime = pair.getFirst();
 			final ModelPart tube = pair.getSecond();
 
-			final Pair<Float, Float> chimeRotA = getRotationForMovement(movementOffset, renderState.ageInTicks, chimeMovement);
+			final Pair<Float, Float> chimeRotA = getRotationForMovement(movementOffset, animProgress, movement);
 			chime.xRot += chimeRotA.getFirst();
 			chime.zRot += chimeRotA.getSecond();
 
-			final Pair<Float, Float> chimeRotB = getRotationForMovement(movementOffset - 0.5F, renderState.ageInTicks, chimeMovement);
+			final Pair<Float, Float> chimeRotB = getRotationForMovement(movementOffset - 0.5F, animProgress, movement);
 			tube.xRot += chimeRotB.getFirst();
 			tube.zRot += chimeRotB.getSecond();
 		}
@@ -233,15 +233,12 @@ public class ChimeModel extends Model<ChimeRenderState> {
 
 	@Contract("_, _, _ -> null")
 	private static @NotNull Pair<Float, Float> getRotationForMovement(float partIndex, float ageInTicks, @NotNull Vec3 movement) {
-		ageInTicks *= 0.15F;
+		float xRot = (Mth.cos((ageInTicks + (float) movement.z) - (partIndex + 2F)) * 0.75F) + 0.75F;
+		float zRot = (Mth.cos((ageInTicks + (float) movement.x) - partIndex) * 0.75F) + 0.75F;
 
-		float xRot = Mth.cos((ageInTicks + (float) movement.x) - partIndex) + 0.5F;
-		float zRot = Mth.cos((ageInTicks + (float) movement.z) - (partIndex + 2F)) + 0.5F;
+		xRot *= ((float)movement.z * 0.75F) + 0.01F;
+		zRot *= ((float)movement.x * 0.75F) + 0.01F;
 
-		xRot *= ((float)movement.x * 0.75F) + 0.01F;
-		zRot *= ((float)movement.z * 0.75F) + 0.01F;
-
-		// Yes, this is intentionally flipped
-		return Pair.of(zRot, xRot);
+		return Pair.of(xRot, zRot);
 	}
 }

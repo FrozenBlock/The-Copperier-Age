@@ -125,7 +125,7 @@ public final class TCABlocks {
 		(weatherState) -> BlockBehaviour.Properties.of()
 			.requiresCorrectToolForDrops()
 			.strength(5F, 6F)
-			.sound(SoundType.COPPER)
+			.sound(TCASounds.CHIME)
 			//.noOcclusion()
 	);
 

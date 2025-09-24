@@ -11,6 +11,7 @@ Zhen/zntm
  - Final Gearbox Retextures (Based On Lufurrius's)
  - Copper Fan Textures
  - Chime Concept & Textures
+ - Chime Sounds
  - Copper Campfire Textures
  - Wrench Usage Sounds
  - Gearbox Idle Sounds

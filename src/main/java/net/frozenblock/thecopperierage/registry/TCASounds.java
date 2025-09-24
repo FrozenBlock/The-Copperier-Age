@@ -23,6 +23,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.block.SoundType;
 import org.jetbrains.annotations.NotNull;
 
 public final class TCASounds {
@@ -30,6 +31,20 @@ public final class TCASounds {
 	// BLOCK
 	public static final SoundEvent BLOCK_GEARBOX_IDLE = register("block.gearbox.idle");
 	public static final SoundEvent BLOCK_CHIME_AMBIENT_IDLE = register("block.chime.ambient.idle");
+	public static final SoundEvent BLOCK_CHIME_BREAK = register("block.chime.break");
+	public static final SoundEvent BLOCK_CHIME_STEP = register("block.chime.step");
+	public static final SoundEvent BLOCK_CHIME_PLACE = register("block.chime.place");
+	public static final SoundEvent BLOCK_CHIME_HIT = register("block.chime.hit");
+	public static final SoundEvent BLOCK_CHIME_FALL = register("block.chime.fall");
+	public static final SoundType CHIME = new SoundType(
+		1F,
+		1F,
+		BLOCK_CHIME_BREAK,
+		BLOCK_CHIME_STEP,
+		BLOCK_CHIME_PLACE,
+		BLOCK_CHIME_HIT,
+		BLOCK_CHIME_FALL
+	);
 
 	// ITEM
 	public static final Holder.Reference<SoundEvent> ITEM_COPPER_HORN_SAX = registerForHolder("item.copper_horn.saxophone");

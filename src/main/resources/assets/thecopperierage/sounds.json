@@ -28,6 +28,56 @@
     ],
     "subtitle": "subtitles.block.gearbox.idle"
   },
+  "block.chime.break": {
+    "sounds": [
+      "thecopperierage:block/chime/break1",
+      "thecopperierage:block/chime/break2",
+      "thecopperierage:block/chime/break3",
+      "thecopperierage:block/chime/break4"
+    ],
+    "subtitle": "subtitles.block.generic.break"
+  },
+  "block.chime.fall": {
+    "sounds": [
+      "minecraft:block/copper/step1",
+      "minecraft:block/copper/step2",
+      "minecraft:block/copper/step3",
+      "minecraft:block/copper/step4",
+      "minecraft:block/copper/step5",
+      "minecraft:block/copper/step6"
+    ]
+  },
+  "block.chime.hit": {
+    "sounds": [
+      "minecraft:block/copper/step1",
+      "minecraft:block/copper/step2",
+      "minecraft:block/copper/step3",
+      "minecraft:block/copper/step4",
+      "minecraft:block/copper/step5",
+      "minecraft:block/copper/step6"
+    ],
+    "subtitle": "subtitles.block.generic.hit"
+  },
+  "block.chime.place": {
+    "sounds": [
+      "thecopperierage:block/chime/place1",
+      "thecopperierage:block/chime/place2",
+      "thecopperierage:block/chime/place3",
+      "thecopperierage:block/chime/place4"
+    ],
+    "subtitle": "subtitles.block.generic.place"
+  },
+  "block.chime.step": {
+    "sounds": [
+      "minecraft:block/copper/step1",
+      "minecraft:block/copper/step2",
+      "minecraft:block/copper/step3",
+      "minecraft:block/copper/step4",
+      "minecraft:block/copper/step5",
+      "minecraft:block/copper/step6"
+    ],
+    "subtitle": "subtitles.block.generic.footsteps"
+  },
   "block.chime.ambient.idle": {
     "sounds": [
       "thecopperierage:block/chime/ambient1",

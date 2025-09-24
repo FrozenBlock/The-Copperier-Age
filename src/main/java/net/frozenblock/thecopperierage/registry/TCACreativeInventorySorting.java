@@ -58,7 +58,7 @@ public final class TCACreativeInventorySorting {
 		addAfterInBuildingBlocks(TCABlocks.GEARBOX.waxedOxidized(), TCABlocks.COPPER_FAN.waxedOxidized());
 
 		// CHIME
-		addAfterInFunctionalBlocks(Items.WAXED_OXIDIZED_COPPER_BULB, TCABlocks.CHIME.unaffected());
+		addAfterInFunctionalBlocks(Items.WAXED_OXIDIZED_LIGHTNING_ROD, TCABlocks.CHIME.unaffected());
 		addAfterInFunctionalBlocks(TCABlocks.CHIME.unaffected(), TCABlocks.CHIME.exposed());
 		addAfterInFunctionalBlocks(TCABlocks.CHIME.exposed(), TCABlocks.CHIME.weathered());
 		addAfterInFunctionalBlocks(TCABlocks.CHIME.weathered(), TCABlocks.CHIME.oxidized());
@@ -67,14 +67,14 @@ public final class TCACreativeInventorySorting {
 		addAfterInFunctionalBlocks(TCABlocks.CHIME.waxedExposed(), TCABlocks.CHIME.waxedWeathered());
 		addAfterInFunctionalBlocks(TCABlocks.CHIME.waxedWeathered(), TCABlocks.CHIME.waxedOxidized());
 
-		addAfterInBuildingBlocks(Items.WAXED_OXIDIZED_COPPER_BULB, TCABlocks.CHIME.unaffected());
-		addAfterInBuildingBlocks(TCABlocks.CHIME.unaffected(), TCABlocks.CHIME.exposed());
-		addAfterInBuildingBlocks(TCABlocks.CHIME.exposed(), TCABlocks.CHIME.weathered());
-		addAfterInBuildingBlocks(TCABlocks.CHIME.weathered(), TCABlocks.CHIME.oxidized());
-		addAfterInBuildingBlocks(TCABlocks.CHIME.oxidized(), TCABlocks.CHIME.waxed());
-		addAfterInBuildingBlocks(TCABlocks.CHIME.waxed(), TCABlocks.CHIME.waxedExposed());
-		addAfterInBuildingBlocks(TCABlocks.CHIME.waxedExposed(), TCABlocks.CHIME.waxedWeathered());
-		addAfterInBuildingBlocks(TCABlocks.CHIME.waxedWeathered(), TCABlocks.CHIME.waxedOxidized());
+		addAfterInBuildingBlocks(Items.COPPER_BULB, TCABlocks.CHIME.unaffected());
+		addAfterInBuildingBlocks(Items.EXPOSED_COPPER_BULB, TCABlocks.CHIME.exposed());
+		addAfterInBuildingBlocks(Items.WEATHERED_COPPER_BULB, TCABlocks.CHIME.weathered());
+		addAfterInBuildingBlocks(Items.OXIDIZED_COPPER_BULB, TCABlocks.CHIME.oxidized());
+		addAfterInBuildingBlocks(Items.WAXED_COPPER_BULB, TCABlocks.CHIME.waxed());
+		addAfterInBuildingBlocks(Items.WAXED_EXPOSED_COPPER_BULB, TCABlocks.CHIME.waxedExposed());
+		addAfterInBuildingBlocks(Items.WAXED_WEATHERED_COPPER_BULB, TCABlocks.CHIME.waxedWeathered());
+		addAfterInBuildingBlocks(Items.WAXED_OXIDIZED_COPPER_BULB, TCABlocks.CHIME.waxedOxidized());
 
 		// BUTTON
 		addAfterInRedstoneBlocks(Items.STONE_BUTTON, TCABlocks.COPPER_BUTTON.waxed());

@@ -202,7 +202,7 @@ public class ChimeBlock extends BaseEntityBlock {
 
 		return chime.addEntityInfluence(level, pos, player, difference.normalize().scale(strength), true)
 			? InteractionResult.SUCCESS
-			: InteractionResult.PASS;
+			: InteractionResult.FAIL;
 	}
 
 	@Override

@@ -80,8 +80,8 @@ public class ChimeBlockEntity extends BlockEntity {
 			})
 			.toList();
 		if (entityInfluences.isEmpty()) {
-			final float influenceSpeed = Math.clamp((float) influence.length(), 0.02F, 1.2F);
-			final float volume = Mth.lerp(influenceSpeed, 0.1F, 0.6F);
+			final float influenceSpeed = Math.clamp((float) influence.length(), 0.01F, 1.2F);
+			final float volume = Mth.lerp(influenceSpeed, 0.02F, 0.6F);
 			final float pitch = Mth.lerp(influenceSpeed, 0.75F, 1.2F);
 			level.playSound(entity, pos, TCASounds.BLOCK_CHIME_DISTURB, SoundSource.BLOCKS, volume, pitch);
 			playedSound = true;

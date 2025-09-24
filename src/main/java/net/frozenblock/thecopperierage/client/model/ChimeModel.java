@@ -234,15 +234,19 @@ public class ChimeModel extends Model<ChimeRenderState> {
 	}
 
 	@Contract("_, _, _ -> null")
-	private static @NotNull Pair<Float, Float> getRotationForMovement(float partIndex, float ageInTicks, @NotNull Vec3 movement) {
-		final float xRotOffset = Math.min(1F, Mth.abs((float) movement.z));
-		float xRot = (Mth.cos((ageInTicks + (float) movement.z) - (partIndex + 2F)) * 0.75F) + (xRotOffset * 0.75F);
+	private static @NotNull Pair<Float, Float> getRotationForMovement(float animationOffset, float ageInTicks, @NotNull Vec3 movement) {
+		final float yAge = ageInTicks * 0.2F;
 
-		final float zRotOffset = Math.min(1F, Mth.abs((float) movement.x));
-		float zRot = (Mth.cos((ageInTicks + (float) movement.x) - partIndex) * 0.75F) + (zRotOffset * 0.75F);
+		final float zMovement =Mth.clamp((float) movement.z + (Mth.cos(yAge) * (float) movement.y * 0.5F), -0.5F, 0.5F);
+		final float xRotOffset = Math.min(1F, Mth.abs(zMovement));
+		float xRot = (Mth.cos(ageInTicks + zMovement - (animationOffset + 2F)) * 0.75F) + (xRotOffset * 0.75F);
 
-		xRot *= ((float)movement.z * 0.75F) + 0.01F;
-		zRot *= ((float)movement.x * 0.75F) + 0.01F;
+		final float xMovement = Mth.clamp((float) movement.x + (Mth.sin(yAge) * (float) movement.y * 0.5F), -0.5F, 0.5F);
+		final float zRotOffset = Math.min(1F, Mth.abs(xMovement));
+		float zRot = (Mth.cos(ageInTicks + xMovement - animationOffset) * 0.75F) + (zRotOffset * 0.75F);
+
+		xRot *= (zMovement * 0.75F) + 0.01F;
+		zRot *= (xMovement * 0.75F) + 0.01F;
 
 		return Pair.of(xRot, zRot);
 	}

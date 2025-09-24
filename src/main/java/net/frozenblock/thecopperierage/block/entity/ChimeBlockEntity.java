@@ -134,7 +134,7 @@ public class ChimeBlockEntity extends BlockEntity {
 
 		@Override
 		public void tick(Level level, BlockPos pos) {
-			this.influence = this.influence.scale(0.95D);
+			this.influence = this.influence.scale(0.96D);
 
 			if (this.influence.length() < 0.02D) this.influence = Vec3.ZERO;
 		}

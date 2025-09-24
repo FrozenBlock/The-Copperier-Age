@@ -30,7 +30,8 @@ public final class TCASounds {
 
 	// BLOCK
 	public static final SoundEvent BLOCK_GEARBOX_IDLE = register("block.gearbox.idle");
-	public static final SoundEvent BLOCK_CHIME_AMBIENT_IDLE = register("block.chime.ambient.idle");
+	public static final SoundEvent BLOCK_CHIME_AMBIENT = register("block.chime.ambient");
+	public static final SoundEvent BLOCK_CHIME_DISTURB = register("block.chime.disturb");
 	public static final SoundEvent BLOCK_CHIME_BREAK = register("block.chime.break");
 	public static final SoundEvent BLOCK_CHIME_STEP = register("block.chime.step");
 	public static final SoundEvent BLOCK_CHIME_PLACE = register("block.chime.place");

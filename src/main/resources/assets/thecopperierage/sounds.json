@@ -78,7 +78,7 @@
     ],
     "subtitle": "subtitles.block.generic.footsteps"
   },
-  "block.chime.ambient.idle": {
+  "block.chime.ambient": {
     "sounds": [
       "thecopperierage:block/chime/ambient1",
       "thecopperierage:block/chime/ambient2",
@@ -95,7 +95,22 @@
       "thecopperierage:block/chime/ambient13",
       "thecopperierage:block/chime/ambient14"
     ],
-    "subtitle": "subtitles.block.chime.ambient.idle"
+    "subtitle": "subtitles.block.chime.ambient"
+  },
+  "block.chime.disturb": {
+    "sounds": [
+      "thecopperierage:block/chime/disturb1",
+      "thecopperierage:block/chime/disturb2",
+      "thecopperierage:block/chime/disturb3",
+      "thecopperierage:block/chime/disturb4",
+      "thecopperierage:block/chime/disturb5",
+      "thecopperierage:block/chime/disturb6",
+      "thecopperierage:block/chime/disturb7",
+      "thecopperierage:block/chime/disturb8",
+      "thecopperierage:block/chime/disturb9",
+      "thecopperierage:block/chime/disturb10"
+    ],
+    "subtitle": "subtitles.block.chime.disturb"
   },
   "item.copper_horn.recorder": {
     "sounds": [

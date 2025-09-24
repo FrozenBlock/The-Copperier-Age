@@ -25,13 +25,18 @@ import net.frozenblock.thecopperierage.registry.TCABlockStateProperties;
 import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.InsideBlockEffectApplier;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
@@ -48,6 +53,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -56,6 +62,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 public class ChimeBlock extends BaseEntityBlock {
 	public static final MapCodec<ChimeBlock> CODEC = simpleCodec(ChimeBlock::new);
@@ -68,7 +75,7 @@ public class ChimeBlock extends BaseEntityBlock {
 	private static final Map<Direction, VoxelShape> CEILING_SHAPES_COLLISION = Shapes.rotateHorizontal(Shapes.or(SUPPORT_CHAIN_SHAPE, BAR_SHAPE));
 	private static final Map<Direction, VoxelShape> WALL_SHAPES_OUTLINE = Shapes.rotateHorizontal(OUTLINE_SHAPE);
 	private static final Map<Direction, VoxelShape> WALL_SHAPES_COLLISION = Shapes.rotateHorizontal(BAR_SHAPE);
-	private static final Map<Direction, VoxelShape> ENTITY_INSIDE_SHAPES = Shapes.rotateHorizontal(Block.box(7D, 0D, 0D, 9D, 10D, 16D));
+	private static final Map<Direction, VoxelShape> ENTITY_INSIDE_SHAPES = Shapes.rotateHorizontal(Block.box(6.5D, -0.5D, -0.5D, 9.5D, 10.5D, 16.5D));
 
 	public ChimeBlock(@NotNull Properties settings) {
 		super(settings);
@@ -179,6 +186,26 @@ public class ChimeBlock extends BaseEntityBlock {
 	}
 
 	@Override
+	protected @NotNull InteractionResult useWithoutItem(
+		BlockState state,
+		@NotNull Level level,
+		@NotNull BlockPos pos,
+		@NotNull Player player,
+		BlockHitResult hitResult
+	) {
+		if (!(level.getBlockEntity(pos) instanceof ChimeBlockEntity chime)) return super.useWithoutItem(state, level, pos, player, hitResult);
+
+		final Vec3 playerPos = player.getEyePosition();
+		final Vec3 chimeCenter = pos.getCenter();
+		final Vec3 difference = playerPos.subtract(chimeCenter);
+		final double strength = (chimeCenter.y() - hitResult.getLocation().y()) * 1.25F;
+
+		return chime.addEntityInfluence(level, pos, player, difference.normalize().scale(strength), true)
+			? InteractionResult.SUCCESS
+			: InteractionResult.PASS;
+	}
+
+	@Override
 	public void entityInside(
 		@NotNull BlockState state,
 		@NotNull Level level,
@@ -191,7 +218,25 @@ public class ChimeBlock extends BaseEntityBlock {
 		if (length == 0D) return;
 
 		if (!(level.getBlockEntity(pos) instanceof ChimeBlockEntity chime)) return;
-		chime.addEntityInfluence(movement.normalize().scale(Math.min(1D, length * 2D)));
+		chime.addEntityInfluence(level, pos, entity, movement.normalize().scale(Math.min(1D, length * 2D)), false);
+	}
+
+	@Override
+	protected void onExplosionHit(
+		@NotNull BlockState state,
+		@NotNull ServerLevel level,
+		@NotNull BlockPos pos,
+		@NotNull Explosion explosion,
+		BiConsumer<ItemStack, BlockPos> biConsumer
+	) {
+		if (explosion.canTriggerBlocks() && level.getBlockEntity(pos) instanceof ChimeBlockEntity chime) {
+			float radius = explosion.radius();
+			Vec3 difference = pos.getCenter().subtract(explosion.center());
+			double closeness = (radius - difference.length()) / radius;
+			chime.addInfluence(level, pos, difference.scale(closeness), true);
+		}
+
+		super.onExplosionHit(state, level, pos, explosion, biConsumer);
 	}
 
 	@Override
@@ -215,7 +260,7 @@ public class ChimeBlock extends BaseEntityBlock {
 
 		final float volume = Mth.lerp(influenceSpeed, 0.1F, 1F);
 		final float pitch = Mth.lerp(influenceSpeed, 0.75F, 1.2F);
-		level.playLocalSound(pos, TCASounds.BLOCK_CHIME_AMBIENT_IDLE, SoundSource.AMBIENT, volume, pitch, false);
+		level.playLocalSound(pos, TCASounds.BLOCK_CHIME_AMBIENT, SoundSource.AMBIENT, volume, pitch, false);
 	}
 
 	@Contract(pure = true)

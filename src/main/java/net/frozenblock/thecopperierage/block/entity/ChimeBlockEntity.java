@@ -21,9 +21,12 @@ import net.frozenblock.lib.wind.api.WindManager;
 import net.frozenblock.lib.wind.client.impl.ClientWindManager;
 import net.frozenblock.thecopperierage.block.ChimeBlock;
 import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
+import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -55,8 +58,37 @@ public class ChimeBlockEntity extends BlockEntity {
 		chime.age += 1;
 	}
 
-	public void addEntityInfluence(Vec3 influence) {
-		this.influences.add(new EntityInfluence(influence));
+	public void addInfluence(@NotNull Level level, BlockPos pos, Vec3 influence, boolean playsSound) {
+		if (!level.isClientSide() && playsSound) {
+			final float influenceSpeed = Math.clamp((float) influence.length(), 0.02F, 1.2F);
+			final float volume = Mth.lerp(influenceSpeed, 0.1F, 0.6F);
+			final float pitch = Mth.lerp(influenceSpeed, 0.75F, 1.2F);
+			level.playSound(null, pos, TCASounds.BLOCK_CHIME_DISTURB, SoundSource.BLOCKS, volume, pitch);
+		}
+		this.influences.add(new VectorBasedInfluence(influence));
+	}
+
+	public boolean addEntityInfluence(@NotNull Level level, BlockPos pos, Entity entity, Vec3 influence, boolean cancelIfSoundCannotPlay) {
+		boolean playedSound = false;
+		List<AbstractInfluence> entityInfluences = this.influences
+			.stream()
+			.filter(abstractInfluence -> {
+				return abstractInfluence instanceof EntityInfluence entityInfluence
+					&& entityInfluence.isSoundBearing()
+					&& entityInfluence.getEntity() == entity
+					&& entityInfluence.getTicksSinceStart() <= 30;
+			})
+			.toList();
+		if (entityInfluences.isEmpty()) {
+			final float influenceSpeed = Math.clamp((float) influence.length(), 0.02F, 1.2F);
+			final float volume = Mth.lerp(influenceSpeed, 0.1F, 0.6F);
+			final float pitch = Mth.lerp(influenceSpeed, 0.75F, 1.2F);
+			level.playSound(entity, pos, TCASounds.BLOCK_CHIME_DISTURB, SoundSource.BLOCKS, volume, pitch);
+			playedSound = true;
+		}
+		if (cancelIfSoundCannotPlay && !playedSound) return false;
+		this.influences.add(new EntityInfluence(entity, influence, playedSound));
+		return playedSound || level.isClientSide();
 	}
 
 	public Vec3 getAverageInfluence() {
@@ -104,7 +136,7 @@ public class ChimeBlockEntity extends BlockEntity {
 		@Override
 		public void tick(Level level, BlockPos pos) {
 			final Vec3 targetWind = this.getWind(level, pos);
-			this.wind = this.wind.add(targetWind.subtract(this.wind).scale( this.isFirstTick ? 0.9D : 0.025D));
+			this.wind = this.wind.add(targetWind.subtract(this.wind).scale(this.isFirstTick ? 0.9D : 0.025D));
 			this.isFirstTick = false;
 		}
 
@@ -125,10 +157,10 @@ public class ChimeBlockEntity extends BlockEntity {
 		}
 	}
 
-	public static class EntityInfluence extends AbstractInfluence {
+	public static class VectorBasedInfluence extends AbstractInfluence {
 		private Vec3 influence;
 
-		public EntityInfluence(Vec3 influence) {
+		public VectorBasedInfluence(Vec3 influence) {
 			this.influence = influence;
 		}
 
@@ -147,6 +179,36 @@ public class ChimeBlockEntity extends BlockEntity {
 		@Override
 		public Vec3 getInfluence() {
 			return this.influence;
+		}
+	}
+
+	public static class EntityInfluence extends VectorBasedInfluence {
+		private final Entity entity;
+		private final boolean soundBearing;
+		private int ticksSinceStart;
+
+		public EntityInfluence(Entity entity, Vec3 influence, boolean soundBearing) {
+			super(influence);
+			this.entity = entity;
+			this.soundBearing = soundBearing;
+		}
+
+		@Override
+		public void tick(Level level, BlockPos pos) {
+			this.ticksSinceStart += 1;
+			super.tick(level, pos);
+		}
+
+		public Entity getEntity() {
+			return this.entity;
+		}
+
+		public boolean isSoundBearing() {
+			return this.soundBearing;
+		}
+
+		public int getTicksSinceStart() {
+			return this.ticksSinceStart;
 		}
 	}
 

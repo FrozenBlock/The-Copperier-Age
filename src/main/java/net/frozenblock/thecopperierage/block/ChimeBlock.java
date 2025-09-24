@@ -209,7 +209,7 @@ public class ChimeBlock extends BaseEntityBlock {
 		if (!(level.getBlockEntity(pos) instanceof ChimeBlockEntity chime)) return;
 
 		Vec3 influence = chime.getLerpedInfluence(1F);
-		final float influenceSpeed = Math.clamp((float) influence.length(), 0.1F, 1.2F);
+		final float influenceSpeed = Math.clamp((float) influence.length(), 0.02F, 1.2F);
 
 		if (random.nextFloat() >= influenceSpeed * 0.35F) return;
 

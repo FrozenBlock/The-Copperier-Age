@@ -67,14 +67,14 @@ public final class TCACreativeInventorySorting {
 		addAfterInFunctionalBlocks(TCABlocks.CHIME.waxedExposed(), TCABlocks.CHIME.waxedWeathered());
 		addAfterInFunctionalBlocks(TCABlocks.CHIME.waxedWeathered(), TCABlocks.CHIME.waxedOxidized());
 
-		addAfterInBuildingBlocks(Items.COPPER_BULB, TCABlocks.CHIME.unaffected());
-		addAfterInBuildingBlocks(Items.EXPOSED_COPPER_BULB, TCABlocks.CHIME.exposed());
-		addAfterInBuildingBlocks(Items.WEATHERED_COPPER_BULB, TCABlocks.CHIME.weathered());
-		addAfterInBuildingBlocks(Items.OXIDIZED_COPPER_BULB, TCABlocks.CHIME.oxidized());
-		addAfterInBuildingBlocks(Items.WAXED_COPPER_BULB, TCABlocks.CHIME.waxed());
-		addAfterInBuildingBlocks(Items.WAXED_EXPOSED_COPPER_BULB, TCABlocks.CHIME.waxedExposed());
-		addAfterInBuildingBlocks(Items.WAXED_WEATHERED_COPPER_BULB, TCABlocks.CHIME.waxedWeathered());
-		addAfterInBuildingBlocks(Items.WAXED_OXIDIZED_COPPER_BULB, TCABlocks.CHIME.waxedOxidized());
+		addAfterInBuildingBlocks(TCABlocks.COPPER_FAN.unaffected(), TCABlocks.CHIME.unaffected());
+		addAfterInBuildingBlocks(TCABlocks.COPPER_FAN.waxed(), TCABlocks.CHIME.waxed());
+		addAfterInBuildingBlocks(TCABlocks.COPPER_FAN.exposed(), TCABlocks.CHIME.exposed());
+		addAfterInBuildingBlocks(TCABlocks.COPPER_FAN.waxedExposed(), TCABlocks.CHIME.waxedExposed());
+		addAfterInBuildingBlocks(TCABlocks.COPPER_FAN.weathered(), TCABlocks.CHIME.weathered());
+		addAfterInBuildingBlocks(TCABlocks.COPPER_FAN.waxedWeathered(), TCABlocks.CHIME.waxedWeathered());
+		addAfterInBuildingBlocks(TCABlocks.COPPER_FAN.oxidized(), TCABlocks.CHIME.oxidized());
+		addAfterInBuildingBlocks(TCABlocks.COPPER_FAN.waxedOxidized(), TCABlocks.CHIME.waxedOxidized());
 
 		// BUTTON
 		addAfterInRedstoneBlocks(Items.STONE_BUTTON, TCABlocks.COPPER_BUTTON.waxed());

@@ -119,7 +119,7 @@ public class ChimeBlock extends BaseEntityBlock {
 		if (direction == Direction.DOWN) {
 			final BlockState state = this.defaultBlockState()
 				.setValue(ATTACHMENT, ChimeAttachType.CEILING)
-				.setValue(FACING, context.getHorizontalDirection());
+				.setValue(FACING, context.getHorizontalDirection().getClockWise());
 			return state.canSurvive(level, pos) ? state : null;
 		}
 

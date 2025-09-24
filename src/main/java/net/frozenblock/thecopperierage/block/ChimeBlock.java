@@ -45,11 +45,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.Map;
@@ -61,22 +61,20 @@ public class ChimeBlock extends BaseEntityBlock {
 	private static final VoxelShape SUPPORT_CHAIN_SHAPE = Block.box(7D, 12D, 7D, 9D, 16D, 9D);
 	private static final VoxelShape BAR_SHAPE = Block.box(7D, 10D, 0D, 9D, 12D, 16D);
 	private static final VoxelShape CHIMES_SHAPE = Shapes.or(
-		makeChimeTubeShape(1D, 5D),
-		makeChimeTubeShape(4D, 0D),
-		makeChimeTubeShape(7D, 2D),
+		makeChimeTubeShape(13D, 6D),
 		makeChimeTubeShape(10D, 4D),
-		makeChimeTubeShape(13D, 6D)
+		makeChimeTubeShape(7D, 2D),
+		makeChimeTubeShape(4D, 0D),
+		makeChimeTubeShape(1D, 5D)
 	);
-	private static final VoxelShape ENTITY_INSIDE_SHAPE = Block.box(7D, 0D, 0D, 9D, 10D, 16D);
-	private static final VoxelShape SHAPE_CEILING_NO_CHIMES = Shapes.or(SUPPORT_CHAIN_SHAPE, BAR_SHAPE);
-	private static final VoxelShape SHAPE_CEILING = Shapes.or(SHAPE_CEILING_NO_CHIMES, CHIMES_SHAPE);
-	private static final Map<Direction, VoxelShape> CEILING_SHAPES_NO_CHIMES = Shapes.rotateHorizontal(SHAPE_CEILING_NO_CHIMES);
-	private static final Map<Direction, VoxelShape> CEILING_SHAPES = Shapes.rotateHorizontal(SHAPE_CEILING);
-	private static final VoxelShape SHAPE_WALL_NO_CHIMES = BAR_SHAPE;
-	private static final VoxelShape SHAPE_WALL = Shapes.or(SHAPE_WALL_NO_CHIMES, CHIMES_SHAPE);
-	private static final Map<Direction, VoxelShape> WALL_SHAPES_NO_CHIMES = Shapes.rotateHorizontal(SHAPE_WALL_NO_CHIMES);
-	private static final Map<Direction, VoxelShape> WALL_SHAPES = Shapes.rotateHorizontal(SHAPE_WALL);
-	private static final Map<Direction, VoxelShape> ENTITY_INSIDE_SHAPES = Shapes.rotateHorizontal(ENTITY_INSIDE_SHAPE);
+	private static final VoxelShape OUTLINE_SHAPE = Block.box(7D, 0D, 7D, 9D, 12D, 16D);
+	private static final Map<Direction, VoxelShape> CEILING_SHAPES_OUTLINE = Shapes.rotateHorizontal(Shapes.or(SUPPORT_CHAIN_SHAPE, OUTLINE_SHAPE));
+	private static final Map<Direction, VoxelShape> CEILING_SHAPES_COLLISION = Shapes.rotateHorizontal(Shapes.or(SUPPORT_CHAIN_SHAPE, BAR_SHAPE));
+	private static final Map<Direction, VoxelShape> CEILING_SHAPES_VISUAL = Shapes.rotateHorizontal(Shapes.or(SUPPORT_CHAIN_SHAPE, BAR_SHAPE, CHIMES_SHAPE));
+	private static final Map<Direction, VoxelShape> WALL_SHAPES_OUTLINE = Shapes.rotateHorizontal(OUTLINE_SHAPE);
+	private static final Map<Direction, VoxelShape> WALL_SHAPES_COLLISION = Shapes.rotateHorizontal(BAR_SHAPE);
+	private static final Map<Direction, VoxelShape> WALL_SHAPES_VISUAL = Shapes.rotateHorizontal(Shapes.or(BAR_SHAPE, CHIMES_SHAPE));
+	private static final Map<Direction, VoxelShape> ENTITY_INSIDE_SHAPES = Shapes.rotateHorizontal(Block.box(7D, 0D, 0D, 9D, 10D, 16D));
 
 	public ChimeBlock(@NotNull Properties settings) {
 		super(settings);
@@ -93,22 +91,32 @@ public class ChimeBlock extends BaseEntityBlock {
 		builder.add(FACING, ATTACHMENT);
 	}
 
-	private VoxelShape getVoxelShape(@NotNull BlockState state, boolean forCollision) {
+	@Override
+	protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext collisionContext) {
+		return getVoxelShape(state, ChimeShapeType.OUTLINE);
+	}
+
+	@Override
+	protected @NotNull VoxelShape getCollisionShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext collisionContext) {
+		return getVoxelShape(state, ChimeShapeType.COLLISION);
+	}
+
+	@Override
+	protected @NotNull VoxelShape getEntityInsideCollisionShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull Entity entity) {
+		return getVoxelShape(state, ChimeShapeType.ENTITY_INSIDE);
+	}
+
+	@Override
+	protected @NotNull VoxelShape getVisualShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext collisionContext) {
+		return getVoxelShape(state, ChimeShapeType.VISUAL);
+	}
+
+	private static VoxelShape getVoxelShape(@NotNull BlockState state, ChimeShapeType shapeType) {
 		final Direction direction = state.getValue(FACING);
 		return switch (state.getValue(ATTACHMENT)) {
-			case WALL -> !forCollision ? WALL_SHAPES.get(direction) : WALL_SHAPES_NO_CHIMES.get(direction);
-			case CEILING -> !forCollision ? CEILING_SHAPES.get(direction) : CEILING_SHAPES_NO_CHIMES.get(direction);
+			case WALL -> selectShapeListFromType(shapeType, WALL_SHAPES_OUTLINE, WALL_SHAPES_COLLISION, WALL_SHAPES_VISUAL, ENTITY_INSIDE_SHAPES).get(direction);
+			case CEILING -> selectShapeListFromType(shapeType, CEILING_SHAPES_OUTLINE, CEILING_SHAPES_COLLISION, CEILING_SHAPES_VISUAL, ENTITY_INSIDE_SHAPES).get(direction);
 		};
-	}
-
-	@Override
-	protected @NotNull VoxelShape getCollisionShape(@NotNull BlockState state, BlockGetter level, BlockPos pos, CollisionContext collisionContext) {
-		return this.getVoxelShape(state, true);
-	}
-
-	@Override
-	protected @NotNull VoxelShape getShape(@NotNull BlockState state, BlockGetter level, BlockPos pos, CollisionContext collisionContext) {
-		return this.getVoxelShape(state, false);
 	}
 
 	@Nullable
@@ -189,9 +197,6 @@ public class ChimeBlock extends BaseEntityBlock {
 		@NotNull Entity entity,
 		InsideBlockEffectApplier insideBlockEffectApplier
 	) {
-		AABB shape = ENTITY_INSIDE_SHAPES.get(state.getValue(FACING)).bounds().move(pos);
-		if (!shape.intersects(entity.getBoundingBox())) return;
-
 		final Vec3 movement = entity.getDeltaMovement();
 		final double length = movement.length();
 		if (length == 0D) return;
@@ -217,5 +222,28 @@ public class ChimeBlock extends BaseEntityBlock {
 
 	protected static @NotNull VoxelShape makeChimeTubeShape(double zStart, double yStart) {
 		return Block.box(7D, yStart, zStart, 9D, 10D, zStart + 2D);
+	}
+
+	@Contract(pure = true)
+	private static Map<Direction, VoxelShape> selectShapeListFromType(
+		@NotNull ChimeShapeType shapeType,
+		Map<Direction, VoxelShape> outline,
+		Map<Direction, VoxelShape> collision,
+		Map<Direction, VoxelShape> visual,
+		Map<Direction, VoxelShape> entityInside
+	) {
+		return switch (shapeType) {
+			case OUTLINE -> outline;
+			case COLLISION -> collision;
+			case VISUAL -> visual;
+			case ENTITY_INSIDE -> entityInside;
+		};
+	}
+
+	public enum ChimeShapeType {
+		OUTLINE,
+		COLLISION,
+		VISUAL,
+		ENTITY_INSIDE
 	}
 }

@@ -22,8 +22,10 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.frozenblock.thecopperierage.TCAConstants;
+import net.frozenblock.thecopperierage.block.ChimeBlock;
 import net.frozenblock.thecopperierage.block.CopperFanBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
+import net.frozenblock.thecopperierage.block.state.properties.ChimeAttachType;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.minecraft.client.data.models.BlockModelGenerators;
@@ -82,6 +84,11 @@ public final class TCAModelProvider extends FabricModelProvider {
 		Optional.of("_powered"),
 		TextureSlot.SIDE, TextureSlot.BOTTOM
 	);
+	private static final ModelTemplate CHIME_BAR_MODEL = new ModelTemplate(
+		Optional.of(TCAConstants.id("block/template_chime")),
+		Optional.of("_wall"),
+		TextureSlot.TEXTURE
+	);
 
 	public TCAModelProvider(FabricDataOutput output) {
 		super(output);
@@ -105,11 +112,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 
 		TCABlocks.GEARBOX.waxedMapping().forEach((block, waxedBlock) -> createGearbox(generator, block, waxedBlock));
 		TCABlocks.COPPER_FAN.waxedMapping().forEach((block, waxedBlock) -> createCopperFan(generator, block, waxedBlock));
-
-		createChime(generator, TCABlocks.CHIME.unaffected(), TCABlocks.CHIME.waxed(), Blocks.COPPER_BLOCK);
-		createChime(generator, TCABlocks.CHIME.exposed(), TCABlocks.CHIME.waxedExposed(), Blocks.EXPOSED_COPPER);
-		createChime(generator, TCABlocks.CHIME.weathered(), TCABlocks.CHIME.waxedWeathered(), Blocks.WEATHERED_COPPER);
-		createChime(generator, TCABlocks.CHIME.oxidized(), TCABlocks.CHIME.waxedOxidized(), Blocks.OXIDIZED_COPPER);
+		TCABlocks.CHIME.waxedMapping().forEach((block, waxedBlock) -> createChime(generator, block, waxedBlock));
 
 		createCopperButton(generator, TCABlocks.COPPER_BUTTON.unaffected(), TCABlocks.COPPER_BUTTON.waxed(), Blocks.COPPER_BLOCK);
 		createCopperButton(generator, TCABlocks.COPPER_BUTTON.exposed(), TCABlocks.COPPER_BUTTON.waxedExposed(), Blocks.EXPOSED_COPPER);
@@ -210,13 +213,26 @@ public final class TCAModelProvider extends FabricModelProvider {
 		);
 	}
 
-	public static void createChime(@NotNull BlockModelGenerators generator, Block unaffected, Block waxed, Block particleBlock) {
-		MultiVariant model = generator.createParticleOnlyBlockModel(unaffected, particleBlock);
-		generator.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(unaffected, model));
-		generator.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(waxed, model));
+	public static void createChime(@NotNull BlockModelGenerators generator, Block block, Block waxed) {
+		MultiVariant particleOnly = generator.createParticleOnlyBlockModel(block, block);
+		MultiVariant bar = BlockModelGenerators.plainVariant(CHIME_BAR_MODEL.create(block, TextureMapping.defaultTexture(block), generator.modelOutput));
 
-		generator.itemModelOutput.copy(unaffected.asItem(), waxed.asItem());
-		generator.registerSimpleFlatItemModel(unaffected.asItem());
+		dispatchChimeStates(generator, block, particleOnly, bar);
+		dispatchChimeStates(generator, waxed, particleOnly, bar);
+
+		generator.itemModelOutput.copy(block.asItem(), waxed.asItem());
+		generator.registerSimpleFlatItemModel(block);
+	}
+
+	private static void dispatchChimeStates(@NotNull BlockModelGenerators generator, Block block, MultiVariant particleOnly, @NotNull MultiVariant bar) {
+		generator.blockStateOutput.accept(
+			MultiVariantGenerator.dispatch(block)
+				.with(
+					PropertyDispatch.initial(ChimeBlock.ATTACHMENT)
+						.select(ChimeAttachType.CEILING, particleOnly)
+						.select(ChimeAttachType.WALL, bar)
+				).with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING)
+		);
 	}
 
 	private static void generateCopperHorn(@NotNull ItemModelGenerators generator, Item item) {

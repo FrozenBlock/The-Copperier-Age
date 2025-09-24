@@ -211,8 +211,10 @@ public class ChimeModel extends Model<ChimeRenderState> {
 			this.bar.zRot += barRot.getSecond();
 
 			this.supportChain.skipDraw = false;
+			this.bar.skipDraw = false;
 		} else {
 			this.supportChain.skipDraw = true;
+			this.bar.skipDraw = true;
 		}
 
 		float movementOffset = 0.5F;

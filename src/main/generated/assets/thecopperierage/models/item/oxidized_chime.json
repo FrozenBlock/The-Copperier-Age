@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "thecopperierage:item/oxidized_chime"
+    "layer0": "thecopperierage:block/oxidized_chime"
   }
 }

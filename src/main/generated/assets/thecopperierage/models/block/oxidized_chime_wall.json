@@ -1,0 +1,6 @@
+{
+  "parent": "thecopperierage:block/template_chime",
+  "textures": {
+    "texture": "thecopperierage:block/oxidized_chime"
+  }
+}

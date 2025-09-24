@@ -37,6 +37,7 @@ accessible field net/minecraft/client/data/models/ItemModelGenerators itemModelO
 accessible field net/minecraft/client/data/models/BlockModelGenerators$BlockFamilyProvider skipGeneratingModelsFor Ljava/util/Set;
 accessible class net/minecraft/client/data/models/BlockModelGenerators$BlockStateGeneratorSupplier
 accessible field net/minecraft/client/data/models/BlockModelGenerators ROTATION_FACING Lnet/minecraft/client/data/models/blockstates/PropertyDispatch;
+accessible field net/minecraft/client/data/models/BlockModelGenerators ROTATION_HORIZONTAL_FACING Lnet/minecraft/client/data/models/blockstates/PropertyDispatch;
 
 # Particles
 accessible field net/minecraft/client/particle/Particle xd D

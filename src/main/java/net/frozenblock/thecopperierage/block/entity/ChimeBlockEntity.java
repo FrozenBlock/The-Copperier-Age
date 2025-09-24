@@ -58,8 +58,8 @@ public class ChimeBlockEntity extends BlockEntity {
 		chime.age += 1;
 	}
 
-	public void addInfluence(@NotNull Level level, BlockPos pos, Vec3 influence, boolean playsSound) {
-		this.influences.add(new VectorBasedInfluence(influence));
+	public void addInfluence(@NotNull Level level, BlockPos pos, Vec3 influence, double scalePerTick, boolean playsSound) {
+		this.influences.add(new VectorBasedInfluence(influence, scalePerTick));
 		if (level.isClientSide() || !playsSound) return;
 
 		final float influenceSpeed = Math.clamp((float) this.getAverageInfluence().length(), 0.02F, 1.2F);
@@ -68,7 +68,7 @@ public class ChimeBlockEntity extends BlockEntity {
 		level.playSound(null, pos, TCASounds.BLOCK_CHIME_DISTURB, SoundSource.BLOCKS, volume, pitch);
 	}
 
-	public boolean addEntityInfluence(@NotNull Level level, BlockPos pos, Entity entity, Vec3 influence, boolean cancelIfSoundCannotPlay) {
+	public boolean addEntityInfluence(@NotNull Level level, BlockPos pos, Entity entity, Vec3 influence, double scalePerTick, boolean cancelIfSoundCannotPlay) {
 		List<AbstractInfluence> entityInfluences = this.influences
 			.stream()
 			.filter(abstractInfluence -> {
@@ -80,7 +80,7 @@ public class ChimeBlockEntity extends BlockEntity {
 
 		final boolean canPlaySound = entityInfluences.isEmpty();
 		if (cancelIfSoundCannotPlay && !canPlaySound) return false;
-		this.influences.add(new EntityInfluence(entity, influence, canPlaySound));
+		this.influences.add(new EntityInfluence(entity, influence, scalePerTick, canPlaySound));
 
 		if (canPlaySound) {
 			final float influenceSpeed = Math.clamp((float) this.getAverageInfluence().length(), 0.01F, 1.2F);
@@ -160,14 +160,16 @@ public class ChimeBlockEntity extends BlockEntity {
 
 	public static class VectorBasedInfluence extends AbstractInfluence {
 		private Vec3 influence;
+		private final double scalePerTick;
 
-		public VectorBasedInfluence(Vec3 influence) {
+		public VectorBasedInfluence(Vec3 influence, double scalePerTick) {
 			this.influence = influence;
+			this.scalePerTick = scalePerTick;
 		}
 
 		@Override
 		public void tick(Level level, BlockPos pos) {
-			this.influence = this.influence.scale(0.96D);
+			this.influence = this.influence.scale(this.scalePerTick);
 
 			if (this.influence.length() < 0.02D) this.influence = Vec3.ZERO;
 		}
@@ -188,8 +190,8 @@ public class ChimeBlockEntity extends BlockEntity {
 		private final boolean soundBearing;
 		private int ticksSinceStart;
 
-		public EntityInfluence(Entity entity, Vec3 influence, boolean soundBearing) {
-			super(influence);
+		public EntityInfluence(Entity entity, Vec3 influence, double scalePerTick, boolean soundBearing) {
+			super(influence, scalePerTick);
 			this.entity = entity;
 			this.soundBearing = soundBearing;
 		}

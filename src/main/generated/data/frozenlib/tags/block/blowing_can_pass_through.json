@@ -3,6 +3,10 @@
     {
       "id": "#thecopperierage:copper_fans",
       "required": false
+    },
+    {
+      "id": "#thecopperierage:chimes",
+      "required": false
     }
   ]
 }

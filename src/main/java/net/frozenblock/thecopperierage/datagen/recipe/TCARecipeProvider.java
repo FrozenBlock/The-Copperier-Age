@@ -117,6 +117,16 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.waxedWeathered(), Blocks.WAXED_WEATHERED_COPPER);
 				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.waxedOxidized(), Blocks.WAXED_OXIDIZED_COPPER);
 
+				createChimeRecipe(this, exporter, TCABlocks.CHIME.unaffected(), Blocks.COPPER_BLOCK);
+				createChimeRecipe(this, exporter, TCABlocks.CHIME.exposed(), Blocks.EXPOSED_COPPER);
+				createChimeRecipe(this, exporter, TCABlocks.CHIME.weathered(), Blocks.WEATHERED_COPPER);
+				createChimeRecipe(this, exporter, TCABlocks.CHIME.oxidized(), Blocks.OXIDIZED_COPPER);
+
+				createChimeRecipe(this, exporter, TCABlocks.CHIME.waxed(), Blocks.WAXED_COPPER_BLOCK);
+				createChimeRecipe(this, exporter, TCABlocks.CHIME.waxedExposed(), Blocks.WAXED_EXPOSED_COPPER);
+				createChimeRecipe(this, exporter, TCABlocks.CHIME.waxedWeathered(), Blocks.WAXED_WEATHERED_COPPER);
+				createChimeRecipe(this, exporter, TCABlocks.CHIME.waxedOxidized(), Blocks.WAXED_OXIDIZED_COPPER);
+
 				RecipeExportNamespaceFix.clearCurrentGeneratingModId();
 			}
 		};
@@ -152,6 +162,18 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 			.pattern("###")
 			.pattern("XOX")
 			.pattern("XRX")
+			.unlockedBy(RecipeProvider.getHasName(copperBlock), recipeProvider.has(copperBlock))
+			.save(exporter);
+	}
+
+	private static void createChimeRecipe(@NotNull RecipeProvider recipeProvider, RecipeOutput exporter, Block chimeBlock, Block copperBlock) {
+		recipeProvider.shaped(RecipeCategory.REDSTONE, chimeBlock, 1)
+			.define('-', Ingredient.of(copperBlock))
+			.define('T', Ingredient.of(Items.IRON_CHAIN))
+			.define('V', Ingredient.of(Items.AMETHYST_SHARD))
+			.pattern(" T ")
+			.pattern("---")
+			.pattern("VVV")
 			.unlockedBy(RecipeProvider.getHasName(copperBlock), recipeProvider.has(copperBlock))
 			.save(exporter);
 	}

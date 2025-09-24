@@ -38,6 +38,7 @@ public final class TCABlockLootProvider extends FabricBlockLootTableProvider {
 
 		TCABlocks.GEARBOX.forEach(this::dropSelf);
 		TCABlocks.COPPER_FAN.forEach(this::dropSelf);
+		TCABlocks.CHIME.forEach(this::dropSelf);
 		TCABlocks.COPPER_BUTTON.forEach(this::dropSelf);
 
 		this.dropSelf(TCABlocks.COPPER_JACK_O_LANTERN);

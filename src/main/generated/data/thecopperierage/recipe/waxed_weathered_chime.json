@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "-": "minecraft:waxed_weathered_copper",
+    "T": "minecraft:iron_chain",
+    "V": "minecraft:amethyst_shard"
+  },
+  "pattern": [
+    " T ",
+    "---",
+    "VVV"
+  ],
+  "result": {
+    "count": 1,
+    "id": "thecopperierage:waxed_weathered_chime"
+  }
+}

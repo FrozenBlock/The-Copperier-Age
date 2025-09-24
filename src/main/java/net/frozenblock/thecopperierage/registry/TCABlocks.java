@@ -203,7 +203,9 @@ public final class TCABlocks {
 
 		OxidizableBlocksRegistry.registerCopperBlockSet(GEARBOX);
 		OxidizableBlocksRegistry.registerCopperBlockSet(COPPER_FAN);
+		OxidizableBlocksRegistry.registerCopperBlockSet(CHIME);
 		OxidizableBlocksRegistry.registerCopperBlockSet(COPPER_BUTTON);
+		OxidizableBlocksRegistry.registerCopperBlockSet(WEIGHTED_PRESSURE_PLATE);
 	}
 
 	private static void registerDispenses() {

@@ -9,6 +9,10 @@
       "required": false
     },
     {
+      "id": "#thecopperierage:chimes",
+      "required": false
+    },
+    {
       "id": "#thecopperierage:copper_buttons",
       "required": false
     },

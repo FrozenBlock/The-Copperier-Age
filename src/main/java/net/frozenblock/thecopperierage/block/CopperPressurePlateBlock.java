@@ -115,7 +115,7 @@ public class CopperPressurePlateBlock extends BasePressurePlateBlock {
 	}
 
 	@Contract(pure = true)
-	private int getSlotsPerPower(@NotNull WeatheringCopper.WeatherState weatherState) {
+	private static int getSlotsPerPower(@NotNull WeatheringCopper.WeatherState weatherState) {
 		return switch (weatherState) {
 			case UNAFFECTED -> 1;
 			case EXPOSED -> 2;

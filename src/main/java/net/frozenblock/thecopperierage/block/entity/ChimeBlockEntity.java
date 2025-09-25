@@ -42,6 +42,8 @@ public class ChimeBlockEntity extends BlockEntity {
 	protected Vec3 prevInfluence = Vec3.ZERO;
 	protected Vec3 influence = Vec3.ZERO;
 	public int age;
+	public float prevAccumulatedStrength;
+	public float accumulatedStrength;
 
 	public ChimeBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
 		super(TCABlockEntityTypes.CHIME, pos, state);
@@ -51,6 +53,7 @@ public class ChimeBlockEntity extends BlockEntity {
 
 	public static void tick(Level level, BlockPos pos, @NotNull BlockState state, @NotNull ChimeBlockEntity chime) {
 		chime.prevInfluence = chime.influence;
+		chime.prevAccumulatedStrength = chime.accumulatedStrength;
 
 		chime.influences.forEach(influence -> influence.tick(level, pos));
 		chime.influences.removeIf(AbstractInfluence::shouldRemove);
@@ -58,6 +61,7 @@ public class ChimeBlockEntity extends BlockEntity {
 		chime.influence = chime.getAverageInfluence().yRot(state.getValue(ChimeBlock.FACING).toYRot() * Mth.DEG_TO_RAD);
 
 		chime.age += 1;
+		chime.accumulatedStrength += (float) (chime.influence.length()) * 0.4F;
 	}
 
 	public void addInfluence(

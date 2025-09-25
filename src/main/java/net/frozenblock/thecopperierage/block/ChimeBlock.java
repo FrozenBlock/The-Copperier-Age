@@ -217,7 +217,7 @@ public class ChimeBlock extends BaseEntityBlock {
 		final double length = movement.length();
 		if (length == 0D) return;
 
-		if (level.isClientSide() || !(level.getBlockEntity(pos) instanceof ChimeBlockEntity chime)) return;
+		if (!(level.getBlockEntity(pos) instanceof ChimeBlockEntity chime)) return;
 		chime.addEntityInfluence(level, pos, entity, movement.normalize().scale(Math.min(1D, length * 2D)), 0.96D, false, true);
 	}
 

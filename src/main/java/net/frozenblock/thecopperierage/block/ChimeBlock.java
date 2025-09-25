@@ -200,7 +200,7 @@ public class ChimeBlock extends BaseEntityBlock {
 		final Vec3 difference = chimeCenter.subtract(playerPos);
 		final double strength = (chimeCenter.y() - hitResult.getLocation().y()) * 1.25F;
 
-		return chime.addEntityInfluence(level, pos, player, difference.normalize().scale(strength), 0.98D, true)
+		return chime.addEntityInfluence(level, pos, player, difference.normalize().scale(strength), 0.98D, true, false)
 			? InteractionResult.SUCCESS
 			: InteractionResult.CONSUME;
 	}
@@ -217,8 +217,8 @@ public class ChimeBlock extends BaseEntityBlock {
 		final double length = movement.length();
 		if (length == 0D) return;
 
-		if (!(level.getBlockEntity(pos) instanceof ChimeBlockEntity chime)) return;
-		chime.addEntityInfluence(level, pos, entity, movement.normalize().scale(Math.min(1D, length * 2D)), 0.96D, false);
+		if (level.isClientSide() || !(level.getBlockEntity(pos) instanceof ChimeBlockEntity chime)) return;
+		chime.addEntityInfluence(level, pos, entity, movement.normalize().scale(Math.min(1D, length * 2D)), 0.96D, false, true);
 	}
 
 	@Override
@@ -229,11 +229,11 @@ public class ChimeBlock extends BaseEntityBlock {
 		@NotNull Explosion explosion,
 		BiConsumer<ItemStack, BlockPos> biConsumer
 	) {
-		if (explosion.canTriggerBlocks() && level.getBlockEntity(pos) instanceof ChimeBlockEntity chime) {
+		if (level.getBlockEntity(pos) instanceof ChimeBlockEntity chime) {
 			float radius = explosion.radius();
 			Vec3 difference = pos.getCenter().subtract(explosion.center());
 			double closeness = (radius - difference.length()) / radius;
-			chime.addInfluence(level, pos, difference.scale(closeness), 0.98D, true);
+			chime.addInfluence(level, pos, difference.normalize().scale(closeness), 0.9875D, true, true);
 		}
 
 		super.onExplosionHit(state, level, pos, explosion, biConsumer);

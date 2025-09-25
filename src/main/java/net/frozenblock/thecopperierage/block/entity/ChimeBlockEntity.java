@@ -20,6 +20,7 @@ package net.frozenblock.thecopperierage.block.entity;
 import net.frozenblock.lib.wind.api.WindManager;
 import net.frozenblock.lib.wind.client.impl.ClientWindManager;
 import net.frozenblock.thecopperierage.block.ChimeBlock;
+import net.frozenblock.thecopperierage.networking.packet.TCAChimeInfluencePacket;
 import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
 import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.minecraft.core.BlockPos;
@@ -34,6 +35,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ChimeBlockEntity extends BlockEntity {
 	private final List<AbstractInfluence> influences;
@@ -58,8 +60,16 @@ public class ChimeBlockEntity extends BlockEntity {
 		chime.age += 1;
 	}
 
-	public void addInfluence(@NotNull Level level, BlockPos pos, Vec3 influence, double scalePerTick, boolean playsSound) {
+	public void addInfluence(
+		@NotNull Level level,
+		BlockPos pos,
+		Vec3 influence,
+		double scalePerTick,
+		boolean playsSound,
+		boolean sendPacket
+	) {
 		this.influences.add(new VectorBasedInfluence(influence, scalePerTick));
+		if (sendPacket && level instanceof ServerLevel serverLevel) TCAChimeInfluencePacket.sendToAll(serverLevel, pos, influence, scalePerTick, null);
 		if (level.isClientSide() || !playsSound) return;
 
 		final float influenceSpeed = Math.clamp((float) this.getAverageInfluence().length(), 0.02F, 1.2F);
@@ -68,7 +78,15 @@ public class ChimeBlockEntity extends BlockEntity {
 		level.playSound(null, pos, TCASounds.BLOCK_CHIME_DISTURB, SoundSource.BLOCKS, volume, pitch);
 	}
 
-	public boolean addEntityInfluence(@NotNull Level level, BlockPos pos, Entity entity, Vec3 influence, double scalePerTick, boolean cancelIfSoundCannotPlay) {
+	public boolean addEntityInfluence(
+		@NotNull Level level,
+		BlockPos pos,
+		Entity entity,
+		Vec3 influence,
+		double scalePerTick,
+		boolean cancelIfSoundCannotPlay,
+		boolean sendPacket
+	) {
 		List<AbstractInfluence> entityInfluences = this.influences
 			.stream()
 			.filter(abstractInfluence -> {
@@ -89,7 +107,19 @@ public class ChimeBlockEntity extends BlockEntity {
 			level.playSound(entity, pos, TCASounds.BLOCK_CHIME_DISTURB, SoundSource.BLOCKS, volume, pitch);
 		}
 
+		if (sendPacket && level instanceof ServerLevel serverLevel) TCAChimeInfluencePacket.sendToAll(serverLevel, pos, influence, scalePerTick, entity);
+
 		return canPlaySound;
+	}
+
+	public void addClientInfluence(@NotNull Level level, Vec3 influence, double scaleEachTick, Optional<Integer> entityID) {
+		if (!level.isClientSide()) return;
+		final Entity entity = entityID.map(level::getEntity).orElse(null);
+		if (entity != null) {
+			this.influences.add(new EntityInfluence(entity, influence, scaleEachTick, false));
+		} else {
+			this.influences.add(new VectorBasedInfluence(influence, scaleEachTick));
+		}
 	}
 
 	public Vec3 getAverageInfluence() {

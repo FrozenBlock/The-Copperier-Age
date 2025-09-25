@@ -21,6 +21,8 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.frozenblock.thecopperierage.block.CopperFanBlock;
+import net.frozenblock.thecopperierage.block.entity.ChimeBlockEntity;
+import net.frozenblock.thecopperierage.networking.packet.TCAChimeInfluencePacket;
 import net.frozenblock.thecopperierage.networking.packet.TCACopperFanBlowPacket;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -31,6 +33,7 @@ public final class TCAClientNetworking {
 
 	public static void registerPacketReceivers() {
 		receiveCopperFanBlowPacket();
+		receiveChimeInfluencePacket();
 	}
 
 	public static void receiveCopperFanBlowPacket() {
@@ -46,5 +49,16 @@ public final class TCAClientNetworking {
 		});
 	}
 
+	public static void receiveChimeInfluencePacket() {
+		ClientPlayNetworking.registerGlobalReceiver(TCAChimeInfluencePacket.PACKET_TYPE, (packet, ctx) -> {
+			final ClientLevel level = ctx.client().level;
+			if (level == null) return;
+
+			final BlockPos pos = packet.pos();
+			if (!(level.getBlockEntity(pos) instanceof ChimeBlockEntity chime)) return;
+
+			chime.addClientInfluence(level, packet.influence(), packet.scaleEachTick(), packet.entityID());
+		});
+	}
 
 }

@@ -59,6 +59,7 @@ public final class TCABlocks {
 			.mapColor(MapColor.COLOR_LIGHT_GREEN)
 			.lightLevel(state -> 15)
 			.noCollision()
+			.randomTicks()
 	);
 
 	public static final CampfireBlock COPPER_CAMPFIRE = register("copper_campfire",

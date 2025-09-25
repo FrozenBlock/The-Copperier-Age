@@ -8,9 +8,9 @@
     "Lunade"
   ],
   "contributors": [
+    "Lufurrius",
     "zhen",
-    "voxelotl",
-    "Lufurrius"
+    "voxelotl"
   ],
   "contact": {
     "homepage": "https://modrinth.com/mod/the-copperier-age",
@@ -26,6 +26,9 @@
     ],
     "client": [
       "net.frozenblock.thecopperierage.TheCopperierAgeClient"
+    ],
+    "modmenu": [
+      "net.frozenblock.thecopperierage.config.gui.ModMenuIntegration"
     ],
     "fabric-datagen": [
       "net.frozenblock.thecopperierage.datagen.TCADataGenerator"

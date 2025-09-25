@@ -19,6 +19,7 @@ package net.frozenblock.thecopperierage.mixin.client.copper_fire;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
+import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCAParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -41,8 +42,7 @@ public class BaseFireBlockMixin {
 		SimpleParticleType original,
 		@Local(argsOnly = true) BlockState state
 	) {
-		// TODO: Config
-		if (!state.is(TCABlocks.COPPER_FIRE)) return original;
+		if (!TCAConfig.COPPER_PARTICLES || !state.is(TCABlocks.COPPER_FIRE)) return original;
 		return TCAParticleTypes.LARGE_COPPER_SMOKE;
 	}
 

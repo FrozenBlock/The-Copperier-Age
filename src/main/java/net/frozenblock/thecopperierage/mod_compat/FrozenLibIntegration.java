@@ -29,6 +29,7 @@ import net.frozenblock.lib.worldgen.structure.api.BlockStateRespectingRuleProces
 import net.frozenblock.lib.worldgen.structure.api.StructureProcessorApi;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.CopperFanBlock;
+import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -140,8 +141,7 @@ public class FrozenLibIntegration extends ModIntegration {
 
 	@Override
 	public void init() {
-		// TODO: Config
-		//if (WWWorldgenConfig.get().structure.newDesertVillages) {
+		if (TCAConfig.get().copperChestsInTrialChambers) {
 			StructureProcessorApi.addProcessor(
 				BuiltinStructures.TRIAL_CHAMBERS.location(),
 				new BlockStateRespectingRuleProcessor(
@@ -150,7 +150,7 @@ public class FrozenLibIntegration extends ModIntegration {
 					)
 				)
 			);
-		//}
+		}
 
 	}
 

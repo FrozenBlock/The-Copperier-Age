@@ -18,9 +18,11 @@
 package net.frozenblock.thecopperierage.block;
 
 import com.mojang.serialization.MapCodec;
+import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.tag.TCABlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -50,11 +52,11 @@ public class CopperFireBlock extends BaseFireBlock {
     }
 
 	@Override
-	protected BlockState updateShape(
-		BlockState state,
-		LevelReader level,
+	protected @NotNull BlockState updateShape(
+		@NotNull BlockState state,
+		@NotNull LevelReader level,
 		ScheduledTickAccess scheduledTickAccess,
-		BlockPos pos,
+		@NotNull BlockPos pos,
 		Direction direction,
 		BlockPos neighborPos,
 		BlockState neighborState,
@@ -74,18 +76,24 @@ public class CopperFireBlock extends BaseFireBlock {
 		return state.isFaceSturdy(level, pos, Direction.UP);
     }
 
-    @Override
+	@Override
+	protected void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+		if (level.isRainingAt(pos)) level.removeBlock(pos, false);
+	}
+
+	@Override
     protected boolean canBurn(BlockState state) {
         return true;
     }
 
 	public static void poisonEntity(@NotNull Level level, Entity entity) {
 		if (level.isClientSide() || !(entity instanceof LivingEntity livingEntity)) return;
+		if (!TCAConfig.get().copperFirePoisons) return;
 		livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 119));
 	}
 
     @Override
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier insideBlockEffectApplier) {
+    protected void entityInside(BlockState state, @NotNull Level level, BlockPos pos, @NotNull Entity entity, InsideBlockEffectApplier insideBlockEffectApplier) {
         super.entityInside(state, level, pos, entity, insideBlockEffectApplier);
         poisonEntity(level, entity);
     }

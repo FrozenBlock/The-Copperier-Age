@@ -23,6 +23,7 @@ import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCAParticleTypes;
 import net.minecraft.core.BlockPos;
@@ -71,8 +72,7 @@ public class CampfireBlockMixin {
 		SimpleParticleType original,
 		@Share("theCopperierAge$blockState") LocalRef<BlockState> state
 	) {
-		// TODO: Config
-		return state.get().is(TCABlocks.COPPER_CAMPFIRE) ? TCAParticleTypes.COPPER_CAMPFIRE_SIGNAL_SMOKE : original;
+		return TCAConfig.COPPER_PARTICLES && state.get().is(TCABlocks.COPPER_CAMPFIRE) ? TCAParticleTypes.COPPER_CAMPFIRE_SIGNAL_SMOKE : original;
 	}
 
 	@ModifyExpressionValue(
@@ -86,8 +86,7 @@ public class CampfireBlockMixin {
 		SimpleParticleType original,
 		@Share("theCopperierAge$blockState") LocalRef<BlockState> state
 	) {
-		// TODO: Config
-		return state.get().is(TCABlocks.COPPER_CAMPFIRE) ? TCAParticleTypes.COPPER_CAMPFIRE_COSY_SMOKE : original;
+		return TCAConfig.COPPER_PARTICLES && state.get().is(TCABlocks.COPPER_CAMPFIRE) ? TCAParticleTypes.COPPER_CAMPFIRE_COSY_SMOKE : original;
 	}
 
 	@ModifyExpressionValue(
@@ -101,8 +100,7 @@ public class CampfireBlockMixin {
 		SimpleParticleType original,
 		@Share("theCopperierAge$blockState") LocalRef<BlockState> state
 	) {
-		// TODO: Config
-		return state.get().is(TCABlocks.COPPER_CAMPFIRE) ? TCAParticleTypes.COPPER_SMOKE : original;
+		return TCAConfig.COPPER_PARTICLES && state.get().is(TCABlocks.COPPER_CAMPFIRE) ? TCAParticleTypes.COPPER_SMOKE : original;
 	}
 
 }

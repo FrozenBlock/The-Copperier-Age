@@ -70,6 +70,21 @@
   "block.thecopperierage.waxed_weathered_weighted_pressure_plate": "Waxed Weathered Weighted Pressure Plate",
   "block.thecopperierage.waxed_oxidized_weighted_pressure_plate": "Waxed Oxidized Weighted Pressure Plate",
 
+  "option.thecopperierage.component.title": "The Copperier Age Options",
+  "option.thecopperierage.false": "§cDisabled",
+  "option.thecopperierage.true": "§aEnabled",
+
+  "option.thecopperierage.config": "The Copperier Age Config",
+
+  "option.thecopperierage.copper_fire_enabled": "Copper Fire",
+  "tooltip.thecopperierage.copper_fire_enabled": "Whether Fire will turn into Copper Fire when above a Copper block.",
+  "option.thecopperierage.copper_fire_poisons": "Copper Fire Poisons Mobs",
+  "tooltip.thecopperierage.copper_fire_poisons": "Whether Copper Fire can poison mobs.",
+  "option.thecopperierage.copper_chests_in_trial_chambers": "Copper Chests In Trial Chambers",
+  "tooltip.thecopperierage.copper_chests_in_trial_chambers": "Whether Chests will be replaced with Copper Chests in Trial Chambers.",
+  "option.thecopperierage.copper_particles": "Copper Particles",
+  "tooltip.thecopperierage.copper_particles": "Whether certain particles created by Copper Fire-related blocks will emit green-tinted particles.\nThis includes Copper Fire, Copper Campfires, and Copper Torches.\nThe green tint of smoke-like particles will fade away.",
+
   "pack.thecopperierage.copperier_copper": "Copperier Copper",
   "pack.thecopperierage.green_copper_bulbs": "Green Copper Bulbs"
 }

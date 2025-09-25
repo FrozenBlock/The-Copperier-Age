@@ -21,6 +21,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.registry.TCAParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.level.block.Blocks;
@@ -44,8 +45,7 @@ public class WallTorchBlockMixin {
 		SimpleParticleType original,
 		@Local(argsOnly = true) BlockState state
 	) {
-		// TODO: Config
-		return state.is(Blocks.COPPER_WALL_TORCH) ? TCAParticleTypes.COPPER_SMOKE : original;
+		return TCAConfig.COPPER_PARTICLES && state.is(Blocks.COPPER_WALL_TORCH) ? TCAParticleTypes.COPPER_SMOKE : original;
 	}
 
 

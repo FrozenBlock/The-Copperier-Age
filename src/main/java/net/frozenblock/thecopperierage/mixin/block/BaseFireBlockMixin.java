@@ -18,6 +18,7 @@
 package net.frozenblock.thecopperierage.mixin.block;
 
 import net.frozenblock.thecopperierage.block.CopperFireBlock;
+import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
@@ -33,6 +34,6 @@ public class BaseFireBlockMixin {
 
     @Inject(method = "getState", at = @At("HEAD"), cancellable = true)
     private static void theCopperierAge$placeCopperFire(BlockGetter level, BlockPos pos, CallbackInfoReturnable<BlockState> info) {
-        if (CopperFireBlock.canSurviveOnBlock(level, pos.below())) info.setReturnValue(TCABlocks.COPPER_FIRE.defaultBlockState());
+        if (CopperFireBlock.canSurviveOnBlock(level, pos.below()) && TCAConfig.get().copperFireEnabled) info.setReturnValue(TCABlocks.COPPER_FIRE.defaultBlockState());
     }
 }

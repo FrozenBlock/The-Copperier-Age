@@ -196,9 +196,9 @@ public class ChimeBlock extends BaseEntityBlock {
 		if (!(level.getBlockEntity(pos) instanceof ChimeBlockEntity chime)) return super.useWithoutItem(state, level, pos, player, hitResult);
 
 		final Vec3 playerPos = player.getEyePosition();
-		final Vec3 chimeCenter = pos.getCenter();
-		final Vec3 difference = chimeCenter.subtract(playerPos);
-		final double strength = (chimeCenter.y() - hitResult.getLocation().y()) * 1.25F;
+		final Vec3 barCenter = pos.getCenter().add(0.3125D);
+		final Vec3 difference = barCenter.subtract(playerPos);
+		final double strength = (barCenter.y() - hitResult.getLocation().y()) * 1.25F;
 
 		return chime.addEntityInfluence(level, pos, player, difference.normalize().scale(strength), 0.98D, true, false)
 			? InteractionResult.SUCCESS

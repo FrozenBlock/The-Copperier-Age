@@ -199,7 +199,7 @@ public class ChimeModel extends Model<ChimeRenderState> {
 		super.setupAnim(renderState);
 
 		final Vec3 movement = renderState.chimeMovement;
-		final float animProgress = renderState.ageInTicks * 0.15F;
+		final float animProgress = renderState.animationProgress * 0.15F;
 
 		if (renderState.hanging) {
 			final Pair<Float, Float> supportRot = getRotationForMovement(0F, animProgress, movement);

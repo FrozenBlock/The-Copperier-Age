@@ -36,7 +36,7 @@ public class ChimeRenderState extends BlockEntityRenderState {
 	private static final ResourceLocation OXIDIZED = TCAConstants.id("textures/entity/chime/oxidized_chime.png");
 
 	public ResourceLocation texture;
-	public float ageInTicks;
+	public float animationProgress;
 	public boolean hanging;
 	public Direction direction;
 	public Vec3 chimeMovement;

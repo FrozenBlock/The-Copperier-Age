@@ -43,6 +43,8 @@ import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.Mirror;
@@ -115,6 +117,21 @@ public class CopperFanBlock extends DirectionalBlock {
 	) {
 		if (level.isClientSide() || level.getBlockTicks().hasScheduledTick(pos, this)) return;
 		level.scheduleTick(pos, this, 1);
+	}
+
+	@Override
+	protected @NotNull BlockState updateShape(
+		@NotNull BlockState state,
+		@NotNull LevelReader level,
+		@NotNull ScheduledTickAccess scheduledTickAccess,
+		@NotNull BlockPos pos,
+		@NotNull Direction direction,
+		@NotNull BlockPos neighborPos,
+		@NotNull BlockState neighborState,
+		@NotNull RandomSource random
+	) {
+		if (!scheduledTickAccess.getBlockTicks().hasScheduledTick(pos, this)) scheduledTickAccess.scheduleTick(pos, this, 1);
+		return super.updateShape(state, level, scheduledTickAccess, pos, direction, neighborPos, neighborState, random);
 	}
 
 	public void updateFan(@NotNull BlockState state, @NotNull ServerLevel level, BlockPos pos) {

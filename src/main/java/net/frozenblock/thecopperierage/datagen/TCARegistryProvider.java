@@ -36,8 +36,9 @@ final class TCARegistryProvider extends FabricDynamicRegistryProvider {
 	protected void configure(@NotNull HolderLookup.Provider registries, @NotNull Entries entries) {
 		TCAConstants.log("Adding finalized instruments to datagen", true);
 		entries.addAll(asLookup(entries.getLookup(Registries.INSTRUMENT)));
+		TCAConstants.log("Adding finalized template pools to datagen", true);
+		entries.addAll(asLookup(entries.getLookup(Registries.TEMPLATE_POOL)));
 	}
-
 
 	public static <T> HolderLookup.RegistryLookup<T> asLookup(HolderGetter<T> getter) {
 		return (HolderLookup.RegistryLookup<T>) getter;

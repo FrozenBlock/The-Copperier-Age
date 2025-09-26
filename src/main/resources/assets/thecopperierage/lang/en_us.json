@@ -86,5 +86,6 @@
   "tooltip.thecopperierage.copper_particles": "Whether certain particles created by Copper Fire-related blocks will emit green-tinted particles.\nThis includes Copper Fire, Copper Campfires, and Copper Torches.\nThe green tint of smoke-like particles will fade away.",
 
   "pack.thecopperierage.copperier_copper": "Copperier Copper",
-  "pack.thecopperierage.green_copper_bulbs": "Green Copper Bulbs"
+  "pack.thecopperierage.green_copper_bulbs": "Green Copper Bulbs",
+  "pack.thecopperierage.trickier_trials": "Trickier Trials"
 }

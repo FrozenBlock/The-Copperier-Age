@@ -1,3 +1,5 @@
+Luna/Lunade/AViewFromTheTop - Lead Dev/Producer & Producer
+
 Lufurrius
  - Initial Copper Chain Retextures
  - Initial Gearbox Concept
@@ -20,6 +22,9 @@ Zhen/zntm
 
 Voxelotl
  - New Copper Lantern Remodels & Retextures
+
+wigglewoggle
+ - New Trial Chambers Structure pieces
 
 Willow/Pictochats
  - Gearbox Brainstorming

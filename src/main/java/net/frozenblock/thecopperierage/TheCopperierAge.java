@@ -66,6 +66,13 @@ public final class TheCopperierAge extends FrozenModInitializer {
 			Component.translatable("pack.thecopperierage.green_copper_bulbs"),
 			ResourcePackActivationType.NORMAL
 		);
+
+		ResourceManagerHelper.registerBuiltinResourcePack(
+			TCAConstants.id("trickier_trials"),
+			container,
+			Component.translatable("pack.thecopperierage.trickier_trials"),
+			ResourcePackActivationType.DEFAULT_ENABLED
+		);
 	}
 
 

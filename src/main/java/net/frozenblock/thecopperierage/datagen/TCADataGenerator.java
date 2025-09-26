@@ -29,6 +29,7 @@ import net.frozenblock.thecopperierage.datagen.tag.TCABlockTagProvider;
 import net.frozenblock.thecopperierage.datagen.tag.TCAInstrumentTagProvider;
 import net.frozenblock.thecopperierage.datagen.tag.TCAItemTagProvider;
 import net.frozenblock.thecopperierage.registry.TCAInstruments;
+import net.frozenblock.thecopperierage.structure.TCATrialChambersTemplatePools;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import org.jetbrains.annotations.NotNull;
@@ -62,6 +63,7 @@ public final class TCADataGenerator implements DataGeneratorEntrypoint {
 		TCAConstants.logWithModId("Generating dynamic registries for", TCAConstants.UNSTABLE_LOGGING);
 
 		registryBuilder.add(Registries.INSTRUMENT, TCAInstruments::bootstrap);
+		registryBuilder.add(Registries.TEMPLATE_POOL, TCATrialChambersTemplatePools::bootstrapTemplatePool);
 	}
 
 	@Override

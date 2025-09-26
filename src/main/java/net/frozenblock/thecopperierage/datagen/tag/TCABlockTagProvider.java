@@ -90,6 +90,9 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 			.addOptionalTag(TCABlockTags.COPPER_FANS)
 			.addOptionalTag(TCABlockTags.CHIMES);
 
+		this.builder(FrozenBlockTags.STRUCTURE_PLACE_SCHEDULES_TICK)
+			.addOptionalTag(TCABlockTags.COPPER_FANS);
+
 		TagAppender<Block, Block> copperFireBaseBlocksTag = this.valueLookupBuilder(TCABlockTags.COPPER_FIRE_BASE_BLOCKS);
 		registries.lookupOrThrow(Registries.BLOCK)
 			.listElements()
@@ -111,6 +114,7 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 				if (path.contains("chest")) return;
 				if (path.contains("campfire")) return;
 				if (path.contains("jack_o_lantern")) return;
+				if (path.contains("fan")) return;
 
 				copperFireBaseBlocksTag.add(block.value());
 			});

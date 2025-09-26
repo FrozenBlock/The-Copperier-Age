@@ -7,7 +7,7 @@
     "block.BaseFireBlockMixin",
     "block.CampfireBlockMixin",
     "block.RedstoneWireBlockMixin",
-    "block.StructureTemplateMixin"
+    "worldgen.TrickierTrialsPackCheckerMixin"
   ],
   "client": [
     "client.copper_fire.BaseFireBlockMixin",

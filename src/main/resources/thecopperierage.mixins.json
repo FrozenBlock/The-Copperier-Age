@@ -6,7 +6,8 @@
   "mixins": [
     "block.BaseFireBlockMixin",
     "block.CampfireBlockMixin",
-    "block.RedstoneWireBlockMixin"
+    "block.RedstoneWireBlockMixin",
+    "block.StructureTemplateMixin"
   ],
   "client": [
     "client.copper_fire.BaseFireBlockMixin",

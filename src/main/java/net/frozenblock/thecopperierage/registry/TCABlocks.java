@@ -116,7 +116,6 @@ public final class TCABlocks {
 			.mapColor(MapColor.STONE)
 			.strength(1.5F)
 			.isRedstoneConductor(Blocks::never)
-			.hasPostProcess(Blocks::always)
 	);
 
 	public static final WeatheringCopperBlocks CHIME = WeatheringCopperBlocks.create(

@@ -130,7 +130,7 @@ public class CopperFanBlock extends DirectionalBlock {
 		@NotNull BlockState neighborState,
 		@NotNull RandomSource random
 	) {
-		if (!scheduledTickAccess.getBlockTicks().hasScheduledTick(pos, this)) scheduledTickAccess.scheduleTick(pos, this, 1);
+		scheduledTickAccess.scheduleTick(pos, this, 1);
 		return super.updateShape(state, level, scheduledTickAccess, pos, direction, neighborPos, neighborState, random);
 	}
 

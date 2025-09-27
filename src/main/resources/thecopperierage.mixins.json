@@ -4,9 +4,10 @@
   "package": "net.frozenblock.thecopperierage.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "block.BaseFireBlockMixin",
-    "block.CampfireBlockMixin",
-    "block.RedstoneWireBlockMixin",
+    "block.copper_fan.EntityMixin",
+    "block.copper_fire.BaseFireBlockMixin",
+    "block.copper_fire.CampfireBlockMixin",
+    "block.redstone.RedstoneWireBlockMixin",
     "worldgen.TrickierTrialsPackCheckerMixin"
   ],
   "client": [

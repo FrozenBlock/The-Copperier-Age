@@ -29,6 +29,7 @@ import net.frozenblock.lib.wind.api.WindDisturbance;
 import net.frozenblock.lib.wind.api.WindDisturbanceLogic;
 import net.frozenblock.lib.wind.api.WindManager;
 import net.frozenblock.lib.wind.client.impl.ClientWindManager;
+import net.frozenblock.thecopperierage.entity.impl.CopperFanQueuedMovementInterface;
 import net.frozenblock.thecopperierage.mod_compat.FrozenLibIntegration;
 import net.frozenblock.thecopperierage.networking.packet.TCACopperFanBlowPacket;
 import net.minecraft.core.BlockPos;
@@ -266,33 +267,29 @@ public class CopperFanBlock extends DirectionalBlock {
 		final double pushIntensity = !reverse ? PUSH_INTENSITY : PUSH_INTENSITY_REVERSE;
 		final Vec3 movement = Vec3.atLowerCornerOf((!reverse ? direction : oppositeDirection).getUnitVec3i());
 		for (Entity entity : entities) {
+			if (!(entity instanceof CopperFanQueuedMovementInterface queuedMovementInterface)) continue;
+
 			AABB boundingBox = entity.getBoundingBox();
 			if (!blowingArea.intersects(boundingBox)) continue;
 
-			boolean applyMovement = true;
 			if (entity instanceof Player player) {
-				if (!player.getAbilities().flying) {
-					if (direction == Direction.UP) {
-						Vec3 lastImpactPos = player.currentImpulseImpactPos;
-						Vec3 playerPos = player.position();
-						player.currentImpulseImpactPos = new Vec3(
-							playerPos.x(),
-							lastImpactPos != null ? Math.min(lastImpactPos.y(), playerPos.y()) : playerPos.y(),
-							playerPos.z()
-						);
-						player.setIgnoreFallDamageFromCurrentImpulse(true);
-					}
-				} else {
-					applyMovement = false;
+				if (player.getAbilities().flying) continue;
+				if (direction == Direction.UP) {
+					final Vec3 lastImpactPos = player.currentImpulseImpactPos;
+					final Vec3 playerPos = player.position();
+					player.currentImpulseImpactPos = new Vec3(
+						playerPos.x(),
+						lastImpactPos != null ? Math.min(lastImpactPos.y(), playerPos.y()) : playerPos.y(),
+						playerPos.z()
+					);
+					player.setIgnoreFallDamageFromCurrentImpulse(true);
 				}
 			}
 
-			if (applyMovement) {
-				final double intensity = (fanDistance - Math.min(entity.position().distanceTo(fanStartPos), fanDistance)) / fanDistance;
-				final double overallIntensity = intensity * pushIntensity;
-				final Vec3 deltaMovement = entity.getDeltaMovement().add(movement.scale(overallIntensity));
-				entity.setDeltaMovement(deltaMovement);
-			}
+			final double intensity = (fanDistance - Math.min(entity.position().distanceTo(fanStartPos), fanDistance)) / fanDistance;
+			final double overallIntensity = intensity * pushIntensity;
+			final Vec3 fanMovement = movement.scale(overallIntensity);
+			queuedMovementInterface.theCopperierAge$queueCopperFanMovement(fanMovement);
 		}
 	}
 

@@ -134,6 +134,11 @@ public class CopperFanBlock extends DirectionalBlock {
 		return super.updateShape(state, level, scheduledTickAccess, pos, direction, neighborPos, neighborState, random);
 	}
 
+	@Override
+	protected boolean propagatesSkylightDown(BlockState state) {
+		return true;
+	}
+
 	public void updateFan(@NotNull BlockState state, @NotNull ServerLevel level, BlockPos pos) {
 		final boolean hasNeighborSignal = level.hasNeighborSignal(pos);
 		final boolean powered = state.getValue(POWERED);

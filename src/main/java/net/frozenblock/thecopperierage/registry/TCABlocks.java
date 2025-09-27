@@ -115,7 +115,10 @@ public final class TCABlocks {
 		(weatherState) -> BlockBehaviour.Properties.of()
 			.mapColor(MapColor.STONE)
 			.strength(1.5F)
+			.noOcclusion()
+			.isValidSpawn(Blocks::never)
 			.isRedstoneConductor(Blocks::never)
+			.isSuffocating(Blocks::never)
 	);
 
 	public static final WeatheringCopperBlocks CHIME = WeatheringCopperBlocks.create(

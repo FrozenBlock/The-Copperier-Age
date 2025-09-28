@@ -1,5 +1,5 @@
 {
-  "parent": "thecopperierage:block/template_gearbox",
+  "parent": "thecopperierage:block/template_copper_fan",
   "textures": {
     "front": "thecopperierage:block/copper_fan_top_powered"
   }

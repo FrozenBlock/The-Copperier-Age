@@ -17,7 +17,7 @@ Zhen/zntm
  - Chime Sounds
  - Copper Campfire Textures
  - Wrench Usage Sounds
- - Gearbox Idle Sounds
+ - Gearbox Sounds
  - Green Copper Bulb Textures
 
 Voxelotl

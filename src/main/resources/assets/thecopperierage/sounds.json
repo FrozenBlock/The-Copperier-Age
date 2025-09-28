@@ -1,4 +1,38 @@
 {
+  "block.gearbox.activate": {
+    "sounds": [
+      {
+        "attenuation_distance": 8,
+        "name": "thecopperierage:block/gearbox/activate1"
+      },
+      {
+        "attenuation_distance": 8,
+        "name": "thecopperierage:block/gearbox/activate2"
+      },
+      {
+        "attenuation_distance": 8,
+        "name": "thecopperierage:block/gearbox/activate3"
+      }
+    ],
+    "subtitle": "subtitles.block.gearbox.activate"
+  },
+  "block.gearbox.deactivate": {
+    "sounds": [
+      {
+        "attenuation_distance": 8,
+        "name": "thecopperierage:block/gearbox/deactivate1"
+      },
+      {
+        "attenuation_distance": 8,
+        "name": "thecopperierage:block/gearbox/deactivate2"
+      },
+      {
+        "attenuation_distance": 8,
+        "name": "thecopperierage:block/gearbox/deactivate3"
+      }
+    ],
+    "subtitle": "subtitles.block.gearbox.deactivate"
+  },
   "block.gearbox.idle": {
     "sounds": [
       {
@@ -24,6 +58,30 @@
       {
         "attenuation_distance": 8,
         "name": "thecopperierage:block/gearbox/idle6"
+      },
+      {
+        "attenuation_distance": 8,
+        "name": "thecopperierage:block/gearbox/idle7"
+      },
+      {
+        "attenuation_distance": 8,
+        "name": "thecopperierage:block/gearbox/idle8"
+      },
+      {
+        "attenuation_distance": 8,
+        "name": "thecopperierage:block/gearbox/idle9"
+      },
+      {
+        "attenuation_distance": 8,
+        "name": "thecopperierage:block/gearbox/idle10"
+      },
+      {
+        "attenuation_distance": 8,
+        "name": "thecopperierage:block/gearbox/idle11"
+      },
+      {
+        "attenuation_distance": 8,
+        "name": "thecopperierage:block/gearbox/idle12"
       }
     ],
     "subtitle": "subtitles.block.gearbox.idle"

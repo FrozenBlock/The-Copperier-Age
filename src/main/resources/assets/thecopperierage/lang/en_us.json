@@ -38,7 +38,9 @@
   "block.thecopperierage.waxed_exposed_gearbox": "Waxed Exposed Gearbox",
   "block.thecopperierage.waxed_weathered_gearbox": "Waxed Weathered Gearbox",
   "block.thecopperierage.waxed_oxidized_gearbox": "Waxed Oxidized Gearbox",
-  "subtitles.block.gearbox.idle": "Gears mesh",
+  "subtitles.block.gearbox.activate": "Gearbox powered",
+  "subtitles.block.gearbox.deactivate": "Gearbox unpowered",
+  "subtitles.block.gearbox.idle": "Gearbox rattles",
 
   "block.thecopperierage.copper_fan": "Copper Fan",
   "block.thecopperierage.exposed_copper_fan": "Exposed Copper Fan",
@@ -50,7 +52,8 @@
   "block.thecopperierage.waxed_oxidized_copper_fan": "Waxed Oxidized Copper Fan",
   "subtitles.block.copper_fan.on": "Fan powered",
   "subtitles.block.copper_fan.off": "Fan unpowered",
-  "subtitles.block.copper_fan.idle": "Fan blows",
+  "subtitles.block.copper_fan.idle_blow": "Fan blows",
+  "subtitles.block.copper_fan.idle_hum": "Fan hums",
 
   "block.thecopperierage.copper_button": "Copper Button",
   "block.thecopperierage.exposed_copper_button": "Exposed Copper Button",

@@ -29,6 +29,8 @@ import org.jetbrains.annotations.NotNull;
 public final class TCASounds {
 
 	// BLOCK
+	public static final SoundEvent BLOCK_GEARBOX_ACTIVATE = register("block.gearbox.activate");
+	public static final SoundEvent BLOCK_GEARBOX_DEACTIVATE = register("block.gearbox.deactivate");
 	public static final SoundEvent BLOCK_GEARBOX_IDLE = register("block.gearbox.idle");
 	public static final SoundEvent BLOCK_CHIME_AMBIENT = register("block.chime.ambient");
 	public static final SoundEvent BLOCK_CHIME_DISTURB = register("block.chime.disturb");

@@ -18,8 +18,10 @@
 package net.frozenblock.thecopperierage.block.gearbox;
 
 import net.frozenblock.thecopperierage.block.GearboxBlock;
+import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,8 +36,30 @@ public class GearboxBlockEvaluator {
 
 	public void updatePowerStrength(Level level, BlockPos pos, @NotNull BlockState state) {
 		final int newPower = this.calculateTargetStrength(level, pos, state);
-		if (state.getValue(GearboxBlock.POWER) != newPower) {
-			if (level.getBlockState(pos) == state) level.setBlock(pos, state.setValue(GearboxBlock.POWER, newPower), Block.UPDATE_CLIENTS);
+		final int oldPower = state.getValue(GearboxBlock.POWER);
+		if (oldPower != newPower) {
+			if (level.getBlockState(pos) == state) {
+				level.setBlock(pos, state.setValue(GearboxBlock.POWER, newPower), Block.UPDATE_CLIENTS);
+				if (oldPower == 0 && newPower % 2 != 0) {
+					level.playSound(
+						null,
+						pos,
+						TCASounds.BLOCK_GEARBOX_ACTIVATE,
+						SoundSource.BLOCKS,
+						0.45F,
+						0.15F + (newPower / 25F) + (level.getRandom().nextFloat() * 0.1F)
+					);
+				} else if (newPower == 0) {
+					level.playSound(
+						null,
+						pos,
+						TCASounds.BLOCK_GEARBOX_DEACTIVATE,
+						SoundSource.BLOCKS,
+						0.25F,
+						0.5F + (level.getRandom().nextFloat() * 0.2F)
+					);
+				}
+			}
 			this.updateNeighboringBlocks(level, pos, state);
 		}
 	}

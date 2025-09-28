@@ -31,6 +31,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.gameevent.vibrations.VibrationSystem;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
@@ -38,6 +40,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class ChimeBlockEntity extends BlockEntity {
+	private static final float MAX_BLOCKS_PER_SECOND = 22F;
+	private static final float MAX_BLOCKS_PER_SECOND_IN_TICKS = MAX_BLOCKS_PER_SECOND / 20F;
+	private static final float BLOCKS_PER_SECOND_TO_VIBRATION = 22F / 15F;
 	private final List<AbstractInfluence> influences;
 	public final float animationOffset;
 	protected Vec3 prevInfluence = Vec3.ZERO;
@@ -70,6 +75,7 @@ public class ChimeBlockEntity extends BlockEntity {
 	public void addInfluence(
 		@NotNull Level level,
 		BlockPos pos,
+		BlockState state,
 		Vec3 influence,
 		double scalePerTick,
 		boolean playsSound,
@@ -83,11 +89,14 @@ public class ChimeBlockEntity extends BlockEntity {
 		final float volume = Mth.lerp(influenceSpeed, 0.1F, 0.6F);
 		final float pitch = Mth.lerp(influenceSpeed, 0.75F, 1.2F);
 		level.playSound(null, pos, TCASounds.BLOCK_CHIME_DISTURB, SoundSource.BLOCKS, volume, pitch);
+
+		level.gameEvent(VibrationSystem.getResonanceEventByFrequency((int) (Math.min(influenceSpeed, 1F) * 15)), pos, GameEvent.Context.of(state));
 	}
 
 	public boolean addEntityInfluence(
 		@NotNull Level level,
 		BlockPos pos,
+		BlockState state,
 		Entity entity,
 		Vec3 influence,
 		double scalePerTick,
@@ -112,6 +121,11 @@ public class ChimeBlockEntity extends BlockEntity {
 			final float volume = Mth.lerp(influenceSpeed, 0.02F, 0.6F);
 			final float pitch = Mth.lerp(influenceSpeed, 0.75F, 1.2F);
 			level.playSound(entity, pos, TCASounds.BLOCK_CHIME_DISTURB, SoundSource.BLOCKS, volume, pitch);
+
+			// We are measuring with a max of 22 Blocks per second- creative sprint flying, Thanks, wiki!
+			final float speedInBlocksPerSecond = Math.min(influenceSpeed, MAX_BLOCKS_PER_SECOND_IN_TICKS) * 20F;
+			final float vibrationStrength = speedInBlocksPerSecond / BLOCKS_PER_SECOND_TO_VIBRATION;
+			level.gameEvent(VibrationSystem.getResonanceEventByFrequency((int) vibrationStrength), pos, GameEvent.Context.of(entity, state));
 		}
 
 		if (sendPacket && level instanceof ServerLevel serverLevel) TCAChimeInfluencePacket.sendToAll(serverLevel, pos, influence, scalePerTick, entity);

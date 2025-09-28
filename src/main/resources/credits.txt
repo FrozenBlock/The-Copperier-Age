@@ -7,17 +7,15 @@ Lufurrius
  - Copper Pressure Plate Concept
 
 Zhen/zntm
- - Wrench Concept & Texture
+ - Wrench Concept, Textures, & Sounds
  - Copper Sword, Axe, Pickaxe, Shovel, & Hoe Retextures
  - Copper Helmet, Chestplate, Leggings, & Boots Item Retextures
  - Final Copper Chain Retextures (Based On Lufurrius's)
  - Final Gearbox Retextures (Based On Lufurrius's)
- - Copper Fan Textures
- - Chime Concept & Textures
- - Chime Sounds
- - Copper Campfire Textures
- - Wrench Usage Sounds
  - Gearbox Sounds
+ - Copper Fan Textures & Sounds
+ - Chime Concept, Textures, & Sounds
+ - Copper Campfire Textures
  - Green Copper Bulb Textures
 
 Voxelotl

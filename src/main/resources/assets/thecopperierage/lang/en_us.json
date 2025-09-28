@@ -38,8 +38,8 @@
   "block.thecopperierage.waxed_exposed_gearbox": "Waxed Exposed Gearbox",
   "block.thecopperierage.waxed_weathered_gearbox": "Waxed Weathered Gearbox",
   "block.thecopperierage.waxed_oxidized_gearbox": "Waxed Oxidized Gearbox",
-  "subtitles.block.gearbox.activate": "Gearbox powered",
-  "subtitles.block.gearbox.deactivate": "Gearbox unpowered",
+  "subtitles.block.gearbox.on": "Gearbox powered",
+  "subtitles.block.gearbox.off": "Gearbox unpowered",
   "subtitles.block.gearbox.idle": "Gearbox rattles",
 
   "block.thecopperierage.copper_fan": "Copper Fan",

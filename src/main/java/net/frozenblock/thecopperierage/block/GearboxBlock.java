@@ -75,9 +75,7 @@ public class GearboxBlock extends DirectionalBlock {
 		if (random.nextFloat() > 0.05F) return;
 
 		level.playLocalSound(
-			pos.getX() + 0.5D,
-			pos.getY() + 0.5D,
-			pos.getZ() + 0.5D,
+			pos,
 			TCASounds.BLOCK_GEARBOX_IDLE,
 			SoundSource.BLOCKS,
 			0.1F,

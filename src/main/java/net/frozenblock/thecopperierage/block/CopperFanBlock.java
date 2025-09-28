@@ -32,10 +32,11 @@ import net.frozenblock.lib.wind.client.impl.ClientWindManager;
 import net.frozenblock.thecopperierage.entity.impl.CopperFanQueuedMovementInterface;
 import net.frozenblock.thecopperierage.mod_compat.FrozenLibIntegration;
 import net.frozenblock.thecopperierage.networking.packet.TCACopperFanBlowPacket;
+import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -97,8 +98,8 @@ public class CopperFanBlock extends DirectionalBlock {
 	}
 
 	@Override
-	protected void tick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, RandomSource random) {
-		this.updateFan(state, level, pos);
+	protected void tick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+		this.updateFan(state, level, pos, random);
 	}
 
 	@Override
@@ -140,21 +141,17 @@ public class CopperFanBlock extends DirectionalBlock {
 		return true;
 	}
 
-	public void updateFan(@NotNull BlockState state, @NotNull ServerLevel level, BlockPos pos) {
+	public void updateFan(@NotNull BlockState state, @NotNull ServerLevel level, BlockPos pos, RandomSource random) {
 		final boolean hasNeighborSignal = level.hasNeighborSignal(pos);
 		final boolean powered = state.getValue(POWERED);
 		final Direction facing = state.getValue(FACING);
 
 		if (hasNeighborSignal != powered) {
 			final BlockState newState = state.setValue(POWERED, hasNeighborSignal);
-			// TODO: Sounds
-			level.playSound(
-				null,
-				pos,
-				hasNeighborSignal ? SoundEvents.FIRECHARGE_USE : SoundEvents.FIRE_EXTINGUISH,
-				SoundSource.BLOCKS
-			);
 			level.setBlock(pos, newState, UPDATE_ALL);
+
+			final SoundEvent toggleSound = hasNeighborSignal ? TCASounds.BLOCK_COPPER_FAN_ON : TCASounds.BLOCK_COPPER_FAN_OFF;
+			level.playSound(null, pos, toggleSound, SoundSource.BLOCKS, 1F, 0.9F + (random.nextFloat() * 0.2F));
 		}
 
 		if (hasNeighborSignal) {
@@ -352,6 +349,12 @@ public class CopperFanBlock extends DirectionalBlock {
 			case NORTH -> -0.05D;
 			case SOUTH -> 1.05D;
 		};
+	}
+
+	@Override
+	public void animateTick(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+		if (!state.getValue(POWERED) || random.nextFloat() > 0.1F) return;
+		level.playLocalSound(pos, TCASounds.BLOCK_COPPER_FAN_IDLE_HUM, SoundSource.BLOCKS, 1F, 1F, false);
 	}
 
 	@Override

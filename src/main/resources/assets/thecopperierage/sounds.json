@@ -1,5 +1,5 @@
 {
-  "block.gearbox.activate": {
+  "block.gearbox.on": {
     "sounds": [
       {
         "attenuation_distance": 8,
@@ -14,9 +14,9 @@
         "name": "thecopperierage:block/gearbox/activate3"
       }
     ],
-    "subtitle": "subtitles.block.gearbox.activate"
+    "subtitle": "subtitles.block.gearbox.on"
   },
-  "block.gearbox.deactivate": {
+  "block.gearbox.off": {
     "sounds": [
       {
         "attenuation_distance": 8,
@@ -31,7 +31,7 @@
         "name": "thecopperierage:block/gearbox/deactivate3"
       }
     ],
-    "subtitle": "subtitles.block.gearbox.deactivate"
+    "subtitle": "subtitles.block.gearbox.off"
   },
   "block.gearbox.idle": {
     "sounds": [
@@ -85,6 +85,32 @@
       }
     ],
     "subtitle": "subtitles.block.gearbox.idle"
+  },
+  "block.copper_fan.on": {
+    "sounds": [
+      "thecopperierage:block/copper_fan/activate1",
+      "thecopperierage:block/copper_fan/activate2",
+      "thecopperierage:block/copper_fan/activate3"
+    ],
+    "subtitle": "subtitles.block.copper_fan.on"
+  },
+  "block.copper_fan.off": {
+    "sounds": [
+      "thecopperierage:block/copper_fan/deactivate1",
+      "thecopperierage:block/copper_fan/deactivate2",
+      "thecopperierage:block/copper_fan/deactivate3"
+    ],
+    "subtitle": "subtitles.block.copper_fan.off"
+  },
+  "block.copper_fan.idle_hum": {
+    "sounds": [
+      "thecopperierage:block/copper_fan/idle_hum1",
+      "thecopperierage:block/copper_fan/idle_hum2",
+      "thecopperierage:block/copper_fan/idle_hum3",
+      "thecopperierage:block/copper_fan/idle_hum4",
+      "thecopperierage:block/copper_fan/idle_hum5"
+    ],
+    "subtitle": "subtitles.block.copper_fan.idle_hum"
   },
   "block.chime.break": {
     "sounds": [

@@ -29,8 +29,8 @@ import org.jetbrains.annotations.NotNull;
 public final class TCASounds {
 
 	// BLOCK
-	public static final SoundEvent BLOCK_GEARBOX_ACTIVATE = register("block.gearbox.activate");
-	public static final SoundEvent BLOCK_GEARBOX_DEACTIVATE = register("block.gearbox.deactivate");
+	public static final SoundEvent BLOCK_GEARBOX_ON = register("block.gearbox.on");
+	public static final SoundEvent BLOCK_GEARBOX_OFF = register("block.gearbox.off");
 	public static final SoundEvent BLOCK_GEARBOX_IDLE = register("block.gearbox.idle");
 	public static final SoundEvent BLOCK_CHIME_AMBIENT = register("block.chime.ambient");
 	public static final SoundEvent BLOCK_CHIME_DISTURB = register("block.chime.disturb");
@@ -48,6 +48,10 @@ public final class TCASounds {
 		BLOCK_CHIME_HIT,
 		BLOCK_CHIME_FALL
 	);
+
+	public static final SoundEvent BLOCK_COPPER_FAN_ON = register("block.copper_fan.on");
+	public static final SoundEvent BLOCK_COPPER_FAN_OFF = register("block.copper_fan.off");
+	public static final SoundEvent BLOCK_COPPER_FAN_IDLE_HUM = register("block.copper_fan.idle_hum");
 
 	// ITEM
 	public static final Holder.Reference<SoundEvent> ITEM_COPPER_HORN_SAX = registerForHolder("item.copper_horn.saxophone");

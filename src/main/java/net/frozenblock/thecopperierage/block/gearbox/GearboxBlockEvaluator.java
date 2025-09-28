@@ -44,7 +44,7 @@ public class GearboxBlockEvaluator {
 					level.playSound(
 						null,
 						pos,
-						TCASounds.BLOCK_GEARBOX_ACTIVATE,
+						TCASounds.BLOCK_GEARBOX_ON,
 						SoundSource.BLOCKS,
 						0.45F,
 						0.15F + (newPower / 25F) + (level.getRandom().nextFloat() * 0.1F)
@@ -53,7 +53,7 @@ public class GearboxBlockEvaluator {
 					level.playSound(
 						null,
 						pos,
-						TCASounds.BLOCK_GEARBOX_DEACTIVATE,
+						TCASounds.BLOCK_GEARBOX_OFF,
 						SoundSource.BLOCKS,
 						0.25F,
 						0.5F + (level.getRandom().nextFloat() * 0.2F)

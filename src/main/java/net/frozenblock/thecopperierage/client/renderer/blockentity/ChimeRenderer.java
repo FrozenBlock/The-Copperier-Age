@@ -21,12 +21,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.frozenblock.lib.render.FrozenLibRenderTypes;
 import net.frozenblock.thecopperierage.block.ChimeBlock;
 import net.frozenblock.thecopperierage.block.entity.ChimeBlockEntity;
 import net.frozenblock.thecopperierage.block.state.properties.ChimeAttachType;
 import net.frozenblock.thecopperierage.client.TCAModelLayers;
 import net.frozenblock.thecopperierage.client.model.ChimeModel;
 import net.frozenblock.thecopperierage.client.renderer.blockentity.state.ChimeRenderState;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
@@ -43,9 +45,11 @@ import org.jetbrains.annotations.Nullable;
 @Environment(EnvType.CLIENT)
 public class ChimeRenderer<T extends ChimeBlockEntity> implements BlockEntityRenderer<T, ChimeRenderState> {
 	private final ChimeModel model;
+	private final ChimeModel chainsModel;
 
 	public ChimeRenderer(@NotNull Context context) {
-		this.model = new ChimeModel(context.bakeLayer(TCAModelLayers.CHIME));
+		this.model = new ChimeModel(context.bakeLayer(TCAModelLayers.CHIME), RenderType::entityCutout, false);
+		this.chainsModel = new ChimeModel(context.bakeLayer(TCAModelLayers.CHIME), FrozenLibRenderTypes::entityCutoutNoShading, true);
 	}
 
 	@Override
@@ -65,6 +69,16 @@ public class ChimeRenderer<T extends ChimeBlockEntity> implements BlockEntityRen
 			renderState,
 			poseStack,
 			this.model.renderType(renderState.texture),
+			renderState.lightCoords,
+			OverlayTexture.NO_OVERLAY,
+			0,
+			renderState.breakProgress
+		);
+		submitNodeCollector.submitModel(
+			this.chainsModel,
+			renderState,
+			poseStack,
+			this.chainsModel.renderType(renderState.texture),
 			renderState.lightCoords,
 			OverlayTexture.NO_OVERLAY,
 			0,

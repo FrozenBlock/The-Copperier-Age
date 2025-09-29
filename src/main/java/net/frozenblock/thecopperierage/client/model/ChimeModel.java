@@ -20,6 +20,7 @@ package net.frozenblock.thecopperierage.client.model;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import java.util.List;
+import java.util.function.Function;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.frozenblock.thecopperierage.client.renderer.blockentity.state.ChimeRenderState;
@@ -31,6 +32,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Contract;
@@ -38,35 +40,49 @@ import org.jetbrains.annotations.NotNull;
 
 @Environment(EnvType.CLIENT)
 public class ChimeModel extends Model<ChimeRenderState> {
+	private final boolean isChainsModel;
 	private final ModelPart support;
 	private final ModelPart chain;
 	private final ModelPart bar;
 	private final ModelPart chime1;
+	private final ModelPart chain1;
 	private final ModelPart tube1;
 	private final ModelPart chime2;
+	private final ModelPart chain2;
 	private final ModelPart tube2;
 	private final ModelPart chime3;
+	private final ModelPart chain3;
 	private final ModelPart tube3;
 	private final ModelPart chime4;
+	private final ModelPart chain4;
 	private final ModelPart tube4;
 	private final ModelPart chime5;
+	private final ModelPart chain5;
 	private final ModelPart tube5;
 	private final List<Pair<ModelPart, ModelPart>> chimes;
+	private final List<ModelPart> chains;
+	private final List<ModelPart> nonChains;
 
-	public ChimeModel(ModelPart root) {
-		super(root, RenderType::entityCutout);
+	public ChimeModel(ModelPart root, Function<ResourceLocation, RenderType> renderType, boolean isChainsModel) {
+		super(root, renderType);
+		this.isChainsModel = isChainsModel;
 		this.support = root.getChild("support");
 		this.chain = this.support.getChild("chain");
 		this.bar = this.support.getChild("bar");
 		this.chime1 = this.bar.getChild("chime1");
+		this.chain1 = this.chime1.getChild("chain");
 		this.tube1 = this.chime1.getChild("tube");
 		this.chime2 = this.bar.getChild("chime2");
+		this.chain2 = this.chime2.getChild("chain");
 		this.tube2 = this.chime2.getChild("tube");
 		this.chime3 = this.bar.getChild("chime3");
+		this.chain3 = this.chime3.getChild("chain");
 		this.tube3 = this.chime3.getChild("tube");
 		this.chime4 = this.bar.getChild("chime4");
+		this.chain4 = this.chime4.getChild("chain");
 		this.tube4 = this.chime4.getChild("tube");
 		this.chime5 = this.bar.getChild("chime5");
+		this.chain5 = this.chime5.getChild("chain");
 		this.tube5 = this.chime5.getChild("tube");
 
 		this.chimes = ImmutableList.of(
@@ -76,6 +92,8 @@ public class ChimeModel extends Model<ChimeRenderState> {
 			Pair.of(this.chime4, this.tube4),
 			Pair.of(this.chime5, this.tube5)
 		);
+		this.chains = ImmutableList.of(this.chain, this.chain1, this.chain2, this.chain3, this.chain4, this.chain5);
+		this.nonChains = ImmutableList.copyOf(this.allParts().stream().filter(modelPart -> !this.chains.contains(modelPart)).toList());
 	}
 
 	public static @NotNull LayerDefinition createLayerDefinition() {
@@ -198,6 +216,9 @@ public class ChimeModel extends Model<ChimeRenderState> {
 	public void setupAnim(@NotNull ChimeRenderState renderState) {
 		super.setupAnim(renderState);
 
+		this.allParts().forEach(modelPart -> modelPart.skipDraw = true);
+		(this.isChainsModel ? this.chains : this.nonChains).forEach(modelPart -> modelPart.skipDraw = false);
+
 		if (renderState.hanging) {
 			final Pair<Float, Float> supportRot = getRotationForMovement(0F, renderState.animationProgress, renderState.relativeInfluence);
 			this.support.xRot += supportRot.getFirst();
@@ -208,13 +229,12 @@ public class ChimeModel extends Model<ChimeRenderState> {
 			this.bar.zRot += barRot.getSecond();
 
 			this.chain.yRot -= renderState.direction.toYRot() * Mth.DEG_TO_RAD;
-			this.chain.skipDraw = false;
 		} else {
 			this.chain.skipDraw = true;
 		}
 
 		float movementOffset = 0.5F;
-		for (Pair<ModelPart, ModelPart> pair : this.chimes) {
+		for (Pair<ModelPart, ModelPart> pair : this.getChimes()) {
 			movementOffset += 1F;
 			final ModelPart chime = pair.getFirst();
 			final ModelPart tube = pair.getSecond();
@@ -229,17 +249,25 @@ public class ChimeModel extends Model<ChimeRenderState> {
 		}
 	}
 
+	public List<Pair<ModelPart, ModelPart>> getChimes() {
+		return this.chimes;
+	}
+
+	public List<ModelPart> getChains() {
+		return this.chains;
+	}
+
 	@Contract("_, _, _ -> null")
-	private static @NotNull Pair<Float, Float> getRotationForMovement(float animationOffset, float ageInTicks, @NotNull Vec3 movement) {
-		final float yAge = ageInTicks * 0.4F;
+	private static @NotNull Pair<Float, Float> getRotationForMovement(float animationOffset, float animationProgress, @NotNull Vec3 movement) {
+		final float yAge = animationProgress * 0.4F;
 
 		final float zMovement =Mth.clamp((float) movement.z + (Mth.cos(yAge) * (float) movement.y * 0.5F), -0.5F, 0.5F);
 		final float xRotOffset = Math.min(1F, Mth.abs(zMovement));
-		float xRot = (Mth.cos(ageInTicks + zMovement - (animationOffset + 2F)) * 0.75F) + (xRotOffset * 0.75F);
+		float xRot = (Mth.cos(animationProgress + zMovement - (animationOffset + 2F)) * 0.75F) + (xRotOffset * 0.75F);
 
 		final float xMovement = Mth.clamp((float) movement.x + (Mth.sin(yAge) * (float) movement.y * 0.5F), -0.5F, 0.5F);
 		final float zRotOffset = Math.min(1F, Mth.abs(xMovement));
-		float zRot = (Mth.cos(ageInTicks + xMovement - animationOffset) * 0.75F) + (zRotOffset * 0.75F);
+		float zRot = (Mth.cos(animationProgress + xMovement - animationOffset) * 0.75F) + (zRotOffset * 0.75F);
 
 		xRot *= (zMovement * 0.75F) + 0.01F;
 		zRot *= (xMovement * 0.75F) + 0.01F;

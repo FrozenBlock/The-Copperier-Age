@@ -5,17 +5,20 @@ Lufurrius
  - Initial Gearbox Concept
  - Initial Gearbox Textures
  - Copper Pressure Plate Concept
+ - Copper Bar Retexture
 
 Zhen/zntm
  - Wrench Concept, Textures, & Sounds
  - Copper Sword, Axe, Pickaxe, Shovel, & Hoe Retextures
  - Copper Helmet, Chestplate, Leggings, & Boots Item Retextures
+ - Oxidizing Copper Equipment Textures
  - Final Copper Chain Retextures (Based On Lufurrius's)
  - Final Gearbox Retextures (Based On Lufurrius's)
  - Gearbox Sounds
  - Copper Fan Textures & Sounds
  - Chime Concept, Textures, & Sounds
  - Copper Campfire Textures
+ - Oxidizing Copper Bar Textures (Based On Lufurrius's)
  - Green Copper Bulb Textures
 
 Voxelotl

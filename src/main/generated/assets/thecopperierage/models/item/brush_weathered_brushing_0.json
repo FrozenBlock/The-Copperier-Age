@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/brush_brushing_0",
+  "textures": {
+    "layer0": "thecopperierage:item/brush_weathered"
+  }
+}

@@ -30,6 +30,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
 
 public final class TCAItemTagProvider extends FabricTagProvider.ItemTagProvider {
@@ -62,6 +63,19 @@ public final class TCAItemTagProvider extends FabricTagProvider.ItemTagProvider 
 			.add(TCAItems.WRENCH);
 
 		this.valueLookupBuilder(ItemTags.DURABILITY_ENCHANTABLE)
+			.add(TCAItems.WRENCH);
+
+		this.valueLookupBuilder(TCAItemTags.OXIDIZABLE_EQUIPMENT)
+			.add(Items.COPPER_SWORD)
+			.add(Items.COPPER_AXE)
+			.add(Items.COPPER_HOE)
+			.add(Items.COPPER_PICKAXE)
+			.add(Items.COPPER_SHOVEL)
+			.add(Items.COPPER_HELMET)
+			.add(Items.COPPER_CHESTPLATE)
+			.add(Items.COPPER_LEGGINGS)
+			.add(Items.COPPER_BOOTS)
+			.add(Items.BRUSH)
 			.add(TCAItems.WRENCH);
 	}
 

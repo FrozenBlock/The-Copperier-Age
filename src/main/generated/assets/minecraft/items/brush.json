@@ -1,0 +1,195 @@
+{
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "entries": [
+      {
+        "model": {
+          "type": "minecraft:select",
+          "cases": [
+            {
+              "model": {
+                "type": "minecraft:range_dispatch",
+                "entries": [
+                  {
+                    "model": {
+                      "type": "minecraft:model",
+                      "model": "thecopperierage:item/brush_exposed_brushing_0"
+                    },
+                    "threshold": 0.45
+                  },
+                  {
+                    "model": {
+                      "type": "minecraft:model",
+                      "model": "thecopperierage:item/brush_weathered_brushing_0"
+                    },
+                    "threshold": 0.65
+                  },
+                  {
+                    "model": {
+                      "type": "minecraft:model",
+                      "model": "thecopperierage:item/brush_oxidized_brushing_0"
+                    },
+                    "threshold": 0.85
+                  }
+                ],
+                "fallback": {
+                  "type": "minecraft:model",
+                  "model": "minecraft:item/brush_brushing_0"
+                },
+                "property": "minecraft:damage"
+              },
+              "when": true
+            }
+          ],
+          "fallback": {
+            "type": "minecraft:model",
+            "model": "minecraft:item/brush_brushing_0"
+          },
+          "property": "thecopperierage:oxidized_items_enabled"
+        },
+        "threshold": 0.25
+      },
+      {
+        "model": {
+          "type": "minecraft:select",
+          "cases": [
+            {
+              "model": {
+                "type": "minecraft:range_dispatch",
+                "entries": [
+                  {
+                    "model": {
+                      "type": "minecraft:model",
+                      "model": "thecopperierage:item/brush_exposed_brushing_1"
+                    },
+                    "threshold": 0.45
+                  },
+                  {
+                    "model": {
+                      "type": "minecraft:model",
+                      "model": "thecopperierage:item/brush_weathered_brushing_1"
+                    },
+                    "threshold": 0.65
+                  },
+                  {
+                    "model": {
+                      "type": "minecraft:model",
+                      "model": "thecopperierage:item/brush_oxidized_brushing_1"
+                    },
+                    "threshold": 0.85
+                  }
+                ],
+                "fallback": {
+                  "type": "minecraft:model",
+                  "model": "minecraft:item/brush_brushing_1"
+                },
+                "property": "minecraft:damage"
+              },
+              "when": true
+            }
+          ],
+          "fallback": {
+            "type": "minecraft:model",
+            "model": "minecraft:item/brush_brushing_1"
+          },
+          "property": "thecopperierage:oxidized_items_enabled"
+        },
+        "threshold": 0.5
+      },
+      {
+        "model": {
+          "type": "minecraft:select",
+          "cases": [
+            {
+              "model": {
+                "type": "minecraft:range_dispatch",
+                "entries": [
+                  {
+                    "model": {
+                      "type": "minecraft:model",
+                      "model": "thecopperierage:item/brush_exposed_brushing_2"
+                    },
+                    "threshold": 0.45
+                  },
+                  {
+                    "model": {
+                      "type": "minecraft:model",
+                      "model": "thecopperierage:item/brush_weathered_brushing_2"
+                    },
+                    "threshold": 0.65
+                  },
+                  {
+                    "model": {
+                      "type": "minecraft:model",
+                      "model": "thecopperierage:item/brush_oxidized_brushing_2"
+                    },
+                    "threshold": 0.85
+                  }
+                ],
+                "fallback": {
+                  "type": "minecraft:model",
+                  "model": "minecraft:item/brush_brushing_2"
+                },
+                "property": "minecraft:damage"
+              },
+              "when": true
+            }
+          ],
+          "fallback": {
+            "type": "minecraft:model",
+            "model": "minecraft:item/brush_brushing_2"
+          },
+          "property": "thecopperierage:oxidized_items_enabled"
+        },
+        "threshold": 0.75
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:select",
+      "cases": [
+        {
+          "model": {
+            "type": "minecraft:range_dispatch",
+            "entries": [
+              {
+                "model": {
+                  "type": "minecraft:model",
+                  "model": "thecopperierage:item/brush_exposed"
+                },
+                "threshold": 0.45
+              },
+              {
+                "model": {
+                  "type": "minecraft:model",
+                  "model": "thecopperierage:item/brush_weathered"
+                },
+                "threshold": 0.65
+              },
+              {
+                "model": {
+                  "type": "minecraft:model",
+                  "model": "thecopperierage:item/brush_oxidized"
+                },
+                "threshold": 0.85
+              }
+            ],
+            "fallback": {
+              "type": "minecraft:model",
+              "model": "minecraft:item/brush"
+            },
+            "property": "minecraft:damage"
+          },
+          "when": true
+        }
+      ],
+      "fallback": {
+        "type": "minecraft:model",
+        "model": "minecraft:item/brush"
+      },
+      "property": "thecopperierage:oxidized_items_enabled"
+    },
+    "period": 10.0,
+    "property": "minecraft:use_cycle",
+    "scale": 0.1
+  }
+}

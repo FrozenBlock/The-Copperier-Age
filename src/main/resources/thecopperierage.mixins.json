@@ -8,6 +8,7 @@
     "block.copper_fire.BaseFireBlockMixin",
     "block.copper_fire.CampfireBlockMixin",
     "block.redstone.RedstoneWireBlockMixin",
+    "item.ItemStackMixin",
     "worldgen.TrickierTrialsPackCheckerMixin"
   ],
   "client": [
@@ -17,6 +18,8 @@
     "client.copper_fire.LavaParticleProviderMixin",
     "client.copper_fire.TorchBlockMixin",
     "client.copper_fire.WallTorchBlockMixin",
+    "client.oxidized_armor.EquipmentLayerRendererMixin",
+    "client.oxidized_items.SelectItemModelPropertiesMixin",
     "datagen.client.VariantMutatorMixin"
   ],
   "injectors": {

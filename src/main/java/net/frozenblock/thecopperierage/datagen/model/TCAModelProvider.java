@@ -25,10 +25,8 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.frozenblock.thecopperierage.TCAConstants;
-import net.frozenblock.thecopperierage.block.ChimeBlock;
 import net.frozenblock.thecopperierage.block.CopperFanBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
-import net.frozenblock.thecopperierage.block.state.properties.ChimeAttachType;
 import net.frozenblock.thecopperierage.client.renderer.item.properties.select.OxidizedItemsEnabled;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
@@ -99,12 +97,6 @@ public final class TCAModelProvider extends FabricModelProvider {
 		Optional.of(TCAConstants.id("block/template_copper_fan_powered")),
 		Optional.of("_powered"),
 		TextureSlot.SIDE, TextureSlot.BOTTOM
-	);
-	// CHIME
-	private static final ModelTemplate CHIME_BAR_MODEL = new ModelTemplate(
-		Optional.of(TCAConstants.id("block/template_chime")),
-		Optional.of("_wall"),
-		TextureSlot.TEXTURE
 	);
 	// BRUSH
 	public static final ModelTemplate BRUSH = ModelTemplates.createItem("brush", TextureSlot.LAYER0);
@@ -249,25 +241,12 @@ public final class TCAModelProvider extends FabricModelProvider {
 	}
 
 	public static void createChime(@NotNull BlockModelGenerators generator, Block block, Block waxed) {
-		final MultiVariant particleOnly = generator.createParticleOnlyBlockModel(block, block);
-		final MultiVariant bar = BlockModelGenerators.plainVariant(CHIME_BAR_MODEL.create(block, TextureMapping.defaultTexture(block), generator.modelOutput));
-
-		dispatchChimeStates(generator, block, particleOnly, bar);
-		dispatchChimeStates(generator, waxed, particleOnly, bar);
+		final MultiVariant model = generator.createParticleOnlyBlockModel(block, block);
+		generator.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, model));
+		generator.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(waxed, model));
 
 		generator.itemModelOutput.copy(block.asItem(), waxed.asItem());
 		generator.registerSimpleFlatItemModel(block);
-	}
-
-	private static void dispatchChimeStates(@NotNull BlockModelGenerators generator, Block block, MultiVariant particleOnly, @NotNull MultiVariant bar) {
-		generator.blockStateOutput.accept(
-			MultiVariantGenerator.dispatch(block)
-				.with(
-					PropertyDispatch.initial(ChimeBlock.ATTACHMENT)
-						.select(ChimeAttachType.CEILING, particleOnly)
-						.select(ChimeAttachType.WALL, bar)
-				).with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING)
-		);
 	}
 
 	private static void createCopperButton(@NotNull BlockModelGenerators generator, @NotNull Block block, @NotNull Block waxedBlock, Block originalBlock) {

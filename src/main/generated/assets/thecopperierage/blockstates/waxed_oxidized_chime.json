@@ -1,34 +1,7 @@
 {
   "variants": {
-    "attachment=ceiling,facing=east": {
-      "model": "thecopperierage:block/oxidized_chime",
-      "y": 90
-    },
-    "attachment=ceiling,facing=north": {
+    "": {
       "model": "thecopperierage:block/oxidized_chime"
-    },
-    "attachment=ceiling,facing=south": {
-      "model": "thecopperierage:block/oxidized_chime",
-      "y": 180
-    },
-    "attachment=ceiling,facing=west": {
-      "model": "thecopperierage:block/oxidized_chime",
-      "y": 270
-    },
-    "attachment=wall,facing=east": {
-      "model": "thecopperierage:block/oxidized_chime_wall",
-      "y": 90
-    },
-    "attachment=wall,facing=north": {
-      "model": "thecopperierage:block/oxidized_chime_wall"
-    },
-    "attachment=wall,facing=south": {
-      "model": "thecopperierage:block/oxidized_chime_wall",
-      "y": 180
-    },
-    "attachment=wall,facing=west": {
-      "model": "thecopperierage:block/oxidized_chime_wall",
-      "y": 270
     }
   }
 }

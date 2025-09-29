@@ -58,8 +58,7 @@ public class ChimeRenderer<T extends ChimeBlockEntity> implements BlockEntityRen
 		poseStack.pushPose();
 		poseStack.translate(0.5F, 1.5F, 0.5F);
 		poseStack.mulPose(Axis.XP.rotationDegrees(-180F));
-		final Direction direction = renderState.direction.getAxis() == Direction.Axis.Z ? renderState.direction.getOpposite() : renderState.direction;
-		poseStack.mulPose(Axis.YP.rotationDegrees(-direction.toYRot()));
+		poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.visualDirection.toYRot()));
 
 		submitNodeCollector.submitModel(
 			this.model,
@@ -93,11 +92,14 @@ public class ChimeRenderer<T extends ChimeBlockEntity> implements BlockEntityRen
 		final BlockState state = chime.getBlockState();
 		renderState.extractTexture(state);
 
-		renderState.animationProgress = chime.age + partialTick + chime.animationOffset + Mth.lerp(partialTick, chime.prevAccumulatedStrength, chime.accumulatedStrength);
+		renderState.animationProgress = (chime.age + partialTick + chime.animationOffset + Mth.lerp(partialTick, chime.prevAccumulatedStrength, chime.accumulatedStrength)) * 0.15F;
 
+		final Direction facing = state.getValue(ChimeBlock.FACING);
 		renderState.hanging = state.getValue(ChimeBlock.ATTACHMENT) == ChimeAttachType.CEILING;
-		renderState.direction = state.getValue(ChimeBlock.FACING);
-		renderState.chimeMovement = chime.getLerpedInfluence(partialTick).scale(0.4D);
+		renderState.direction = facing;
+		renderState.visualDirection = facing.getAxis() == Direction.Axis.Z ? facing.getOpposite() : facing;
+		renderState.influence = chime.getInfluence(partialTick).scale(0.4D);
+		renderState.relativeInfluence = renderState.influence.yRot(facing.toYRot() * Mth.DEG_TO_RAD);
 	}
 
 }

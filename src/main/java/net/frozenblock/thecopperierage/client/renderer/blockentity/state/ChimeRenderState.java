@@ -39,7 +39,9 @@ public class ChimeRenderState extends BlockEntityRenderState {
 	public float animationProgress;
 	public boolean hanging;
 	public Direction direction;
-	public Vec3 chimeMovement;
+	public Direction visualDirection;
+	public Vec3 influence;
+	public Vec3 relativeInfluence;
 
 	public void extractTexture(@NotNull BlockState state) {
 		ResourceLocation texture = UNAFFECTED;

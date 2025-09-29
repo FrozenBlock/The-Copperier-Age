@@ -198,9 +198,10 @@ public class ChimeBlock extends BaseEntityBlock {
 		final Vec3 playerPos = player.getEyePosition();
 		final Vec3 barCenter = pos.getCenter().add(0.3125D);
 		final Vec3 difference = barCenter.subtract(playerPos);
+		final Vec3 differenceWithoutY = new Vec3(difference.x(), 0D, difference.z());
 		final double strength = (barCenter.y() - hitResult.getLocation().y()) * 1.25F;
 
-		return chime.addEntityInfluence(level, pos, state, player, difference.normalize().scale(strength), 0.98D, true, false)
+		return chime.addEntityInfluence(level, pos, state, player, differenceWithoutY.normalize().scale(strength), 0.98D, true, false)
 			? InteractionResult.SUCCESS
 			: InteractionResult.CONSUME;
 	}
@@ -253,7 +254,7 @@ public class ChimeBlock extends BaseEntityBlock {
 	public void animateTick(BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
 		if (!(level.getBlockEntity(pos) instanceof ChimeBlockEntity chime)) return;
 
-		Vec3 influence = chime.getLerpedInfluence(1F);
+		Vec3 influence = chime.getInfluence(1F);
 		final float influenceSpeed = Math.clamp((float) influence.length(), 0.02F, 1.2F);
 
 		if (random.nextFloat() >= influenceSpeed * 0.25F) return;

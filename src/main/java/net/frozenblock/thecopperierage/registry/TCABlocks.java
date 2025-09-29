@@ -121,7 +121,6 @@ public final class TCABlocks {
 		(weatherState) -> BlockBehaviour.Properties.of()
 			.mapColor(MapColor.STONE)
 			.strength(1.5F)
-			.noOcclusion()
 			.isValidSpawn(Blocks::never)
 			.isRedstoneConductor(Blocks::never)
 			.isSuffocating(Blocks::never)
@@ -136,7 +135,7 @@ public final class TCABlocks {
 			.requiresCorrectToolForDrops()
 			.strength(5F, 6F)
 			.sound(TCASounds.CHIME)
-			//.noOcclusion()
+			.noOcclusion()
 	);
 
 	public static final WeatheringCopperBlocks COPPER_BUTTON = createWeatheringCopperSet(

@@ -22,11 +22,11 @@ import java.util.List;
 import java.util.Optional;
 import net.frozenblock.lib.wind.api.WindManager;
 import net.frozenblock.lib.wind.client.impl.ClientWindManager;
-import net.frozenblock.thecopperierage.block.ChimeBlock;
 import net.frozenblock.thecopperierage.networking.packet.TCAChimeInfluencePacket;
 import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
 import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -60,11 +60,9 @@ public class ChimeBlockEntity extends BlockEntity {
 
 	public static void tick(Level level, BlockPos pos, @NotNull BlockState state, @NotNull ChimeBlockEntity chime) {
 		chime.prevInfluence = chime.influence;
-
 		chime.influences.forEach(influence -> influence.tick(level, pos));
 		chime.influences.removeIf(AbstractInfluence::shouldRemove);
-
-		chime.influence = chime.getAverageInfluence().yRot(state.getValue(ChimeBlock.FACING).toYRot() * Mth.DEG_TO_RAD);
+		chime.influence = chime.getAverageInfluence();
 
 		chime.prevAccumulatedStrength = chime.accumulatedStrength;
 		chime.accumulatedStrength += (float) (chime.influence.length()) * 0.5F;
@@ -90,7 +88,7 @@ public class ChimeBlockEntity extends BlockEntity {
 		final float pitch = Mth.lerp(influenceSpeed, 0.75F, 1.2F);
 		level.playSound(null, pos, TCASounds.BLOCK_CHIME_DISTURB, SoundSource.BLOCKS, volume, pitch);
 
-		level.gameEvent(VibrationSystem.getResonanceEventByFrequency((int) (Math.min(influenceSpeed, 1F) * 15)), pos, GameEvent.Context.of(state));
+		level.gameEvent(getResonanceEventByFrequency((int) (Math.min(influenceSpeed, 1F) * 15)), pos, GameEvent.Context.of(state));
 	}
 
 	public boolean addEntityInfluence(
@@ -125,12 +123,16 @@ public class ChimeBlockEntity extends BlockEntity {
 			// We are measuring with a max of 22 Blocks per second- creative sprint flying, Thanks, wiki!
 			final float speedInBlocksPerSecond = Math.min(influenceSpeed, MAX_BLOCKS_PER_SECOND_IN_TICKS) * 20F;
 			final float vibrationStrength = speedInBlocksPerSecond / BLOCKS_PER_SECOND_TO_VIBRATION;
-			level.gameEvent(VibrationSystem.getResonanceEventByFrequency((int) vibrationStrength), pos, GameEvent.Context.of(entity, state));
+			level.gameEvent(getResonanceEventByFrequency(vibrationStrength), pos, GameEvent.Context.of(entity, state));
 		}
 
 		if (sendPacket && level instanceof ServerLevel serverLevel) TCAChimeInfluencePacket.sendToAll(serverLevel, pos, influence, scalePerTick, entity);
 
 		return canPlaySound;
+	}
+
+	private @NotNull ResourceKey<GameEvent> getResonanceEventByFrequency(float frequency) {
+		return VibrationSystem.getResonanceEventByFrequency(Math.clamp((int) frequency, 1, 15));
 	}
 
 	public void addClientInfluence(@NotNull Level level, Vec3 influence, double scaleEachTick, Optional<Integer> entityID) {
@@ -167,7 +169,7 @@ public class ChimeBlockEntity extends BlockEntity {
 		return new Vec3(finalX, finalY, finalZ);
 	}
 
-	public Vec3 getLerpedInfluence(float partialTick) {
+	public Vec3 getInfluence(float partialTick) {
 		return Mth.lerp(partialTick, this.prevInfluence, this.influence);
 	}
 

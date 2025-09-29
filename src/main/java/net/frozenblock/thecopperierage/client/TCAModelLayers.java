@@ -34,6 +34,5 @@ public final class TCAModelLayers {
 	public static void init() {
 		BlockEntityRenderers.register(TCABlockEntityTypes.CHIME, ChimeRenderer::new);
 		EntityModelLayerRegistry.registerModelLayer(CHIME, ChimeModel::createLayerDefinition);
-
 	}
 }

@@ -39,7 +39,7 @@ import org.jetbrains.annotations.NotNull;
 @Environment(EnvType.CLIENT)
 public class ChimeModel extends Model<ChimeRenderState> {
 	private final ModelPart support;
-	private final ModelPart supportChain;
+	private final ModelPart chain;
 	private final ModelPart bar;
 	private final ModelPart chime1;
 	private final ModelPart tube1;
@@ -56,7 +56,7 @@ public class ChimeModel extends Model<ChimeRenderState> {
 	public ChimeModel(ModelPart root) {
 		super(root, RenderType::entityCutout);
 		this.support = root.getChild("support");
-		this.supportChain = this.support.getChild("chain");
+		this.chain = this.support.getChild("chain");
 		this.bar = this.support.getChild("bar");
 		this.chime1 = this.bar.getChild("chime1");
 		this.tube1 = this.chime1.getChild("tube");
@@ -82,8 +82,8 @@ public class ChimeModel extends Model<ChimeRenderState> {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition root = meshdefinition.getRoot();
 
-		PartDefinition supportChain = root.addOrReplaceChild("support", CubeListBuilder.create(), PartPose.offset(0F, 8F, 0F));
-		supportChain.addOrReplaceChild(
+		PartDefinition support = root.addOrReplaceChild("support", CubeListBuilder.create(), PartPose.offset(0F, 8F, 0F));
+		support.addOrReplaceChild(
 			"chain",
 			CubeListBuilder.create()
 				.texOffs(1, 4)
@@ -93,7 +93,7 @@ public class ChimeModel extends Model<ChimeRenderState> {
 			PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -0.7854F, 0F)
 		);
 
-		PartDefinition bar = supportChain.addOrReplaceChild(
+		PartDefinition bar = support.addOrReplaceChild(
 			"bar",
 			CubeListBuilder.create()
 				.texOffs(0, 0)
@@ -109,7 +109,7 @@ public class ChimeModel extends Model<ChimeRenderState> {
 				.addBox(-1.5F, 0F, 0F, 3F, 1F, 0F)
 				.texOffs(1, 5)
 				.addBox(0F, 0F, -1.5F, 0F, 1F, 3F),
-			PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -0.7854F, 0F)
+			PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -45F * Mth.DEG_TO_RAD, 0F)
 		);
 		chime1.addOrReplaceChild(
 			"tube",
@@ -127,7 +127,7 @@ public class ChimeModel extends Model<ChimeRenderState> {
 				.addBox(0F, 0F, -1.5F, 0F, 1F, 3F)
 				.texOffs(1, 10)
 				.addBox(-1.5F, 0F, 0F, 3F, 1F, 0F),
-			PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -0.7854F, 0F)
+			PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -45F * Mth.DEG_TO_RAD, 0F)
 		);
 		chime2.addOrReplaceChild(
 			"tube",
@@ -145,7 +145,7 @@ public class ChimeModel extends Model<ChimeRenderState> {
 				.addBox(-1.5F, 0F, 0F, 3F, 1F, 0F)
 				.texOffs(1, 5)
 				.addBox(0F, 0F, -1.5F, 0F, 1F, 3F),
-			PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -0.7854F, 0F)
+			PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -45F * Mth.DEG_TO_RAD, 0F)
 		);
 		chime3.addOrReplaceChild(
 			"tube",
@@ -163,7 +163,7 @@ public class ChimeModel extends Model<ChimeRenderState> {
 				.addBox(-1.5F, 0F, 0F, 3F, 1F, 0F)
 				.texOffs(1, 5)
 				.addBox(0F, 0F, -1.5F, 0F, 1F, 3F),
-			PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -0.7854F, 0F)
+			PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -45F * Mth.DEG_TO_RAD, 0F)
 		);
 		chime4.addOrReplaceChild(
 			"tube",
@@ -181,7 +181,7 @@ public class ChimeModel extends Model<ChimeRenderState> {
 				.addBox(-1.5F, 0F, 0F, 3F, 1F, 0F)
 				.texOffs(1, 5)
 				.addBox(0F, 0F, -1.5F, 0F, 1F, 3F),
-			PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -0.7854F, 0F)
+			PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -45F * Mth.DEG_TO_RAD, 0F)
 		);
 		chime5.addOrReplaceChild(
 			"tube",
@@ -198,23 +198,16 @@ public class ChimeModel extends Model<ChimeRenderState> {
 	public void setupAnim(@NotNull ChimeRenderState renderState) {
 		super.setupAnim(renderState);
 
-		final Vec3 movement = renderState.chimeMovement;
-		final float animProgress = renderState.animationProgress * 0.15F;
-
 		if (renderState.hanging) {
-			final Pair<Float, Float> supportRot = getRotationForMovement(0F, animProgress, movement);
+			final Pair<Float, Float> supportRot = getRotationForMovement(0F, renderState.animationProgress, renderState.relativeInfluence);
 			this.support.xRot += supportRot.getFirst();
 			this.support.zRot += supportRot.getSecond();
 
-			final Pair<Float, Float> barRot = getRotationForMovement(-1F, animProgress, movement);
+			final Pair<Float, Float> barRot = getRotationForMovement(-1F, renderState.animationProgress, renderState.relativeInfluence);
 			this.bar.xRot += barRot.getFirst();
 			this.bar.zRot += barRot.getSecond();
 
-			this.supportChain.skipDraw = false;
-			this.bar.skipDraw = false;
-		} else {
-			this.supportChain.skipDraw = true;
-			this.bar.skipDraw = true;
+			this.chain.yRot -= renderState.direction.toYRot() * Mth.DEG_TO_RAD;
 		}
 
 		float movementOffset = 0.5F;
@@ -223,11 +216,11 @@ public class ChimeModel extends Model<ChimeRenderState> {
 			final ModelPart chime = pair.getFirst();
 			final ModelPart tube = pair.getSecond();
 
-			final Pair<Float, Float> chimeRotA = getRotationForMovement(movementOffset, animProgress, movement);
+			final Pair<Float, Float> chimeRotA = getRotationForMovement(movementOffset, renderState.animationProgress, renderState.relativeInfluence);
 			chime.xRot += chimeRotA.getFirst();
 			chime.zRot += chimeRotA.getSecond();
 
-			final Pair<Float, Float> chimeRotB = getRotationForMovement(movementOffset - 0.5F, animProgress, movement);
+			final Pair<Float, Float> chimeRotB = getRotationForMovement(movementOffset - 0.5F, renderState.animationProgress, renderState.relativeInfluence);
 			tube.xRot += chimeRotB.getFirst();
 			tube.zRot += chimeRotB.getSecond();
 		}

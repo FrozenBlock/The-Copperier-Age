@@ -20,8 +20,11 @@ package net.frozenblock.thecopperierage.datagen.tag;
 import java.util.concurrent.CompletableFuture;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCAItems;
+import net.frozenblock.thecopperierage.tag.TCAItemTags;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.data.tags.TagAppender;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -35,6 +38,33 @@ public final class TCAItemTagProvider extends FabricTagProvider.ItemTagProvider 
 		super(output, registries);
 	}
 
+	@Override
+	protected void addTags(@NotNull HolderLookup.Provider arg) {
+		this.builder(ItemTags.BUTTONS)
+			.addOptionalTag(TCAItemTags.COPPER_BUTTONS);
+
+		TagAppender<Item, Item> gearboxesTag = this.valueLookupBuilder(TCAItemTags.GEARBOXES);
+		TCABlocks.GEARBOX.forEach(block -> gearboxesTag.add(block.asItem()));
+
+		TagAppender<Item, Item> copperFansTag = this.valueLookupBuilder(TCAItemTags.COPPER_FANS);
+		TCABlocks.COPPER_FAN.forEach(block -> copperFansTag.add(block.asItem()));
+
+		TagAppender<Item, Item> chimesTag = this.valueLookupBuilder(TCAItemTags.CHIMES);
+		TCABlocks.CHIME.forEach(block -> chimesTag.add(block.asItem()));
+
+		TagAppender<Item, Item> copperButtonsTag = this.valueLookupBuilder(TCAItemTags.COPPER_BUTTONS);
+		TCABlocks.COPPER_BUTTON.forEach(block -> copperButtonsTag.add(block.asItem()));
+
+		TagAppender<Item, Item> copperPressurePlatesTag = this.valueLookupBuilder(TCAItemTags.COPPER_PRESSURE_PLATES);
+		TCABlocks.WEIGHTED_PRESSURE_PLATE.forEach(block -> copperPressurePlatesTag.add(block.asItem()));
+
+		this.valueLookupBuilder(ItemTags.BREAKS_DECORATED_POTS)
+			.add(TCAItems.WRENCH);
+
+		this.valueLookupBuilder(ItemTags.DURABILITY_ENCHANTABLE)
+			.add(TCAItems.WRENCH);
+	}
+
 	@NotNull
 	private TagKey<Item> getTag(String id) {
 		return TagKey.create(this.registryKey, ResourceLocation.parse(id));
@@ -42,17 +72,5 @@ public final class TCAItemTagProvider extends FabricTagProvider.ItemTagProvider 
 
 	@NotNull private ResourceKey<Item> getKey(String namespace, String path) {
 		return ResourceKey.create(this.registryKey, ResourceLocation.fromNamespaceAndPath(namespace, path));
-	}
-
-	@Override
-	protected void addTags(@NotNull HolderLookup.Provider arg) {
-		this.valueLookupBuilder(ItemTags.COPPER);
-
-		this.valueLookupBuilder(ItemTags.LANTERNS);
-
-		this.valueLookupBuilder(ItemTags.BUTTONS);
-
-		this.valueLookupBuilder(ItemTags.DURABILITY_ENCHANTABLE)
-			.add(TCAItems.WRENCH);
 	}
 }

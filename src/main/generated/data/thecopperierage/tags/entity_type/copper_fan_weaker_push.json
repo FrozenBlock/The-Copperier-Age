@@ -1,0 +1,23 @@
+{
+  "values": [
+    "minecraft:allay",
+    "minecraft:horse",
+    "minecraft:zombie_horse",
+    "minecraft:skeleton_horse",
+    "minecraft:donkey",
+    "minecraft:mule",
+    "minecraft:llama",
+    "minecraft:trader_llama",
+    "minecraft:sniffer",
+    "minecraft:polar_bear",
+    "minecraft:hoglin",
+    "minecraft:zoglin",
+    "minecraft:camel",
+    "minecraft:guardian",
+    "minecraft:creaking",
+    {
+      "id": "wilderwild:ostrich",
+      "required": false
+    }
+  ]
+}

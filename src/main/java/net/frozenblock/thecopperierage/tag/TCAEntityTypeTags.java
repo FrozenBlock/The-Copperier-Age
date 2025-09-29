@@ -17,25 +17,23 @@
 
 package net.frozenblock.thecopperierage.tag;
 
+
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 
-public final class TCAItemTags {
-	public static final TagKey<Item> GEARBOXES = bind("gearboxes");
-	public static final TagKey<Item> COPPER_FANS = bind("copper_fans");
-	public static final TagKey<Item> CHIMES = bind("chimes");
-	public static final TagKey<Item> COPPER_BUTTONS = bind("copper_buttons");
-	public static final TagKey<Item> COPPER_PRESSURE_PLATES = bind("copper_pressure_plates");
+public final class TCAEntityTypeTags {
+	public static final TagKey<EntityType<?>> COPPER_FAN_WEAKER_PUSH = bind("copper_fan_weaker_push");
+	public static final TagKey<EntityType<?>> COPPER_FAN_CANNOT_PUSH = bind("copper_fan_cannot_push");
 
-	private TCAItemTags() {
-		throw new UnsupportedOperationException("TCAItemTags contains only static declarations.");
+	private TCAEntityTypeTags() {
+		throw new UnsupportedOperationException("TCAEntityTypeTags contains only static declarations.");
 	}
 
 	@NotNull
-	private static TagKey<Item> bind(@NotNull String path) {
-		return TagKey.create(Registries.ITEM, TCAConstants.id(path));
+	private static TagKey<EntityType<?>> bind(@NotNull String path) {
+		return TagKey.create(Registries.ENTITY_TYPE, TCAConstants.id(path));
 	}
 }

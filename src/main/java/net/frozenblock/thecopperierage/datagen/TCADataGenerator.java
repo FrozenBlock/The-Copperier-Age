@@ -26,6 +26,7 @@ import net.frozenblock.thecopperierage.datagen.model.TCAModelProvider;
 import net.frozenblock.thecopperierage.datagen.model.TCAPackModelProvider;
 import net.frozenblock.thecopperierage.datagen.recipe.TCARecipeProvider;
 import net.frozenblock.thecopperierage.datagen.tag.TCABlockTagProvider;
+import net.frozenblock.thecopperierage.datagen.tag.TCAEntityTypeTagProvider;
 import net.frozenblock.thecopperierage.datagen.tag.TCAInstrumentTagProvider;
 import net.frozenblock.thecopperierage.datagen.tag.TCAItemTagProvider;
 import net.frozenblock.thecopperierage.registry.TCAInstruments;
@@ -55,6 +56,7 @@ public final class TCADataGenerator implements DataGeneratorEntrypoint {
 		pack.addProvider(TCABlockTagProvider::new);
 		pack.addProvider(TCAItemTagProvider::new);
 		pack.addProvider(TCAInstrumentTagProvider::new);
+		pack.addProvider(TCAEntityTypeTagProvider::new);
 		pack.addProvider(TCARecipeProvider::new);
 	}
 

@@ -33,6 +33,7 @@ import net.frozenblock.thecopperierage.entity.impl.CopperFanQueuedMovementInterf
 import net.frozenblock.thecopperierage.mod_compat.FrozenLibIntegration;
 import net.frozenblock.thecopperierage.networking.packet.TCACopperFanBlowPacket;
 import net.frozenblock.thecopperierage.registry.TCASounds;
+import net.frozenblock.thecopperierage.tag.TCAEntityTypeTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -265,6 +266,7 @@ public class CopperFanBlock extends DirectionalBlock {
 		final Vec3 movement = Vec3.atLowerCornerOf((!reverse ? direction : oppositeDirection).getUnitVec3i());
 		for (Entity entity : entities) {
 			if (!(entity instanceof CopperFanQueuedMovementInterface queuedMovementInterface)) continue;
+			if (entity.getType().is(TCAEntityTypeTags.COPPER_FAN_CANNOT_PUSH)) continue;
 
 			AABB boundingBox = entity.getBoundingBox();
 			if (!blowingArea.intersects(boundingBox)) continue;
@@ -283,8 +285,9 @@ public class CopperFanBlock extends DirectionalBlock {
 				}
 			}
 
+			final double pushScale = !entity.getType().is(TCAEntityTypeTags.COPPER_FAN_WEAKER_PUSH) ? 1D : 0.5D;
 			final double intensity = (fanDistance - Math.min(entity.position().distanceTo(fanStartPos), fanDistance)) / fanDistance;
-			final double overallIntensity = intensity * pushIntensity;
+			final double overallIntensity = intensity * pushIntensity * pushScale;
 			final Vec3 fanMovement = movement.scale(overallIntensity);
 			queuedMovementInterface.theCopperierAge$queueCopperFanMovement(fanMovement);
 		}

@@ -68,7 +68,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class CopperFanBlock extends DirectionalBlock {
 	public static final double PUSH_INTENSITY = 0.15D;
-	public static final double PUSH_INTENSITY_SUCK_SCALE = 0.6D;
+	public static final double PUSH_INTENSITY_SUCK_SCALE = 0.8D;
 	public static final double PUSH_INTENSITY_SUCK = PUSH_INTENSITY * PUSH_INTENSITY_SUCK_SCALE;
 	public static final double WIND_INTENSITY = 0.5D;
 	public static final double WIND_INTENSITY_SUCK_SCALE = 0.6D;

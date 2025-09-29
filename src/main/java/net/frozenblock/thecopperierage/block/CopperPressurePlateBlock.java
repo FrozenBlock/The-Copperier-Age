@@ -49,7 +49,7 @@ public class CopperPressurePlateBlock extends BasePressurePlateBlock {
 		).apply(instance, CopperPressurePlateBlock::new)
 	);
 	public static final IntegerProperty POWER = BlockStateProperties.POWER;
-	protected WeatheringCopper.WeatherState weatherState;
+	protected final WeatheringCopper.WeatherState weatherState;
 	private final int slotsPerPower;
 
 	public CopperPressurePlateBlock(WeatheringCopper.WeatherState weatherState, Properties properties) {

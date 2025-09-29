@@ -107,7 +107,7 @@ public final class TCABlocks {
 			.isRedstoneConductor(Blocks::never)
 	);
 
-	public static final WeatheringCopperBlocks COPPER_FAN = WeatheringCopperBlocks.create(
+	public static final WeatheringCopperBlocks COPPER_FAN = createWeatheringCopperSet(
 		"copper_fan",
 		TCABlocks::register,
 		CopperFanBlock::new,

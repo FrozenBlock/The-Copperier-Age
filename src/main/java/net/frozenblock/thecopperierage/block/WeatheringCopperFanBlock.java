@@ -34,7 +34,6 @@ public class WeatheringCopperFanBlock extends CopperFanBlock implements Weatheri
 			propertiesCodec()
 		).apply(instance, WeatheringCopperFanBlock::new)
 	);
-	private final WeatheringCopper.WeatherState weatherState;
 
 	@Override
 	public @NotNull MapCodec<? extends WeatheringCopperFanBlock> codec() {
@@ -42,8 +41,7 @@ public class WeatheringCopperFanBlock extends CopperFanBlock implements Weatheri
 	}
 
 	public WeatheringCopperFanBlock(WeatheringCopper.WeatherState weatherState, BlockBehaviour.Properties properties) {
-		super(properties);
-		this.weatherState = weatherState;
+		super(weatherState, properties);
 	}
 
 	@Override

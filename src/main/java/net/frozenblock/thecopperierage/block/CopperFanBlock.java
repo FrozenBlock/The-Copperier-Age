@@ -20,6 +20,7 @@ package net.frozenblock.thecopperierage.block;
 import com.mojang.serialization.MapCodec;
 import java.util.List;
 import java.util.Optional;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
@@ -52,6 +53,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -65,27 +67,51 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class CopperFanBlock extends DirectionalBlock {
-	public static final double FAN_DISTANCE = 9D;
-	public static final int FAN_DISTANCE_IN_BLOCKS = 8;
 	public static final double PUSH_INTENSITY = 0.15D;
-	public static final double BASE_WIND_INTENSITY = 0.5D;
-	public static final double FAN_DISTANCE_REVERSE = 7D;
-	public static final int FAN_DISTANCE_IN_BLOCKS_REVERSE = 6;
-	public static final double PUSH_INTENSITY_REVERSE = 0.075D;
-	public static final double BASE_WIND_INTENSITY_REVERSE = 0.3D;
-    public static final MapCodec<CopperFanBlock> CODEC = simpleCodec(CopperFanBlock::new);
+	public static final double PUSH_INTENSITY_SUCK_SCALE = 0.6D;
+	public static final double PUSH_INTENSITY_SUCK = PUSH_INTENSITY * PUSH_INTENSITY_SUCK_SCALE;
+	public static final double WIND_INTENSITY = 0.5D;
+	public static final double WIND_INTENSITY_SUCK_SCALE = 0.6D;
+	public static final double WIND_INTENSITY_SUCK = WIND_INTENSITY * WIND_INTENSITY_SUCK_SCALE;
 	private static final WindDisturbanceLogic<? extends CopperFanBlock> DUMMY_WIND_LOGIC = new WindDisturbanceLogic<>((source, level1, windOrigin, affectedArea, windTarget) -> WindDisturbance.DUMMY_RESULT);
-
+	public static final MapCodec<CopperFanBlock> CODEC = RecordCodecBuilder.mapCodec(
+		instance -> instance.group(
+			WeatheringCopper.WeatherState.CODEC.fieldOf("weathering_state").forGetter(copperFanBlock -> copperFanBlock.weatherState),
+			propertiesCodec()
+		).apply(instance, CopperFanBlock::new)
+	);
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-    public CopperFanBlock(Properties properties) {
+	public final WeatheringCopper.WeatherState weatherState;
+	public final int pushBlocks;
+	public final int suckBlocks;
+
+    public CopperFanBlock(WeatheringCopper.WeatherState weatherState, Properties properties) {
         super(properties);
+		this.weatherState = weatherState;
+		this.pushBlocks = getPushForWeatherState(weatherState);
+		this.suckBlocks = getSuckForWeatherState(weatherState);
 		this.registerDefaultState(
 			this.stateDefinition.any()
 				.setValue(FACING, Direction.NORTH)
 				.setValue(POWERED, false)
 		);
     }
+
+	@Contract(pure = true)
+	private static int getPushForWeatherState(@NotNull WeatheringCopper.WeatherState weatherState) {
+		return switch (weatherState) {
+			case UNAFFECTED -> 8;
+			case EXPOSED -> 6;
+			case WEATHERED -> 4;
+			case OXIDIZED -> 2;
+		};
+	}
+
+	@Contract(pure = true)
+	private static int getSuckForWeatherState(@NotNull WeatheringCopper.WeatherState weatherState) {
+		return Math.max(0, getPushForWeatherState(weatherState) - 2);
+	}
 
     @Override
     public @NotNull MapCodec<? extends CopperFanBlock> codec() {
@@ -184,7 +210,7 @@ public class CopperFanBlock extends DirectionalBlock {
 		Optional<BlockPos> cutoffPos = Optional.empty();
 		BlockPos.MutableBlockPos mutablePos = pos.mutable();
 
-		final int fanDistanceInBlocks = !reverse ? FAN_DISTANCE_IN_BLOCKS : FAN_DISTANCE_IN_BLOCKS_REVERSE;
+		final int fanDistanceInBlocks = !reverse ? this.pushBlocks : this.suckBlocks;
 		for (int i = 0; i < fanDistanceInBlocks; i++) {
 			final boolean isFirstSearch = i == 0;
 			if (!level.hasChunkAt(mutablePos.move(direction))) break;
@@ -261,8 +287,8 @@ public class CopperFanBlock extends DirectionalBlock {
 			}
 		}
 
-		final double fanDistance = !reverse ? FAN_DISTANCE : FAN_DISTANCE_REVERSE;
-		final double pushIntensity = !reverse ? PUSH_INTENSITY : PUSH_INTENSITY_REVERSE;
+		final double fanDistance = fanDistanceInBlocks + 1D;
+		final double pushIntensity = !reverse ? PUSH_INTENSITY : PUSH_INTENSITY_SUCK;
 		final Vec3 movement = Vec3.atLowerCornerOf((!reverse ? direction : oppositeDirection).getUnitVec3i());
 		for (Entity entity : entities) {
 			if (!(entity instanceof CopperFanQueuedMovementInterface queuedMovementInterface)) continue;

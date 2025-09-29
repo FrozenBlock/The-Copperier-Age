@@ -105,14 +105,14 @@ public class FrozenLibIntegration extends ModIntegration {
 		WindDisturbanceLogic.register(
 			COPPER_FAN_WIND_DISTURBANCE,
 			(WindDisturbanceLogic.DisturbanceLogic<CopperFanBlock>) (source, level, windOrigin, affectedArea, windTarget) -> {
-				return getCopperFanDisturbanceResult(source, level, windOrigin, windTarget, false, CopperFanBlock.FAN_DISTANCE, CopperFanBlock.BASE_WIND_INTENSITY);
+				return getCopperFanDisturbanceResult(source, level, windOrigin, windTarget, false, 1D);
 			}
 		);
 
 		WindDisturbanceLogic.register(
 			COPPER_FAN_WIND_DISTURBANCE_REVERSE,
 			(WindDisturbanceLogic.DisturbanceLogic<CopperFanBlock>) (source, level, windOrigin, affectedArea, windTarget) -> {
-				return getCopperFanDisturbanceResult(source, level, windOrigin, windTarget, true, CopperFanBlock.FAN_DISTANCE_REVERSE, CopperFanBlock.BASE_WIND_INTENSITY_REVERSE);
+				return getCopperFanDisturbanceResult(source, level, windOrigin, windTarget, true, CopperFanBlock.WIND_INTENSITY_SUCK_SCALE);
 			}
 		);
 	}
@@ -123,26 +123,24 @@ public class FrozenLibIntegration extends ModIntegration {
 		Vec3 windOrigin,
 		Vec3 windTarget,
 		boolean reverse,
-		double fanDistance,
-		double windIntensity
+		double windIntensityScale
 	) {
-		if (source.isPresent()) {
-			final BlockPos pos = BlockPos.containing(windOrigin);
-			final BlockState state = level.getBlockState(pos);
+		if (source.isEmpty()) return null;
 
-			if (state.getBlock() instanceof CopperFanBlock) {
-				final Direction direction = state.getValue(CopperFanBlock.FACING);
-				Vec3 movement = Vec3.atLowerCornerOf(direction.getUnitVec3i());
-				double strength = fanDistance - Math.min(windTarget.distanceTo(windOrigin), fanDistance);
-				double intensity = strength / fanDistance;
-				return new WindDisturbance.DisturbanceResult(
-					Mth.clamp(intensity * 1.5D, 0D, 1D) * (reverse ? 0.5D : 1D),
-					strength * 1.5D * (reverse ? 0.5D : 1D),
-					movement.scale(intensity * windIntensity).scale(20D * (reverse ? 0.5D : 1D))
-				);
-			}
-		}
-		return null;
+		final BlockPos pos = BlockPos.containing(windOrigin);
+		final BlockState state = level.getBlockState(pos);
+		if (!(state.getBlock() instanceof CopperFanBlock copperFanBlock)) return null;
+
+		final double fanDistance = (!reverse ? copperFanBlock.pushBlocks : copperFanBlock.suckBlocks) + 1D;
+		final Direction direction = state.getValue(CopperFanBlock.FACING);
+		Vec3 movement = Vec3.atLowerCornerOf(direction.getUnitVec3i());
+		double strength = fanDistance - Math.min(windTarget.distanceTo(windOrigin), fanDistance);
+		double intensity = strength / fanDistance;
+		return new WindDisturbance.DisturbanceResult(
+			Mth.clamp(intensity * 1.5D, 0D, 1D) * windIntensityScale,
+			strength * 1.5D * windIntensityScale,
+			movement.scale(intensity * CopperFanBlock.WIND_INTENSITY).scale(20D * windIntensityScale)
+		);
 	}
 
 	@Override

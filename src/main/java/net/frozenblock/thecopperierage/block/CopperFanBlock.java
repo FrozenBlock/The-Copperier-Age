@@ -46,7 +46,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -320,6 +319,7 @@ public class CopperFanBlock extends DirectionalBlock {
 			final double overallIntensity = intensity * pushIntensity * pushScale;
 			final Vec3 fanMovement = movement.scale(overallIntensity);
 			queuedMovementInterface.theCopperierAge$queueCopperFanMovement(fanMovement);
+			entity.hasImpulse = true;
 		}
 	}
 

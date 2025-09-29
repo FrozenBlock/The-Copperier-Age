@@ -53,7 +53,9 @@ public final class TCAEntityTypeTagProvider extends FabricTagProvider.EntityType
 			.add(EntityType.ZOGLIN)
 			.add(EntityType.CAMEL)
 			.add(EntityType.GUARDIAN)
-			.add(EntityType.CREAKING);
+			.add(EntityType.CREAKING)
+			.add(EntityType.GHAST)
+			.add(EntityType.HAPPY_GHAST);
 
 		this.builder(TCAEntityTypeTags.COPPER_FAN_WEAKER_PUSH)
 			.addOptional(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath("wilderwild", "ostrich")));

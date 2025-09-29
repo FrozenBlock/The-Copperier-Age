@@ -71,7 +71,7 @@ public class CopperFanBlock extends DirectionalBlock {
 	public static final double PUSH_INTENSITY_SUCK_SCALE = 0.8D;
 	public static final double PUSH_INTENSITY_SUCK = PUSH_INTENSITY * PUSH_INTENSITY_SUCK_SCALE;
 	public static final double WIND_INTENSITY = 0.5D;
-	public static final double WIND_INTENSITY_SUCK_SCALE = 0.6D;
+	public static final double WIND_INTENSITY_SUCK_SCALE = 0.8D;
 	public static final double WIND_INTENSITY_SUCK = WIND_INTENSITY * WIND_INTENSITY_SUCK_SCALE;
 	private static final WindDisturbanceLogic<? extends CopperFanBlock> DUMMY_WIND_LOGIC = new WindDisturbanceLogic<>((source, level1, windOrigin, affectedArea, windTarget) -> WindDisturbance.DUMMY_RESULT);
 	public static final MapCodec<CopperFanBlock> CODEC = RecordCodecBuilder.mapCodec(

@@ -21,6 +21,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.item.properties.select.SelectItemModelProperty;
 import net.minecraft.world.entity.LivingEntity;
@@ -37,15 +38,8 @@ public record OxidizedItemsEnabled() implements SelectItemModelProperty<Boolean>
 	);
 
 	@Override
-	public Boolean get(
-		ItemStack stack,
-		@Nullable ClientLevel level,
-		@Nullable LivingEntity entity,
-		int i,
-		ItemDisplayContext itemDisplayContext
-	) {
-		// TODO: Config
-		return true;
+	public Boolean get(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int i, ItemDisplayContext itemDisplayContext) {
+		return TCAConfig.OXIDIZABLE_COPPER_EQUIPMENT;
 	}
 
 	@Override

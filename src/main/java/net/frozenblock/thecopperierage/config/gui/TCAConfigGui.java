@@ -79,6 +79,19 @@ public final class TCAConfigGui {
 			)
 		);
 
+		var oxidizableCopperEquipment = category.addEntry(
+			FrozenClothConfig.syncedEntry(
+				entryBuilder.startBooleanToggle(text("oxidizable_copper_equipment"), modifiedConfig.oxidizableCopperEquipment)
+					.setDefaultValue(defaultConfig.oxidizableCopperEquipment)
+					.setSaveConsumer(newValue -> config.oxidizableCopperEquipment = newValue)
+					.setTooltip(tooltip("oxidizable_copper_equipment"))
+					.build(),
+				config.getClass(),
+				"oxidizableCopperEquipment",
+				configInstance
+			)
+		);
+
 		var copperParticles = category.addEntry(
 			FrozenClothConfig.syncedEntry(
 				entryBuilder.startBooleanToggle(text("copper_particles"), modifiedConfig.copperParticles)

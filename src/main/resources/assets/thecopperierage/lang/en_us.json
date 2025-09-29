@@ -85,6 +85,8 @@
   "tooltip.thecopperierage.copper_fire_poisons": "Whether Copper Fire can poison mobs.",
   "option.thecopperierage.copper_chests_in_trial_chambers": "Copper Chests In Trial Chambers",
   "tooltip.thecopperierage.copper_chests_in_trial_chambers": "Whether Chests will be replaced with Copper Chests in Trial Chambers.",
+  "option.thecopperierage.oxidizable_copper_equipment": "Oxidizing Copper Equipment",
+  "tooltip.thecopperierage.oxidizable_copper_equipment": "Whether Copper equipment will oxidize as it runs out of durability.\nThe more oxidized the equipment becomes, the closer its stats will be to Iron equipment.\nThis includes both tools and armor.",
   "option.thecopperierage.copper_particles": "Copper Particles",
   "tooltip.thecopperierage.copper_particles": "Whether certain particles created by Copper Fire-related blocks will emit green-tinted particles.\nThis includes Copper Fire, Copper Campfires, and Copper Torches.\nThe green tint of smoke-like particles will fade away.",
 

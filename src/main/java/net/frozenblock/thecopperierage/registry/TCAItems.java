@@ -61,7 +61,6 @@ public final class TCAItems {
 	}
 
 	public static void registerItems() {
-
 	}
 
 	private static @NotNull <T extends Item> T register(String name, @NotNull Function<Item.Properties, Item> function, Item.@NotNull Properties properties) {

@@ -19,6 +19,7 @@ package net.frozenblock.thecopperierage.client.model;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
+import java.util.List;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.frozenblock.thecopperierage.client.renderer.blockentity.state.ChimeRenderState;
@@ -34,7 +35,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import java.util.List;
 
 @Environment(EnvType.CLIENT)
 public class ChimeModel extends Model<ChimeRenderState> {

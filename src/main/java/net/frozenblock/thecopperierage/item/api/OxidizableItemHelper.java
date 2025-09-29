@@ -20,7 +20,15 @@ package net.frozenblock.thecopperierage.item.api;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.OptionalInt;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Predicate;
 import net.frozenblock.thecopperierage.TCAConstants;
+import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
@@ -37,13 +45,6 @@ import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.Tool;
 import org.jetbrains.annotations.NotNull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.OptionalInt;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Predicate;
 
 public final class OxidizableItemHelper {
 	private static final Map<Item, Pair<ItemAttributeModifiers, ItemAttributeModifiers>> OXIDIZABLE_ATTRIBUTES = new Object2ObjectLinkedOpenHashMap<>();
@@ -77,6 +78,8 @@ public final class OxidizableItemHelper {
 	}
 
 	public static float getOxidizeProgress(@NotNull ItemStack stack, @NotNull OptionalInt optionalInt) {
+		if (!TCAConfig.OXIDIZABLE_COPPER_EQUIPMENT) return 0F;
+
 		final float damage = optionalInt.orElse(stack.getDamageValue());
 		final float maxDamage = stack.getMaxDamage();
 		final float damageProgress = Mth.clamp(damage / maxDamage, 0F, 1F);
@@ -95,7 +98,6 @@ public final class OxidizableItemHelper {
 	}
 
 	public static void onDamageUpdated(@NotNull ItemStack stack, int damageValue) {
-		// TODO: Config
 		final Item item = stack.getItem();
 		updateMiningSpeed(stack, item, damageValue);
 		updateAttributes(stack, item, damageValue);

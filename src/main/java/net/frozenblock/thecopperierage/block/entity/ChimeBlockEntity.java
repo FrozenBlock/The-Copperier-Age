@@ -17,6 +17,9 @@
 
 package net.frozenblock.thecopperierage.block.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import net.frozenblock.lib.wind.api.WindManager;
 import net.frozenblock.lib.wind.client.impl.ClientWindManager;
 import net.frozenblock.thecopperierage.block.ChimeBlock;
@@ -35,9 +38,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.gameevent.vibrations.VibrationSystem;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 public class ChimeBlockEntity extends BlockEntity {
 	private static final float MAX_BLOCKS_PER_SECOND = 22F;

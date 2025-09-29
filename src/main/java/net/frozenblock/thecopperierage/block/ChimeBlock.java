@@ -18,6 +18,8 @@
 package net.frozenblock.thecopperierage.block;
 
 import com.mojang.serialization.MapCodec;
+import java.util.Map;
+import java.util.function.BiConsumer;
 import net.frozenblock.thecopperierage.block.entity.ChimeBlockEntity;
 import net.frozenblock.thecopperierage.block.state.properties.ChimeAttachType;
 import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
@@ -61,8 +63,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import java.util.Map;
-import java.util.function.BiConsumer;
 
 public class ChimeBlock extends BaseEntityBlock {
 	public static final MapCodec<ChimeBlock> CODEC = simpleCodec(ChimeBlock::new);

@@ -17,6 +17,7 @@
 
 package net.frozenblock.thecopperierage.networking.packet;
 
+import java.util.Optional;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.frozenblock.thecopperierage.TCAConstants;
@@ -31,7 +32,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import java.util.Optional;
 
 public record TCAChimeInfluencePacket(BlockPos pos, Vec3 influence, double scaleEachTick, Optional<Integer> entityID) implements CustomPacketPayload {
 	public static final Type<TCAChimeInfluencePacket> PACKET_TYPE = new Type<>(TCAConstants.id("chime_influence"));

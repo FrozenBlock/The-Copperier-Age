@@ -43,11 +43,13 @@ public class TCAConfig {
 			@Override
 			public void onSync(TCAConfig syncInstance) {
 				var config = this.config();
+				OXIDIZABLE_COPPER_EQUIPMENT = config.oxidizableCopperEquipment;
 				COPPER_PARTICLES = config.copperParticles;
 			}
 		}
 	);
 
+	public static volatile boolean OXIDIZABLE_COPPER_EQUIPMENT = true;
 	public static volatile boolean COPPER_PARTICLES = true;
 
 	@EntrySyncData("copperFireEnabled")
@@ -58,6 +60,9 @@ public class TCAConfig {
 
 	@EntrySyncData("copperChestsInTrialChambers")
 	public boolean copperChestsInTrialChambers = true;
+
+	@EntrySyncData("oxidizableCopperEquipment")
+	public boolean oxidizableCopperEquipment = true;
 
 	@EntrySyncData(value = "copperParticles", behavior = SyncBehavior.UNSYNCABLE)
 	public boolean copperParticles = true;

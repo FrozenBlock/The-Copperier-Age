@@ -17,6 +17,9 @@
 
 package net.frozenblock.thecopperierage.datagen.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
@@ -43,6 +46,7 @@ import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.renderer.block.model.VariantMutator;
+import static net.minecraft.client.renderer.item.ItemModel.Unbaked;
 import net.minecraft.client.renderer.item.SelectItemModel;
 import net.minecraft.client.renderer.item.properties.numeric.Damage;
 import net.minecraft.client.renderer.item.properties.numeric.UseCycle;
@@ -56,13 +60,9 @@ import net.minecraft.world.item.equipment.EquipmentAsset;
 import net.minecraft.world.item.equipment.EquipmentAssets;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.minecraft.world.level.block.Block;
-import org.jetbrains.annotations.Contract;
 import net.minecraft.world.level.block.Blocks;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import static net.minecraft.client.renderer.item.ItemModel.*;
 
 @Environment(EnvType.CLIENT)
 public final class TCAModelProvider extends FabricModelProvider {
@@ -247,7 +247,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 				.with(BlockModelGenerators.ROTATION_FACING)
 		);
 	}
-	
+
 	public static void createChime(@NotNull BlockModelGenerators generator, Block block, Block waxed) {
 		final MultiVariant particleOnly = generator.createParticleOnlyBlockModel(block, block);
 		final MultiVariant bar = BlockModelGenerators.plainVariant(CHIME_BAR_MODEL.create(block, TextureMapping.defaultTexture(block), generator.modelOutput));
@@ -268,6 +268,30 @@ public final class TCAModelProvider extends FabricModelProvider {
 						.select(ChimeAttachType.WALL, bar)
 				).with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING)
 		);
+	}
+
+	private static void createCopperButton(@NotNull BlockModelGenerators generator, @NotNull Block block, @NotNull Block waxedBlock, Block originalBlock) {
+		createCopperButton(generator, block, waxedBlock, originalBlock, ModelTemplates.BUTTON, ModelTemplates.BUTTON_PRESSED, ModelTemplates.BUTTON_INVENTORY);
+	}
+
+	static void createCopperButton(
+		@NotNull BlockModelGenerators generator,
+		@NotNull Block block,
+		@NotNull Block waxedBlock,
+		Block originalBlock,
+		@NotNull ModelTemplate modelTemplate,
+		@NotNull ModelTemplate pressedTemplate,
+		@NotNull ModelTemplate inventoryTemplate
+	) {
+		final TextureMapping mapping = TextureMapping.defaultTexture(originalBlock);
+		final MultiVariant model = BlockModelGenerators.plainVariant(modelTemplate.create(block, mapping, generator.modelOutput));
+		final MultiVariant pressedModel = BlockModelGenerators.plainVariant(pressedTemplate.create(block, mapping, generator.modelOutput));
+
+		generator.blockStateOutput.accept(BlockModelGenerators.createButton(block, model, pressedModel));
+		generator.blockStateOutput.accept(BlockModelGenerators.createButton(waxedBlock, model, pressedModel));
+
+		generator.itemModelOutput.copy(block.asItem(), waxedBlock.asItem());
+		generator.registerSimpleItemModel(block, inventoryTemplate.create(block, mapping, generator.modelOutput));
 	}
 
 	private static void generateCopperHorn(@NotNull ItemModelGenerators generator, Item item) {
@@ -420,29 +444,5 @@ public final class TCAModelProvider extends FabricModelProvider {
 				)
 			)
 		);
-	}
-
-	private static void createCopperButton(@NotNull BlockModelGenerators generator, @NotNull Block block, @NotNull Block waxedBlock, Block originalBlock) {
-		createCopperButton(generator, block, waxedBlock, originalBlock, ModelTemplates.BUTTON, ModelTemplates.BUTTON_PRESSED, ModelTemplates.BUTTON_INVENTORY);
-	}
-
-	static void createCopperButton(
-		@NotNull BlockModelGenerators generator,
-		@NotNull Block block,
-		@NotNull Block waxedBlock,
-		Block originalBlock,
-		@NotNull ModelTemplate modelTemplate,
-		@NotNull ModelTemplate pressedTemplate,
-		@NotNull ModelTemplate inventoryTemplate
-	) {
-		final TextureMapping mapping = TextureMapping.defaultTexture(originalBlock);
-		final MultiVariant model = BlockModelGenerators.plainVariant(modelTemplate.create(block, mapping, generator.modelOutput));
-		final MultiVariant pressedModel = BlockModelGenerators.plainVariant(pressedTemplate.create(block, mapping, generator.modelOutput));
-
-		generator.blockStateOutput.accept(BlockModelGenerators.createButton(block, model, pressedModel));
-		generator.blockStateOutput.accept(BlockModelGenerators.createButton(waxedBlock, model, pressedModel));
-
-		generator.itemModelOutput.copy(block.asItem(), waxedBlock.asItem());
-		generator.registerSimpleItemModel(block, inventoryTemplate.create(block, mapping, generator.modelOutput));
 	}
 }

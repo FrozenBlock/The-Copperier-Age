@@ -18,6 +18,7 @@
 package net.frozenblock.thecopperierage.mod_compat;
 
 import com.google.common.collect.ImmutableList;
+import java.util.Optional;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.frozenblock.lib.integration.api.ModIntegration;
@@ -54,7 +55,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import java.util.Optional;
 
 public class FrozenLibIntegration extends ModIntegration {
 	public static final ResourceLocation INSTRUMENT_SOUND_PREDICATE = TCAConstants.id("instrument");

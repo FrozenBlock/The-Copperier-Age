@@ -17,6 +17,8 @@
 
 package net.frozenblock.thecopperierage.datagen.model;
 
+import java.util.Optional;
+import java.util.function.Function;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
@@ -24,6 +26,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.minecraft.client.data.models.BlockModelGenerators;
+import static net.minecraft.client.data.models.BlockModelGenerators.*;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
@@ -35,9 +38,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
-import java.util.Optional;
-import java.util.function.Function;
-import static net.minecraft.client.data.models.BlockModelGenerators.*;
 
 @Environment(EnvType.CLIENT)
 public final class TCAPackModelProvider extends FabricModelProvider {

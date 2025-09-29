@@ -17,6 +17,7 @@
 
 package net.frozenblock.thecopperierage.item;
 
+import java.util.Optional;
 import net.frozenblock.lib.sound.impl.networking.FrozenLibSoundPackets;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.mod_compat.FrozenLibIntegration;
@@ -33,8 +34,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Optional;
 
 public class CopperHornItem extends InstrumentItem {
 

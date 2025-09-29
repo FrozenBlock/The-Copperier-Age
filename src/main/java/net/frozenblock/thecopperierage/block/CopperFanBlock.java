@@ -45,6 +45,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -309,6 +311,8 @@ public class CopperFanBlock extends DirectionalBlock {
 					);
 					player.setIgnoreFallDamageFromCurrentImpulse(true);
 				}
+			} else if (entity instanceof AbstractArrow abstractArrow) {
+				if (abstractArrow.isInGround()) continue;
 			}
 
 			final double pushScale = !entity.getType().is(TCAEntityTypeTags.COPPER_FAN_WEAKER_PUSH) ? 1D : 0.5D;

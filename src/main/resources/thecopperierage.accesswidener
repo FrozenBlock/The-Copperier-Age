@@ -29,6 +29,7 @@ accessible class net/minecraft/world/level/block/entity/BlockEntityType$BlockEnt
 
 # Entities
 accessible field net/minecraft/world/entity/animal/horse/AbstractHorse inventory Lnet/minecraft/world/SimpleContainer;
+accessible method net/minecraft/world/entity/projectile/AbstractArrow isInGround ()Z
 
 # Data Generation
 accessible field net/minecraft/data/DataGenerator vanillaPackOutput Lnet/minecraft/data/PackOutput;

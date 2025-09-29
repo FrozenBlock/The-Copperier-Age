@@ -208,6 +208,9 @@ public class ChimeModel extends Model<ChimeRenderState> {
 			this.bar.zRot += barRot.getSecond();
 
 			this.chain.yRot -= renderState.direction.toYRot() * Mth.DEG_TO_RAD;
+			this.chain.skipDraw = false;
+		} else {
+			this.chain.skipDraw = true;
 		}
 
 		float movementOffset = 0.5F;

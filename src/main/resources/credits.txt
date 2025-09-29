@@ -20,6 +20,7 @@ Zhen/zntm
 
 Voxelotl
  - New Copper Lantern Remodels & Retextures
+ - Resource/Data Pack Icon
 
 wigglewoggle
  - New Trial Chambers Structure pieces

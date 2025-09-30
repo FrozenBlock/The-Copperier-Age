@@ -313,15 +313,17 @@ public class CopperFanBlock extends DirectionalBlock {
 					particleVelocity = particleVelocity.add(getVelocityFromDistance(pos, oppositeDirection, particlePos, random, 0.1D));
 				}
 
-				level.addAlwaysVisibleParticle(
-					new WindParticleOptions(this.windParticleLifetime, particleVelocity.scale(this.cosmeticStrength)),
-					particlePos.x,
-					particlePos.y,
-					particlePos.z,
-					0D,
-					0D,
-					0D
-				);
+				if (particleVelocity.length() > 0.075D && Direction.getApproximateNearest(particleVelocity) == (!reverse ? direction : oppositeDirection)) {
+					level.addAlwaysVisibleParticle(
+						new WindParticleOptions(this.windParticleLifetime, particleVelocity.scale(this.cosmeticStrength)),
+						particlePos.x,
+						particlePos.y,
+						particlePos.z,
+						0D,
+						0D,
+						0D
+					);
+				}
 			}
 		}
 

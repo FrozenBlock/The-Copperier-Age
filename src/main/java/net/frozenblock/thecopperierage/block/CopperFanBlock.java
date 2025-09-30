@@ -203,7 +203,14 @@ public class CopperFanBlock extends DirectionalBlock {
 			level.setBlock(pos, newState, UPDATE_ALL);
 
 			final SoundEvent toggleSound = hasNeighborSignal ? TCASounds.BLOCK_COPPER_FAN_ON : TCASounds.BLOCK_COPPER_FAN_OFF;
-			level.playSound(null, pos, toggleSound, SoundSource.BLOCKS, 1F, 0.9F + (random.nextFloat() * 0.2F));
+			level.playSound(
+				null,
+				pos,
+				toggleSound,
+				SoundSource.BLOCKS,
+				Mth.lerp((float) this.cosmeticStrength, 0.3F, 0.9F),
+				Mth.lerp((float) this.cosmeticStrength, 0.75F, 0.9F) + (random.nextFloat() * 0.2F)
+			);
 		}
 
 		if (hasNeighborSignal) {

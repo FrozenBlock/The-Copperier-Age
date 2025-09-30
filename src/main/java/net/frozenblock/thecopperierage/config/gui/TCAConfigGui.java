@@ -66,6 +66,19 @@ public final class TCAConfigGui {
 			)
 		);
 
+		var copperButtonsInTrialChambers = category.addEntry(
+			FrozenClothConfig.syncedEntry(
+				entryBuilder.startBooleanToggle(text("copper_buttons_in_trial_chambers"), modifiedConfig.copperButtonsInTrialChambers)
+					.setDefaultValue(defaultConfig.copperButtonsInTrialChambers)
+					.setSaveConsumer(newValue -> config.copperButtonsInTrialChambers = newValue)
+					.setTooltip(tooltip("copper_buttons_in_trial_chambers"))
+					.build(),
+				config.getClass(),
+				"copperButtonsInTrialChambers",
+				configInstance
+			)
+		);
+
 		var copperChestsInTrialChambers = category.addEntry(
 			FrozenClothConfig.syncedEntry(
 				entryBuilder.startBooleanToggle(text("copper_chests_in_trial_chambers"), modifiedConfig.copperChestsInTrialChambers)
@@ -76,6 +89,19 @@ public final class TCAConfigGui {
 					config.getClass(),
 					"copperChestsInTrialChambers",
 					configInstance
+			)
+		);
+
+		var copperPressurePlatesInTrialChambers = category.addEntry(
+			FrozenClothConfig.syncedEntry(
+				entryBuilder.startBooleanToggle(text("copper_pressure_plates_in_trial_chambers"), modifiedConfig.copperPressurePlatesInTrialChambers)
+					.setDefaultValue(defaultConfig.copperPressurePlatesInTrialChambers)
+					.setSaveConsumer(newValue -> config.copperPressurePlatesInTrialChambers = newValue)
+					.setTooltip(tooltip("copper_pressure_plates_in_trial_chambers"))
+					.build(),
+				config.getClass(),
+				"copperPressurePlatesInTrialChambers",
+				configInstance
 			)
 		);
 

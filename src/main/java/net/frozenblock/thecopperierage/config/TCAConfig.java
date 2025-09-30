@@ -58,8 +58,14 @@ public class TCAConfig {
 	@EntrySyncData("copperFirePoisons")
 	public boolean copperFirePoisons = true;
 
+	@EntrySyncData("copperButtonsInTrialChambers")
+	public boolean copperButtonsInTrialChambers = true;
+
 	@EntrySyncData("copperChestsInTrialChambers")
 	public boolean copperChestsInTrialChambers = true;
+
+	@EntrySyncData("copperPressurePlatesInTrialChambers")
+	public boolean copperPressurePlatesInTrialChambers = true;
 
 	@EntrySyncData("oxidizableCopperEquipment")
 	public boolean oxidizableCopperEquipment = true;

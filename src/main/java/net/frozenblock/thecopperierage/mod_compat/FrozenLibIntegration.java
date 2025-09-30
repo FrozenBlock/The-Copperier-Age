@@ -146,7 +146,20 @@ public class FrozenLibIntegration extends ModIntegration {
 
 	@Override
 	public void init() {
-		if (TCAConfig.get().copperChestsInTrialChambers) {
+		final TCAConfig config = TCAConfig.get();
+
+		if (config.copperButtonsInTrialChambers) {
+			StructureProcessorApi.addProcessor(
+				BuiltinStructures.TRIAL_CHAMBERS.location(),
+				new BlockStateRespectingRuleProcessor(
+					ImmutableList.of(
+						new BlockStateRespectingProcessorRule(new BlockMatchTest(Blocks.OAK_BUTTON), AlwaysTrueTest.INSTANCE, TCABlocks.COPPER_BUTTON.waxed())
+					)
+				)
+			);
+		}
+
+		if (config.copperChestsInTrialChambers) {
 			StructureProcessorApi.addProcessor(
 				BuiltinStructures.TRIAL_CHAMBERS.location(),
 				new BlockStateRespectingRuleProcessor(
@@ -155,19 +168,14 @@ public class FrozenLibIntegration extends ModIntegration {
 					)
 				)
 			);
+		}
+
+		if (config.copperPressurePlatesInTrialChambers) {
 			StructureProcessorApi.addProcessor(
 				BuiltinStructures.TRIAL_CHAMBERS.location(),
 				new BlockStateRespectingRuleProcessor(
 					ImmutableList.of(
 						new BlockStateRespectingProcessorRule(new BlockMatchTest(Blocks.OAK_PRESSURE_PLATE), AlwaysTrueTest.INSTANCE, TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed())
-					)
-				)
-			);
-			StructureProcessorApi.addProcessor(
-				BuiltinStructures.TRIAL_CHAMBERS.location(),
-				new BlockStateRespectingRuleProcessor(
-					ImmutableList.of(
-						new BlockStateRespectingProcessorRule(new BlockMatchTest(Blocks.OAK_BUTTON), AlwaysTrueTest.INSTANCE, TCABlocks.COPPER_BUTTON.waxed())
 					)
 				)
 			);

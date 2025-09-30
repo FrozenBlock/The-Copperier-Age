@@ -32,6 +32,7 @@ import net.frozenblock.lib.worldgen.structure.api.TemplatePoolApi;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.CopperFanBlock;
 import net.frozenblock.thecopperierage.config.TCAConfig;
+import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCAResources;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -151,6 +152,22 @@ public class FrozenLibIntegration extends ModIntegration {
 				new BlockStateRespectingRuleProcessor(
 					ImmutableList.of(
 						new BlockStateRespectingProcessorRule(new BlockMatchTest(Blocks.CHEST), AlwaysTrueTest.INSTANCE, Blocks.WAXED_COPPER_CHEST)
+					)
+				)
+			);
+			StructureProcessorApi.addProcessor(
+				BuiltinStructures.TRIAL_CHAMBERS.location(),
+				new BlockStateRespectingRuleProcessor(
+					ImmutableList.of(
+						new BlockStateRespectingProcessorRule(new BlockMatchTest(Blocks.OAK_PRESSURE_PLATE), AlwaysTrueTest.INSTANCE, TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed())
+					)
+				)
+			);
+			StructureProcessorApi.addProcessor(
+				BuiltinStructures.TRIAL_CHAMBERS.location(),
+				new BlockStateRespectingRuleProcessor(
+					ImmutableList.of(
+						new BlockStateRespectingProcessorRule(new BlockMatchTest(Blocks.OAK_BUTTON), AlwaysTrueTest.INSTANCE, TCABlocks.COPPER_BUTTON.waxed())
 					)
 				)
 			);

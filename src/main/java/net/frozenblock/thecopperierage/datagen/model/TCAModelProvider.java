@@ -94,9 +94,9 @@ public final class TCAModelProvider extends FabricModelProvider {
 		TextureSlot.SIDE, TextureSlot.BOTTOM
 	);
 	private static final ModelTemplate COPPER_FAN_POWERED_MODEL = new ModelTemplate(
-		Optional.of(TCAConstants.id("block/template_copper_fan_powered")),
+		Optional.of(TCAConstants.id("block/template_copper_fan")),
 		Optional.of("_powered"),
-		TextureSlot.SIDE, TextureSlot.BOTTOM
+		TextureSlot.FRONT, TextureSlot.SIDE, TextureSlot.BOTTOM
 	);
 	// BRUSH
 	public static final ModelTemplate BRUSH = ModelTemplates.createItem("brush", TextureSlot.LAYER0);
@@ -218,9 +218,13 @@ public final class TCAModelProvider extends FabricModelProvider {
 		final TextureMapping mapping = new TextureMapping()
 			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"))
 			.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_bottom"));
+		final TextureMapping poweredMapping = new TextureMapping()
+			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(block, "_top_powered"))
+			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"))
+			.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_bottom"));
 
 		final MultiVariant model = BlockModelGenerators.plainVariant(COPPER_FAN_MODEL.create(block, mapping, generator.modelOutput));
-		final MultiVariant poweredModel = BlockModelGenerators.plainVariant(COPPER_FAN_POWERED_MODEL.create(block, mapping, generator.modelOutput));
+		final MultiVariant poweredModel = BlockModelGenerators.plainVariant(COPPER_FAN_POWERED_MODEL.create(block, poweredMapping, generator.modelOutput));
 
 		generator.itemModelOutput.copy(block.asItem(), waxedBlock.asItem());
 

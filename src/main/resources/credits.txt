@@ -23,6 +23,7 @@ Zhen/zntm
 
 Voxelotl
  - New Copper Lantern Remodels & Retextures
+ - Copper Fan Cage, Inside, & Powered Inside Textures
  - Resource/Data Pack Icon
 
 wigglewoggle

@@ -30,6 +30,7 @@ public final class TCABlockRenderLayers {
 		BlockRenderLayerMap.putBlock(TCABlocks.COPPER_FIRE, ChunkSectionLayer.CUTOUT);
 		BlockRenderLayerMap.putBlock(TCABlocks.COPPER_CAMPFIRE, ChunkSectionLayer.CUTOUT);
 		TCABlocks.GEARBOX.forEach(block -> BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT));
+		TCABlocks.COPPER_FAN.forEach(block -> BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT));
 	}
 
 }

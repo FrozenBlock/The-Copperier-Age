@@ -100,6 +100,7 @@ public final class TCABlocks {
 			.lightLevel(blockStatex -> 7)
 			.isValidSpawn(Blocks::always)
 			.pushReaction(PushReaction.DESTROY)
+			.isRedstoneConductor(Blocks::never)
 	);
 
 	public static final WeatheringCopperBlocks GEARBOX = WeatheringCopperBlocks.create(

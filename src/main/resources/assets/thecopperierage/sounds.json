@@ -102,6 +102,16 @@
     ],
     "subtitle": "subtitles.block.copper_fan.off"
   },
+  "block.copper_fan.idle_blow": {
+    "sounds": [
+      "thecopperierage:block/copper_fan/idle_blow1",
+      "thecopperierage:block/copper_fan/idle_blow2",
+      "thecopperierage:block/copper_fan/idle_blow3",
+      "thecopperierage:block/copper_fan/idle_blow4",
+      "thecopperierage:block/copper_fan/idle_blow5"
+    ],
+    "subtitle": "subtitles.block.copper_fan.idle_blow"
+  },
   "block.copper_fan.idle_hum": {
     "sounds": [
       "thecopperierage:block/copper_fan/idle_hum1",

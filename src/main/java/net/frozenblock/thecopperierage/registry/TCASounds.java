@@ -51,6 +51,7 @@ public final class TCASounds {
 
 	public static final SoundEvent BLOCK_COPPER_FAN_ON = register("block.copper_fan.on");
 	public static final SoundEvent BLOCK_COPPER_FAN_OFF = register("block.copper_fan.off");
+	public static final SoundEvent BLOCK_COPPER_FAN_IDLE_BLOW = register("block.copper_fan.idle_blow");
 	public static final SoundEvent BLOCK_COPPER_FAN_IDLE_HUM = register("block.copper_fan.idle_hum");
 
 	// ITEM

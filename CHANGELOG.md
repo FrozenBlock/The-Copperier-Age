@@ -2,6 +2,7 @@ Please clear changelog after each release.
 Put the changelog BELOW the dashes. ANYTHING ABOVE IS IGNORED.
 -----------------
 - Fixed a crash caused by wearing non-Copper armor.
+- Using Copper Horns now awards the stat for using them.
 - Registered the Chime block entity to the DataFixer.
 - The Copper Fan recipe now requires a Breeze Rod instead of a Wind Charge.
 - The Copper Fan recipe now yields four Copper Fans instead of two.
@@ -10,4 +11,5 @@ Put the changelog BELOW the dashes. ANYTHING ABOVE IS IGNORED.
 - Fixed the tops of Copper Lanterns having different shading during the last two frames of their animation.
 - Fixed hanging Copper Lanterns having z-fighting inside their model.
 - Updated the shading on the cage texture of Copper Fans.
+- Added `Glowtone` emissives for the Copper and Redsone Jack o'Lanterns.
 - Added new splash texts.

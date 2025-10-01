@@ -3,7 +3,7 @@
   "id": "${mod_id}",
   "version": "${version}",
   "name": "The Copperier Age",
-  "description": "Enhances the visuals and scope of The Copper Age drop.",
+  "description": "Expends and enhances the theme of The Copper Age drop. New blocks and mechanics, many tweaks, and awesome optional retextures!",
   "authors": [
     "Lunade",
     "Lufurrius"
@@ -64,9 +64,6 @@
     },
     "frozenlib_registry": {
       "mod_protocol": $protocol_version
-    },
-    "lithium:options": {
-      "mixin.world.raycast": false
     }
   }
 }

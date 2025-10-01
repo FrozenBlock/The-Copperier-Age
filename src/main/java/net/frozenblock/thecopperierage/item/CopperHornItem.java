@@ -19,12 +19,12 @@ package net.frozenblock.thecopperierage.item;
 
 import java.util.Optional;
 import net.frozenblock.lib.sound.impl.networking.FrozenLibSoundPackets;
-import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.mod_compat.FrozenLibIntegration;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -41,18 +41,18 @@ public class CopperHornItem extends InstrumentItem {
 		super(settings);
 	}
 
-	private static void playSound(@NotNull Instrument instrument, @NotNull Player user, @NotNull Level level) {
-		SoundEvent soundEvent = instrument.soundEvent().value();
-		float range = instrument.range() / 16F;
-		int note = (int) ((-user.getXRot() + 90) / 7.5D);
+	private static void playSound(@NotNull Instrument instrument, @NotNull Player player, @NotNull Level level) {
+		final SoundEvent soundEvent = instrument.soundEvent().value();
+		final float range = instrument.range() / 16F;
+		final int note = (int) ((-player.getXRot() + 90) / 7.5D);
 
 		if (!level.isClientSide()) {
-			float soundPitch = !user.isShiftKeyDown() ?
+			final float soundPitch = !player.isShiftKeyDown() ?
 				(float) Math.pow(2D, (note - 12F) / 12D) :
-				(float) Math.pow(2D, 0.01111F * -user.getXRot());
+				(float) Math.pow(2D, 0.01111F * -player.getXRot());
 			FrozenLibSoundPackets.createAndSendMovingRestrictionLoopingSound(
 				level,
-				user,
+				player,
 				BuiltInRegistries.SOUND_EVENT.get(soundEvent.location()).orElseThrow(),
 				SoundSource.RECORDS,
 				range,
@@ -61,21 +61,19 @@ public class CopperHornItem extends InstrumentItem {
 				true
 			);
 		}
-		level.gameEvent(GameEvent.INSTRUMENT_PLAY, user.position(), GameEvent.Context.of(user));
+		level.gameEvent(GameEvent.INSTRUMENT_PLAY, player.position(), GameEvent.Context.of(player));
 	}
 
 	@Override
 	@NotNull
-	public InteractionResult use(@NotNull Level level, @NotNull Player user, @NotNull InteractionHand interactionHand) {
-		ItemStack itemStack = user.getItemInHand(interactionHand);
-		Optional<? extends Holder<Instrument>> optional = this.getInstrument(itemStack, level.registryAccess());
-		if (optional.isPresent()) {
-			user.startUsingItem(interactionHand);
-			playSound(optional.get().value(), user, level);
-			return InteractionResult.CONSUME;
-		} else {
-			TCAConstants.printStackTrace("Copper Horn use failed!", true);
-			return InteractionResult.FAIL;
-		}
+	public InteractionResult use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand interactionHand) {
+		final ItemStack stack = player.getItemInHand(interactionHand);
+		final Optional<? extends Holder<Instrument>> optional = this.getInstrument(stack, level.registryAccess());
+		if (optional.isEmpty()) return InteractionResult.FAIL;
+
+		player.startUsingItem(interactionHand);
+		playSound(optional.get().value(), player, level);
+		player.awardStat(Stats.ITEM_USED.get(this));
+		return InteractionResult.CONSUME;
 	}
 }

@@ -23,6 +23,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.frozenblock.thecopperierage.TCAConstants;
+import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
 import net.frozenblock.thecopperierage.tag.TCAItemTags;
 import net.minecraft.client.renderer.RenderType;
@@ -63,28 +64,25 @@ public class EquipmentLayerRendererMixin {
 		ResourceLocation resourceLocation, Operation<RenderType> original,
 		@Local(argsOnly = true) ItemStack stack
 	) {
-		// TODO: Config
-		if (stack.is(TCAItemTags.OXIDIZABLE_EQUIPMENT)) {
-			if (stack.is(ItemTags.LEG_ARMOR)) return original.call(
-				OxidizableItemHelper.getValueForOxidization(
-					stack,
-					resourceLocation,
-					THE_COPPERIER_AGE$EXPOSED_COPPER_LEGGINGS,
-					THE_COPPERIER_AGE$WEATHERED_COPPER_LEGGINGS,
-					THE_COPPERIER_AGE$OXIDIZED_COPPER_LEGGINGS
-				)
-			);
-			return original.call(
-				OxidizableItemHelper.getValueForOxidization(
-					stack,
-					resourceLocation,
-					THE_COPPERIER_AGE$EXPOSED_COPPER,
-					THE_COPPERIER_AGE$WEATHERED_COPPER,
-					THE_COPPERIER_AGE$OXIDIZED_COPPER
-				)
-			);
-		}
-		return null;
+		if (!TCAConfig.OXIDIZABLE_COPPER_EQUIPMENT || !resourceLocation.getPath().contains("humanoid") || !stack.is(TCAItemTags.OXIDIZABLE_EQUIPMENT)) return original.call(resourceLocation);
+		if (stack.is(ItemTags.LEG_ARMOR)) return original.call(
+			OxidizableItemHelper.getValueForOxidization(
+				stack,
+				resourceLocation,
+				THE_COPPERIER_AGE$EXPOSED_COPPER_LEGGINGS,
+				THE_COPPERIER_AGE$WEATHERED_COPPER_LEGGINGS,
+				THE_COPPERIER_AGE$OXIDIZED_COPPER_LEGGINGS
+			)
+		);
+		return original.call(
+			OxidizableItemHelper.getValueForOxidization(
+				stack,
+				resourceLocation,
+				THE_COPPERIER_AGE$EXPOSED_COPPER,
+				THE_COPPERIER_AGE$WEATHERED_COPPER,
+				THE_COPPERIER_AGE$OXIDIZED_COPPER
+			)
+		);
 	}
 
 }

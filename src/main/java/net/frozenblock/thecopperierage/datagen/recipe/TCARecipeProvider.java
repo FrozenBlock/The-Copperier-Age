@@ -141,7 +141,7 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 	}
 
 	private static void createGearboxRecipe(@NotNull RecipeProvider recipeProvider, RecipeOutput exporter, Block gearboxBlock, Block copperBlock) {
-		recipeProvider.shaped(RecipeCategory.REDSTONE, gearboxBlock, 2)
+		recipeProvider.shaped(RecipeCategory.REDSTONE, gearboxBlock, 4)
 			.define('X', Ingredient.of(copperBlock))
 			.define('-', Ingredient.of(Items.COPPER_INGOT))
 			.define('#', Ingredient.of(Items.COBBLESTONE))
@@ -154,13 +154,13 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 	}
 
 	private static void createCopperFanRecipe(@NotNull RecipeProvider recipeProvider, RecipeOutput exporter, Block fanBlock, Block copperBlock) {
-		recipeProvider.shaped(RecipeCategory.REDSTONE, fanBlock, 2)
+		recipeProvider.shaped(RecipeCategory.REDSTONE, fanBlock, 4)
 			.define('X', Ingredient.of(copperBlock))
-			.define('O', Ingredient.of(Items.WIND_CHARGE))
+			.define('/', Ingredient.of(Items.BREEZE_ROD))
 			.define('#', Ingredient.of(Items.COBBLESTONE))
 			.define('R', Ingredient.of(Items.REDSTONE))
 			.pattern("###")
-			.pattern("XOX")
+			.pattern("X/X")
 			.pattern("XRX")
 			.unlockedBy(RecipeProvider.getHasName(copperBlock), recipeProvider.has(copperBlock))
 			.save(exporter);

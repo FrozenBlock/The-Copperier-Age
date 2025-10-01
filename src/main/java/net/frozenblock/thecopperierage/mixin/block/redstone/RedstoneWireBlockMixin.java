@@ -20,6 +20,7 @@ package net.frozenblock.thecopperierage.mixin.block.redstone;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
 import net.frozenblock.thecopperierage.block.RedstonePumpkinBlock;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RedStoneWireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
@@ -32,26 +33,15 @@ public class RedstoneWireBlockMixin {
 
     @Inject(method = "shouldConnectTo(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/Direction;)Z", at = @At("HEAD"), cancellable = true)
     private static void theCopperierAge$handleRedstonePumpkinAndGearboxConnections(BlockState state, Direction direction, CallbackInfoReturnable<Boolean> info) {
-        if (state.getBlock() instanceof RedstonePumpkinBlock) {
-            if (direction == null) {
-				info.setReturnValue(false);
-                return;
-            }
-            // Only allow connection if this direction matches the output face of the redstone pumpkin
-            Direction outputFace = state.getValue(RedstonePumpkinBlock.FACING).getOpposite();
+		final Block block = state.getBlock();
+        if (block instanceof RedstonePumpkinBlock) {
+            // Only allow connection if this direction matches the output face of the Redstone Pumpkin
+            final Direction outputFace = state.getValue(RedstonePumpkinBlock.FACING).getOpposite();
 			info.setReturnValue(direction == outputFace);
-			return;
-        }
-
-		if (state.getBlock() instanceof GearboxBlock) {
-			if (direction == null) {
-				info.setReturnValue(false);
-				return;
-			}
-			// Only allow connection if this direction doesn't match the top face of the gearbox
-			Direction outputFace = state.getValue(GearboxBlock.FACING).getOpposite();
+        } else if (block instanceof GearboxBlock) {
+			// Only allow connection if this direction doesn't match the top face of the Gearbox
+			final Direction outputFace = state.getValue(GearboxBlock.FACING).getOpposite();
 			info.setReturnValue(direction != outputFace);
-			return;
 		}
     }
 }

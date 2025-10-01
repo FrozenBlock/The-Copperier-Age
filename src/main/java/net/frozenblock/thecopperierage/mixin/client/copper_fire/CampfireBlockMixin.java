@@ -48,7 +48,8 @@ public class CampfireBlockMixin {
 		)
 	)
 	private SimpleParticleType theCopperierAge$spawnCopperLava(
-		SimpleParticleType original, @Local(argsOnly = true) BlockState state
+		SimpleParticleType original,
+		@Local(argsOnly = true) BlockState state
 	) {
 		return state.is(TCABlocks.COPPER_CAMPFIRE) ? TCAParticleTypes.COPPER_LAVA : original;
 	}
@@ -82,7 +83,7 @@ public class CampfireBlockMixin {
 			target = "Lnet/minecraft/core/particles/ParticleTypes;CAMPFIRE_COSY_SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"
 		)
 	)
-	private static SimpleParticleType theCopperierAge$soulCosySmoke(
+	private static SimpleParticleType theCopperierAge$copperCosySmoke(
 		SimpleParticleType original,
 		@Share("theCopperierAge$blockState") LocalRef<BlockState> state
 	) {
@@ -96,7 +97,7 @@ public class CampfireBlockMixin {
 			target = "Lnet/minecraft/core/particles/ParticleTypes;SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"
 		)
 	)
-	private static SimpleParticleType theCopperierAge$soulSmoke(
+	private static SimpleParticleType theCopperierAge$copperSmoke(
 		SimpleParticleType original,
 		@Share("theCopperierAge$blockState") LocalRef<BlockState> state
 	) {

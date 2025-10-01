@@ -48,11 +48,19 @@ public final class CopperHornRecipeProvider {
 		copperHorn(provider, lookup, exporter, "tuba", Instruments.FEEL_GOAT_HORN, TCAItems.TUBA_COPPER_HORN);
 	}
 
-	private static void copperHorn(RecipeProvider provider, HolderLookup.Provider lookup, RecipeOutput exporter, String name, ResourceKey<Instrument> goatHornInstrument, ResourceKey<Instrument> copperHornInstrument) {
+	private static void copperHorn(
+		RecipeProvider provider,
+		HolderLookup.Provider lookup,
+		RecipeOutput exporter,
+		String name,
+		ResourceKey<Instrument> goatHornInstrument,
+		ResourceKey<Instrument> copperHornInstrument
+	) {
 		((ShapedRecipeBuilderExtension) provider.shaped(RecipeCategory.TOOLS, TCAItems.COPPER_HORN)
 			.group("wilderwild_copper_horn")
 			.define('C', Ingredient.of(Items.COPPER_INGOT))
-			.define('G', DefaultCustomIngredients.components(Ingredient.of(Items.GOAT_HORN),
+			.define('G', DefaultCustomIngredients.components(
+				Ingredient.of(Items.GOAT_HORN),
 				DataComponentPatch.builder()
 					.set(DataComponents.INSTRUMENT, new InstrumentComponent(lookup.lookupOrThrow(Registries.INSTRUMENT).getOrThrow(goatHornInstrument)))
 					.build()
@@ -60,11 +68,12 @@ public final class CopperHornRecipeProvider {
 			.pattern("CGC")
 			.pattern(" C ")
 			.unlockedBy("has_horn", provider.has(Items.GOAT_HORN))
-		).frozenLib$patch(DataComponentPatch.builder().set(
-			DataComponents.INSTRUMENT,
+		).frozenLib$patch(
+			DataComponentPatch.builder().set(
+				DataComponents.INSTRUMENT,
 				new InstrumentComponent(lookup.lookupOrThrow(Registries.INSTRUMENT).getOrThrow(copperHornInstrument))
-			).build())
-			.save(exporter, TCAConstants.string(name + "_copper_horn"));
+			).build()
+		).save(exporter, TCAConstants.string(name + "_copper_horn"));
 	}
 
 }

@@ -3,17 +3,17 @@
   "category": "redstone",
   "key": {
     "#": "minecraft:cobblestone",
-    "O": "minecraft:wind_charge",
+    "/": "minecraft:breeze_rod",
     "R": "minecraft:redstone",
     "X": "minecraft:waxed_oxidized_copper"
   },
   "pattern": [
     "###",
-    "XOX",
+    "X/X",
     "XRX"
   ],
   "result": {
-    "count": 2,
+    "count": 4,
     "id": "thecopperierage:waxed_oxidized_copper_fan"
   }
 }

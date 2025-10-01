@@ -79,19 +79,17 @@ public class FrozenLibIntegration extends ModIntegration {
 
 			@Override
 			public boolean test(LivingEntity entity) {
-				if (firstCheck) {
-					firstCheck = false;
+				if (this.firstCheck) {
+					this.firstCheck = false;
 					InteractionHand hand = !entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() ? InteractionHand.MAIN_HAND : !entity.getItemInHand(InteractionHand.OFF_HAND).isEmpty() ? InteractionHand.OFF_HAND : null;
 					if (hand == null) return false;
 
-					ItemStack stack = entity.getItemInHand(hand);
-					if (stack.getItem() instanceof InstrumentItem) {
-						this.lastStack = stack;
-						return true;
-					}
-					return false;
+					final ItemStack stack = entity.getItemInHand(hand);
+					if (!(stack.getItem() instanceof InstrumentItem)) return false;
+					this.lastStack = stack;
+					return true;
 				}
-				var stack = entity.getUseItem();
+				final ItemStack stack = entity.getUseItem();
 				if (stack.getItem() instanceof InstrumentItem) {
 					if (this.lastStack == null || ItemStack.matches(this.lastStack, stack)) {
 						this.lastStack = stack;
@@ -147,10 +145,11 @@ public class FrozenLibIntegration extends ModIntegration {
 	@Override
 	public void init() {
 		final TCAConfig config = TCAConfig.get();
+		final ResourceLocation trialChambers = BuiltinStructures.TRIAL_CHAMBERS.location();
 
 		if (config.copperButtonsInTrialChambers) {
 			StructureProcessorApi.addProcessor(
-				BuiltinStructures.TRIAL_CHAMBERS.location(),
+				trialChambers,
 				new BlockStateRespectingRuleProcessor(
 					ImmutableList.of(
 						new BlockStateRespectingProcessorRule(new BlockMatchTest(Blocks.OAK_BUTTON), AlwaysTrueTest.INSTANCE, TCABlocks.COPPER_BUTTON.waxed())
@@ -161,7 +160,7 @@ public class FrozenLibIntegration extends ModIntegration {
 
 		if (config.copperChestsInTrialChambers) {
 			StructureProcessorApi.addProcessor(
-				BuiltinStructures.TRIAL_CHAMBERS.location(),
+				trialChambers,
 				new BlockStateRespectingRuleProcessor(
 					ImmutableList.of(
 						new BlockStateRespectingProcessorRule(new BlockMatchTest(Blocks.CHEST), AlwaysTrueTest.INSTANCE, Blocks.WAXED_COPPER_CHEST)
@@ -172,7 +171,7 @@ public class FrozenLibIntegration extends ModIntegration {
 
 		if (config.copperPressurePlatesInTrialChambers) {
 			StructureProcessorApi.addProcessor(
-				BuiltinStructures.TRIAL_CHAMBERS.location(),
+				trialChambers,
 				new BlockStateRespectingRuleProcessor(
 					ImmutableList.of(
 						new BlockStateRespectingProcessorRule(new BlockMatchTest(Blocks.OAK_PRESSURE_PLATE), AlwaysTrueTest.INSTANCE, TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed())

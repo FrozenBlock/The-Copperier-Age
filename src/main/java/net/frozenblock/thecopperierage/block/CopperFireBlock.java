@@ -71,7 +71,7 @@ public class CopperFireBlock extends BaseFireBlock {
     }
 
     public static boolean canSurviveOnBlock(@NotNull BlockGetter level, BlockPos pos) {
-		BlockState state = level.getBlockState(pos);
+		final BlockState state = level.getBlockState(pos);
         if (!state.is(TCABlockTags.COPPER_FIRE_BASE_BLOCKS)) return false;
 		return state.isFaceSturdy(level, pos, Direction.UP);
     }
@@ -87,8 +87,7 @@ public class CopperFireBlock extends BaseFireBlock {
     }
 
 	public static void poisonEntity(@NotNull Level level, Entity entity) {
-		if (level.isClientSide() || !(entity instanceof LivingEntity livingEntity)) return;
-		if (!TCAConfig.get().copperFirePoisons) return;
+		if (level.isClientSide() || !(entity instanceof LivingEntity livingEntity) || !TCAConfig.get().copperFirePoisons) return;
 		livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 119));
 	}
 

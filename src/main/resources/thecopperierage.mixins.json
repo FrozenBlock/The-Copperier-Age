@@ -8,6 +8,8 @@
     "block.copper_fire.BaseFireBlockMixin",
     "block.copper_fire.CampfireBlockMixin",
     "block.redstone.RedstoneWireBlockMixin",
+    "datafix.DataFixersMixin",
+    "datafix.v4533Mixin",
     "item.ItemStackMixin",
     "worldgen.TrickierTrialsPackCheckerMixin"
   ],

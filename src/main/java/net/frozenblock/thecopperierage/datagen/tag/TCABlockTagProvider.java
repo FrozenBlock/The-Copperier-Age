@@ -20,6 +20,7 @@ package net.frozenblock.thecopperierage.datagen.tag;
 import java.util.concurrent.CompletableFuture;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 import net.frozenblock.lib.tag.api.FrozenBlockTags;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.tag.TCABlockTags;
@@ -85,6 +86,9 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 			.addOptionalTag(TCABlockTags.CHIMES)
 			.addOptionalTag(TCABlockTags.COPPER_BUTTONS)
 			.addOptionalTag(TCABlockTags.COPPER_PRESSURE_PLATES);
+
+		this.builder(TCABlockTags.WRENCH_CANNOT_ROTATE)
+			.addOptionalTag(ConventionalBlockTags.CHESTS);
 
 		this.builder(FrozenBlockTags.BLOWING_CAN_PASS_THROUGH)
 			.addOptionalTag(TCABlockTags.COPPER_FANS)

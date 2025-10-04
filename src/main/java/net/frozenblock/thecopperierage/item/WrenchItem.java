@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import net.frozenblock.thecopperierage.registry.TCASounds;
+import net.frozenblock.thecopperierage.tag.TCABlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
@@ -60,6 +61,7 @@ public class WrenchItem extends Item {
 		final BlockState state = level.getBlockState(pos);
 		final Block block = state.getBlock();
 
+		if (state.is(TCABlockTags.WRENCH_CANNOT_ROTATE)) return InteractionResult.PASS;
 		if (block instanceof DoorBlock doorBlock && !doorBlock.type().canOpenByHand()) return InteractionResult.FAIL;
 		if (block instanceof TrapDoorBlock trapDoorBlock && !trapDoorBlock.getType().canOpenByHand()) return InteractionResult.FAIL;
 
@@ -198,7 +200,9 @@ public class WrenchItem extends Item {
 		final BlockPos pos = context.getClickedPos();
 
 		BlockState newState = Block.updateFromNeighbourShapes(state, level, pos);
-		level.setBlock(pos, newState, 276);
+		if (!level.setBlockAndUpdate(pos, newState)) return;
+		if (level.isClientSide()) return;
+
 		level.updateNeighborsAt(pos, newState.getBlock());
 		for (Direction direction : Direction.values()) {
 			final BlockPos offsetPos = pos.relative(direction);

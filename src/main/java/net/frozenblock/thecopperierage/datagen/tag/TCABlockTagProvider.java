@@ -89,7 +89,7 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 			.addOptionalTag(TCABlockTags.COPPER_PRESSURE_PLATES);
 
 		this.valueLookupBuilder(TCABlockTags.WRENCH_CANNOT_ROTATE)
-			.add(Blocks.VAULT, Blocks.END_PORTAL_FRAME)
+			.add(Blocks.VAULT, Blocks.END_PORTAL_FRAME, Blocks.NETHER_PORTAL)
 			.add(Blocks.BIG_DRIPLEAF, Blocks.BIG_DRIPLEAF_STEM, Blocks.SMALL_DRIPLEAF);
 
 		this.builder(TCABlockTags.WRENCH_CANNOT_ROTATE)

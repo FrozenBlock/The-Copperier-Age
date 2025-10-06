@@ -32,6 +32,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 
 public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvider {
@@ -87,8 +88,15 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 			.addOptionalTag(TCABlockTags.COPPER_BUTTONS)
 			.addOptionalTag(TCABlockTags.COPPER_PRESSURE_PLATES);
 
+		this.valueLookupBuilder(TCABlockTags.WRENCH_CANNOT_ROTATE)
+			.add(Blocks.VAULT, Blocks.END_PORTAL_FRAME)
+			.add(Blocks.BIG_DRIPLEAF, Blocks.BIG_DRIPLEAF_STEM, Blocks.SMALL_DRIPLEAF);
+
 		this.builder(TCABlockTags.WRENCH_CANNOT_ROTATE)
-			.addOptionalTag(ConventionalBlockTags.CHESTS);
+			.addOptionalTag(ConventionalBlockTags.CHESTS)
+			.addOptionalTag(BlockTags.SHULKER_BOXES)
+			.addOptionalTag(ConventionalBlockTags.RELOCATION_NOT_SUPPORTED)
+			.addOptionalTag(BlockTags.BEDS);
 
 		this.builder(FrozenBlockTags.BLOWING_CAN_PASS_THROUGH)
 			.addOptionalTag(TCABlockTags.COPPER_FANS)

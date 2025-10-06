@@ -1,7 +1,24 @@
 {
   "values": [
+    "minecraft:vault",
+    "minecraft:end_portal_frame",
+    "minecraft:big_dripleaf",
+    "minecraft:big_dripleaf_stem",
+    "minecraft:small_dripleaf",
     {
       "id": "#c:chests",
+      "required": false
+    },
+    {
+      "id": "#minecraft:shulker_boxes",
+      "required": false
+    },
+    {
+      "id": "#c:relocation_not_supported",
+      "required": false
+    },
+    {
+      "id": "#minecraft:beds",
       "required": false
     }
   ]

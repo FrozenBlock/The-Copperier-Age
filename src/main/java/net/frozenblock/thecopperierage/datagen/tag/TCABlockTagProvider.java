@@ -89,14 +89,17 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 			.addOptionalTag(TCABlockTags.COPPER_PRESSURE_PLATES);
 
 		this.valueLookupBuilder(TCABlockTags.WRENCH_CANNOT_ROTATE)
-			.add(Blocks.VAULT, Blocks.END_PORTAL_FRAME, Blocks.NETHER_PORTAL)
-			.add(Blocks.BIG_DRIPLEAF, Blocks.BIG_DRIPLEAF_STEM, Blocks.SMALL_DRIPLEAF);
-
-		this.builder(TCABlockTags.WRENCH_CANNOT_ROTATE)
-			.addOptionalTag(ConventionalBlockTags.CHESTS)
+			.add(Blocks.VAULT)
+			.add(Blocks.PISTON_HEAD, Blocks.MOVING_PISTON)
+			.add(Blocks.END_PORTAL_FRAME, Blocks.NETHER_PORTAL)
+			.add(Blocks.BIG_DRIPLEAF, Blocks.BIG_DRIPLEAF_STEM, Blocks.SMALL_DRIPLEAF)
 			.addOptionalTag(BlockTags.SHULKER_BOXES)
 			.addOptionalTag(ConventionalBlockTags.RELOCATION_NOT_SUPPORTED)
-			.addOptionalTag(BlockTags.BEDS);
+			.addOptionalTag(BlockTags.BEDS)
+			.addOptionalTag(BlockTags.MAINTAINS_FARMLAND);
+
+		this.builder(TCABlockTags.WRENCH_CANNOT_ROTATE)
+			.addOptional(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("trailiertales", "coffin")));
 
 		this.builder(FrozenBlockTags.BLOWING_CAN_PASS_THROUGH)
 			.addOptionalTag(TCABlockTags.COPPER_FANS)

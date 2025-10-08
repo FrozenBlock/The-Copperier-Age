@@ -454,8 +454,8 @@ modrinth {
         required.project("frozenlib")
         optional.project("cloth-config")
         optional.project("modmenu")
-        optional.project("trailier-tales")
         optional.project("simple-copper-pipes")
+        optional.project("glowtone")
     }
 }
 

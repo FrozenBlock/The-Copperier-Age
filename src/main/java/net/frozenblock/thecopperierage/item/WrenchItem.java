@@ -21,12 +21,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.frozenblock.thecopperierage.tag.TCABlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.Container;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -34,11 +36,21 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.ShelfBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.entity.EnderChestBlockEntity;
+import net.minecraft.world.level.block.entity.LidBlockEntity;
+import net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity;
+import net.minecraft.world.level.block.piston.PistonBaseBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
@@ -60,10 +72,18 @@ public class WrenchItem extends Item {
 		final BlockPos pos = context.getClickedPos();
 		final BlockState state = level.getBlockState(pos);
 		final Block block = state.getBlock();
+		final BlockEntity blockEntity = level.getBlockEntity(pos);
 
 		if (state.is(TCABlockTags.WRENCH_CANNOT_ROTATE)) return InteractionResult.PASS;
+		if (block instanceof PistonBaseBlock && state.getValue(PistonBaseBlock.EXTENDED)) return InteractionResult.PASS;
+
 		if (block instanceof DoorBlock doorBlock && !doorBlock.type().canOpenByHand()) return InteractionResult.FAIL;
 		if (block instanceof TrapDoorBlock trapDoorBlock && !trapDoorBlock.getType().canOpenByHand()) return InteractionResult.FAIL;
+		if (block instanceof ShelfBlock && state.getValue(ShelfBlock.POWERED)) return InteractionResult.FAIL;
+		if (state.is(ConventionalBlockTags.CHESTS) && state.getValueOrElse(ChestBlock.TYPE, ChestType.SINGLE) != ChestType.SINGLE) return InteractionResult.FAIL;
+		if (blockEntity instanceof LidBlockEntity lidBlockEntity && lidBlockEntity.getOpenNess(1F) > 0F) return InteractionResult.FAIL;
+		if (blockEntity instanceof Container container && !container.getEntitiesWithContainerOpen().isEmpty()) return InteractionResult.FAIL;
+		if (blockEntity instanceof ShulkerBoxBlockEntity shulkerBox && !shulkerBox.isClosed()) return InteractionResult.FAIL;
 
 		if (state.is(BlockTags.DOORS)) {
 			Optional<DoubleBlockHalf> optionalHalf = state.getOptionalValue(DoorBlock.HALF);
@@ -113,6 +133,14 @@ public class WrenchItem extends Item {
 				if (newState != state && newState.canSurvive(level, pos)) {
 					return onSuccessfulWrench(context, level, pos, () -> changeIntoState(context, newState));
 				}
+			}
+		}
+
+		if (state.is(BlockTags.LANTERNS) && state.hasProperty(BlockStateProperties.HANGING)) {
+			final boolean hanging = state.getValue(BlockStateProperties.HANGING);
+			final BlockState newState = state.setValue(BlockStateProperties.HANGING, !hanging);
+			if (newState != state && newState.canSurvive(level, pos)) {
+				return onSuccessfulWrench(context, level, pos, () -> changeIntoState(context, newState));
 			}
 		}
 

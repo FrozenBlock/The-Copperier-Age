@@ -212,7 +212,8 @@ public class ChimeBlock extends BaseEntityBlock {
 		@NotNull Level level,
 		@NotNull BlockPos pos,
 		@NotNull Entity entity,
-		InsideBlockEffectApplier insideBlockEffectApplier
+		InsideBlockEffectApplier insideBlockEffectApplier,
+		boolean bl
 	) {
 		final Vec3 movement = entity.getDeltaMovement();
 		final double length = movement.length();

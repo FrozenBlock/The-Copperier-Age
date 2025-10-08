@@ -91,9 +91,16 @@ public class CopperFireBlock extends BaseFireBlock {
 		livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 119));
 	}
 
-    @Override
-    protected void entityInside(BlockState state, @NotNull Level level, BlockPos pos, @NotNull Entity entity, InsideBlockEffectApplier insideBlockEffectApplier) {
-        super.entityInside(state, level, pos, entity, insideBlockEffectApplier);
+	@Override
+	public void entityInside(
+		@NotNull BlockState state,
+		@NotNull Level level,
+		@NotNull BlockPos pos,
+		@NotNull Entity entity,
+		InsideBlockEffectApplier insideBlockEffectApplier,
+		boolean bl
+	) {
+        super.entityInside(state, level, pos, entity, insideBlockEffectApplier, bl);
         poisonEntity(level, entity);
     }
 }

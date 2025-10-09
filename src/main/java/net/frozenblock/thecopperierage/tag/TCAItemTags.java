@@ -30,6 +30,7 @@ public final class TCAItemTags {
 	public static final TagKey<Item> COPPER_BUTTONS = bind("copper_buttons");
 	public static final TagKey<Item> COPPER_PRESSURE_PLATES = bind("copper_pressure_plates");
 	public static final TagKey<Item> OXIDIZABLE_EQUIPMENT = bind("oxidizable_equipment");
+	public static final TagKey<Item> OXIDIZING_DOES_NOT_SCALE_ATTACK_SPEED = bind("oxidizing_does_not_scale_attack_speed");
 
 	private TCAItemTags() {
 		throw new UnsupportedOperationException("TCAItemTags contains only static declarations.");

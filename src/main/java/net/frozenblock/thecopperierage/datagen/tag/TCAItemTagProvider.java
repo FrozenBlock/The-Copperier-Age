@@ -71,12 +71,16 @@ public final class TCAItemTagProvider extends FabricTagProvider.ItemTagProvider 
 			.add(Items.COPPER_HOE)
 			.add(Items.COPPER_PICKAXE)
 			.add(Items.COPPER_SHOVEL)
+			.add(Items.COPPER_SPEAR)
 			.add(Items.COPPER_HELMET)
 			.add(Items.COPPER_CHESTPLATE)
 			.add(Items.COPPER_LEGGINGS)
 			.add(Items.COPPER_BOOTS)
 			.add(Items.BRUSH)
 			.add(TCAItems.WRENCH);
+
+		this.valueLookupBuilder(TCAItemTags.OXIDIZING_DOES_NOT_SCALE_ATTACK_SPEED)
+			.add(Items.COPPER_SPEAR);
 	}
 
 	@NotNull

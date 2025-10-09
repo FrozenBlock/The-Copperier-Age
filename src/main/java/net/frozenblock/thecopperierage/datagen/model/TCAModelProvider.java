@@ -45,6 +45,7 @@ import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.renderer.block.model.VariantMutator;
 import static net.minecraft.client.renderer.item.ItemModel.Unbaked;
+import net.minecraft.client.renderer.item.ClientItem;
 import net.minecraft.client.renderer.item.SelectItemModel;
 import net.minecraft.client.renderer.item.properties.numeric.Damage;
 import net.minecraft.client.renderer.item.properties.numeric.UseCycle;
@@ -146,6 +147,8 @@ public final class TCAModelProvider extends FabricModelProvider {
 		generateOxidizableItem(generator, Items.COPPER_PICKAXE, ModelTemplates.FLAT_HANDHELD_ITEM, false);
 		generateOxidizableItem(generator, Items.COPPER_SHOVEL, ModelTemplates.FLAT_HANDHELD_ITEM, false);
 		generateOxidizableItem(generator, Items.COPPER_SWORD, ModelTemplates.FLAT_HANDHELD_ITEM, false);
+
+		generateOxidizableSpear(generator, Items.COPPER_SPEAR, false);
 
 		generateOxidizableTrimmableItem(generator, Items.COPPER_HELMET, EquipmentAssets.COPPER, ItemModelGenerators.TRIM_PREFIX_HELMET);
 		generateOxidizableTrimmableItem(generator, Items.COPPER_CHESTPLATE, EquipmentAssets.COPPER, ItemModelGenerators.TRIM_PREFIX_CHESTPLATE);
@@ -292,6 +295,33 @@ public final class TCAModelProvider extends FabricModelProvider {
 		final Unbaked oxidized = ItemModelUtils.plainModel(createFlatItemModelWithTCANamespace(generator, item, "_oxidized", template));
 
 		generator.itemModelOutput.accept(item, createOxidizableDispatch(unaffected, exposed, weathered, oxidized));
+	}
+
+	private static void generateOxidizableSpear(@NotNull ItemModelGenerators generator, Item item, boolean generateFirstModel) {
+		final Unbaked unaffected = generateFirstModel
+			? ItemModelUtils.plainModel(generator.createFlatItemModel(item, ModelTemplates.FLAT_ITEM))
+			: ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item));
+		final Unbaked unaffectedInHand = generateFirstModel
+			? ItemModelUtils.plainModel(ModelTemplates.SPEAR_IN_HAND.create(item, TextureMapping.layer0(TextureMapping.getItemTexture(item, "_in_hand")), generator.modelOutput))
+			: ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item, "_in_hand"));
+
+		final Unbaked exposed = ItemModelUtils.plainModel(createFlatItemModelWithTCANamespace(generator, item, "_exposed", ModelTemplates.FLAT_ITEM));
+		final Unbaked exposedInHand = ItemModelUtils.plainModel(createFlatItemModelWithTCANamespace(generator, item, "_exposed_in_hand", ModelTemplates.SPEAR_IN_HAND));
+
+		final Unbaked weathered = ItemModelUtils.plainModel(createFlatItemModelWithTCANamespace(generator, item, "_weathered", ModelTemplates.FLAT_ITEM));
+		final Unbaked weatheredInHand = ItemModelUtils.plainModel(createFlatItemModelWithTCANamespace(generator, item, "_weathered_in_hand", ModelTemplates.SPEAR_IN_HAND));
+
+		final Unbaked oxidized = ItemModelUtils.plainModel(createFlatItemModelWithTCANamespace(generator, item, "_oxidized", ModelTemplates.FLAT_ITEM));
+		final Unbaked oxidizedInHand = ItemModelUtils.plainModel(createFlatItemModelWithTCANamespace(generator, item, "_oxidized_in_hand", ModelTemplates.SPEAR_IN_HAND));
+
+		generator.itemModelOutput.accept(
+			item,
+			ItemModelGenerators.createFlatModelDispatch(
+				createOxidizableDispatch(unaffected, exposed, weathered, oxidized),
+				createOxidizableDispatch(unaffectedInHand, exposedInHand, weatheredInHand, oxidizedInHand)
+			),
+			new ClientItem.Properties(true, false, 1.9F)
+		);
 	}
 
 	private static void generateOxidizableBrush(@NotNull ItemModelGenerators generator) {

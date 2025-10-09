@@ -17,11 +17,8 @@
 
 package net.frozenblock.thecopperierage.entity.impl;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.world.phys.Vec3;
 
-@Environment(EnvType.CLIENT)
 public interface CopperFanQueuedMovementInterface {
 	void theCopperierAge$queueCopperFanMovement(Vec3 movement);
 }

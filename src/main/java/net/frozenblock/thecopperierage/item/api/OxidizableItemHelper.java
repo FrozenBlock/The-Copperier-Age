@@ -278,6 +278,7 @@ public final class OxidizableItemHelper {
 			copperKineticWeapon.minReach(),
 			copperKineticWeapon.maxReach(),
 			copperKineticWeapon.hitboxMargin(),
+			copperKineticWeapon.contactCooldownTicks(),
 			copperKineticWeapon.delayTicks(),
 			Optional.ofNullable(newDismountCondition.orElse(stackKineticWeapon.dismountConditions().orElse(null))),
 			Optional.ofNullable(newKnockbackConditions.orElse(stackKineticWeapon.knockbackConditions().orElse(null))),

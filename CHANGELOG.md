@@ -1,4 +1,5 @@
 Please clear changelog after each release.
 Put the changelog BELOW the dashes. ANYTHING ABOVE IS IGNORED.
 -----------------
-- Fixed the mod crashing servers upon boot.
+- Fixed Weighted Pressure Plates not dropping when broken.
+- Fixed Copper and Redstone Jack o'Lanterns not using the cutout render layer, which made them render incorrectly with Glowtone.

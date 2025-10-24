@@ -28,11 +28,11 @@ import net.frozenblock.thecopperierage.block.state.properties.ChimeAttachType;
 import net.frozenblock.thecopperierage.client.TCAModelLayers;
 import net.frozenblock.thecopperierage.client.model.ChimeModel;
 import net.frozenblock.thecopperierage.client.renderer.blockentity.state.ChimeRenderState;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
@@ -48,7 +48,7 @@ public class ChimeRenderer<T extends ChimeBlockEntity> implements BlockEntityRen
 	private final ChimeModel chainsModel;
 
 	public ChimeRenderer(@NotNull Context context) {
-		this.model = new ChimeModel(context.bakeLayer(TCAModelLayers.CHIME), RenderType::entityCutout, false);
+		this.model = new ChimeModel(context.bakeLayer(TCAModelLayers.CHIME), RenderTypes::entityCutout, false);
 		this.chainsModel = new ChimeModel(context.bakeLayer(TCAModelLayers.CHIME), FrozenLibRenderTypes::entityCutoutNoShading, true);
 	}
 

@@ -26,7 +26,7 @@ import net.frozenblock.thecopperierage.tag.TCAItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.tags.TagAppender;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -85,10 +85,10 @@ public final class TCAItemTagProvider extends FabricTagProvider.ItemTagProvider 
 
 	@NotNull
 	private TagKey<Item> getTag(String id) {
-		return TagKey.create(this.registryKey, ResourceLocation.parse(id));
+		return TagKey.create(this.registryKey, Identifier.parse(id));
 	}
 
 	@NotNull private ResourceKey<Item> getKey(String namespace, String path) {
-		return ResourceKey.create(this.registryKey, ResourceLocation.fromNamespaceAndPath(namespace, path));
+		return ResourceKey.create(this.registryKey, Identifier.fromNamespaceAndPath(namespace, path));
 	}
 }

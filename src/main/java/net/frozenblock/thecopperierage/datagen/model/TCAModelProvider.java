@@ -52,7 +52,7 @@ import net.minecraft.client.renderer.item.properties.numeric.UseCycle;
 import net.minecraft.client.renderer.item.properties.select.TrimMaterialProperty;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.equipment.EquipmentAsset;
@@ -371,13 +371,13 @@ public final class TCAModelProvider extends FabricModelProvider {
 		@NotNull ItemModelGenerators generator,
 		Item item,
 		ResourceKey<EquipmentAsset> equipmentAsset,
-		ResourceLocation resourceLocation
+		Identifier identifier
 	) {
-		final ResourceLocation vanillaModel = ModelLocationUtils.getModelLocation(item);
-		final ResourceLocation tcaModel = getItemModelWithTCANamespace(item, "");
-		final ResourceLocation exposedTexture = getItemTextureWithTCANamespace(item, "_exposed");
-		final ResourceLocation weatheredTexture = getItemTextureWithTCANamespace(item, "_weathered");
-		final ResourceLocation oxidizedTexture = getItemTextureWithTCANamespace(item, "_oxidized");
+		final Identifier vanillaModel = ModelLocationUtils.getModelLocation(item);
+		final Identifier tcaModel = getItemModelWithTCANamespace(item, "");
+		final Identifier exposedTexture = getItemTextureWithTCANamespace(item, "_exposed");
+		final Identifier weatheredTexture = getItemTextureWithTCANamespace(item, "_weathered");
+		final Identifier oxidizedTexture = getItemTextureWithTCANamespace(item, "_oxidized");
 
 		final int trimMaterialListSize = ItemModelGenerators.TRIM_MATERIAL_MODELS.size();
 		final List<SelectItemModel.SwitchCase<ResourceKey<TrimMaterial>>> unaffectedList = new ArrayList<>(trimMaterialListSize);
@@ -386,23 +386,23 @@ public final class TCAModelProvider extends FabricModelProvider {
 		final List<SelectItemModel.SwitchCase<ResourceKey<TrimMaterial>>> oxidizedList = new ArrayList<>(trimMaterialListSize);
 		for (ItemModelGenerators.TrimMaterialData trimMaterialData : ItemModelGenerators.TRIM_MATERIAL_MODELS) {
 			final ResourceKey<TrimMaterial> materialKey = trimMaterialData.materialKey();
-			final ResourceLocation trimmedTexture = resourceLocation.withSuffix("_" + trimMaterialData.assets().assetId(equipmentAsset).suffix());
+			final Identifier trimmedTexture = identifier.withSuffix("_" + trimMaterialData.assets().assetId(equipmentAsset).suffix());
 
-			final ResourceLocation unaffectedModel = vanillaModel.withSuffix("_" + trimMaterialData.assets().base().suffix() + "_trim");
+			final Identifier unaffectedModel = vanillaModel.withSuffix("_" + trimMaterialData.assets().base().suffix() + "_trim");
 			final Unbaked unaffected = ItemModelUtils.plainModel(unaffectedModel);
 			unaffectedList.add(ItemModelUtils.when(materialKey, unaffected));
 
-			final ResourceLocation exposedModel = tcaModel.withSuffix("_exposed_" + trimMaterialData.assets().base().suffix() + "_trim");
+			final Identifier exposedModel = tcaModel.withSuffix("_exposed_" + trimMaterialData.assets().base().suffix() + "_trim");
 			final Unbaked exposed = ItemModelUtils.plainModel(exposedModel);
 			generator.generateLayeredItem(exposedModel, exposedTexture, trimmedTexture);
 			exposedList.add(ItemModelUtils.when(materialKey, exposed));
 
-			final ResourceLocation weatheredModel = tcaModel.withSuffix("_weathered_" + trimMaterialData.assets().base().suffix() + "_trim");
+			final Identifier weatheredModel = tcaModel.withSuffix("_weathered_" + trimMaterialData.assets().base().suffix() + "_trim");
 			final Unbaked weathered = ItemModelUtils.plainModel(weatheredModel);
 			generator.generateLayeredItem(weatheredModel, weatheredTexture, trimmedTexture);
 			weatheredList.add(ItemModelUtils.when(materialKey, weathered));
 
-			final ResourceLocation oxidizedModel = tcaModel.withSuffix("_oxidized_" + trimMaterialData.assets().base().suffix() + "_trim");
+			final Identifier oxidizedModel = tcaModel.withSuffix("_oxidized_" + trimMaterialData.assets().base().suffix() + "_trim");
 			final Unbaked oxidized = ItemModelUtils.plainModel(oxidizedModel);
 			generator.generateLayeredItem(oxidizedModel, oxidizedTexture, trimmedTexture);
 			oxidizedList.add(ItemModelUtils.when(materialKey, oxidized));
@@ -424,7 +424,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 		);
 	}
 
-	private static @NotNull ResourceLocation createFlatItemModelWithTCANamespace(
+	private static @NotNull Identifier createFlatItemModelWithTCANamespace(
 		@NotNull ItemModelGenerators generator,
 		Item item,
 		String suffix,
@@ -433,11 +433,11 @@ public final class TCAModelProvider extends FabricModelProvider {
 		return modelTemplate.create(getItemModelWithTCANamespace(item, suffix), TextureMapping.layer0(getItemTextureWithTCANamespace(item, suffix)), generator.modelOutput);
 	}
 
-	private static @NotNull ResourceLocation getItemModelWithTCANamespace(Item item, String suffix) {
+	private static @NotNull Identifier getItemModelWithTCANamespace(Item item, String suffix) {
 		return TCAConstants.id(ModelLocationUtils.getModelLocation(item, suffix).getPath());
 	}
 
-	private static @NotNull ResourceLocation getItemTextureWithTCANamespace(Item item, String suffix) {
+	private static @NotNull Identifier getItemTextureWithTCANamespace(Item item, String suffix) {
 		return TCAConstants.id(TextureMapping.getItemTexture(item, suffix).getPath());
 	}
 

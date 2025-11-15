@@ -28,7 +28,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.tags.TagAppender;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
@@ -99,7 +99,7 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 			.addOptionalTag(BlockTags.MAINTAINS_FARMLAND);
 
 		this.builder(TCABlockTags.WRENCH_CANNOT_ROTATE)
-			.addOptional(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("trailiertales", "coffin")));
+			.addOptional(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("trailiertales", "coffin")));
 
 		this.builder(FrozenBlockTags.BLOWING_CAN_PASS_THROUGH)
 			.addOptionalTag(TCABlockTags.COPPER_FANS)
@@ -112,7 +112,7 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 		registries.lookupOrThrow(Registries.BLOCK)
 			.listElements()
 			.forEach(block -> {
-				final ResourceLocation location = block.key().location();
+				final Identifier location = block.key().identifier();
 				final String path = location.getPath();
 
 				if (!path.contains("copper")) return;
@@ -141,10 +141,10 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 
 	@NotNull
 	private TagKey<Block> getTag(String id) {
-		return TagKey.create(this.registryKey, ResourceLocation.parse(id));
+		return TagKey.create(this.registryKey, Identifier.parse(id));
 	}
 
 	@NotNull private ResourceKey<Block> getKey(String namespace, String path) {
-		return ResourceKey.create(this.registryKey, ResourceLocation.fromNamespaceAndPath(namespace, path));
+		return ResourceKey.create(this.registryKey, Identifier.fromNamespaceAndPath(namespace, path));
 	}
 }

@@ -23,19 +23,19 @@ import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 @Environment(EnvType.CLIENT)
 public class ChimeRenderState extends BlockEntityRenderState {
-	private static final ResourceLocation UNAFFECTED = TCAConstants.id("textures/entity/chime/chime.png");
-	private static final ResourceLocation EXPOSED = TCAConstants.id("textures/entity/chime/exposed_chime.png");
-	private static final ResourceLocation WEATHERED = TCAConstants.id("textures/entity/chime/weathered_chime.png");
-	private static final ResourceLocation OXIDIZED = TCAConstants.id("textures/entity/chime/oxidized_chime.png");
+	private static final Identifier UNAFFECTED = TCAConstants.id("textures/entity/chime/chime.png");
+	private static final Identifier EXPOSED = TCAConstants.id("textures/entity/chime/exposed_chime.png");
+	private static final Identifier WEATHERED = TCAConstants.id("textures/entity/chime/weathered_chime.png");
+	private static final Identifier OXIDIZED = TCAConstants.id("textures/entity/chime/oxidized_chime.png");
 
-	public ResourceLocation texture;
+	public Identifier texture;
 	public float animationProgress;
 	public boolean hanging;
 	public Direction direction;
@@ -44,7 +44,7 @@ public class ChimeRenderState extends BlockEntityRenderState {
 	public Vec3 relativeInfluence;
 
 	public void extractTexture(@NotNull BlockState state) {
-		ResourceLocation texture = UNAFFECTED;
+		Identifier texture = UNAFFECTED;
 		if (state.is(TCABlocks.CHIME.exposed()) || state.is(TCABlocks.CHIME.waxedExposed())) {
 			texture = EXPOSED;
 		} else if (state.is(TCABlocks.CHIME.weathered()) || state.is(TCABlocks.CHIME.waxedWeathered())) {

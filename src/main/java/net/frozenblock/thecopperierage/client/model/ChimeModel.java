@@ -32,7 +32,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Contract;
@@ -63,7 +63,7 @@ public class ChimeModel extends Model<ChimeRenderState> {
 	private final List<ModelPart> chains;
 	private final List<ModelPart> nonChains;
 
-	public ChimeModel(ModelPart root, Function<ResourceLocation, RenderType> renderType, boolean isChainsModel) {
+	public ChimeModel(ModelPart root, Function<Identifier, RenderType> renderType, boolean isChainsModel) {
 		super(root, renderType);
 		this.isChainsModel = isChainsModel;
 		this.support = root.getChild("support");

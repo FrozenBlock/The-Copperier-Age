@@ -38,7 +38,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.ProcessorLists;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
@@ -58,9 +58,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class FrozenLibIntegration extends ModIntegration {
-	public static final ResourceLocation INSTRUMENT_SOUND_PREDICATE = TCAConstants.id("instrument");
-	public static final ResourceLocation COPPER_FAN_WIND_DISTURBANCE = TCAConstants.id("copper_fan");
-	public static final ResourceLocation COPPER_FAN_WIND_DISTURBANCE_REVERSE = TCAConstants.id("copper_fan_reverse");
+	public static final Identifier INSTRUMENT_SOUND_PREDICATE = TCAConstants.id("instrument");
+	public static final Identifier COPPER_FAN_WIND_DISTURBANCE = TCAConstants.id("copper_fan");
+	public static final Identifier COPPER_FAN_WIND_DISTURBANCE_REVERSE = TCAConstants.id("copper_fan_reverse");
 
 	public FrozenLibIntegration() {
 		super("frozenlib");
@@ -145,7 +145,7 @@ public class FrozenLibIntegration extends ModIntegration {
 	@Override
 	public void init() {
 		final TCAConfig config = TCAConfig.get();
-		final ResourceLocation trialChambers = BuiltinStructures.TRIAL_CHAMBERS.location();
+		final Identifier trialChambers = BuiltinStructures.TRIAL_CHAMBERS.identifier();
 
 		if (config.copperButtonsInTrialChambers) {
 			StructureProcessorApi.addProcessor(
@@ -187,8 +187,8 @@ public class FrozenLibIntegration extends ModIntegration {
 				.get(ProcessorLists.TRIAL_CHAMBERS_COPPER_BULB_DEGRADATION)
 				.orElseGet(() -> processorLookup.getOrThrow(ProcessorLists.EMPTY));
 
-			final ResourceLocation hallway = ResourceLocation.withDefaultNamespace("trial_chambers/hallway");
-			final ResourceLocation end =ResourceLocation.withDefaultNamespace("trial_chambers/chambers/end");
+			final Identifier hallway = Identifier.withDefaultNamespace("trial_chambers/hallway");
+			final Identifier end =Identifier.withDefaultNamespace("trial_chambers/chambers/end");
 
 			// Trials
 			context.addElement(

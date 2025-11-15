@@ -24,7 +24,7 @@ import net.frozenblock.thecopperierage.tag.TCAEntityTypeTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
@@ -57,7 +57,7 @@ public final class TCAEntityTypeTagProvider extends FabricTagProvider.EntityType
 			.add(EntityType.HAPPY_GHAST);
 
 		this.builder(TCAEntityTypeTags.COPPER_FAN_WEAKER_PUSH)
-			.addOptional(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath("wilderwild", "ostrich")));
+			.addOptional(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath("wilderwild", "ostrich")));
 
 		this.valueLookupBuilder(TCAEntityTypeTags.COPPER_FAN_CANNOT_PUSH)
 			.add(EntityType.WITHER)
@@ -76,15 +76,15 @@ public final class TCAEntityTypeTagProvider extends FabricTagProvider.EntityType
 			.add(EntityType.WIND_CHARGE);
 
 		this.builder(TCAEntityTypeTags.COPPER_FAN_CANNOT_PUSH)
-			.addOptional(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath("trailiertales", "apparition")));
+			.addOptional(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath("trailiertales", "apparition")));
 	}
 
 	@NotNull
 	private TagKey<EntityType<?>> getTag(String id) {
-		return TagKey.create(this.registryKey, ResourceLocation.parse(id));
+		return TagKey.create(this.registryKey, Identifier.parse(id));
 	}
 
 	@NotNull private ResourceKey<EntityType<?>> getKey(String namespace, String path) {
-		return ResourceKey.create(this.registryKey, ResourceLocation.fromNamespaceAndPath(namespace, path));
+		return ResourceKey.create(this.registryKey, Identifier.fromNamespaceAndPath(namespace, path));
 	}
 }

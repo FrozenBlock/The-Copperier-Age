@@ -365,7 +365,7 @@ public class CopperFanBlock extends DirectionalBlock {
 			final double overallIntensity = intensity * pushIntensity * pushScale;
 			final Vec3 fanMovement = movement.scale(overallIntensity);
 			queuedMovementInterface.theCopperierAge$queueCopperFanMovement(fanMovement);
-			entity.hasImpulse = true;
+			entity.needsSync = true;
 		}
 	}
 

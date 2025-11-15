@@ -28,7 +28,7 @@ import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
 import net.frozenblock.thecopperierage.tag.TCAItemTags;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.entity.layers.EquipmentLayerRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -40,35 +40,35 @@ import org.spongepowered.asm.mixin.injection.At;
 public class EquipmentLayerRendererMixin {
 
 	@Unique
-	private static final ResourceLocation THE_COPPERIER_AGE$EXPOSED_COPPER_LEGGINGS = TCAConstants.id("textures/entity/equipment/humanoid_leggings/copper_exposed.png");
+	private static final Identifier THE_COPPERIER_AGE$EXPOSED_COPPER_LEGGINGS = TCAConstants.id("textures/entity/equipment/humanoid_leggings/copper_exposed.png");
 	@Unique
-	private static final ResourceLocation THE_COPPERIER_AGE$WEATHERED_COPPER_LEGGINGS = TCAConstants.id("textures/entity/equipment/humanoid_leggings/copper_weathered.png");
+	private static final Identifier THE_COPPERIER_AGE$WEATHERED_COPPER_LEGGINGS = TCAConstants.id("textures/entity/equipment/humanoid_leggings/copper_weathered.png");
 	@Unique
-	private static final ResourceLocation THE_COPPERIER_AGE$OXIDIZED_COPPER_LEGGINGS = TCAConstants.id("textures/entity/equipment/humanoid_leggings/copper_oxidized.png");
+	private static final Identifier THE_COPPERIER_AGE$OXIDIZED_COPPER_LEGGINGS = TCAConstants.id("textures/entity/equipment/humanoid_leggings/copper_oxidized.png");
 
 	@Unique
-	private static final ResourceLocation THE_COPPERIER_AGE$EXPOSED_COPPER = TCAConstants.id("textures/entity/equipment/humanoid/copper_exposed.png");
+	private static final Identifier THE_COPPERIER_AGE$EXPOSED_COPPER = TCAConstants.id("textures/entity/equipment/humanoid/copper_exposed.png");
 	@Unique
-	private static final ResourceLocation THE_COPPERIER_AGE$WEATHERED_COPPER = TCAConstants.id("textures/entity/equipment/humanoid/copper_weathered.png");
+	private static final Identifier THE_COPPERIER_AGE$WEATHERED_COPPER = TCAConstants.id("textures/entity/equipment/humanoid/copper_weathered.png");
 	@Unique
-	private static final ResourceLocation THE_COPPERIER_AGE$OXIDIZED_COPPER = TCAConstants.id("textures/entity/equipment/humanoid/copper_oxidized.png");
+	private static final Identifier THE_COPPERIER_AGE$OXIDIZED_COPPER = TCAConstants.id("textures/entity/equipment/humanoid/copper_oxidized.png");
 
 	@WrapOperation(
-		method = "renderLayers(Lnet/minecraft/client/resources/model/EquipmentClientInfo$LayerType;Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/client/model/Model;Ljava/lang/Object;Lnet/minecraft/world/item/ItemStack;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/resources/ResourceLocation;II)V",
+		method = "renderLayers(Lnet/minecraft/client/resources/model/EquipmentClientInfo$LayerType;Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/client/model/Model;Ljava/lang/Object;Lnet/minecraft/world/item/ItemStack;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/resources/Identifier;II)V",
 		at = @At(
 			value = "INVOKE",
-			target = "Lnet/minecraft/client/renderer/rendertype/RenderTypes;armorCutoutNoCull(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/rendertype/RenderType;"
+			target = "Lnet/minecraft/client/renderer/rendertype/RenderTypes;armorCutoutNoCull(Lnet/minecraft/resources/Identifier;)Lnet/minecraft/client/renderer/rendertype/RenderType;"
 		)
 	)
 	public RenderType theCopperierAge$submitOxidizedArmor(
-		ResourceLocation resourceLocation, Operation<RenderType> original,
+		Identifier identifier, Operation<RenderType> original,
 		@Local(argsOnly = true) ItemStack stack
 	) {
-		if (!TCAConfig.OXIDIZABLE_COPPER_EQUIPMENT || !resourceLocation.getPath().contains("humanoid") || !stack.is(TCAItemTags.OXIDIZABLE_EQUIPMENT)) return original.call(resourceLocation);
+		if (!TCAConfig.OXIDIZABLE_COPPER_EQUIPMENT || !identifier.getPath().contains("humanoid") || !stack.is(TCAItemTags.OXIDIZABLE_EQUIPMENT)) return original.call(identifier);
 		if (stack.is(ItemTags.LEG_ARMOR)) return original.call(
 			OxidizableItemHelper.getValueForOxidization(
 				stack,
-				resourceLocation,
+				identifier,
 				THE_COPPERIER_AGE$EXPOSED_COPPER_LEGGINGS,
 				THE_COPPERIER_AGE$WEATHERED_COPPER_LEGGINGS,
 				THE_COPPERIER_AGE$OXIDIZED_COPPER_LEGGINGS
@@ -77,7 +77,7 @@ public class EquipmentLayerRendererMixin {
 		return original.call(
 			OxidizableItemHelper.getValueForOxidization(
 				stack,
-				resourceLocation,
+				identifier,
 				THE_COPPERIER_AGE$EXPOSED_COPPER,
 				THE_COPPERIER_AGE$WEATHERED_COPPER,
 				THE_COPPERIER_AGE$OXIDIZED_COPPER

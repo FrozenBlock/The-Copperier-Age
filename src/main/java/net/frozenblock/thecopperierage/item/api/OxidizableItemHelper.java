@@ -33,7 +33,7 @@ import net.frozenblock.thecopperierage.tag.TCAItemTags;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -211,7 +211,7 @@ public final class OxidizableItemHelper {
 		@NotNull ItemAttributeModifiers copper,
 		@NotNull ItemAttributeModifiers iron,
 		Holder<Attribute> attribute,
-		ResourceLocation attributeID,
+		Identifier attributeID,
 		float oxidizeProgress
 	) {
 		final Predicate<ItemAttributeModifiers.Entry> matchingEntry = entry -> entry.matches(attribute, attributeID);

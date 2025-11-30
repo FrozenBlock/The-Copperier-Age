@@ -24,7 +24,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.block.SoundType;
-import org.jetbrains.annotations.NotNull;
 
 public final class TCASounds {
 
@@ -70,24 +69,20 @@ public final class TCASounds {
 		throw new UnsupportedOperationException("TCASounds contains only static declarations.");
 	}
 
-	@NotNull
-	private static Holder.Reference<SoundEvent> registerForHolder(@NotNull String string) {
+	private static Holder.Reference<SoundEvent> registerForHolder(String string) {
 		return registerForHolder(TCAConstants.id(string));
 	}
 
-	@NotNull
-	private static Holder.Reference<SoundEvent> registerForHolder(@NotNull Identifier identifier) {
+	private static Holder.Reference<SoundEvent> registerForHolder(Identifier identifier) {
 		return registerForHolder(identifier, identifier);
 	}
 
-	@NotNull
-	public static SoundEvent register(@NotNull String path) {
+	public static SoundEvent register(String path) {
 		var id = TCAConstants.id(path);
 		return Registry.register(BuiltInRegistries.SOUND_EVENT, id, SoundEvent.createVariableRangeEvent(id));
 	}
 
-	@NotNull
-	private static Holder.Reference<SoundEvent> registerForHolder(@NotNull Identifier identifier, @NotNull Identifier identifier2) {
+	private static Holder.Reference<SoundEvent> registerForHolder(Identifier identifier, Identifier identifier2) {
 		return Registry.registerForHolder(BuiltInRegistries.SOUND_EVENT, identifier, SoundEvent.createVariableRangeEvent(identifier2));
 	}
 

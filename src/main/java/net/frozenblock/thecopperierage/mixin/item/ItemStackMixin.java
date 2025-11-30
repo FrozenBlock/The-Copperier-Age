@@ -34,7 +34,7 @@ public class ItemStackMixin {
 	@Inject(method = "set(Lnet/minecraft/core/component/DataComponentType;Ljava/lang/Object;)Ljava/lang/Object;", at = @At("HEAD"))
 	public <T> void theCopperierAge$onDamageSet(DataComponentType<T> dataComponentType, @Nullable T value, CallbackInfoReturnable<T> info) {
 		if (dataComponentType != DataComponents.DAMAGE) return;
-		int damage = value == null ? 0 : Integer.class.cast(value).intValue();
+		final int damage = value == null ? 0 : Integer.class.cast(value).intValue();
 		OxidizableItemHelper.onDamageUpdated(ItemStack.class.cast(this), damage);
 	}
 
@@ -42,7 +42,7 @@ public class ItemStackMixin {
 	public <T> void theCopperierAge$onDamageSet(TypedDataComponent<T> typedDataComponent, CallbackInfoReturnable<T> info) {
 		if (typedDataComponent.type() != DataComponents.DAMAGE) return;
 		final T value = typedDataComponent.value();
-		int damage = value == null ? 0 : Integer.class.cast(value).intValue();
+		final int damage = value == null ? 0 : Integer.class.cast(value).intValue();
 		OxidizableItemHelper.onDamageUpdated(ItemStack.class.cast(this), damage);
 	}
 

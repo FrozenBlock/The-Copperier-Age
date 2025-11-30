@@ -48,7 +48,6 @@ public class CopperSmokeParticle extends SmokeParticle {
 		this.colorLerpEndsAt = this.lifetime;
 	}
 
-
 	@Override
 	public void tick() {
 		this.colorLerpTicks += 1;
@@ -62,16 +61,10 @@ public class CopperSmokeParticle extends SmokeParticle {
 		return super.getLightColor(partialTick);
 	}
 
-	public static class Provider implements ParticleProvider<SimpleParticleType> {
-		private final SpriteSet spriteSet;
-
-		public Provider(SpriteSet spriteSet) {
-			this.spriteSet = spriteSet;
-		}
-
+	public record Provider(SpriteSet spriteSet) implements ParticleProvider<SimpleParticleType> {
 		@Override
 		public Particle createParticle(
-			SimpleParticleType simpleParticleType,
+			SimpleParticleType options,
 			ClientLevel level,
 			double x, double y, double z,
 			double xd, double yd, double zd,
@@ -80,5 +73,4 @@ public class CopperSmokeParticle extends SmokeParticle {
 			return new CopperSmokeParticle(level, x, y, z, xd, yd, zd, 1F, this.spriteSet);
 		}
 	}
-
 }

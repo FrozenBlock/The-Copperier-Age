@@ -23,20 +23,19 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.frozenblock.thecopperierage.tag.TCAEntityTypeTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import org.jetbrains.annotations.NotNull;
 
 public final class TCAEntityTypeTagProvider extends FabricTagProvider.EntityTypeTagProvider {
 
-	public TCAEntityTypeTagProvider(@NotNull FabricDataOutput output, @NotNull CompletableFuture<HolderLookup.Provider> registries) {
+	public TCAEntityTypeTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registries) {
 		super(output, registries);
 	}
 
 	@Override
-	protected void addTags(@NotNull HolderLookup.Provider arg) {
+	protected void addTags(HolderLookup.Provider arg) {
 		this.valueLookupBuilder(TCAEntityTypeTags.COPPER_FAN_WEAKER_PUSH)
 			.add(EntityType.ALLAY)
 			.add(EntityType.HORSE)
@@ -79,12 +78,11 @@ public final class TCAEntityTypeTagProvider extends FabricTagProvider.EntityType
 			.addOptional(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath("trailiertales", "apparition")));
 	}
 
-	@NotNull
 	private TagKey<EntityType<?>> getTag(String id) {
 		return TagKey.create(this.registryKey, Identifier.parse(id));
 	}
 
-	@NotNull private ResourceKey<EntityType<?>> getKey(String namespace, String path) {
+	private ResourceKey<EntityType<?>> getKey(String namespace, String path) {
 		return ResourceKey.create(this.registryKey, Identifier.fromNamespaceAndPath(namespace, path));
 	}
 }

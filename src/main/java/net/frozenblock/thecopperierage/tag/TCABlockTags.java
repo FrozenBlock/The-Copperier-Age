@@ -21,7 +21,6 @@ import net.frozenblock.thecopperierage.TCAConstants;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
-import org.jetbrains.annotations.NotNull;
 
 public final class TCABlockTags {
 	public static final TagKey<Block> COPPER_FIRE_BASE_BLOCKS = bind("copper_fire_base_blocks");
@@ -36,8 +35,7 @@ public final class TCABlockTags {
 		throw new UnsupportedOperationException("TCABlockTags contains only static declarations.");
 	}
 
-	@NotNull
-	private static TagKey<Block> bind(@NotNull String path) {
+	private static TagKey<Block> bind(String path) {
 		return TagKey.create(Registries.BLOCK, TCAConstants.id(path));
 	}
 }

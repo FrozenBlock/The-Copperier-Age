@@ -22,7 +22,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 
 public class WeatheringCopperPressurePlateBlock extends CopperPressurePlateBlock implements WeatheringCopper {
 
@@ -36,12 +35,12 @@ public class WeatheringCopperPressurePlateBlock extends CopperPressurePlateBlock
 	}
 
 	@Override
-	protected boolean isRandomlyTicking(@NotNull BlockState blockState) {
-		return WeatheringCopper.getNext(blockState.getBlock()).isPresent();
+	protected boolean isRandomlyTicking(BlockState state) {
+		return WeatheringCopper.getNext(state.getBlock()).isPresent();
 	}
 
 	@Override
-	public WeatheringCopper.@NotNull WeatherState getAge() {
+	public WeatheringCopper.WeatherState getAge() {
 		return this.weatherState;
 	}
 }

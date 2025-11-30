@@ -37,8 +37,8 @@ import net.frozenblock.thecopperierage.block.WeatheringGearboxBlock;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -55,10 +55,8 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import org.apache.commons.lang3.function.TriFunction;
-import org.jetbrains.annotations.NotNull;
 
 public final class TCABlocks {
-
 	public static final CopperFireBlock COPPER_FIRE = register("copper_fire",
 		CopperFireBlock::new,
 		BlockBehaviour.Properties.of()
@@ -221,12 +219,12 @@ public final class TCABlocks {
 	private static void registerDispenses() {
 	}
 
-	public static <W extends Block> @NotNull WeatheringCopperBlocks createWeatheringCopperSet(
+	public static <W extends Block> WeatheringCopperBlocks createWeatheringCopperSet(
 		String id,
-		@NotNull TriFunction<String, Function<BlockBehaviour.Properties, Block>, BlockBehaviour.Properties, Block> blockCreator,
+		TriFunction<String, Function<BlockBehaviour.Properties, Block>, BlockBehaviour.Properties, Block> blockCreator,
 		BiFunction<WeatheringCopper.WeatherState, BlockBehaviour.Properties, W> waxedBlockCreator,
 		BiFunction<WeatheringCopper.WeatherState, BlockBehaviour.Properties, ? extends Block> weatheringBlockCreator,
-		@NotNull Function<WeatheringCopper.WeatherState, BlockBehaviour.Properties> propertiesCreator
+		Function<WeatheringCopper.WeatherState, BlockBehaviour.Properties> propertiesCreator
 	) {
 		Block unaffected = blockCreator.apply(id, (properties) -> weatheringBlockCreator.apply(WeatheringCopper.WeatherState.UNAFFECTED, properties), propertiesCreator.apply(WeatheringCopper.WeatherState.UNAFFECTED));
 		Block exposed = blockCreator.apply("exposed_" + id, (properties) -> weatheringBlockCreator.apply(WeatheringCopper.WeatherState.EXPOSED, properties), propertiesCreator.apply(WeatheringCopper.WeatherState.EXPOSED));

@@ -24,16 +24,15 @@ import net.frozenblock.thecopperierage.TCAConstants;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import org.jetbrains.annotations.NotNull;
 
 final class TCARegistryProvider extends FabricDynamicRegistryProvider {
 
-	TCARegistryProvider(@NotNull FabricDataOutput output, @NotNull CompletableFuture<HolderLookup.Provider> registriesFuture) {
+	TCARegistryProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
 		super(output, registriesFuture);
 	}
 
 	@Override
-	protected void configure(@NotNull HolderLookup.Provider registries, @NotNull Entries entries) {
+	protected void configure(HolderLookup.Provider registries, Entries entries) {
 		TCAConstants.log("Adding finalized instruments to datagen", true);
 		entries.addAll(asLookup(entries.getLookup(Registries.INSTRUMENT)));
 		TCAConstants.log("Adding finalized template pools to datagen", true);
@@ -45,7 +44,6 @@ final class TCARegistryProvider extends FabricDynamicRegistryProvider {
 	}
 
 	@Override
-	@NotNull
 	public String getName() {
 		return "The Copperier Age Dynamic Registries";
 	}

@@ -25,16 +25,15 @@ import net.frozenblock.thecopperierage.tag.TCAInstrumentTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.Instrument;
-import org.jetbrains.annotations.NotNull;
 
 public final class TCAInstrumentTagProvider extends FabricTagProvider<Instrument> {
 
-	public TCAInstrumentTagProvider(@NotNull FabricDataOutput output, @NotNull CompletableFuture<HolderLookup.Provider> registries) {
+	public TCAInstrumentTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registries) {
 		super(output, Registries.INSTRUMENT, registries);
 	}
 
 	@Override
-	public void addTags(@NotNull HolderLookup.Provider arg) {
+	public void addTags(HolderLookup.Provider arg) {
 		this.builder(TCAInstrumentTags.COPPER_HORNS)
 			.add(TCAItems.RECORDER_COPPER_HORN)
 			.add(TCAItems.FLUTE_COPPER_HORN)

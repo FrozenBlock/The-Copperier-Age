@@ -20,7 +20,6 @@ package net.frozenblock.thecopperierage.mixin.block.copper_fan;
 import net.frozenblock.thecopperierage.entity.impl.CopperFanQueuedMovementInterface;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -56,7 +55,7 @@ public abstract class EntityMixin implements CopperFanQueuedMovementInterface {
 
 	@Unique
 	@Override
-	public void theCopperierAge$queueCopperFanMovement(@NotNull Vec3 movement) {
+	public void theCopperierAge$queueCopperFanMovement(Vec3 movement) {
 		this.theCopperierAge$queuedCopperFanMovementMin = new Vec3(
 			Math.min(this.theCopperierAge$queuedCopperFanMovementMin.x(), movement.x()),
 			Math.min(this.theCopperierAge$queuedCopperFanMovementMin.y(), movement.y()),

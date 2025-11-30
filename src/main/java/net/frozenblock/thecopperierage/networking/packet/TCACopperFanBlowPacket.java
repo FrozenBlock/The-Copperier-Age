@@ -26,28 +26,24 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import org.jetbrains.annotations.NotNull;
 
 public record TCACopperFanBlowPacket(BlockPos pos) implements CustomPacketPayload {
 	public static final Type<TCACopperFanBlowPacket> PACKET_TYPE = new Type<>(TCAConstants.id("copper_fan_blow"));
-
 	public static final StreamCodec<FriendlyByteBuf, TCACopperFanBlowPacket> CODEC = StreamCodec.ofMember(TCACopperFanBlowPacket::write, TCACopperFanBlowPacket::new);
 
-	public TCACopperFanBlowPacket(@NotNull FriendlyByteBuf buf) {
+	public TCACopperFanBlowPacket(FriendlyByteBuf buf) {
 		this(buf.readBlockPos());
 	}
 
-	public static void sendToAll(ServerLevel serverLevel, BlockPos pos) {
-		for (ServerPlayer player : PlayerLookup.tracking(serverLevel, pos)) {
-			ServerPlayNetworking.send(player, new TCACopperFanBlowPacket(pos));
-		}
+	public static void sendToAll(ServerLevel level, BlockPos pos) {
+		final TCACopperFanBlowPacket packet = new TCACopperFanBlowPacket(pos);
+		for (ServerPlayer player : PlayerLookup.tracking(level, pos)) ServerPlayNetworking.send(player, packet);
 	}
 
-	public void write(@NotNull FriendlyByteBuf buf) {
+	public void write(FriendlyByteBuf buf) {
 		buf.writeBlockPos(this.pos());
 	}
 
-	@NotNull
 	public Type<?> type() {
 		return PACKET_TYPE;
 	}

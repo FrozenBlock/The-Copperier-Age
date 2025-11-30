@@ -34,8 +34,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 public final class TCARecipeProvider extends FabricRecipeProvider {
 
@@ -43,9 +41,8 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 		super(output, registries);
 	}
 
-	@Contract("_, _ -> new")
 	@Override
-	protected @NotNull RecipeProvider createRecipeProvider(HolderLookup.Provider registries, RecipeOutput exporter) {
+	protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries, RecipeOutput exporter) {
 		return new RecipeProvider(registries, exporter) {
 			@Override
 			public void buildRecipes() {
@@ -132,7 +129,7 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 		};
 	}
 
-	private static void createCopperPressurePlateRecipe(@NotNull RecipeProvider recipeProvider, RecipeOutput exporter, Block pressurePlateBlock, ItemLike ingredient) {
+	private static void createCopperPressurePlateRecipe(RecipeProvider recipeProvider, RecipeOutput exporter, Block pressurePlateBlock, ItemLike ingredient) {
 		recipeProvider.shaped(RecipeCategory.BUILDING_BLOCKS, pressurePlateBlock)
 			.define('#', Ingredient.of(ingredient))
 			.pattern("##")
@@ -140,7 +137,7 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 			.save(exporter);
 	}
 
-	private static void createGearboxRecipe(@NotNull RecipeProvider recipeProvider, RecipeOutput exporter, Block gearboxBlock, Block copperBlock) {
+	private static void createGearboxRecipe(RecipeProvider recipeProvider, RecipeOutput exporter, Block gearboxBlock, Block copperBlock) {
 		recipeProvider.shaped(RecipeCategory.REDSTONE, gearboxBlock, 4)
 			.define('X', Ingredient.of(copperBlock))
 			.define('-', Ingredient.of(Items.COPPER_INGOT))
@@ -153,7 +150,7 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 			.save(exporter);
 	}
 
-	private static void createCopperFanRecipe(@NotNull RecipeProvider recipeProvider, RecipeOutput exporter, Block fanBlock, Block copperBlock) {
+	private static void createCopperFanRecipe(RecipeProvider recipeProvider, RecipeOutput exporter, Block fanBlock, Block copperBlock) {
 		recipeProvider.shaped(RecipeCategory.REDSTONE, fanBlock, 4)
 			.define('X', Ingredient.of(copperBlock))
 			.define('/', Ingredient.of(Items.BREEZE_ROD))
@@ -167,7 +164,6 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 	}
 
 	@Override
-	@NotNull
 	public String getName() {
 		return "The Copperier Age Recipes";
 	}

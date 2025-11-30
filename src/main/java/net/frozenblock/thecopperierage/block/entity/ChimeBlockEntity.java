@@ -37,7 +37,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.gameevent.vibrations.VibrationSystem;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 
 public class ChimeBlockEntity extends BlockEntity {
 	private static final float MAX_BLOCKS_PER_SECOND = 22F;
@@ -51,14 +50,14 @@ public class ChimeBlockEntity extends BlockEntity {
 	public float prevAccumulatedStrength;
 	public float accumulatedStrength;
 
-	public ChimeBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
+	public ChimeBlockEntity(BlockPos pos, BlockState state) {
 		super(TCABlockEntityTypes.CHIME, pos, state);
 		this.animationOffset = (float) pos.getX() * 6F + pos.getY() * 6F + pos.getZ() * 6F;
 		this.influences = new ArrayList<>();
 		this.influences.add(new WindInfluence());
 	}
 
-	public static void tick(Level level, BlockPos pos, @NotNull BlockState state, @NotNull ChimeBlockEntity chime) {
+	public static void tick(Level level, BlockPos pos, BlockState state, ChimeBlockEntity chime) {
 		chime.prevInfluence = chime.influence;
 		chime.influences.forEach(influence -> influence.tick(level, pos));
 		chime.influences.removeIf(AbstractInfluence::shouldRemove);
@@ -71,7 +70,7 @@ public class ChimeBlockEntity extends BlockEntity {
 	}
 
 	public void addInfluence(
-		@NotNull Level level,
+		Level level,
 		BlockPos pos,
 		BlockState state,
 		Vec3 influence,
@@ -92,7 +91,7 @@ public class ChimeBlockEntity extends BlockEntity {
 	}
 
 	public boolean addEntityInfluence(
-		@NotNull Level level,
+		Level level,
 		BlockPos pos,
 		BlockState state,
 		Entity entity,
@@ -131,11 +130,11 @@ public class ChimeBlockEntity extends BlockEntity {
 		return canPlaySound;
 	}
 
-	private @NotNull ResourceKey<GameEvent> getResonanceEventByFrequency(float frequency) {
+	private ResourceKey<GameEvent> getResonanceEventByFrequency(float frequency) {
 		return VibrationSystem.getResonanceEventByFrequency(Math.clamp((int) frequency, 1, 15));
 	}
 
-	public void addClientInfluence(@NotNull Level level, Vec3 influence, double scaleEachTick, Optional<Integer> entityID) {
+	public void addClientInfluence(Level level, Vec3 influence, double scaleEachTick, Optional<Integer> entityID) {
 		if (!level.isClientSide()) return;
 		final Entity entity = entityID.map(level::getEntity).orElse(null);
 		if (entity != null) {
@@ -199,7 +198,7 @@ public class ChimeBlockEntity extends BlockEntity {
 			return false;
 		}
 
-		private Vec3 getWind(@NotNull Level level, BlockPos pos) {
+		private Vec3 getWind(Level level, BlockPos pos) {
 			if (level.isClientSide()) return ClientWindManager.getWindMovement(level, pos.getCenter(), 1D, 1D, 2D);
 			if (!(level instanceof ServerLevel serverLevel)) return Vec3.ZERO;
 			return WindManager.getOrCreateWindManager(serverLevel).getWindMovement(pos.getCenter(), 1D, 1D, 2D);

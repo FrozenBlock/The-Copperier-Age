@@ -33,27 +33,26 @@ import net.minecraft.world.item.InstrumentItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
-import org.jetbrains.annotations.NotNull;
 
 public class CopperHornItem extends InstrumentItem {
 
-	public CopperHornItem(@NotNull Properties settings) {
-		super(settings);
+	public CopperHornItem(Properties properties) {
+		super(properties);
 	}
 
-	private static void playSound(@NotNull Instrument instrument, @NotNull Player player, @NotNull Level level) {
-		final SoundEvent soundEvent = instrument.soundEvent().value();
-		final float range = instrument.range() / 16F;
-		final int note = (int) ((-player.getXRot() + 90) / 7.5D);
-
+	private static void playSound(Instrument instrument, Player player, Level level) {
 		if (!level.isClientSide()) {
+			final SoundEvent sound = instrument.soundEvent().value();
+			final float range = instrument.range() / 16F;
+			final int note = (int) ((-player.getXRot() + 90) / 7.5D);
+
 			final float soundPitch = !player.isShiftKeyDown() ?
-				(float) Math.pow(2D, (note - 12F) / 12D) :
-				(float) Math.pow(2D, 0.01111F * -player.getXRot());
+				(float) Math.pow(2D, (note - 12D) / 12D) :
+				(float) Math.pow(2D, 0.01111D * -player.getXRot());
 			FrozenLibSoundPackets.createAndSendMovingRestrictionLoopingSound(
 				level,
 				player,
-				BuiltInRegistries.SOUND_EVENT.get(soundEvent.location()).orElseThrow(),
+				BuiltInRegistries.SOUND_EVENT.get(sound.location()).orElseThrow(),
 				SoundSource.RECORDS,
 				range,
 				soundPitch,
@@ -61,17 +60,17 @@ public class CopperHornItem extends InstrumentItem {
 				true
 			);
 		}
+
 		level.gameEvent(GameEvent.INSTRUMENT_PLAY, player.position(), GameEvent.Context.of(player));
 	}
 
 	@Override
-	@NotNull
-	public InteractionResult use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand interactionHand) {
-		final ItemStack stack = player.getItemInHand(interactionHand);
+	public InteractionResult use(Level level, Player player, InteractionHand hand) {
+		final ItemStack stack = player.getItemInHand(hand);
 		final Optional<? extends Holder<Instrument>> optional = this.getInstrument(stack, level.registryAccess());
 		if (optional.isEmpty()) return InteractionResult.FAIL;
 
-		player.startUsingItem(interactionHand);
+		player.startUsingItem(hand);
 		playSound(optional.get().value(), player, level);
 		player.awardStat(Stats.ITEM_USED.get(this));
 		return InteractionResult.CONSUME;

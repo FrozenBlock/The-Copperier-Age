@@ -28,10 +28,8 @@ import net.minecraft.world.item.Instrument;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.InstrumentComponent;
-import org.jetbrains.annotations.NotNull;
 
 public final class TCAItems {
-
 	public static final WrenchItem WRENCH = register("wrench",
 		WrenchItem::new,
 		new Item.Properties()
@@ -63,7 +61,7 @@ public final class TCAItems {
 	public static void registerItems() {
 	}
 
-	private static @NotNull <T extends Item> T register(String name, @NotNull Function<Item.Properties, Item> function, Item.@NotNull Properties properties) {
+	private static <T extends Item> T register(String name, Function<Item.Properties, Item> function, Item.Properties properties) {
 		return (T) Items.registerItem(ResourceKey.create(Registries.ITEM, TCAConstants.id(name)), function, properties);
 	}
 }

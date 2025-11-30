@@ -35,8 +35,6 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 @Environment(EnvType.CLIENT)
 public class ChimeModel extends Model<ChimeRenderState> {
@@ -96,11 +94,11 @@ public class ChimeModel extends Model<ChimeRenderState> {
 		this.nonChains = ImmutableList.copyOf(this.allParts().stream().filter(modelPart -> !this.chains.contains(modelPart)).toList());
 	}
 
-	public static @NotNull LayerDefinition createLayerDefinition() {
-		MeshDefinition meshdefinition = new MeshDefinition();
-		PartDefinition root = meshdefinition.getRoot();
+	public static LayerDefinition createLayerDefinition() {
+		final MeshDefinition meshdefinition = new MeshDefinition();
+		final PartDefinition root = meshdefinition.getRoot();
 
-		PartDefinition support = root.addOrReplaceChild("support", CubeListBuilder.create(), PartPose.offset(0F, 8F, 0F));
+		final PartDefinition support = root.addOrReplaceChild("support", CubeListBuilder.create(), PartPose.offset(0F, 8F, 0F));
 		support.addOrReplaceChild(
 			"chain",
 			CubeListBuilder.create()
@@ -111,7 +109,7 @@ public class ChimeModel extends Model<ChimeRenderState> {
 			PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -0.7854F, 0F)
 		);
 
-		PartDefinition bar = support.addOrReplaceChild(
+		final PartDefinition bar = support.addOrReplaceChild(
 			"bar",
 			CubeListBuilder.create()
 				.texOffs(0, 0)
@@ -119,7 +117,7 @@ public class ChimeModel extends Model<ChimeRenderState> {
 			PartPose.offset(0F, 4F, 0F)
 		);
 
-		PartDefinition chime1 = bar.addOrReplaceChild("chime1", CubeListBuilder.create(), PartPose.offset(0F, 2F, -6F));
+		final PartDefinition chime1 = bar.addOrReplaceChild("chime1", CubeListBuilder.create(), PartPose.offset(0F, 2F, -6F));
 		chime1.addOrReplaceChild(
 			"chain",
 			CubeListBuilder.create()
@@ -137,7 +135,7 @@ public class ChimeModel extends Model<ChimeRenderState> {
 			PartPose.offset(0F, 1F, 0F)
 		);
 
-		PartDefinition chime2 = bar.addOrReplaceChild("chime2", CubeListBuilder.create(), PartPose.offset(0F, 2F, -3F));
+		final PartDefinition chime2 = bar.addOrReplaceChild("chime2", CubeListBuilder.create(), PartPose.offset(0F, 2F, -3F));
 		chime2.addOrReplaceChild(
 			"chain",
 			CubeListBuilder.create()
@@ -155,7 +153,7 @@ public class ChimeModel extends Model<ChimeRenderState> {
 			PartPose.offset(0F, 1F, 0F)
 		);
 
-		PartDefinition chime3 = bar.addOrReplaceChild("chime3", CubeListBuilder.create(), PartPose.offset(0F, 2F, 0F));
+		final PartDefinition chime3 = bar.addOrReplaceChild("chime3", CubeListBuilder.create(), PartPose.offset(0F, 2F, 0F));
 		chime3.addOrReplaceChild(
 			"chain",
 			CubeListBuilder.create()
@@ -173,7 +171,7 @@ public class ChimeModel extends Model<ChimeRenderState> {
 			PartPose.offset(0F, 1F, 0F)
 		);
 
-		PartDefinition chime4 = bar.addOrReplaceChild("chime4", CubeListBuilder.create(), PartPose.offset(0F, 2F, 3F));
+		final PartDefinition chime4 = bar.addOrReplaceChild("chime4", CubeListBuilder.create(), PartPose.offset(0F, 2F, 3F));
 		chime4.addOrReplaceChild(
 			"chain",
 			CubeListBuilder.create()
@@ -191,7 +189,7 @@ public class ChimeModel extends Model<ChimeRenderState> {
 			PartPose.offset(0F, 1F, 0F)
 		);
 
-		PartDefinition chime5 = bar.addOrReplaceChild("chime5", CubeListBuilder.create(), PartPose.offset(0F, 2F, 6F));
+		final PartDefinition chime5 = bar.addOrReplaceChild("chime5", CubeListBuilder.create(), PartPose.offset(0F, 2F, 6F));
 		chime5.addOrReplaceChild(
 			"chain",
 			CubeListBuilder.create()
@@ -213,7 +211,7 @@ public class ChimeModel extends Model<ChimeRenderState> {
 	}
 
 	@Override
-	public void setupAnim(@NotNull ChimeRenderState renderState) {
+	public void setupAnim(ChimeRenderState renderState) {
 		super.setupAnim(renderState);
 
 		this.allParts().forEach(modelPart -> modelPart.skipDraw = true);
@@ -257,8 +255,7 @@ public class ChimeModel extends Model<ChimeRenderState> {
 		return this.chains;
 	}
 
-	@Contract("_, _, _ -> null")
-	private static @NotNull Pair<Float, Float> getRotationForMovement(float animationOffset, float animationProgress, @NotNull Vec3 movement) {
+	private static Pair<Float, Float> getRotationForMovement(float animationOffset, float animationProgress, Vec3 movement) {
 		final float yAge = animationProgress * 0.4F;
 
 		final float zMovement =Mth.clamp((float) movement.z + (Mth.cos(yAge) * (float) movement.y * 0.5F), -0.5F, 0.5F);

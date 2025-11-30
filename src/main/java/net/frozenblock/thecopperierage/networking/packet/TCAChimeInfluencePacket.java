@@ -30,41 +30,28 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public record TCAChimeInfluencePacket(BlockPos pos, Vec3 influence, double scaleEachTick, Optional<Integer> entityID) implements CustomPacketPayload {
 	public static final Type<TCAChimeInfluencePacket> PACKET_TYPE = new Type<>(TCAConstants.id("chime_influence"));
-
 	public static final StreamCodec<FriendlyByteBuf, TCAChimeInfluencePacket> CODEC = StreamCodec.ofMember(TCAChimeInfluencePacket::write, TCAChimeInfluencePacket::new);
 
-	public TCAChimeInfluencePacket(@NotNull FriendlyByteBuf buf) {
+	public TCAChimeInfluencePacket(FriendlyByteBuf buf) {
 		this(buf.readBlockPos(), buf.readVec3(), buf.readDouble(), buf.readOptional(ByteBufCodecs.VAR_INT));
 	}
 
-	public static void sendToAll(
-		ServerLevel serverLevel,
-		BlockPos pos,
-		Vec3 influence,
-		double scaleEachTick,
-		@Nullable Entity entity
-	) {
-		for (ServerPlayer player : PlayerLookup.tracking(serverLevel, pos)) {
-			ServerPlayNetworking.send(
-				player,
-				new TCAChimeInfluencePacket(pos, influence, scaleEachTick, entity == null ? Optional.empty() : Optional.of(entity.getId()))
-			);
-		}
+	public static void sendToAll(ServerLevel level, BlockPos pos, Vec3 influence, double scaleEachTick, @Nullable Entity entity) {
+		final TCAChimeInfluencePacket packet = new TCAChimeInfluencePacket(pos, influence, scaleEachTick, entity == null ? Optional.empty() : Optional.of(entity.getId()));
+		for (ServerPlayer player : PlayerLookup.tracking(level, pos)) ServerPlayNetworking.send(player, packet);
 	}
 
-	public void write(@NotNull FriendlyByteBuf buf) {
+	public void write(FriendlyByteBuf buf) {
 		buf.writeBlockPos(this.pos());
 		buf.writeVec3(this.influence());
 		buf.writeDouble(this.scaleEachTick());
 		buf.writeOptional(this.entityID(), ByteBufCodecs.VAR_INT);
 	}
 
-	@NotNull
 	public Type<?> type() {
 		return PACKET_TYPE;
 	}

@@ -26,7 +26,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 
 @Environment(EnvType.CLIENT)
 public class ChimeRenderState extends BlockEntityRenderState {
@@ -43,7 +42,7 @@ public class ChimeRenderState extends BlockEntityRenderState {
 	public Vec3 influence;
 	public Vec3 relativeInfluence;
 
-	public void extractTexture(@NotNull BlockState state) {
+	public void extractTexture(BlockState state) {
 		Identifier texture = UNAFFECTED;
 		if (state.is(TCABlocks.CHIME.exposed()) || state.is(TCABlocks.CHIME.waxedExposed())) {
 			texture = EXPOSED;

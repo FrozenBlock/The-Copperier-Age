@@ -24,6 +24,7 @@ import net.frozenblock.thecopperierage.particle.impl.CopperLavaParticleInterface
 import net.frozenblock.thecopperierage.registry.TCAParticleTypes;
 import net.minecraft.client.particle.LavaParticle;
 import net.minecraft.core.particles.SimpleParticleType;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -35,6 +36,7 @@ public class LavaParticleMixin implements CopperLavaParticleInterface {
 	@Unique
 	private boolean theCopperierAge$isCopperLava = false;
 
+	@Unique
 	@Override
 	public void theCopperierAge$setCopperLava(boolean copperLava) {
 		this.theCopperierAge$isCopperLava = copperLava;
@@ -44,13 +46,13 @@ public class LavaParticleMixin implements CopperLavaParticleInterface {
 		method = "tick",
 		at = @At(
 			value = "FIELD",
-			target = "Lnet/minecraft/core/particles/ParticleTypes;SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"
+			target = "Lnet/minecraft/core/particles/ParticleTypes;SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;",
+			opcode = Opcodes.GETSTATIC
 		)
 	)
 	public SimpleParticleType theCopperierAge$replaceSmokeWithCopperSmoke(SimpleParticleType original) {
 		if (!this.theCopperierAge$isCopperLava) return original;
 		return TCAParticleTypes.COPPER_SMOKE;
 	}
-
 
 }

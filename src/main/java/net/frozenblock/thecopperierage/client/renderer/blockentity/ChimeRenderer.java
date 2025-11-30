@@ -39,7 +39,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
@@ -47,24 +46,19 @@ public class ChimeRenderer<T extends ChimeBlockEntity> implements BlockEntityRen
 	private final ChimeModel model;
 	private final ChimeModel chainsModel;
 
-	public ChimeRenderer(@NotNull Context context) {
+	public ChimeRenderer(Context context) {
 		this.model = new ChimeModel(context.bakeLayer(TCAModelLayers.CHIME), RenderTypes::entityCutout, false);
 		this.chainsModel = new ChimeModel(context.bakeLayer(TCAModelLayers.CHIME), FrozenLibRenderTypes::entityCutoutNoShading, true);
 	}
 
 	@Override
-	public void submit(
-		@NotNull ChimeRenderState renderState,
-		@NotNull PoseStack poseStack,
-		@NotNull SubmitNodeCollector submitNodeCollector,
-		@NotNull CameraRenderState cameraRenderState
-	) {
+	public void submit(ChimeRenderState renderState, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState cameraState) {
 		poseStack.pushPose();
 		poseStack.translate(0.5F, 1.5F, 0.5F);
 		poseStack.mulPose(Axis.XP.rotationDegrees(-180F));
 		poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.visualDirection.toYRot()));
 
-		submitNodeCollector.submitModel(
+		collector.submitModel(
 			this.model,
 			renderState,
 			poseStack,
@@ -74,7 +68,7 @@ public class ChimeRenderer<T extends ChimeBlockEntity> implements BlockEntityRen
 			0,
 			renderState.breakProgress
 		);
-		submitNodeCollector.submitModel(
+		collector.submitModel(
 			this.chainsModel,
 			renderState,
 			poseStack,
@@ -89,16 +83,16 @@ public class ChimeRenderer<T extends ChimeBlockEntity> implements BlockEntityRen
 	}
 
 	@Override
-	public @NotNull ChimeRenderState createRenderState() {
+	public ChimeRenderState createRenderState() {
 		return new ChimeRenderState();
 	}
 
 	@Override
 	public void extractRenderState(
-		@NotNull T chime,
-		@NotNull ChimeRenderState renderState,
+		T chime,
+		ChimeRenderState renderState,
 		float partialTick,
-		@NotNull Vec3 cameraPos,
+		Vec3 cameraPos,
 		@Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay
 	) {
 		BlockEntityRenderer.super.extractRenderState(chime, renderState, partialTick, cameraPos, crumblingOverlay);

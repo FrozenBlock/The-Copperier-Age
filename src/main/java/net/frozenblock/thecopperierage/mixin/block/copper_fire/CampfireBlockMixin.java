@@ -41,7 +41,7 @@ public class CampfireBlockMixin {
 		)
 	)
 	private void theCopperierAge$poisonEntityIfCopperCampfire(
-		BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier insideBlockEffectApplier, boolean bl, CallbackInfo info
+		BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier insideEffectApplier, boolean bl, CallbackInfo info
 	) {
 		if (state.is(TCABlocks.COPPER_CAMPFIRE)) CopperFireBlock.poisonEntity(level, entity);
 	}

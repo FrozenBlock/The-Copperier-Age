@@ -33,12 +33,11 @@ import net.frozenblock.thecopperierage.registry.TCAInstruments;
 import net.frozenblock.thecopperierage.structure.TCATrialChambersTemplatePools;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
-import org.jetbrains.annotations.NotNull;
 
 public final class TCADataGenerator implements DataGeneratorEntrypoint {
 
 	@Override
-	public void onInitializeDataGenerator(@NotNull FabricDataGenerator dataGenerator) {
+	public void onInitializeDataGenerator(FabricDataGenerator dataGenerator) {
 		FeatureFlagApi.rebuild();
 		final FabricDataGenerator.Pack pack = dataGenerator.createPack();
 		final FabricDataGenerator.Pack copperierCopper = dataGenerator.createBuiltinResourcePack(TCAConstants.id("copperier_copper"));
@@ -61,7 +60,7 @@ public final class TCADataGenerator implements DataGeneratorEntrypoint {
 	}
 
 	@Override
-	public void buildRegistry(@NotNull RegistrySetBuilder registryBuilder) {
+	public void buildRegistry(RegistrySetBuilder registryBuilder) {
 		TCAConstants.logWithModId("Generating dynamic registries for", TCAConstants.UNSTABLE_LOGGING);
 
 		registryBuilder.add(Registries.INSTRUMENT, TCAInstruments::bootstrap);
@@ -69,7 +68,7 @@ public final class TCADataGenerator implements DataGeneratorEntrypoint {
 	}
 
 	@Override
-	public @NotNull String getEffectiveModId() {
+	public String getEffectiveModId() {
 		return TCAConstants.MOD_ID;
 	}
 }

@@ -25,38 +25,37 @@ import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.frozenblock.thecopperierage.tag.TCAItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.tags.TagAppender;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import org.jetbrains.annotations.NotNull;
 
 public final class TCAItemTagProvider extends FabricTagProvider.ItemTagProvider {
 
-	public TCAItemTagProvider(@NotNull FabricDataOutput output, @NotNull CompletableFuture<HolderLookup.Provider> registries) {
+	public TCAItemTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registries) {
 		super(output, registries);
 	}
 
 	@Override
-	protected void addTags(@NotNull HolderLookup.Provider arg) {
+	protected void addTags(HolderLookup.Provider arg) {
 		this.builder(ItemTags.BUTTONS)
 			.addOptionalTag(TCAItemTags.COPPER_BUTTONS);
 
-		TagAppender<Item, Item> gearboxesTag = this.valueLookupBuilder(TCAItemTags.GEARBOXES);
+		final TagAppender<Item, Item> gearboxesTag = this.valueLookupBuilder(TCAItemTags.GEARBOXES);
 		TCABlocks.GEARBOX.forEach(block -> gearboxesTag.add(block.asItem()));
 
-		TagAppender<Item, Item> copperFansTag = this.valueLookupBuilder(TCAItemTags.COPPER_FANS);
+		final TagAppender<Item, Item> copperFansTag = this.valueLookupBuilder(TCAItemTags.COPPER_FANS);
 		TCABlocks.COPPER_FAN.forEach(block -> copperFansTag.add(block.asItem()));
 
-		TagAppender<Item, Item> chimesTag = this.valueLookupBuilder(TCAItemTags.CHIMES);
+		final TagAppender<Item, Item> chimesTag = this.valueLookupBuilder(TCAItemTags.CHIMES);
 		TCABlocks.CHIME.forEach(block -> chimesTag.add(block.asItem()));
 
-		TagAppender<Item, Item> copperButtonsTag = this.valueLookupBuilder(TCAItemTags.COPPER_BUTTONS);
+		final TagAppender<Item, Item> copperButtonsTag = this.valueLookupBuilder(TCAItemTags.COPPER_BUTTONS);
 		TCABlocks.COPPER_BUTTON.forEach(block -> copperButtonsTag.add(block.asItem()));
 
-		TagAppender<Item, Item> copperPressurePlatesTag = this.valueLookupBuilder(TCAItemTags.COPPER_PRESSURE_PLATES);
+		final TagAppender<Item, Item> copperPressurePlatesTag = this.valueLookupBuilder(TCAItemTags.COPPER_PRESSURE_PLATES);
 		TCABlocks.WEIGHTED_PRESSURE_PLATE.forEach(block -> copperPressurePlatesTag.add(block.asItem()));
 
 		this.valueLookupBuilder(ItemTags.BREAKS_DECORATED_POTS)
@@ -83,12 +82,11 @@ public final class TCAItemTagProvider extends FabricTagProvider.ItemTagProvider 
 			.add(Items.COPPER_SPEAR);
 	}
 
-	@NotNull
 	private TagKey<Item> getTag(String id) {
 		return TagKey.create(this.registryKey, Identifier.parse(id));
 	}
 
-	@NotNull private ResourceKey<Item> getKey(String namespace, String path) {
+	private ResourceKey<Item> getKey(String namespace, String path) {
 		return ResourceKey.create(this.registryKey, Identifier.fromNamespaceAndPath(namespace, path));
 	}
 }

@@ -28,9 +28,8 @@ import net.minecraft.client.particle.LavaParticle;
 
 @Environment(EnvType.CLIENT)
 public final class TCAParticleEngine {
-
 	public static void init() {
-		ParticleFactoryRegistry particleRegistry = ParticleFactoryRegistry.getInstance();
+		final ParticleFactoryRegistry particleRegistry = ParticleFactoryRegistry.getInstance();
 		particleRegistry.register(TCAParticleTypes.COPPER_SMOKE, CopperSmokeParticle.Provider::new);
 		particleRegistry.register(TCAParticleTypes.LARGE_COPPER_SMOKE, LargeCopperSmokeParticle.Provider::new);
 		particleRegistry.register(TCAParticleTypes.COPPER_LAVA, LavaParticle.Provider::new);

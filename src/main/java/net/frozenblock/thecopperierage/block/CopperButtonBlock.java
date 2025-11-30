@@ -19,19 +19,15 @@ package net.frozenblock.thecopperierage.block;
 
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.WeatheringCopper;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 public class CopperButtonBlock extends ButtonBlock {
 
-	public CopperButtonBlock(WeatheringCopper.WeatherState weatherState, BlockBehaviour.Properties properties) {
+	public CopperButtonBlock(WeatheringCopper.WeatherState weatherState, Properties properties) {
 		super(BlockSetType.COPPER, getPressTicks(weatherState), properties);
 	}
 
-	@Contract(pure = true)
-	protected static int getPressTicks(WeatheringCopper.@NotNull WeatherState weatherState) {
+	protected static int getPressTicks(WeatheringCopper.WeatherState weatherState) {
 		return switch (weatherState) {
 			case UNAFFECTED -> 5;
 			case EXPOSED -> 10;

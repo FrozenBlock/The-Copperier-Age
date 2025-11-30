@@ -46,7 +46,6 @@ import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.KineticWeapon;
 import net.minecraft.world.item.component.Tool;
-import org.jetbrains.annotations.NotNull;
 
 public final class OxidizableItemHelper {
 	private static final Map<Item, Pair<ItemAttributeModifiers, ItemAttributeModifiers>> OXIDIZABLE_ATTRIBUTES = new Object2ObjectLinkedOpenHashMap<>();
@@ -67,7 +66,7 @@ public final class OxidizableItemHelper {
 		addOxidizableKineticWeaponItem(Items.COPPER_SPEAR, Items.IRON_SPEAR);
 	}
 
-	public static void addOxidizableAttributesItem(@NotNull Item copper, @NotNull Item iron) {
+	public static void addOxidizableAttributesItem(Item copper, Item iron) {
 		final DataComponentMap copperComponents = copper.components();
 		final DataComponentMap ironComponents = iron.components();
 
@@ -78,7 +77,7 @@ public final class OxidizableItemHelper {
 		OXIDIZABLE_ATTRIBUTES.put(copper, Pair.of(copperAttributes, ironAttributes));
 	}
 
-	public static void addOxidizableKineticWeaponItem(@NotNull Item copper, @NotNull Item iron) {
+	public static void addOxidizableKineticWeaponItem(Item copper, Item iron) {
 		final DataComponentMap copperComponents = copper.components();
 		final DataComponentMap ironComponents = iron.components();
 
@@ -89,11 +88,11 @@ public final class OxidizableItemHelper {
 		OXIDIZABLE_KINETIC_WEAPONS.put(copper, Pair.of(copperWeapon, ironWeapon));
 	}
 
-	public static float getOxidizeProgress(@NotNull ItemStack stack) {
+	public static float getOxidizeProgress(ItemStack stack) {
 		return getOxidizeProgress(stack, OptionalInt.empty());
 	}
 
-	public static float getOxidizeProgress(@NotNull ItemStack stack, @NotNull OptionalInt optionalInt) {
+	public static float getOxidizeProgress(ItemStack stack, OptionalInt optionalInt) {
 		if (!TCAConfig.OXIDIZABLE_COPPER_EQUIPMENT) return 0F;
 
 		final float damage = optionalInt.orElse(stack.getDamageValue());
@@ -113,7 +112,7 @@ public final class OxidizableItemHelper {
 		return unaffected;
 	}
 
-	public static void onDamageUpdated(@NotNull ItemStack stack, int damageValue) {
+	public static void onDamageUpdated(ItemStack stack, int damageValue) {
 		final Item item = stack.getItem();
 		updateMiningSpeed(stack, item, damageValue);
 		updateAttributes(stack, item, damageValue);
@@ -208,8 +207,8 @@ public final class OxidizableItemHelper {
 	}
 
 	private static Optional<ItemAttributeModifiers.Entry> getLerpedAttributeEntry(
-		@NotNull ItemAttributeModifiers copper,
-		@NotNull ItemAttributeModifiers iron,
+		ItemAttributeModifiers copper,
+		ItemAttributeModifiers iron,
 		Holder<Attribute> attribute,
 		Identifier attributeID,
 		float oxidizeProgress
@@ -275,9 +274,6 @@ public final class OxidizableItemHelper {
 		if (isEqual) return;
 
 		final KineticWeapon finalKineticWeapon = new KineticWeapon(
-			copperKineticWeapon.minReach(),
-			copperKineticWeapon.maxReach(),
-			copperKineticWeapon.hitboxMargin(),
 			copperKineticWeapon.contactCooldownTicks(),
 			copperKineticWeapon.delayTicks(),
 			Optional.ofNullable(newDismountCondition.orElse(stackKineticWeapon.dismountConditions().orElse(null))),
@@ -294,22 +290,21 @@ public final class OxidizableItemHelper {
 	}
 
 	private static Optional<KineticWeapon.Condition> getLerpedCondition(
-		@NotNull Optional<KineticWeapon.Condition> stackConditionOptional,
+		Optional<KineticWeapon.Condition> stackConditionOptional,
 		Optional<KineticWeapon.Condition> copperConditionOptional,
 		Optional<KineticWeapon.Condition> ironConditionOptional,
 		float oxidizeProgress
 	) {
-		if (stackConditionOptional.isPresent() && copperConditionOptional.isPresent() && ironConditionOptional.isPresent()) {
-			final KineticWeapon.Condition stackCondition = stackConditionOptional.get();
-			final KineticWeapon.Condition copperCondition = copperConditionOptional.get();
-			final KineticWeapon.Condition ironCondition = ironConditionOptional.get();
+		if (stackConditionOptional.isEmpty() || copperConditionOptional.isEmpty() || ironConditionOptional.isEmpty()) return Optional.empty();
 
-			final float newMinSpeed = Mth.lerp(oxidizeProgress, copperCondition.minSpeed(), ironCondition.minSpeed());
-			final float newMinRelativeSpeed = Mth.lerp(oxidizeProgress, copperCondition.minRelativeSpeed(), ironCondition.minRelativeSpeed());
-			if (newMinSpeed == stackCondition.minSpeed() && newMinRelativeSpeed == stackCondition.minRelativeSpeed()) return Optional.empty();
-			return Optional.of(new KineticWeapon.Condition(stackCondition.maxDurationTicks(), newMinSpeed, newMinRelativeSpeed));
-		}
+		final KineticWeapon.Condition stackCondition = stackConditionOptional.get();
+		final KineticWeapon.Condition copperCondition = copperConditionOptional.get();
+		final KineticWeapon.Condition ironCondition = ironConditionOptional.get();
 
-		return Optional.empty();
+		final float newMinSpeed = Mth.lerp(oxidizeProgress, copperCondition.minSpeed(), ironCondition.minSpeed());
+		final float newMinRelativeSpeed = Mth.lerp(oxidizeProgress, copperCondition.minRelativeSpeed(), ironCondition.minRelativeSpeed());
+		if (newMinSpeed == stackCondition.minSpeed() && newMinRelativeSpeed == stackCondition.minRelativeSpeed()) return Optional.empty();
+
+		return Optional.of(new KineticWeapon.Condition(stackCondition.maxDurationTicks(), newMinSpeed, newMinRelativeSpeed));
 	}
 }

@@ -23,7 +23,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.CarvedPumpkinBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 
 public class RedstonePumpkinBlock extends CarvedPumpkinBlock {
     public static final MapCodec<RedstonePumpkinBlock> CODEC = simpleCodec(RedstonePumpkinBlock::new);
@@ -34,23 +33,23 @@ public class RedstonePumpkinBlock extends CarvedPumpkinBlock {
     }
 
     @Override
-    public @NotNull MapCodec<? extends RedstonePumpkinBlock> codec() {
+    public MapCodec<? extends RedstonePumpkinBlock> codec() {
         return CODEC;
     }
 
     @Override
-    protected boolean isSignalSource(@NotNull BlockState state) {
+    protected boolean isSignalSource(BlockState state) {
         return true;
     }
 
     @Override
-    protected int getSignal(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull Direction direction) {
+    protected int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         // Output from the back face (opposite of where the pumpkin is facing) - like observers
         return state.getValue(FACING).getOpposite() == direction ? 15 : 0;
     }
 
     @Override
-    protected int getDirectSignal(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull Direction direction) {
+    protected int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         return this.getSignal(state, level, pos, direction);
     }
 }

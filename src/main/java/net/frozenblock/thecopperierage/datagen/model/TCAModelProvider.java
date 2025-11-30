@@ -44,15 +44,15 @@ import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.renderer.block.model.VariantMutator;
-import static net.minecraft.client.renderer.item.ItemModel.Unbaked;
 import net.minecraft.client.renderer.item.ClientItem;
+import static net.minecraft.client.renderer.item.ItemModel.Unbaked;
 import net.minecraft.client.renderer.item.SelectItemModel;
 import net.minecraft.client.renderer.item.properties.numeric.Damage;
 import net.minecraft.client.renderer.item.properties.numeric.UseCycle;
 import net.minecraft.client.renderer.item.properties.select.TrimMaterialProperty;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.equipment.EquipmentAsset;
@@ -60,8 +60,6 @@ import net.minecraft.world.item.equipment.EquipmentAssets;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 @Environment(EnvType.CLIENT)
 public final class TCAModelProvider extends FabricModelProvider {
@@ -110,7 +108,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 	}
 
 	@Override
-	public void generateBlockStateModels(@NotNull BlockModelGenerators generator) {
+	public void generateBlockStateModels(BlockModelGenerators generator) {
 		createCopperFire(generator);
 		generator.createPumpkinVariant(TCABlocks.COPPER_JACK_O_LANTERN, TextureMapping.column(Blocks.PUMPKIN));
 		generator.createPumpkinVariant(TCABlocks.REDSTONE_JACK_O_LANTERN, TextureMapping.column(Blocks.PUMPKIN));
@@ -136,7 +134,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 	}
 
 	@Override
-	public void generateItemModels(@NotNull ItemModelGenerators generator) {
+	public void generateItemModels(ItemModelGenerators generator) {
 		generateCopperHorn(generator, TCAItems.COPPER_HORN);
 
 		generateOxidizableItem(generator, TCAItems.WRENCH, ModelTemplates.FLAT_HANDHELD_ITEM, true);
@@ -156,7 +154,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 		generateOxidizableTrimmableItem(generator, Items.COPPER_BOOTS, EquipmentAssets.COPPER, ItemModelGenerators.TRIM_PREFIX_BOOTS);
 	}
 
-	private static void createCopperFire(@NotNull BlockModelGenerators generator) {
+	private static void createCopperFire(BlockModelGenerators generator) {
 		final MultiVariant floorModels = generator.createFloorFireModels(TCABlocks.COPPER_FIRE);
 		final MultiVariant sideModels = generator.createSideFireModels(TCABlocks.COPPER_FIRE);
 		generator.blockStateOutput.accept(
@@ -169,7 +167,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 		);
 	}
 
-	private static void createGearbox(@NotNull BlockModelGenerators generator, @NotNull Block block, @NotNull Block waxedBlock) {
+	private static void createGearbox(BlockModelGenerators generator, Block block, Block waxedBlock) {
 		final TextureMapping mapping = new TextureMapping()
 			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"))
 			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(block, "_top"));
@@ -191,7 +189,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 		dispatchGearboxStates(generator, waxedBlock, model, counterModel, clockwiseModel);
 	}
 
-	private static void dispatchGearboxStates(@NotNull BlockModelGenerators generator, Block block, MultiVariant model, MultiVariant counterModel, MultiVariant clockwiseModel) {
+	private static void dispatchGearboxStates(BlockModelGenerators generator, Block block, MultiVariant model, MultiVariant counterModel, MultiVariant clockwiseModel) {
 		generator.blockStateOutput.accept(
 			MultiVariantGenerator.dispatch(block)
 				.with(
@@ -217,7 +215,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 		);
 	}
 
-	private static void createCopperFan(@NotNull BlockModelGenerators generator, @NotNull Block block, @NotNull Block waxedBlock) {
+	private static void createCopperFan(BlockModelGenerators generator, Block block, Block waxedBlock) {
 		final TextureMapping mapping = new TextureMapping()
 			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"))
 			.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_bottom"));
@@ -235,7 +233,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 		dispatchCopperFanStates(generator, waxedBlock, model, poweredModel);
 	}
 
-	private static void dispatchCopperFanStates(@NotNull BlockModelGenerators generator, Block block, MultiVariant model, MultiVariant poweredModel) {
+	private static void dispatchCopperFanStates(BlockModelGenerators generator, Block block, MultiVariant model, MultiVariant poweredModel) {
 		generator.blockStateOutput.accept(
 			MultiVariantGenerator.dispatch(block)
 				.with(
@@ -247,7 +245,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 		);
 	}
 
-	public static void createChime(@NotNull BlockModelGenerators generator, Block block, Block waxed) {
+	public static void createChime(BlockModelGenerators generator, Block block, Block waxed) {
 		final MultiVariant model = generator.createParticleOnlyBlockModel(block, block);
 		generator.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, model));
 		generator.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(waxed, model));
@@ -256,18 +254,18 @@ public final class TCAModelProvider extends FabricModelProvider {
 		generator.registerSimpleFlatItemModel(block);
 	}
 
-	private static void createCopperButton(@NotNull BlockModelGenerators generator, @NotNull Block block, @NotNull Block waxedBlock, Block originalBlock) {
+	private static void createCopperButton(BlockModelGenerators generator, Block block, Block waxedBlock, Block originalBlock) {
 		createCopperButton(generator, block, waxedBlock, originalBlock, ModelTemplates.BUTTON, ModelTemplates.BUTTON_PRESSED, ModelTemplates.BUTTON_INVENTORY);
 	}
 
 	static void createCopperButton(
-		@NotNull BlockModelGenerators generator,
-		@NotNull Block block,
-		@NotNull Block waxedBlock,
+		BlockModelGenerators generator,
+		Block block,
+		Block waxedBlock,
 		Block originalBlock,
-		@NotNull ModelTemplate modelTemplate,
-		@NotNull ModelTemplate pressedTemplate,
-		@NotNull ModelTemplate inventoryTemplate
+		ModelTemplate modelTemplate,
+		ModelTemplate pressedTemplate,
+		ModelTemplate inventoryTemplate
 	) {
 		final TextureMapping mapping = TextureMapping.defaultTexture(originalBlock);
 		final MultiVariant model = BlockModelGenerators.plainVariant(modelTemplate.create(block, mapping, generator.modelOutput));
@@ -280,13 +278,13 @@ public final class TCAModelProvider extends FabricModelProvider {
 		generator.registerSimpleItemModel(block, inventoryTemplate.create(block, mapping, generator.modelOutput));
 	}
 
-	private static void generateCopperHorn(@NotNull ItemModelGenerators generator, Item item) {
+	private static void generateCopperHorn(ItemModelGenerators generator, Item item) {
 		final Unbaked model = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item));
 		final Unbaked tooting = ItemModelUtils.plainModel(TCAConstants.id("item/copper_horn_tooting"));
 		generator.generateBooleanDispatch(item, ItemModelUtils.isUsingItem(), tooting, model);
 	}
 
-	private static void generateOxidizableItem(@NotNull ItemModelGenerators generator, Item item, ModelTemplate template, boolean generateFirstModel) {
+	private static void generateOxidizableItem(ItemModelGenerators generator, Item item, ModelTemplate template, boolean generateFirstModel) {
 		final Unbaked unaffected = generateFirstModel
 			? ItemModelUtils.plainModel(generator.createFlatItemModel(item, template))
 			: ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item));
@@ -297,7 +295,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 		generator.itemModelOutput.accept(item, createOxidizableDispatch(unaffected, exposed, weathered, oxidized));
 	}
 
-	private static void generateOxidizableSpear(@NotNull ItemModelGenerators generator, Item item, boolean generateFirstModel) {
+	private static void generateOxidizableSpear(ItemModelGenerators generator, Item item, boolean generateFirstModel) {
 		final Unbaked unaffected = generateFirstModel
 			? ItemModelUtils.plainModel(generator.createFlatItemModel(item, ModelTemplates.FLAT_ITEM))
 			: ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item));
@@ -324,7 +322,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 		);
 	}
 
-	private static void generateOxidizableBrush(@NotNull ItemModelGenerators generator) {
+	private static void generateOxidizableBrush(ItemModelGenerators generator) {
 		generator.itemModelOutput
 			.accept(
 				Items.BRUSH,
@@ -339,8 +337,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 			);
 	}
 
-	@Contract("_, _, _ -> new")
-	private static @NotNull Unbaked createOxidizableBrushDispatch(@NotNull ItemModelGenerators generator, @NotNull ModelTemplate modelTemplate, String suffix) {
+	private static Unbaked createOxidizableBrushDispatch(ItemModelGenerators generator, ModelTemplate modelTemplate, String suffix) {
 		return createOxidizableDispatch(
 			ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(Items.BRUSH, suffix)),
 			ItemModelUtils.plainModel(
@@ -368,7 +365,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 	}
 
 	private static void generateOxidizableTrimmableItem(
-		@NotNull ItemModelGenerators generator,
+		ItemModelGenerators generator,
 		Item item,
 		ResourceKey<EquipmentAsset> equipmentAsset,
 		Identifier identifier
@@ -424,25 +421,24 @@ public final class TCAModelProvider extends FabricModelProvider {
 		);
 	}
 
-	private static @NotNull Identifier createFlatItemModelWithTCANamespace(
-		@NotNull ItemModelGenerators generator,
+	private static Identifier createFlatItemModelWithTCANamespace(
+		ItemModelGenerators generator,
 		Item item,
 		String suffix,
-		@NotNull ModelTemplate modelTemplate
+		ModelTemplate modelTemplate
 	) {
 		return modelTemplate.create(getItemModelWithTCANamespace(item, suffix), TextureMapping.layer0(getItemTextureWithTCANamespace(item, suffix)), generator.modelOutput);
 	}
 
-	private static @NotNull Identifier getItemModelWithTCANamespace(Item item, String suffix) {
+	private static Identifier getItemModelWithTCANamespace(Item item, String suffix) {
 		return TCAConstants.id(ModelLocationUtils.getModelLocation(item, suffix).getPath());
 	}
 
-	private static @NotNull Identifier getItemTextureWithTCANamespace(Item item, String suffix) {
+	private static Identifier getItemTextureWithTCANamespace(Item item, String suffix) {
 		return TCAConstants.id(TextureMapping.getItemTexture(item, suffix).getPath());
 	}
 
-	@Contract("_, _, _, _ -> new")
-	private static @NotNull Unbaked createOxidizableDispatch(Unbaked unaffected, Unbaked exposed, Unbaked weathered, Unbaked oxidized) {
+	private static Unbaked createOxidizableDispatch(Unbaked unaffected, Unbaked exposed, Unbaked weathered, Unbaked oxidized) {
 		return ItemModelUtils.select(
 			new OxidizedItemsEnabled(),
 			unaffected,

@@ -35,13 +35,13 @@ public class TrickierTrialsPackCheckerMixin {
 			target = "Lnet/minecraft/server/packs/resources/MultiPackResourceManager;"
 		)
 	)
-	public MultiPackResourceManager createResourceManager(MultiPackResourceManager multiPackResourceManager) {
-		TCAResources.HAS_TRICKIER_TRIALS_PACK = multiPackResourceManager.listPacks().anyMatch(packResources -> {
+	public MultiPackResourceManager createResourceManager(MultiPackResourceManager resourceManager) {
+		TCAResources.HAS_TRICKIER_TRIALS_PACK = resourceManager.listPacks().anyMatch(packResources -> {
 			if (packResources.knownPackInfo().isPresent()) return packResources.knownPackInfo().get().id().equals(TCAConstants.string("trickier_trials"));
 			return false;
 		});
 		TCAConstants.log(TCAResources.HAS_TRICKIER_TRIALS_PACK ? "Has Trickier Trials pack!" : "Does not have Trickier Trials pack!", TCAConstants.UNSTABLE_LOGGING);
-		return multiPackResourceManager;
+		return resourceManager;
 	}
 
 }

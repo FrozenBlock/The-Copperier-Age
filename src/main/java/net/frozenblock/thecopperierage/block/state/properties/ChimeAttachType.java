@@ -18,7 +18,6 @@
 package net.frozenblock.thecopperierage.block.state.properties;
 
 import net.minecraft.util.StringRepresentable;
-import org.jetbrains.annotations.NotNull;
 
 public enum ChimeAttachType implements StringRepresentable {
 	CEILING("ceiling"),
@@ -31,7 +30,7 @@ public enum ChimeAttachType implements StringRepresentable {
 	}
 
 	@Override
-	public @NotNull String getSerializedName() {
+	public String getSerializedName() {
 		return this.name;
 	}
 }

@@ -21,7 +21,6 @@ import net.frozenblock.thecopperierage.TCAConstants;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import org.jetbrains.annotations.NotNull;
 
 public final class TCAItemTags {
 	public static final TagKey<Item> GEARBOXES = bind("gearboxes");
@@ -36,8 +35,7 @@ public final class TCAItemTags {
 		throw new UnsupportedOperationException("TCAItemTags contains only static declarations.");
 	}
 
-	@NotNull
-	private static TagKey<Item> bind(@NotNull String path) {
+	private static TagKey<Item> bind(String path) {
 		return TagKey.create(Registries.ITEM, TCAConstants.id(path));
 	}
 }

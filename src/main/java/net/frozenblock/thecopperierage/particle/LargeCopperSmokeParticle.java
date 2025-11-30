@@ -60,16 +60,10 @@ public class LargeCopperSmokeParticle extends LargeSmokeParticle {
 		return super.getLightColor(partialTick);
 	}
 
-	public static class Provider implements ParticleProvider<SimpleParticleType> {
-		private final SpriteSet spriteSet;
-
-		public Provider(SpriteSet spriteSet) {
-			this.spriteSet = spriteSet;
-		}
-
+	public record Provider(SpriteSet spriteSet) implements ParticleProvider<SimpleParticleType> {
 		@Override
 		public Particle createParticle(
-			SimpleParticleType simpleParticleType,
+			SimpleParticleType options,
 			ClientLevel level,
 			double x, double y, double z,
 			double xd, double yd, double zd,
@@ -78,5 +72,4 @@ public class LargeCopperSmokeParticle extends LargeSmokeParticle {
 			return new LargeCopperSmokeParticle(level, x, y, z, xd, yd, zd, this.spriteSet);
 		}
 	}
-
 }

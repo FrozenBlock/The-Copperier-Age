@@ -26,7 +26,6 @@ import net.frozenblock.lib.config.api.sync.annotation.EntrySyncData;
 import net.frozenblock.thecopperierage.TCAConstants;
 
 public class TCAConfig {
-
 	public static final Config<TCAConfig> INSTANCE = ConfigRegistry.register(
 		new JsonConfig<>(
 			TCAConstants.MOD_ID,

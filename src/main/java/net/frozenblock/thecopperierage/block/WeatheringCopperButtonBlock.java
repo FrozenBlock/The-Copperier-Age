@@ -23,9 +23,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.WeatheringCopper;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 
 public class WeatheringCopperButtonBlock extends CopperButtonBlock implements WeatheringCopper {
 	public static final MapCodec<WeatheringCopperButtonBlock> CODEC = RecordCodecBuilder.mapCodec(
@@ -36,7 +34,7 @@ public class WeatheringCopperButtonBlock extends CopperButtonBlock implements We
 	);
 	private final WeatheringCopper.WeatherState weatherState;
 
-	public WeatheringCopperButtonBlock(WeatheringCopper.WeatherState weatherState, BlockBehaviour.Properties properties) {
+	public WeatheringCopperButtonBlock(WeatheringCopper.WeatherState weatherState, Properties properties) {
 		super(weatherState, properties);
 		this.weatherState = weatherState;
 	}
@@ -47,12 +45,12 @@ public class WeatheringCopperButtonBlock extends CopperButtonBlock implements We
 	}
 
 	@Override
-	protected boolean isRandomlyTicking(@NotNull BlockState blockState) {
-		return WeatheringCopper.getNext(blockState.getBlock()).isPresent();
+	protected boolean isRandomlyTicking(BlockState state) {
+		return WeatheringCopper.getNext(state.getBlock()).isPresent();
 	}
 
 	@Override
-	public @NotNull WeatheringCopper.WeatherState getAge() {
+	public WeatheringCopper.WeatherState getAge() {
 		return this.weatherState;
 	}
 }

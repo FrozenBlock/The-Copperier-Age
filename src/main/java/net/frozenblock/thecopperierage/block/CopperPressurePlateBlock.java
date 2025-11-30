@@ -24,7 +24,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.animal.equine.AbstractHorse;
 import net.minecraft.world.entity.npc.InventoryCarrier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.ContainerEntity;
@@ -39,7 +39,6 @@ import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 public class CopperPressurePlateBlock extends BasePressurePlateBlock {
 	public static final MapCodec<CopperPressurePlateBlock> CODEC = RecordCodecBuilder.mapCodec(
@@ -60,12 +59,12 @@ public class CopperPressurePlateBlock extends BasePressurePlateBlock {
 	}
 
 	@Override
-	public @NotNull MapCodec<? extends CopperPressurePlateBlock> codec() {
+	public MapCodec<? extends CopperPressurePlateBlock> codec() {
 		return CODEC;
 	}
 
 	@Override
-	protected int getSignalStrength(@NotNull Level level, @NotNull BlockPos pos) {
+	protected int getSignalStrength(Level level, BlockPos pos) {
 		final List<Entity> entities = level.getEntitiesOfClass(Entity.class, TOUCH_AABB.move(pos));
 		if (entities.isEmpty()) return 0;
 
@@ -105,17 +104,17 @@ public class CopperPressurePlateBlock extends BasePressurePlateBlock {
 	}
 
 	@Override
-	protected int getSignalForState(@NotNull BlockState state) {
+	protected int getSignalForState(BlockState state) {
 		return state.getValue(POWER);
 	}
 
 	@Override
-	protected @NotNull BlockState setSignalForState(@NotNull BlockState state, int signal) {
+	protected BlockState setSignalForState(BlockState state, int signal) {
 		return state.setValue(POWER, signal);
 	}
 
 	@Contract(pure = true)
-	private static int getSlotsPerPower(@NotNull WeatheringCopper.WeatherState weatherState) {
+	private static int getSlotsPerPower(WeatheringCopper.WeatherState weatherState) {
 		return switch (weatherState) {
 			case UNAFFECTED -> 1;
 			case EXPOSED -> 2;
@@ -125,7 +124,7 @@ public class CopperPressurePlateBlock extends BasePressurePlateBlock {
 	}
 
 	@Override
-	protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(POWER);
 	}
 }

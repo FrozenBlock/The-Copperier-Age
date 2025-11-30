@@ -21,7 +21,6 @@ import net.frozenblock.thecopperierage.TCAConstants;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Instrument;
-import org.jetbrains.annotations.NotNull;
 
 public final class TCAInstrumentTags {
 	public static final TagKey<Instrument> COPPER_HORNS = bind("copper_horns");
@@ -30,8 +29,7 @@ public final class TCAInstrumentTags {
 		throw new UnsupportedOperationException("TCAInstrumentTags contains only static declarations.");
 	}
 
-	@NotNull
-	private static TagKey<Instrument> bind(@NotNull String path) {
+	private static TagKey<Instrument> bind(String path) {
 		return TagKey.create(Registries.INSTRUMENT, TCAConstants.id(path));
 	}
 }

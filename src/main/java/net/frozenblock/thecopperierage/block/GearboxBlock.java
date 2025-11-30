@@ -40,7 +40,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.redstone.Orientation;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class GearboxBlock extends DirectionalBlock {
@@ -58,18 +57,18 @@ public class GearboxBlock extends DirectionalBlock {
     }
 
     @Override
-    public @NotNull MapCodec<? extends GearboxBlock> codec() {
+    public MapCodec<? extends GearboxBlock> codec() {
         return CODEC;
     }
 
 	@Override
-	public BlockState getStateForPlacement(@NotNull BlockPlaceContext blockPlaceContext) {
-		final Direction facing = blockPlaceContext.getNearestLookingDirection().getOpposite();
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		final Direction facing = context.getNearestLookingDirection().getOpposite();
 		return this.defaultBlockState().setValue(FACING, facing);
 	}
 
 	@Override
-	public void animateTick(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
 		final int power =  state.getValue(POWER);
 		if (power % 2 == 0) return;
 		if (random.nextFloat() > 0.05F) return;
@@ -98,7 +97,7 @@ public class GearboxBlock extends DirectionalBlock {
 	}
 
 	@Override
-	protected void onPlace(@NotNull BlockState state, @NotNull Level level, BlockPos pos, @NotNull BlockState replacingState, boolean bl) {
+	protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState replacingState, boolean bl) {
 		if (level.isClientSide() || state.is(replacingState.getBlock())) return;
 		level.scheduleTick(pos, this, 1);
 	}
@@ -106,8 +105,8 @@ public class GearboxBlock extends DirectionalBlock {
 	@Override
 	protected void neighborChanged(
 		BlockState state,
-		@NotNull Level level,
-		@NotNull BlockPos pos,
+		Level level,
+		BlockPos pos,
 		Block block,
 		@Nullable Orientation orientation,
 		boolean movedByPiston
@@ -117,18 +116,18 @@ public class GearboxBlock extends DirectionalBlock {
 	}
 
 	@Override
-	protected void affectNeighborsAfterRemoval(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, boolean bl) {
+	protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean bl) {
 		if (!bl) this.updateNeighboringBlocks(level, pos, state);
 	}
 
-	public List<Direction> getInputDirections(@NotNull Direction facing) {
+	public List<Direction> getInputDirections(Direction facing) {
 		final Direction.Axis axis = facing.getAxis();
 		return Arrays.stream(Direction.values())
 			.filter(direction -> direction.getAxis() != axis)
 			.collect(Collectors.toList());
 	}
 
-	public boolean hasBlockSignal(@NotNull Level level, BlockPos pos, @NotNull BlockState state) {
+	public boolean hasBlockSignal(Level level, BlockPos pos, BlockState state) {
 		for (Direction direction : this.getInputDirections(state.getValue(FACING))) {
 			final int blockPower = level.getSignal(pos.relative(direction), direction);
 			if (blockPower > 0) return true;
@@ -142,12 +141,12 @@ public class GearboxBlock extends DirectionalBlock {
 	}
 
 	@Override
-	protected int getDirectSignal(@NotNull BlockState blockState, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull Direction direction) {
-		return blockState.getSignal(level, pos, direction);
+	protected int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+		return state.getSignal(level, pos, direction);
 	}
 
 	@Override
-	protected int getSignal(@NotNull BlockState state, BlockGetter level, BlockPos pos, @NotNull Direction direction) {
+	protected int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
 		return state.getValue(POWER) > 0 && state.getValue(FACING) == direction ? 15 : 0;
 	}
 
@@ -157,23 +156,23 @@ public class GearboxBlock extends DirectionalBlock {
 	}
 
 	@Override
-	protected int getAnalogOutputSignal(@NotNull BlockState state, Level level, BlockPos pos, @NotNull Direction direction) {
+	protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, Direction direction) {
 		if (direction == state.getValue(FACING).getOpposite()) return 0;
 		return state.getValue(POWER);
 	}
 
 	@Override
-	protected @NotNull BlockState rotate(@NotNull BlockState blockState, @NotNull Rotation rotation) {
-		return blockState.setValue(FACING, rotation.rotate(blockState.getValue(FACING)));
+	protected BlockState rotate(BlockState state, Rotation rotation) {
+		return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	protected @NotNull BlockState mirror(@NotNull BlockState blockState, @NotNull Mirror mirror) {
-		return blockState.rotate(mirror.getRotation(blockState.getValue(FACING)));
+	protected BlockState mirror(BlockState state, Mirror mirror) {
+		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 
 	@Override
-	protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(FACING, POWER);
 	}
 

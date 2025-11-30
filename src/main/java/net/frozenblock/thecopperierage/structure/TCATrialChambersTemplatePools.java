@@ -31,11 +31,10 @@ import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
-import org.jetbrains.annotations.NotNull;
 
 public class TCATrialChambersTemplatePools {
 
-	public static void bootstrapTemplatePool(@NotNull BootstrapContext<StructureTemplatePool> pool) {
+	public static void bootstrapTemplatePool(BootstrapContext<StructureTemplatePool> pool) {
 		HolderGetter<StructureTemplatePool> holderGetter = pool.lookup(Registries.TEMPLATE_POOL);
 		Holder<StructureTemplatePool> empty = holderGetter.getOrThrow(Pools.EMPTY);
 
@@ -86,27 +85,25 @@ public class TCATrialChambersTemplatePools {
 		);
 	}
 
-	private static @NotNull String string(String name) {
+	private static String string(String name) {
 		return TCAConstants.string("trial_chambers/" + name);
 	}
 
-	private static @NotNull String chamberAddon(String name) {
+	private static String chamberAddon(String name) {
 		return string("chamber/addon/" + name);
 	}
 
-	@NotNull
-	private static ResourceKey<StructureProcessorList> createKey(@NotNull String string) {
+	private static ResourceKey<StructureProcessorList> createKey(String string) {
 		return ResourceKey.create(Registries.PROCESSOR_LIST, TCAConstants.id(string));
 	}
 
-	@NotNull
 	private static Holder<StructureProcessorList> register(
-		@NotNull BootstrapContext<StructureProcessorList> entries, @NotNull ResourceKey<StructureProcessorList> key, @NotNull List<StructureProcessor> list
+		BootstrapContext<StructureProcessorList> entries, ResourceKey<StructureProcessorList> key, List<StructureProcessor> list
 	) {
 		return entries.register(key, new StructureProcessorList(list));
 	}
 
-	public static void register(@NotNull BootstrapContext<StructureTemplatePool> pool, String location, StructureTemplatePool templatePool) {
+	public static void register(BootstrapContext<StructureTemplatePool> pool, String location, StructureTemplatePool templatePool) {
 		pool.register(Pools.parseKey(location), templatePool);
 	}
 }

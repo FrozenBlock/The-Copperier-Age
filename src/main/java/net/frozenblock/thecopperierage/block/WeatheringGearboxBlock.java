@@ -23,9 +23,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.WeatheringCopper;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 
 public class WeatheringGearboxBlock extends GearboxBlock implements WeatheringCopper {
 	public static final MapCodec<WeatheringGearboxBlock> CODEC = RecordCodecBuilder.mapCodec(
@@ -37,11 +35,11 @@ public class WeatheringGearboxBlock extends GearboxBlock implements WeatheringCo
 	private final WeatheringCopper.WeatherState weatherState;
 
 	@Override
-	public @NotNull MapCodec<? extends WeatheringGearboxBlock> codec() {
+	public MapCodec<? extends WeatheringGearboxBlock> codec() {
 		return CODEC;
 	}
 
-	public WeatheringGearboxBlock(WeatheringCopper.WeatherState weatherState, BlockBehaviour.Properties properties) {
+	public WeatheringGearboxBlock(WeatheringCopper.WeatherState weatherState, Properties properties) {
 		super(properties);
 		this.weatherState = weatherState;
 	}
@@ -52,12 +50,12 @@ public class WeatheringGearboxBlock extends GearboxBlock implements WeatheringCo
 	}
 
 	@Override
-	protected boolean isRandomlyTicking(@NotNull BlockState blockState) {
-		return WeatheringCopper.getNext(blockState.getBlock()).isPresent();
+	protected boolean isRandomlyTicking(BlockState state) {
+		return WeatheringCopper.getNext(state.getBlock()).isPresent();
 	}
 
 	@Override
-	public WeatheringCopper.@NotNull WeatherState getAge() {
+	public WeatheringCopper.WeatherState getAge() {
 		return this.weatherState;
 	}
 }

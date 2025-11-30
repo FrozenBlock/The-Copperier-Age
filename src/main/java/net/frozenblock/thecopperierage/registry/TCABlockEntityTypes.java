@@ -23,15 +23,13 @@ import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.entity.ChimeBlockEntity;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.util.Util;
 import net.minecraft.util.datafix.fixes.References;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import org.jetbrains.annotations.NotNull;
-import net.minecraft.util.Util;
 
 public final class TCABlockEntityTypes {
-
 	public static final BlockEntityType<ChimeBlockEntity> CHIME = register(
 		"chime",
 		ChimeBlockEntity::new,
@@ -42,11 +40,9 @@ public final class TCABlockEntityTypes {
 		TCAConstants.logWithModId("Registering BlockEntities for", TCAConstants.UNSTABLE_LOGGING);
 	}
 
-	@NotNull
-	private static <T extends BlockEntity> BlockEntityType<T> register(@NotNull String path, BlockEntityType.BlockEntitySupplier<T> builder, Collection<Block> blocks) {
+	private static <T extends BlockEntity> BlockEntityType<T> register(String path, BlockEntityType.BlockEntitySupplier<T> builder, Collection<Block> blocks) {
 		Util.fetchChoiceType(References.BLOCK_ENTITY, TCAConstants.string(path));
 		return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, TCAConstants.id(path), new BlockEntityType<>(builder, Set.copyOf(blocks)));
 	}
-
 
 }

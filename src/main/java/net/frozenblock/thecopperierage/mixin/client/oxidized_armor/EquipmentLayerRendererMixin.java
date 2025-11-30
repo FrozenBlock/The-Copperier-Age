@@ -26,8 +26,8 @@ import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
 import net.frozenblock.thecopperierage.tag.TCAItemTags;
-import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.entity.layers.EquipmentLayerRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
@@ -61,14 +61,14 @@ public class EquipmentLayerRendererMixin {
 		)
 	)
 	public RenderType theCopperierAge$submitOxidizedArmor(
-		Identifier identifier, Operation<RenderType> original,
+		Identifier texture, Operation<RenderType> original,
 		@Local(argsOnly = true) ItemStack stack
 	) {
-		if (!TCAConfig.OXIDIZABLE_COPPER_EQUIPMENT || !identifier.getPath().contains("humanoid") || !stack.is(TCAItemTags.OXIDIZABLE_EQUIPMENT)) return original.call(identifier);
+		if (!TCAConfig.OXIDIZABLE_COPPER_EQUIPMENT || !texture.getPath().contains("humanoid") || !stack.is(TCAItemTags.OXIDIZABLE_EQUIPMENT)) return original.call(texture);
 		if (stack.is(ItemTags.LEG_ARMOR)) return original.call(
 			OxidizableItemHelper.getValueForOxidization(
 				stack,
-				identifier,
+				texture,
 				THE_COPPERIER_AGE$EXPOSED_COPPER_LEGGINGS,
 				THE_COPPERIER_AGE$WEATHERED_COPPER_LEGGINGS,
 				THE_COPPERIER_AGE$OXIDIZED_COPPER_LEGGINGS
@@ -77,7 +77,7 @@ public class EquipmentLayerRendererMixin {
 		return original.call(
 			OxidizableItemHelper.getValueForOxidization(
 				stack,
-				identifier,
+				texture,
 				THE_COPPERIER_AGE$EXPOSED_COPPER,
 				THE_COPPERIER_AGE$WEATHERED_COPPER,
 				THE_COPPERIER_AGE$OXIDIZED_COPPER

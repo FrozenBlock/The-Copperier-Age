@@ -26,7 +26,6 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.minecraft.client.data.models.BlockModelGenerators;
-import static net.minecraft.client.data.models.BlockModelGenerators.*;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
@@ -37,7 +36,9 @@ import net.minecraft.client.data.models.model.TexturedModel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import org.jetbrains.annotations.NotNull;
+import static net.minecraft.client.data.models.BlockModelGenerators.condition;
+import static net.minecraft.client.data.models.BlockModelGenerators.plainVariant;
+import static net.minecraft.client.data.models.BlockModelGenerators.Y_ROT_90;
 
 @Environment(EnvType.CLIENT)
 public final class TCAPackModelProvider extends FabricModelProvider {
@@ -109,7 +110,7 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 	}
 
 	@Override
-	public void generateBlockStateModels(@NotNull BlockModelGenerators generator) {
+	public void generateBlockStateModels(BlockModelGenerators generator) {
 		generateCopperChain(generator, Blocks.COPPER_CHAIN.unaffected());
 		generateCopperChain(generator, Blocks.COPPER_CHAIN.exposed());
 		generateCopperChain(generator, Blocks.COPPER_CHAIN.weathered());
@@ -123,14 +124,14 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 	}
 
 	@Override
-	public void generateItemModels(@NotNull ItemModelGenerators generator) {
+	public void generateItemModels(ItemModelGenerators generator) {
 	}
 
-	private static void generateCopperChain(@NotNull BlockModelGenerators generator, Block chain) {
+	private static void generateCopperChain(BlockModelGenerators generator, Block chain) {
 		COPPER_CHAIN_PROVIDER.create(chain, generator.modelOutput);
 	}
 
-	private static void generateCopperLantern(@NotNull BlockModelGenerators generator, Block lantern, Block chain) {
+	private static void generateCopperLantern(BlockModelGenerators generator, Block lantern, Block chain) {
 		final TextureMapping textureMapping = new TextureMapping()
 			.put(TextureSlot.LANTERN, TextureMapping.getBlockTexture(lantern))
 			.put(TextureSlot.BARS, TextureMapping.getBlockTexture(chain));
@@ -139,7 +140,7 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 		HANGING_COPPER_LANTERN_MODEL.create(lantern, textureMapping, generator.modelOutput);
 	}
 
-	public static void generateCopperBars(@NotNull BlockModelGenerators generator, Block block, Block waxedBlock) {
+	public static void generateCopperBars(BlockModelGenerators generator, Block block, Block waxedBlock) {
 		final TextureMapping textureMapping = new TextureMapping()
 			.put(TextureSlot.BARS, TextureMapping.getBlockTexture(block))
 			.put(TextureSlot.EDGE, TextureMapping.getBlockTexture(block, "_edge"));
@@ -199,7 +200,7 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 		generator.blockStateOutput.accept(barsDispatcher.apply(MultiPartGenerator.multiPart(waxedBlock)));
 	}
 
-	private static void createCopperButtonOverrides(@NotNull BlockModelGenerators generator, @NotNull Block block, @NotNull Block waxedBlock) {
+	private static void createCopperButtonOverrides(BlockModelGenerators generator, Block block, Block waxedBlock) {
 		GENERATING_COPPER_BUTTON = true;
 		TCAModelProvider.createCopperButton(generator, block, waxedBlock, block, COPPER_BUTTON_MODEL, COPPER_BUTTON_PRESSED_MODEL, COPPER_BUTTON_INVENTORY_MODEL);
 		GENERATING_COPPER_BUTTON = false;

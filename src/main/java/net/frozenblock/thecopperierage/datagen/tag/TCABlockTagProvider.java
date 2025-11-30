@@ -27,22 +27,21 @@ import net.frozenblock.thecopperierage.tag.TCABlockTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.tags.TagAppender;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import org.jetbrains.annotations.NotNull;
 
 public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
-	public TCABlockTagProvider(@NotNull FabricDataOutput output, @NotNull CompletableFuture<HolderLookup.Provider> registries) {
+	public TCABlockTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registries) {
 		super(output, registries);
 	}
 
 	@Override
-	protected void addTags(@NotNull HolderLookup.Provider registries) {
+	protected void addTags(HolderLookup.Provider registries) {
 		this.valueLookupBuilder(BlockTags.COPPER);
 
 		this.valueLookupBuilder(BlockTags.LANTERNS);
@@ -139,12 +138,11 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 			.add(TCABlocks.COPPER_JACK_O_LANTERN, TCABlocks.REDSTONE_JACK_O_LANTERN);
 	}
 
-	@NotNull
 	private TagKey<Block> getTag(String id) {
 		return TagKey.create(this.registryKey, Identifier.parse(id));
 	}
 
-	@NotNull private ResourceKey<Block> getKey(String namespace, String path) {
+	private ResourceKey<Block> getKey(String namespace, String path) {
 		return ResourceKey.create(this.registryKey, Identifier.fromNamespaceAndPath(namespace, path));
 	}
 }

@@ -54,7 +54,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.AlwaysTrueTes
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class FrozenLibIntegration extends ModIntegration {
@@ -81,7 +80,7 @@ public class FrozenLibIntegration extends ModIntegration {
 			public boolean test(LivingEntity entity) {
 				if (this.firstCheck) {
 					this.firstCheck = false;
-					InteractionHand hand = !entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() ? InteractionHand.MAIN_HAND : !entity.getItemInHand(InteractionHand.OFF_HAND).isEmpty() ? InteractionHand.OFF_HAND : null;
+					final InteractionHand hand = !entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() ? InteractionHand.MAIN_HAND : !entity.getItemInHand(InteractionHand.OFF_HAND).isEmpty() ? InteractionHand.OFF_HAND : null;
 					if (hand == null) return false;
 
 					final ItemStack stack = entity.getItemInHand(hand);
@@ -89,6 +88,7 @@ public class FrozenLibIntegration extends ModIntegration {
 					this.lastStack = stack;
 					return true;
 				}
+
 				final ItemStack stack = entity.getUseItem();
 				if (stack.getItem() instanceof InstrumentItem) {
 					if (this.lastStack == null || ItemStack.matches(this.lastStack, stack)) {
@@ -116,8 +116,9 @@ public class FrozenLibIntegration extends ModIntegration {
 		);
 	}
 
-	private static WindDisturbance.@Nullable DisturbanceResult getCopperFanDisturbanceResult(
-		@NotNull Optional<CopperFanBlock> source,
+	@Nullable
+	private static WindDisturbance.DisturbanceResult getCopperFanDisturbanceResult(
+		Optional<CopperFanBlock> source,
 		Level level,
 		Vec3 windOrigin,
 		Vec3 windTarget,
@@ -132,7 +133,7 @@ public class FrozenLibIntegration extends ModIntegration {
 
 		final double fanDistance = (!reverse ? copperFanBlock.pushBlocks : copperFanBlock.suckBlocks) + 1D;
 		final Direction direction = state.getValue(CopperFanBlock.FACING);
-		Vec3 movement = Vec3.atLowerCornerOf(direction.getUnitVec3i());
+		final Vec3 movement = Vec3.atLowerCornerOf(direction.getUnitVec3i());
 		double strength = fanDistance - Math.min(windTarget.distanceTo(windOrigin), fanDistance);
 		double intensity = strength / fanDistance;
 		return new WindDisturbance.DisturbanceResult(

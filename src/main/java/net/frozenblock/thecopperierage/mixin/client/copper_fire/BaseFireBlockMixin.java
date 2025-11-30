@@ -25,6 +25,7 @@ import net.frozenblock.thecopperierage.registry.TCAParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -35,7 +36,8 @@ public class BaseFireBlockMixin {
 		method = "animateTick",
 		at = @At(
 			value = "FIELD",
-			target = "Lnet/minecraft/core/particles/ParticleTypes;LARGE_SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"
+			target = "Lnet/minecraft/core/particles/ParticleTypes;LARGE_SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;",
+			opcode = Opcodes.GETSTATIC
 		)
 	)
 	public SimpleParticleType theCopperierAge$copperSmokeParticles(

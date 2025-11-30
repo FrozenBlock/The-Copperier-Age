@@ -27,44 +27,44 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.redstone.ExperimentalRedstoneUtils;
 import net.minecraft.world.level.redstone.Orientation;
-import org.jetbrains.annotations.NotNull;
 
 public class GearboxBlockEvaluator {
 
 	public GearboxBlockEvaluator() {
 	}
 
-	public void updatePowerStrength(Level level, BlockPos pos, @NotNull BlockState state) {
+	public void updatePowerStrength(Level level, BlockPos pos, BlockState state) {
 		final int newPower = this.calculateTargetStrength(level, pos, state);
 		final int oldPower = state.getValue(GearboxBlock.POWER);
-		if (oldPower != newPower) {
-			if (level.getBlockState(pos) == state) {
-				level.setBlock(pos, state.setValue(GearboxBlock.POWER, newPower), Block.UPDATE_CLIENTS);
-				if (oldPower == 0 && newPower % 2 != 0) {
-					level.playSound(
-						null,
-						pos,
-						TCASounds.BLOCK_GEARBOX_ON,
-						SoundSource.BLOCKS,
-						0.45F,
-						0.15F + (newPower / 25F) + (level.getRandom().nextFloat() * 0.1F)
-					);
-				} else if (newPower == 0) {
-					level.playSound(
-						null,
-						pos,
-						TCASounds.BLOCK_GEARBOX_OFF,
-						SoundSource.BLOCKS,
-						0.25F,
-						0.5F + (level.getRandom().nextFloat() * 0.2F)
-					);
-				}
+		if (oldPower == newPower) return;
+
+		if (level.getBlockState(pos) == state) {
+			level.setBlock(pos, state.setValue(GearboxBlock.POWER, newPower), Block.UPDATE_CLIENTS);
+			if (oldPower == 0 && newPower % 2 != 0) {
+				level.playSound(
+					null,
+					pos,
+					TCASounds.BLOCK_GEARBOX_ON,
+					SoundSource.BLOCKS,
+					0.45F,
+					0.15F + (newPower / 25F) + (level.getRandom().nextFloat() * 0.1F)
+				);
+			} else if (newPower == 0) {
+				level.playSound(
+					null,
+					pos,
+					TCASounds.BLOCK_GEARBOX_OFF,
+					SoundSource.BLOCKS,
+					0.25F,
+					0.5F + (level.getRandom().nextFloat() * 0.2F)
+				);
 			}
-			this.updateNeighboringBlocks(level, pos, state);
 		}
+
+		this.updateNeighboringBlocks(level, pos, state);
 	}
 
-	public void updateNeighboringBlocks(Level level, @NotNull BlockPos pos, @NotNull BlockState state) {
+	public void updateNeighboringBlocks(Level level, BlockPos pos, BlockState state) {
 		final Direction facing = state.getValue(GearboxBlock.FACING);
 		final Direction behind = facing.getOpposite();
 		final Orientation orientation = ExperimentalRedstoneUtils.initialOrientation(level, behind, null);
@@ -73,17 +73,17 @@ public class GearboxBlockEvaluator {
 		level.updateNeighborsAtExceptFromFacing(pos, state.getBlock(), facing, orientation);
 	}
 
-	protected boolean hasBlockSignal(Level level, BlockPos pos, @NotNull BlockState state) {
+	protected boolean hasBlockSignal(Level level, BlockPos pos, BlockState state) {
 		if (!(state.getBlock() instanceof GearboxBlock gearboxBlock)) return false;
 		return gearboxBlock.hasBlockSignal(level, pos, state);
 	}
 
-	protected int getGearboxPower(BlockPos pos, @NotNull BlockState state, Direction facing) {
+	protected int getGearboxPower(BlockPos pos, BlockState state, Direction facing) {
 		if (!(state.getBlock() instanceof GearboxBlock)) return 0;
 		return state.getValue(GearboxBlock.FACING) == facing ? state.getValue(GearboxBlock.POWER) : 0;
 	}
 
-	protected int getIncomingGearboxPower(Level level, BlockPos pos, @NotNull BlockState state) {
+	protected int getIncomingGearboxPower(Level level, BlockPos pos, BlockState state) {
 		if (!(state.getBlock() instanceof GearboxBlock gearboxBlock)) return 0;
 		int power = 0;
 

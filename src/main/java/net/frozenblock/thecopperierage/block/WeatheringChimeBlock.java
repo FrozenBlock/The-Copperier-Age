@@ -24,7 +24,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 
 public class WeatheringChimeBlock extends ChimeBlock implements WeatheringCopper {
 	public static final MapCodec<WeatheringChimeBlock> CODEC = RecordCodecBuilder.mapCodec(
@@ -36,7 +35,7 @@ public class WeatheringChimeBlock extends ChimeBlock implements WeatheringCopper
 	private final WeatherState weatherState;
 
 	@Override
-	public @NotNull MapCodec<? extends WeatheringChimeBlock> codec() {
+	public MapCodec<? extends WeatheringChimeBlock> codec() {
 		return CODEC;
 	}
 
@@ -51,12 +50,12 @@ public class WeatheringChimeBlock extends ChimeBlock implements WeatheringCopper
 	}
 
 	@Override
-	protected boolean isRandomlyTicking(@NotNull BlockState blockState) {
-		return WeatheringCopper.getNext(blockState.getBlock()).isPresent();
+	protected boolean isRandomlyTicking(BlockState state) {
+		return WeatheringCopper.getNext(state.getBlock()).isPresent();
 	}
 
 	@Override
-	public @NotNull WeatherState getAge() {
+	public WeatherState getAge() {
 		return this.weatherState;
 	}
 }

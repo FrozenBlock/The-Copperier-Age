@@ -61,7 +61,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ChimeBlock extends BaseEntityBlock {
@@ -77,37 +76,36 @@ public class ChimeBlock extends BaseEntityBlock {
 	private static final Map<Direction, VoxelShape> WALL_SHAPES_COLLISION = Shapes.rotateHorizontal(BAR_SHAPE);
 	private static final Map<Direction, VoxelShape> ENTITY_INSIDE_SHAPES = Shapes.rotateHorizontal(Block.box(6.5D, -0.5D, -0.5D, 9.5D, 10.5D, 16.5D));
 
-	public ChimeBlock(@NotNull Properties settings) {
-		super(settings);
+	public ChimeBlock(Properties properties) {
+		super(properties);
 	}
 
-	@NotNull
 	@Override
 	protected MapCodec<? extends ChimeBlock> codec() {
 		return CODEC;
 	}
 
 	@Override
-	protected void createBlockStateDefinition(@NotNull StateDefinition.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(FACING, ATTACHMENT);
 	}
 
 	@Override
-	protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext collisionContext) {
+	protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext collisionContext) {
 		return getVoxelShape(state, ChimeShapeType.OUTLINE);
 	}
 
 	@Override
-	protected @NotNull VoxelShape getCollisionShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext collisionContext) {
+	protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext collisionContext) {
 		return getVoxelShape(state, ChimeShapeType.COLLISION);
 	}
 
 	@Override
-	protected @NotNull VoxelShape getEntityInsideCollisionShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull Entity entity) {
+	protected VoxelShape getEntityInsideCollisionShape(BlockState state, BlockGetter level, BlockPos pos, Entity entity) {
 		return getVoxelShape(state, ChimeShapeType.ENTITY_INSIDE);
 	}
 
-	private static VoxelShape getVoxelShape(@NotNull BlockState state, ChimeShapeType shapeType) {
+	private static VoxelShape getVoxelShape(BlockState state, ChimeShapeType shapeType) {
 		final Direction direction = state.getValue(FACING);
 		return switch (state.getValue(ATTACHMENT)) {
 			case WALL -> selectShapeListFromType(shapeType, WALL_SHAPES_OUTLINE, WALL_SHAPES_COLLISION, ENTITY_INSIDE_SHAPES).get(direction);
@@ -117,7 +115,7 @@ public class ChimeBlock extends BaseEntityBlock {
 
 	@Nullable
 	@Override
-	public BlockState getStateForPlacement(@NotNull BlockPlaceContext context) {
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		final Direction direction = context.getClickedFace();
 		final BlockPos pos = context.getClickedPos();
 		final Level level = context.getLevel();
@@ -145,15 +143,15 @@ public class ChimeBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	protected @NotNull BlockState updateShape(
-		@NotNull BlockState state,
-		@NotNull LevelReader level,
-		@NotNull ScheduledTickAccess scheduledTickAccess,
-		@NotNull BlockPos pos,
-		@NotNull Direction direction,
-		@NotNull BlockPos neighborPos,
-		@NotNull BlockState neighborState,
-		@NotNull RandomSource random
+	protected BlockState updateShape(
+		BlockState state,
+		LevelReader level,
+		ScheduledTickAccess scheduledTickAccess,
+		BlockPos pos,
+		Direction direction,
+		BlockPos neighborPos,
+		BlockState neighborState,
+		RandomSource random
 	) {
 		final Direction connectedDirection = getConnectedDirection(state);
 		if (connectedDirection.getOpposite() == direction && !state.canSurvive(level, pos)) return Blocks.AIR.defaultBlockState();
@@ -161,38 +159,32 @@ public class ChimeBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public boolean canSurvive(@NotNull BlockState state, @NotNull LevelReader level, @NotNull BlockPos pos) {
+	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
 		final Direction connectedDirection = getConnectedDirection(state).getOpposite();
 		return connectedDirection == Direction.UP
 			? Block.canSupportCenter(level, pos.above(), Direction.DOWN)
 			: FaceAttachedHorizontalDirectionalBlock.canAttach(level, pos, connectedDirection);
 	}
 
-	private static Direction getConnectedDirection(@NotNull BlockState state) {
+	private static Direction getConnectedDirection(BlockState state) {
 		if (state.getValue(ATTACHMENT) == ChimeAttachType.CEILING) return Direction.DOWN;
 		return state.getValue(FACING);
 	}
 
 	@Override
 	@Nullable
-	public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new ChimeBlockEntity(pos, state);
 	}
 
 	@Nullable
 	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
 		return createTickerHelper(blockEntityType, TCABlockEntityTypes.CHIME, ChimeBlockEntity::tick);
 	}
 
 	@Override
-	protected @NotNull InteractionResult useWithoutItem(
-		@NotNull BlockState state,
-		@NotNull Level level,
-		@NotNull BlockPos pos,
-		@NotNull Player player,
-		BlockHitResult hitResult
-	) {
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
 		if (!(level.getBlockEntity(pos) instanceof ChimeBlockEntity chime)) return super.useWithoutItem(state, level, pos, player, hitResult);
 
 		final Vec3 playerPos = player.getEyePosition();
@@ -207,14 +199,7 @@ public class ChimeBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public void entityInside(
-		@NotNull BlockState state,
-		@NotNull Level level,
-		@NotNull BlockPos pos,
-		@NotNull Entity entity,
-		InsideBlockEffectApplier insideBlockEffectApplier,
-		boolean bl
-	) {
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier, boolean bl) {
 		final Vec3 movement = entity.getDeltaMovement();
 		final double length = movement.length();
 		if (length == 0D) return;
@@ -224,13 +209,7 @@ public class ChimeBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	protected void onExplosionHit(
-		@NotNull BlockState state,
-		@NotNull ServerLevel level,
-		@NotNull BlockPos pos,
-		@NotNull Explosion explosion,
-		BiConsumer<ItemStack, BlockPos> biConsumer
-	) {
+	protected void onExplosionHit(BlockState state, ServerLevel level, BlockPos pos, Explosion explosion, BiConsumer<ItemStack, BlockPos> biConsumer) {
 		if (level.getBlockEntity(pos) instanceof ChimeBlockEntity chime) {
 			float radius = explosion.radius();
 			Vec3 difference = pos.getCenter().subtract(explosion.center());
@@ -242,20 +221,20 @@ public class ChimeBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public @NotNull BlockState rotate(@NotNull BlockState state, @NotNull Rotation rotation) {
+	public BlockState rotate(BlockState state, Rotation rotation) {
 		return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public @NotNull BlockState mirror(@NotNull BlockState state, @NotNull Mirror mirror) {
+	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 
 	@Override
-	public void animateTick(BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
 		if (!(level.getBlockEntity(pos) instanceof ChimeBlockEntity chime)) return;
 
-		Vec3 influence = chime.getInfluence(1F);
+		final Vec3 influence = chime.getInfluence(1F);
 		final float influenceSpeed = Math.clamp((float) influence.length(), 0.02F, 1.2F);
 
 		if (random.nextFloat() >= influenceSpeed * 0.25F) return;
@@ -267,7 +246,7 @@ public class ChimeBlock extends BaseEntityBlock {
 
 	@Contract(pure = true)
 	private static Map<Direction, VoxelShape> selectShapeListFromType(
-		@NotNull ChimeShapeType shapeType,
+		ChimeShapeType shapeType,
 		Map<Direction, VoxelShape> outline,
 		Map<Direction, VoxelShape> collision,
 		Map<Direction, VoxelShape> entityInside

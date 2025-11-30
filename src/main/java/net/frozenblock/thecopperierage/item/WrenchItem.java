@@ -36,14 +36,11 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.ShelfBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.ChestBlockEntity;
-import net.minecraft.world.level.block.entity.EnderChestBlockEntity;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
 import net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.world.level.block.piston.PistonBaseBlock;
@@ -57,53 +54,53 @@ import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.redstone.ExperimentalRedstoneUtils;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 public class WrenchItem extends Item {
 
-	public WrenchItem(@NotNull Properties settings) {
-		super(settings);
+	public WrenchItem(Properties properties) {
+		super(properties);
 	}
 
 	@Override
-	public @NotNull InteractionResult useOn(@NotNull UseOnContext context) {
+	public InteractionResult useOn(UseOnContext context) {
 		final Level level = context.getLevel();
 		final BlockPos pos = context.getClickedPos();
 		final BlockState state = level.getBlockState(pos);
-		final Block block = state.getBlock();
-		final BlockEntity blockEntity = level.getBlockEntity(pos);
 
 		if (state.is(TCABlockTags.WRENCH_CANNOT_ROTATE)) return InteractionResult.PASS;
-		if (block instanceof PistonBaseBlock && state.getValue(PistonBaseBlock.EXTENDED)) return InteractionResult.PASS;
+		if (state.is(ConventionalBlockTags.CHESTS) && state.getValueOrElse(ChestBlock.TYPE, ChestType.SINGLE) != ChestType.SINGLE) return InteractionResult.FAIL;
 
+		final Block block = state.getBlock();
+		if (block instanceof PistonBaseBlock && state.getValue(PistonBaseBlock.EXTENDED)) return InteractionResult.PASS;
 		if (block instanceof DoorBlock doorBlock && !doorBlock.type().canOpenByHand()) return InteractionResult.FAIL;
 		if (block instanceof TrapDoorBlock trapDoorBlock && !trapDoorBlock.getType().canOpenByHand()) return InteractionResult.FAIL;
 		if (block instanceof ShelfBlock && state.getValue(ShelfBlock.POWERED)) return InteractionResult.FAIL;
-		if (state.is(ConventionalBlockTags.CHESTS) && state.getValueOrElse(ChestBlock.TYPE, ChestType.SINGLE) != ChestType.SINGLE) return InteractionResult.FAIL;
+
+		final BlockEntity blockEntity = level.getBlockEntity(pos);
 		if (blockEntity instanceof LidBlockEntity lidBlockEntity && lidBlockEntity.getOpenNess(1F) > 0F) return InteractionResult.FAIL;
 		if (blockEntity instanceof Container container && !container.getEntitiesWithContainerOpen().isEmpty()) return InteractionResult.FAIL;
 		if (blockEntity instanceof ShulkerBoxBlockEntity shulkerBox && !shulkerBox.isClosed()) return InteractionResult.FAIL;
 
-		if (state.is(BlockTags.DOORS)) {
-			Optional<DoubleBlockHalf> optionalHalf = state.getOptionalValue(DoorBlock.HALF);
-			if (optionalHalf.isPresent()) {
-				final DoubleBlockHalf doubleBlockHalf = optionalHalf.get();
-				final BlockPos otherPos = pos.relative(doubleBlockHalf.getDirectionToOther());
-				Function<BlockState, BlockState> halfStateMutator = otherState -> otherState.trySetValue(DoorBlock.HALF, doubleBlockHalf.getOtherHalf());
-				final BlockState flippedHingeState = state.cycle(DoorBlock.HINGE);
-				if (level.getBlockState(otherPos).is(state.getBlock())) {
-					return onSuccessfulWrench(
-						context,
-						level,
-						pos,
-						() -> {
-							level.setBlock(pos, flippedHingeState, Block.UPDATE_ALL);
-							level.setBlock(otherPos, halfStateMutator.apply(flippedHingeState), Block.UPDATE_ALL);
-						}
-					);
-				}
-			}
+		rotateDoor: {
+			if (!state.is(BlockTags.DOORS)) break rotateDoor;
+
+			final Optional<DoubleBlockHalf> optionalHalf = state.getOptionalValue(DoorBlock.HALF);
+			if (optionalHalf.isEmpty()) break rotateDoor;
+
+			final DoubleBlockHalf half = optionalHalf.get();
+			final BlockPos otherPos = pos.relative(half.getDirectionToOther());
+			final Function<BlockState, BlockState> halfStateMutator = otherState -> otherState.trySetValue(DoorBlock.HALF, half.getOtherHalf());
+			final BlockState flippedHingeState = state.cycle(DoorBlock.HINGE);
+			if (!level.getBlockState(otherPos).is(state.getBlock())) break rotateDoor;
+
+			return onSuccessfulWrench(
+				context,
+				level,
+				pos,
+				() -> {
+					level.setBlock(pos, flippedHingeState, Block.UPDATE_ALL);
+					level.setBlock(otherPos, halfStateMutator.apply(flippedHingeState), Block.UPDATE_ALL);
+				});
 		}
 
 		if (block instanceof BaseRailBlock baseRailBlock) {
@@ -121,30 +118,24 @@ public class WrenchItem extends Item {
 
 		if (state.hasProperty(BlockStateProperties.ROTATION_16)) {
 			final BlockState newState = state.cycle(BlockStateProperties.ROTATION_16);
-			if (newState != state && newState.canSurvive(level, pos)) {
-				return onSuccessfulWrench(context, level, pos, () -> changeIntoState(context, newState));
-			}
+			if (newState != state && newState.canSurvive(level, pos)) return onSuccessfulWrench(context, level, pos, () -> changeIntoState(context, newState));
 		}
 
 		if (state.hasProperty(BlockStateProperties.SLAB_TYPE)) {
 			final SlabType slabType = state.getValue(BlockStateProperties.SLAB_TYPE);
 			if (slabType != SlabType.DOUBLE) {
 				final BlockState newState = state.setValue(BlockStateProperties.SLAB_TYPE, slabType == SlabType.BOTTOM ? SlabType.TOP : SlabType.BOTTOM);
-				if (newState != state && newState.canSurvive(level, pos)) {
-					return onSuccessfulWrench(context, level, pos, () -> changeIntoState(context, newState));
-				}
+				if (newState != state && newState.canSurvive(level, pos)) return onSuccessfulWrench(context, level, pos, () -> changeIntoState(context, newState));
 			}
 		}
 
 		if (state.is(BlockTags.LANTERNS) && state.hasProperty(BlockStateProperties.HANGING)) {
 			final boolean hanging = state.getValue(BlockStateProperties.HANGING);
 			final BlockState newState = state.setValue(BlockStateProperties.HANGING, !hanging);
-			if (newState != state && newState.canSurvive(level, pos)) {
-				return onSuccessfulWrench(context, level, pos, () -> changeIntoState(context, newState));
-			}
+			if (newState != state && newState.canSurvive(level, pos)) return onSuccessfulWrench(context, level, pos, () -> changeIntoState(context, newState));
 		}
 
-		List<Direction> directionsToTry = new ArrayList<>();
+		final List<Direction> directionsToTry = new ArrayList<>();
 
 		final Direction reorientedA = getReorientedFace(context.getClickedFace(), state);
 		directionsToTry.add(reorientedA);
@@ -172,7 +163,7 @@ public class WrenchItem extends Item {
 		return triedToSet ? InteractionResult.FAIL : InteractionResult.PASS;
 	}
 
-	public static InteractionResult onSuccessfulWrench(@NotNull UseOnContext context, @NotNull Level level, BlockPos pos, Runnable serverRunnable) {
+	public static InteractionResult onSuccessfulWrench(UseOnContext context, Level level, BlockPos pos, Runnable serverRunnable) {
 		final Player player = context.getPlayer();
 		level.playSound(player, pos, TCASounds.ITEM_WRENCH_USE, SoundSource.BLOCKS, 0.75F, 0.9F + (level.random.nextFloat() * 0.2F));
 		if (!level.isClientSide()) {
@@ -183,13 +174,13 @@ public class WrenchItem extends Item {
 		return InteractionResult.SUCCESS;
 	}
 
-	public static Direction getReorientedFace(Direction direction, @NotNull BlockState state) {
+	public static Direction getReorientedFace(Direction direction, BlockState state) {
 		if (state.is(BlockTags.FENCE_GATES)) return direction.getOpposite();
 		return direction;
 	}
 
-	public static @NotNull List<Function<BlockState, BlockState>> getPossibleBlockStates(@NotNull BlockState state, Direction clickedFace) {
-		List<Function<BlockState, BlockState>> stateMutators = new ArrayList<>();
+	public static List<Function<BlockState, BlockState>> getPossibleBlockStates(BlockState state, Direction clickedFace) {
+		final List<Function<BlockState, BlockState>> stateMutators = new ArrayList<>();
 
 		if (state.hasProperty(BlockStateProperties.ATTACH_FACE)) {
 			final AttachFace attachFace = state.getValue(BlockStateProperties.ATTACH_FACE);
@@ -222,12 +213,11 @@ public class WrenchItem extends Item {
 		return stateMutators;
 	}
 
-	@Contract(pure = true)
-	public static void changeIntoState(@NotNull UseOnContext context, BlockState state) {
+	public static void changeIntoState(UseOnContext context, BlockState state) {
 		final Level level = context.getLevel();
 		final BlockPos pos = context.getClickedPos();
 
-		BlockState newState = Block.updateFromNeighbourShapes(state, level, pos);
+		final BlockState newState = Block.updateFromNeighbourShapes(state, level, pos);
 		if (!level.setBlockAndUpdate(pos, newState)) return;
 		if (level.isClientSide()) return;
 
@@ -237,6 +227,7 @@ public class WrenchItem extends Item {
 			final BlockState offsetState = level.getBlockState(offsetPos);
 			level.neighborChanged(pos, offsetState.getBlock(), ExperimentalRedstoneUtils.initialOrientation(level, direction.getOpposite(), null));
 		}
+
 		level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(context.getPlayer(), state));
 	}
 }

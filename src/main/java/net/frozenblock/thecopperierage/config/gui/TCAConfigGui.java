@@ -28,21 +28,19 @@ import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 @Environment(EnvType.CLIENT)
 public final class TCAConfigGui {
 
-	private static void setupEntries(@NotNull ConfigCategory category, @NotNull ConfigEntryBuilder entryBuilder) {
-		var config = TCAConfig.get(true);
-		var modifiedConfig = TCAConfig.getWithSync();
-		Config<?> configInstance = TCAConfig.INSTANCE;
-		var defaultConfig = TCAConfig.INSTANCE.defaultInstance();
+	private static void setupEntries(ConfigCategory category, ConfigEntryBuilder builder) {
+		final var config = TCAConfig.get(true);
+		final var modifiedConfig = TCAConfig.getWithSync();
+		final Config<?> configInstance = TCAConfig.INSTANCE;
+		final var defaultConfig = TCAConfig.INSTANCE.defaultInstance();
 
 		var copperFireEnabled = category.addEntry(
 			FrozenClothConfig.syncedEntry(
-				entryBuilder.startBooleanToggle(text("copper_fire_enabled"), modifiedConfig.copperFireEnabled)
+				builder.startBooleanToggle(text("copper_fire_enabled"), modifiedConfig.copperFireEnabled)
 					.setDefaultValue(defaultConfig.copperFireEnabled)
 					.setSaveConsumer(newValue -> config.copperFireEnabled = newValue)
 					.setTooltip(tooltip("copper_fire_enabled"))
@@ -55,7 +53,7 @@ public final class TCAConfigGui {
 
 		var copperFirePoisons = category.addEntry(
 			FrozenClothConfig.syncedEntry(
-				entryBuilder.startBooleanToggle(text("copper_fire_poisons"), modifiedConfig.copperFirePoisons)
+				builder.startBooleanToggle(text("copper_fire_poisons"), modifiedConfig.copperFirePoisons)
 					.setDefaultValue(defaultConfig.copperFirePoisons)
 					.setSaveConsumer(newValue -> config.copperFirePoisons = newValue)
 					.setTooltip(tooltip("copper_fire_poisons"))
@@ -68,7 +66,7 @@ public final class TCAConfigGui {
 
 		var copperButtonsInTrialChambers = category.addEntry(
 			FrozenClothConfig.syncedEntry(
-				entryBuilder.startBooleanToggle(text("copper_buttons_in_trial_chambers"), modifiedConfig.copperButtonsInTrialChambers)
+				builder.startBooleanToggle(text("copper_buttons_in_trial_chambers"), modifiedConfig.copperButtonsInTrialChambers)
 					.setDefaultValue(defaultConfig.copperButtonsInTrialChambers)
 					.setSaveConsumer(newValue -> config.copperButtonsInTrialChambers = newValue)
 					.setTooltip(tooltip("copper_buttons_in_trial_chambers"))
@@ -81,7 +79,7 @@ public final class TCAConfigGui {
 
 		var copperChestsInTrialChambers = category.addEntry(
 			FrozenClothConfig.syncedEntry(
-				entryBuilder.startBooleanToggle(text("copper_chests_in_trial_chambers"), modifiedConfig.copperChestsInTrialChambers)
+				builder.startBooleanToggle(text("copper_chests_in_trial_chambers"), modifiedConfig.copperChestsInTrialChambers)
 					.setDefaultValue(defaultConfig.copperChestsInTrialChambers)
 					.setSaveConsumer(newValue -> config.copperChestsInTrialChambers = newValue)
 					.setTooltip(tooltip("copper_chests_in_trial_chambers"))
@@ -94,7 +92,7 @@ public final class TCAConfigGui {
 
 		var copperPressurePlatesInTrialChambers = category.addEntry(
 			FrozenClothConfig.syncedEntry(
-				entryBuilder.startBooleanToggle(text("copper_pressure_plates_in_trial_chambers"), modifiedConfig.copperPressurePlatesInTrialChambers)
+				builder.startBooleanToggle(text("copper_pressure_plates_in_trial_chambers"), modifiedConfig.copperPressurePlatesInTrialChambers)
 					.setDefaultValue(defaultConfig.copperPressurePlatesInTrialChambers)
 					.setSaveConsumer(newValue -> config.copperPressurePlatesInTrialChambers = newValue)
 					.setTooltip(tooltip("copper_pressure_plates_in_trial_chambers"))
@@ -107,7 +105,7 @@ public final class TCAConfigGui {
 
 		var oxidizableCopperEquipment = category.addEntry(
 			FrozenClothConfig.syncedEntry(
-				entryBuilder.startBooleanToggle(text("oxidizable_copper_equipment"), modifiedConfig.oxidizableCopperEquipment)
+				builder.startBooleanToggle(text("oxidizable_copper_equipment"), modifiedConfig.oxidizableCopperEquipment)
 					.setDefaultValue(defaultConfig.oxidizableCopperEquipment)
 					.setSaveConsumer(newValue -> config.oxidizableCopperEquipment = newValue)
 					.setTooltip(tooltip("oxidizable_copper_equipment"))
@@ -120,7 +118,7 @@ public final class TCAConfigGui {
 
 		var copperParticles = category.addEntry(
 			FrozenClothConfig.syncedEntry(
-				entryBuilder.startBooleanToggle(text("copper_particles"), modifiedConfig.copperParticles)
+				builder.startBooleanToggle(text("copper_particles"), modifiedConfig.copperParticles)
 					.setDefaultValue(defaultConfig.copperParticles)
 					.setSaveConsumer(newValue -> config.copperParticles = newValue)
 					.setTooltip(tooltip("copper_particles"))
@@ -134,26 +132,23 @@ public final class TCAConfigGui {
 	}
 
 	public static Screen buildScreen(Screen parent) {
-		var configBuilder = ConfigBuilder.create().setParentScreen(parent).setTitle(text("component.title"));
+		final var configBuilder = ConfigBuilder.create().setParentScreen(parent).setTitle(text("component.title"));
 		configBuilder.setSavingRunnable(TCAConfig.INSTANCE::save);
-		var config = configBuilder.getOrCreateCategory(text("config"));
+		final var config = configBuilder.getOrCreateCategory(text("config"));
 		ConfigEntryBuilder entryBuilder = configBuilder.entryBuilder();
 		setupEntries(config, entryBuilder);
 		return configBuilder.build();
 	}
 
-	@Contract(value = "_ -> new", pure = true)
-	public static @NotNull Component text(String key) {
+	public static Component text(String key) {
 		return Component.translatable("option." + TCAConstants.MOD_ID + "." + key);
 	}
 
-	@Contract(value = "_ -> new", pure = true)
-	public static @NotNull Component tooltip(String key) {
+	public static Component tooltip(String key) {
 		return Component.translatable("tooltip." + TCAConstants.MOD_ID + "." + key);
 	}
 
-	@Contract(value = "_ -> new", pure = true)
-	public static @NotNull Component enumNameProvider(String key) {
+	public static Component enumNameProvider(String key) {
 		return Component.translatable("enum." + TCAConstants.MOD_ID + "." + key);
 	}
 }

@@ -22,7 +22,6 @@ import net.frozenblock.lib.integration.api.ModIntegration;
 import net.frozenblock.lib.integration.api.ModIntegrationSupplier;
 import net.frozenblock.lib.integration.api.ModIntegrations;
 import net.frozenblock.thecopperierage.TCAConstants;
-import org.jetbrains.annotations.NotNull;
 
 public final class TCAModIntegrations {
 	public static final ModIntegration FROZENLIB_INTEGRATION = registerAndGet(FrozenLibIntegration::new, "frozenlib");
@@ -34,11 +33,11 @@ public final class TCAModIntegrations {
 	public static void init() {
 	}
 
-	public static @NotNull ModIntegrationSupplier<? extends ModIntegration> register(Supplier<? extends ModIntegration> integration, String modID) {
+	public static ModIntegrationSupplier<? extends ModIntegration> register(Supplier<? extends ModIntegration> integration, String modID) {
 		return ModIntegrations.register(integration, TCAConstants.MOD_ID, modID);
 	}
 
-	public static <T extends ModIntegration> @NotNull ModIntegrationSupplier<T> register(Supplier<T> integration, Supplier<T> unloadedIntegration, String modID) {
+	public static <T extends ModIntegration> ModIntegrationSupplier<T> register(Supplier<T> integration, Supplier<T> unloadedIntegration, String modID) {
 		return ModIntegrations.register(integration, unloadedIntegration, TCAConstants.MOD_ID, modID);
 	}
 

@@ -31,6 +31,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -44,7 +45,8 @@ public class CampfireBlockMixin {
 		method = "animateTick",
 		at = @At(
 			value = "FIELD",
-			target = "Lnet/minecraft/core/particles/ParticleTypes;LAVA:Lnet/minecraft/core/particles/SimpleParticleType;"
+			target = "Lnet/minecraft/core/particles/ParticleTypes;LAVA:Lnet/minecraft/core/particles/SimpleParticleType;",
+			opcode = Opcodes.GETSTATIC
 		)
 	)
 	private SimpleParticleType theCopperierAge$spawnCopperLava(
@@ -66,7 +68,8 @@ public class CampfireBlockMixin {
 		method = "makeParticles",
 		at = @At(
 			value = "FIELD",
-			target = "Lnet/minecraft/core/particles/ParticleTypes;CAMPFIRE_SIGNAL_SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"
+			target = "Lnet/minecraft/core/particles/ParticleTypes;CAMPFIRE_SIGNAL_SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;",
+			opcode = Opcodes.GETSTATIC
 		)
 	)
 	private static SimpleParticleType theCopperierAge$copperSignalSmoke(
@@ -80,7 +83,8 @@ public class CampfireBlockMixin {
 		method = "makeParticles",
 		at = @At(
 			value = "FIELD",
-			target = "Lnet/minecraft/core/particles/ParticleTypes;CAMPFIRE_COSY_SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"
+			target = "Lnet/minecraft/core/particles/ParticleTypes;CAMPFIRE_COSY_SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;",
+			opcode = Opcodes.GETSTATIC
 		)
 	)
 	private static SimpleParticleType theCopperierAge$copperCosySmoke(
@@ -94,7 +98,8 @@ public class CampfireBlockMixin {
 		method = "makeParticles",
 		at = @At(
 			value = "FIELD",
-			target = "Lnet/minecraft/core/particles/ParticleTypes;SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"
+			target = "Lnet/minecraft/core/particles/ParticleTypes;SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;",
+			opcode = Opcodes.GETSTATIC
 		)
 	)
 	private static SimpleParticleType theCopperierAge$copperSmoke(

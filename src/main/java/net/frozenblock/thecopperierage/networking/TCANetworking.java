@@ -23,9 +23,8 @@ import net.frozenblock.thecopperierage.networking.packet.TCACopperFanBlowPacket;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 
 public final class TCANetworking {
-
 	public static void init() {
-		PayloadTypeRegistry<RegistryFriendlyByteBuf> registry = PayloadTypeRegistry.playS2C();
+		final PayloadTypeRegistry<RegistryFriendlyByteBuf> registry = PayloadTypeRegistry.playS2C();
 		registry.register(TCACopperFanBlowPacket.PACKET_TYPE, TCACopperFanBlowPacket.CODEC);
 		registry.register(TCAChimeInfluencePacket.PACKET_TYPE, TCAChimeInfluencePacket.CODEC);
 	}

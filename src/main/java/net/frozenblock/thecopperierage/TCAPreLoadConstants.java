@@ -18,8 +18,6 @@
 package net.frozenblock.thecopperierage;
 
 import java.nio.file.Path;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,8 +29,7 @@ public final class TCAPreLoadConstants {
 	public static final String MOD_ID = "thecopperierage";
 	public static final Logger LOGGER = LoggerFactory.getLogger(PROJECT_ID);
 
-	@Contract(pure = true)
-	public static @NotNull Path configPath(String name, boolean json5) {
+	public static Path configPath(String name, boolean json5) {
 		return Path.of("./config/" + MOD_ID + "/" + name + "." + (json5 ? "json5" : "json"));
 	}
 }

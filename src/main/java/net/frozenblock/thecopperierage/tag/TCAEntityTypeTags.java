@@ -17,12 +17,10 @@
 
 package net.frozenblock.thecopperierage.tag;
 
-
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import org.jetbrains.annotations.NotNull;
 
 public final class TCAEntityTypeTags {
 	public static final TagKey<EntityType<?>> COPPER_FAN_WEAKER_PUSH = bind("copper_fan_weaker_push");
@@ -32,8 +30,7 @@ public final class TCAEntityTypeTags {
 		throw new UnsupportedOperationException("TCAEntityTypeTags contains only static declarations.");
 	}
 
-	@NotNull
-	private static TagKey<EntityType<?>> bind(@NotNull String path) {
+	private static TagKey<EntityType<?>> bind(String path) {
 		return TagKey.create(Registries.ENTITY_TYPE, TCAConstants.id(path));
 	}
 }

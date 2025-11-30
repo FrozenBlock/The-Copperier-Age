@@ -35,49 +35,47 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 
 public class CopperFireBlock extends BaseFireBlock {
     public static final MapCodec<CopperFireBlock> CODEC = simpleCodec(CopperFireBlock::new);
 
-    public CopperFireBlock(BlockBehaviour.Properties properties) {
+    public CopperFireBlock(Properties properties) {
         super(properties, 1F);
     }
 
     @Override
-    public @NotNull MapCodec<CopperFireBlock> codec() {
+    public MapCodec<CopperFireBlock> codec() {
         return CODEC;
     }
 
 	@Override
-	protected @NotNull BlockState updateShape(
-		@NotNull BlockState state,
-		@NotNull LevelReader level,
+	protected BlockState updateShape(
+		BlockState state,
+		LevelReader level,
 		ScheduledTickAccess scheduledTickAccess,
-		@NotNull BlockPos pos,
+		BlockPos pos,
 		Direction direction,
 		BlockPos neighborPos,
 		BlockState neighborState,
-		RandomSource randomSource
+		RandomSource random
 	) {
 		return this.canSurvive(state, level, pos) ? this.defaultBlockState() : Blocks.AIR.defaultBlockState();
 	}
 
     @Override
-    public boolean canSurvive(@NotNull BlockState state, @NotNull LevelReader level, @NotNull BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         return canSurviveOnBlock(level, pos.below());
     }
 
-    public static boolean canSurviveOnBlock(@NotNull BlockGetter level, BlockPos pos) {
+    public static boolean canSurviveOnBlock(BlockGetter level, BlockPos pos) {
 		final BlockState state = level.getBlockState(pos);
         if (!state.is(TCABlockTags.COPPER_FIRE_BASE_BLOCKS)) return false;
 		return state.isFaceSturdy(level, pos, Direction.UP);
     }
 
 	@Override
-	protected void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+	protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (level.isRainingAt(pos)) level.removeBlock(pos, false);
 	}
 
@@ -86,21 +84,14 @@ public class CopperFireBlock extends BaseFireBlock {
         return true;
     }
 
-	public static void poisonEntity(@NotNull Level level, Entity entity) {
+	public static void poisonEntity(Level level, Entity entity) {
 		if (level.isClientSide() || !(entity instanceof LivingEntity livingEntity) || !TCAConfig.get().copperFirePoisons) return;
 		livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 119));
 	}
 
 	@Override
-	public void entityInside(
-		@NotNull BlockState state,
-		@NotNull Level level,
-		@NotNull BlockPos pos,
-		@NotNull Entity entity,
-		InsideBlockEffectApplier insideBlockEffectApplier,
-		boolean bl
-	) {
-        super.entityInside(state, level, pos, entity, insideBlockEffectApplier, bl);
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier, boolean bl) {
+        super.entityInside(state, level, pos, entity, effectApplier, bl);
         poisonEntity(level, entity);
     }
 }

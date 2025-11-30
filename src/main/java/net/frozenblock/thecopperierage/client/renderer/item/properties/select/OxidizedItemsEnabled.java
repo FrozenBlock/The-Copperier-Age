@@ -27,7 +27,6 @@ import net.minecraft.client.renderer.item.properties.select.SelectItemModelPrope
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
@@ -38,17 +37,17 @@ public record OxidizedItemsEnabled() implements SelectItemModelProperty<Boolean>
 	);
 
 	@Override
-	public Boolean get(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int i, ItemDisplayContext itemDisplayContext) {
+	public Boolean get(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int i, ItemDisplayContext context) {
 		return TCAConfig.OXIDIZABLE_COPPER_EQUIPMENT;
 	}
 
 	@Override
-	public SelectItemModelProperty.@NotNull Type<OxidizedItemsEnabled, Boolean> type() {
+	public SelectItemModelProperty.Type<OxidizedItemsEnabled, Boolean> type() {
 		return TYPE;
 	}
 
 	@Override
-	public @NotNull Codec<Boolean> valueCodec() {
+	public Codec<Boolean> valueCodec() {
 		return VALUE_CODEC;
 	}
 }

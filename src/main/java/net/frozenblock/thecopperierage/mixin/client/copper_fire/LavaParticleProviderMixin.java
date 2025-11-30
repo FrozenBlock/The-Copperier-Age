@@ -39,11 +39,9 @@ public class LavaParticleProviderMixin {
 	)
 	public Particle theCopperierAge$setAsCopperLava(
 		Particle original,
-		@Local(argsOnly = true) SimpleParticleType particleType
+		@Local(argsOnly = true) SimpleParticleType options
 	) {
-		if (particleType == TCAParticleTypes.COPPER_LAVA && original instanceof CopperLavaParticleInterface copperLavaParticleInterface) {
-			copperLavaParticleInterface.theCopperierAge$setCopperLava(true);
-		}
+		if (options == TCAParticleTypes.COPPER_LAVA && original instanceof CopperLavaParticleInterface particleInterface) particleInterface.theCopperierAge$setCopperLava(true);
 		return original;
 	}
 

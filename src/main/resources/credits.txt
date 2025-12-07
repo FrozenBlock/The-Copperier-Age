@@ -24,6 +24,10 @@ Zhen/zntm
 Voxelotl
  - New Copper Lantern Remodels & Retextures
  - Copper Fan Cage, Inside, & Powered Inside Textures
+ - Copper Spear Retextures
+ - Oxidizing Copper Spear Textures
+ - Copper Horse Armor & Copper Nautilus Armor Item Retextures
+ - Copper Nautilus Armor Retexture
  - Resource/Data Pack Icon
 
 wigglewoggle

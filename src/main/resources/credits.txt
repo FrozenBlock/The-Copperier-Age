@@ -38,3 +38,6 @@ Willow/Pictochats
 
 Kokoroto
  - Gearbox Brainstorming
+
+lucy.twinkie
+ - Polish translation

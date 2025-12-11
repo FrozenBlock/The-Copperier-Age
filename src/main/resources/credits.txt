@@ -20,10 +20,15 @@ Zhen/zntm
  - Copper Campfire Textures
  - Oxidizing Copper Bar Textures (Based On Lufurrius's)
  - Green Copper Bulb Textures
+ - Green Copper Golem Eye Textures
 
 Voxelotl
  - New Copper Lantern Remodels & Retextures
  - Copper Fan Cage, Inside, & Powered Inside Textures
+ - Copper Spear Retextures
+ - Oxidizing Copper Spear Textures
+ - Copper Horse Armor & Copper Nautilus Armor Item Retextures
+ - Copper Nautilus Armor Retexture
  - Resource/Data Pack Icon
 
 wigglewoggle
@@ -34,3 +39,6 @@ Willow/Pictochats
 
 Kokoroto
  - Gearbox Brainstorming
+
+lucy.twinkie
+ - Polish translation

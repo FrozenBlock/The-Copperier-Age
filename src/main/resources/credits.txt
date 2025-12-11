@@ -20,6 +20,7 @@ Zhen/zntm
  - Copper Campfire Textures
  - Oxidizing Copper Bar Textures (Based On Lufurrius's)
  - Green Copper Bulb Textures
+ - Green Copper Golem Eye Textures
 
 Voxelotl
  - New Copper Lantern Remodels & Retextures
@@ -38,3 +39,6 @@ Willow/Pictochats
 
 Kokoroto
  - Gearbox Brainstorming
+
+lucy.twinkie
+ - Polish translation

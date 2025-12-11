@@ -52,9 +52,9 @@ public final class OxidizableItemHelper {
 	private static final Map<Item, Pair<KineticWeapon, KineticWeapon>> OXIDIZABLE_KINETIC_WEAPONS = new Object2ObjectLinkedOpenHashMap<>();
 	private static final float COPPER_MINING_SPEED = ToolMaterial.COPPER.speed();
 	private static final float IRON_MINING_SPEED = ToolMaterial.IRON.speed();
-	public static final float EXPOSED_THRESHOLD = 0.45F;
-	public static final float WEATHERED_THRESHOLD = 0.65F;
-	public static final float OXIDIZED_THRESHOLD = 0.85F;
+	public static final float EXPOSED_THRESHOLD = 0.2F;
+	public static final float WEATHERED_THRESHOLD = 0.45F;
+	public static final float OXIDIZED_THRESHOLD = 0.65F;
 
 	public static void bootstrap() {
 		addOxidizableAttributesItem(Items.COPPER_SWORD, Items.IRON_SWORD);

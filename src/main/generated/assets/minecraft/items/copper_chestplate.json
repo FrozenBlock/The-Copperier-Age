@@ -94,7 +94,7 @@
                 },
                 "property": "minecraft:trim_material"
               },
-              "threshold": 0.45
+              "threshold": 0.2
             },
             {
               "model": {
@@ -184,7 +184,7 @@
                 },
                 "property": "minecraft:trim_material"
               },
-              "threshold": 0.65
+              "threshold": 0.45
             },
             {
               "model": {
@@ -274,7 +274,7 @@
                 },
                 "property": "minecraft:trim_material"
               },
-              "threshold": 0.85
+              "threshold": 0.65
             }
           ],
           "fallback": {

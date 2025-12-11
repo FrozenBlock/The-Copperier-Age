@@ -15,21 +15,21 @@
                       "type": "minecraft:model",
                       "model": "thecopperierage:item/brush_exposed_brushing_0"
                     },
-                    "threshold": 0.45
+                    "threshold": 0.2
                   },
                   {
                     "model": {
                       "type": "minecraft:model",
                       "model": "thecopperierage:item/brush_weathered_brushing_0"
                     },
-                    "threshold": 0.65
+                    "threshold": 0.45
                   },
                   {
                     "model": {
                       "type": "minecraft:model",
                       "model": "thecopperierage:item/brush_oxidized_brushing_0"
                     },
-                    "threshold": 0.85
+                    "threshold": 0.65
                   }
                 ],
                 "fallback": {
@@ -62,21 +62,21 @@
                       "type": "minecraft:model",
                       "model": "thecopperierage:item/brush_exposed_brushing_1"
                     },
-                    "threshold": 0.45
+                    "threshold": 0.2
                   },
                   {
                     "model": {
                       "type": "minecraft:model",
                       "model": "thecopperierage:item/brush_weathered_brushing_1"
                     },
-                    "threshold": 0.65
+                    "threshold": 0.45
                   },
                   {
                     "model": {
                       "type": "minecraft:model",
                       "model": "thecopperierage:item/brush_oxidized_brushing_1"
                     },
-                    "threshold": 0.85
+                    "threshold": 0.65
                   }
                 ],
                 "fallback": {
@@ -109,21 +109,21 @@
                       "type": "minecraft:model",
                       "model": "thecopperierage:item/brush_exposed_brushing_2"
                     },
-                    "threshold": 0.45
+                    "threshold": 0.2
                   },
                   {
                     "model": {
                       "type": "minecraft:model",
                       "model": "thecopperierage:item/brush_weathered_brushing_2"
                     },
-                    "threshold": 0.65
+                    "threshold": 0.45
                   },
                   {
                     "model": {
                       "type": "minecraft:model",
                       "model": "thecopperierage:item/brush_oxidized_brushing_2"
                     },
-                    "threshold": 0.85
+                    "threshold": 0.65
                   }
                 ],
                 "fallback": {
@@ -156,21 +156,21 @@
                   "type": "minecraft:model",
                   "model": "thecopperierage:item/brush_exposed"
                 },
-                "threshold": 0.45
+                "threshold": 0.2
               },
               {
                 "model": {
                   "type": "minecraft:model",
                   "model": "thecopperierage:item/brush_weathered"
                 },
-                "threshold": 0.65
+                "threshold": 0.45
               },
               {
                 "model": {
                   "type": "minecraft:model",
                   "model": "thecopperierage:item/brush_oxidized"
                 },
-                "threshold": 0.85
+                "threshold": 0.65
               }
             ],
             "fallback": {

@@ -37,6 +37,7 @@ import net.frozenblock.thecopperierage.block.WeatheringCopperFanBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperPressurePlateBlock;
 import net.frozenblock.thecopperierage.block.WeatheringGearboxBlock;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -44,6 +45,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
@@ -60,8 +62,7 @@ import org.apache.commons.lang3.function.TriFunction;
 import org.jetbrains.annotations.NotNull;
 
 public final class TCABlocks {
-
-	public static final CopperFireBlock COPPER_FIRE = register("copper_fire",
+	public static final CopperFireBlock COPPER_FIRE = registerWithoutItem("copper_fire",
 		CopperFireBlock::new,
 		BlockBehaviour.Properties.of()
 			.mapColor(MapColor.COLOR_LIGHT_GREEN)
@@ -143,7 +144,7 @@ public final class TCABlocks {
 
 	public static final WeatheringCopperBlocks COPPER_CRATE = createWeatheringCopperSet(
 		"copper_crate",
-		TCABlocks::register,
+		TCABlocks::registerWithContainerComponentItem,
 		CopperCrateBlock::new,
 		WeatheringCopperCrateBlock::new,
 		(weatherState) -> BlockBehaviour.Properties.of()
@@ -192,6 +193,12 @@ public final class TCABlocks {
 	private static <T extends Block> T register(String path, Function<BlockBehaviour.Properties, T> block, BlockBehaviour.Properties properties) {
 		T registered = registerWithoutItem(path, block, properties);
 		Items.registerBlock(registered);
+		return registered;
+	}
+
+	private static <T extends Block> T registerWithContainerComponentItem(String path, Function<BlockBehaviour.Properties, T> block, BlockBehaviour.Properties properties) {
+		T registered = registerWithoutItem(path, block, properties);
+		Items.registerBlock(registered, new Item.Properties().component(DataComponents.CONTAINER, ItemContainerContents.EMPTY));
 		return registered;
 	}
 

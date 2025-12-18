@@ -78,6 +78,10 @@ public class CopperCrateBlockEntity extends RandomizableContainerBlockEntity {
 	}
 
 	@Override
+	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+	}
+
+	@Override
 	protected void saveAdditional(ValueOutput output) {
 		super.saveAdditional(output);
 		if (!this.trySaveLootTable(output)) ContainerHelper.saveAllItems(output, this.items);

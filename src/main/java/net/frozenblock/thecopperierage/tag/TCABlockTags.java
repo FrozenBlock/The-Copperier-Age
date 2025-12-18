@@ -32,6 +32,7 @@ public final class TCABlockTags {
 	public static final TagKey<Block> COPPER_BUTTONS = bind("copper_buttons");
 	public static final TagKey<Block> COPPER_PRESSURE_PLATES = bind("copper_pressure_plates");
 	public static final TagKey<Block> WRENCH_CANNOT_ROTATE = bind("wrench_cannot_rotate");
+	public static final TagKey<Block> HAS_PUSHABLE_BLOCK_ENTITY = bind("has_pushable_block_entity");
 
 	private TCABlockTags() {
 		throw new UnsupportedOperationException("TCABlockTags contains only static declarations.");

@@ -19,9 +19,11 @@ package net.frozenblock.thecopperierage.block;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import java.util.List;
 import net.frozenblock.thecopperierage.block.entity.CopperCrateBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -32,6 +34,7 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.piglin.PiglinAi;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -50,6 +53,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
@@ -61,6 +66,7 @@ public class CopperCrateBlock extends BaseEntityBlock {
 			propertiesCodec()
 		).apply(instance, CopperCrateBlock::new)
 	);
+	public static final ResourceLocation CONTENTS = ResourceLocation.withDefaultNamespace("contents");
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
 	public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 	private final WeatheringCopper.WeatherState weatherState;
@@ -177,6 +183,38 @@ public class CopperCrateBlock extends BaseEntityBlock {
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(FACING, OPEN);
+	}
+
+	@Override
+	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+		saveItemsToDrop:{
+			if (!(level.getBlockEntity(pos) instanceof CopperCrateBlockEntity crate)) break saveItemsToDrop;
+
+			if (level.isClientSide() || !player.preventsBlockDrops() || crate.isEmpty()) {
+				crate.unpackLootTable(player);
+				break saveItemsToDrop;
+			}
+
+			final ItemStack stack = new ItemStack(this.asItem());
+			stack.applyComponents(crate.collectComponents());
+
+			final ItemEntity itemEntity = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, stack);
+			itemEntity.setDefaultPickUpDelay();
+			level.addFreshEntity(itemEntity);
+		}
+
+		return super.playerWillDestroy(level, pos, state, player);
+	}
+
+	@Override
+	protected List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
+		if (builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY) instanceof CopperCrateBlockEntity crate) {
+			builder = builder.withDynamicDrop(CONTENTS, consumer -> {
+				for (int i = 0; i < crate.getContainerSize(); i++) consumer.accept(crate.getItem(i));
+			});
+		}
+
+		return super.getDrops(state, builder);
 	}
 
 	@Override

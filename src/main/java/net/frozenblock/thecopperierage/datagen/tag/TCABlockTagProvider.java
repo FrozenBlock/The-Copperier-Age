@@ -105,6 +105,9 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 		this.builder(TCABlockTags.WRENCH_CANNOT_ROTATE)
 			.addOptional(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("trailiertales", "coffin")));
 
+		this.valueLookupBuilder(TCABlockTags.HAS_PUSHABLE_BLOCK_ENTITY)
+			.addOptionalTag(TCABlockTags.COPPER_CRATES);
+
 		this.builder(FrozenBlockTags.BLOWING_CAN_PASS_THROUGH)
 			.addOptionalTag(TCABlockTags.COPPER_FANS)
 			.addOptionalTag(TCABlockTags.CHIMES);

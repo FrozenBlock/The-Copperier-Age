@@ -4,6 +4,8 @@
   "package": "net.frozenblock.thecopperierage.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "block.copper_crate.PistonBaseBlockMixin",
+    "block.copper_crate.PistonMovingBlockEntityMixin",
     "block.copper_fan.EntityMixin",
     "block.copper_fire.BaseFireBlockMixin",
     "block.copper_fire.CampfireBlockMixin",

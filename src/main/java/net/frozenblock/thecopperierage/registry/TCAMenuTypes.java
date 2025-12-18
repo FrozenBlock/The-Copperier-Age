@@ -18,7 +18,7 @@
 package net.frozenblock.thecopperierage.registry;
 
 import net.frozenblock.thecopperierage.TCAConstants;
-import net.frozenblock.thecopperierage.block.entity.invetory.CrateMenu;
+import net.frozenblock.thecopperierage.block.entity.inventory.CrateMenu;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.flag.FeatureFlag;

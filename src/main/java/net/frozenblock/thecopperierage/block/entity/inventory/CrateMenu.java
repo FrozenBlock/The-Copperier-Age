@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.block.entity.invetory;
+package net.frozenblock.thecopperierage.block.entity.inventory;
 
 import net.frozenblock.thecopperierage.registry.TCAMenuTypes;
 import net.minecraft.world.Container;

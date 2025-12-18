@@ -19,7 +19,7 @@ package net.frozenblock.thecopperierage.block.entity;
 
 import java.util.List;
 import net.frozenblock.thecopperierage.block.CopperCrateBlock;
-import net.frozenblock.thecopperierage.block.entity.invetory.CrateMenu;
+import net.frozenblock.thecopperierage.block.entity.inventory.CrateMenu;
 import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;

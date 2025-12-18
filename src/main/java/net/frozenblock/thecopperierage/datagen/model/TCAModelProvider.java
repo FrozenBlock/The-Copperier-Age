@@ -268,6 +268,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 
 		dispatchCopperCrate(generator, block, model, openModel);
 		dispatchCopperCrate(generator, waxed, model, openModel);
+		generator.itemModelOutput.copy(block.asItem(), waxed.asItem());
 	}
 
 	private static void dispatchCopperCrate(BlockModelGenerators generator, Block block, MultiVariant model, MultiVariant openModel) {

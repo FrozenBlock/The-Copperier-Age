@@ -43,6 +43,7 @@ import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.data.models.model.TexturedModel;
 import net.minecraft.client.renderer.block.model.VariantMutator;
 import static net.minecraft.client.renderer.item.ItemModel.Unbaked;
 import net.minecraft.client.renderer.item.SelectItemModel;
@@ -59,6 +60,7 @@ import net.minecraft.world.item.equipment.EquipmentAssets;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -127,6 +129,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 		TCABlocks.GEARBOX.waxedMapping().forEach((block, waxedBlock) -> createGearbox(generator, block, waxedBlock));
 		TCABlocks.COPPER_FAN.waxedMapping().forEach((block, waxedBlock) -> createCopperFan(generator, block, waxedBlock));
 		TCABlocks.CHIME.waxedMapping().forEach((block, waxedBlock) -> createChime(generator, block, waxedBlock));
+		TCABlocks.COPPER_CRATE.waxedMapping().forEach((block, waxedBlock) -> createCopperCrate(generator, block, waxedBlock));
 
 		createCopperButton(generator, TCABlocks.COPPER_BUTTON.unaffected(), TCABlocks.COPPER_BUTTON.waxed(), Blocks.COPPER_BLOCK);
 		createCopperButton(generator, TCABlocks.COPPER_BUTTON.exposed(), TCABlocks.COPPER_BUTTON.waxedExposed(), Blocks.EXPOSED_COPPER);
@@ -251,6 +254,28 @@ public final class TCAModelProvider extends FabricModelProvider {
 
 		generator.itemModelOutput.copy(block.asItem(), waxed.asItem());
 		generator.registerSimpleFlatItemModel(block);
+	}
+
+	private static void createCopperCrate(BlockModelGenerators generator, Block block, Block waxed) {
+		final ResourceLocation topOpenTexture = TextureMapping.getBlockTexture(block, "_top_open");
+		final MultiVariant model = BlockModelGenerators.plainVariant(TexturedModel.CUBE_TOP_BOTTOM.create(block, generator.modelOutput));
+		final MultiVariant openModel = BlockModelGenerators.plainVariant(
+			TexturedModel.CUBE_TOP_BOTTOM
+				.get(block)
+				.updateTextures(textureMapping -> textureMapping.put(TextureSlot.TOP, topOpenTexture))
+				.createWithSuffix(block, "_open", generator.modelOutput)
+		);
+
+		dispatchCopperCrate(generator, block, model, openModel);
+		dispatchCopperCrate(generator, waxed, model, openModel);
+	}
+
+	private static void dispatchCopperCrate(BlockModelGenerators generator, Block block, MultiVariant model, MultiVariant openModel) {
+		generator.blockStateOutput.accept(
+			MultiVariantGenerator.dispatch(block)
+				.with(PropertyDispatch.initial(BlockStateProperties.OPEN).select(false, model).select(true, openModel))
+				.with(BlockModelGenerators.ROTATIONS_COLUMN_WITH_FACING)
+		);
 	}
 
 	private static void createCopperButton(@NotNull BlockModelGenerators generator, @NotNull Block block, @NotNull Block waxedBlock, Block originalBlock) {

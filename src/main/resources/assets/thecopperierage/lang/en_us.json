@@ -55,6 +55,18 @@
   "subtitles.block.copper_fan.idle_blow": "Fan blows",
   "subtitles.block.copper_fan.idle_hum": "Fan hums",
 
+  "block.thecopperierage.copper_crate": "Copper Crate",
+  "block.thecopperierage.exposed_copper_crate": "Exposed Copper Crate",
+  "block.thecopperierage.weathered_copper_crate": "Weathered Copper Crate",
+  "block.thecopperierage.oxidized_copper_crate": "Oxidized Copper Crate",
+  "block.thecopperierage.waxed_copper_crate": "Waxed Copper Crate",
+  "block.thecopperierage.waxed_exposed_copper_crate": "Waxed Exposed Copper Crate",
+  "block.thecopperierage.waxed_weathered_copper_crate": "Waxed Weathered Copper Crate",
+  "block.thecopperierage.waxed_oxidized_copper_crate": "Waxed Oxidized Copper Crate",
+  "container.copper_crate": "Copper Crate",
+  "subtitles.block.copper_crate.open": "Copper Crate opened",
+  "subtitles.block.copper_crate.close": "Copper Crate closed",
+
   "block.thecopperierage.copper_button": "Copper Button",
   "block.thecopperierage.exposed_copper_button": "Exposed Copper Button",
   "block.thecopperierage.weathered_copper_button": "Weathered Copper Button",

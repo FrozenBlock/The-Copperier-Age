@@ -127,6 +127,16 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.unlockedBy(RecipeProvider.getHasName(Items.AMETHYST_SHARD), this.has(Items.AMETHYST_SHARD))
 					.save(exporter);
 
+				createCopperCrateRecipe(this, exporter, TCABlocks.COPPER_CRATE.unaffected(), Blocks.COPPER_BLOCK, Blocks.CUT_COPPER_SLAB);
+				createCopperCrateRecipe(this, exporter, TCABlocks.COPPER_CRATE.exposed(), Blocks.EXPOSED_COPPER, Blocks.EXPOSED_CUT_COPPER_SLAB);
+				createCopperCrateRecipe(this, exporter, TCABlocks.COPPER_CRATE.weathered(), Blocks.WEATHERED_COPPER, Blocks.WEATHERED_CUT_COPPER_SLAB);
+				createCopperCrateRecipe(this, exporter, TCABlocks.COPPER_CRATE.oxidized(), Blocks.OXIDIZED_COPPER, Blocks.OXIDIZED_CUT_COPPER_SLAB);
+
+				createCopperCrateRecipe(this, exporter, TCABlocks.COPPER_CRATE.waxed(), Blocks.WAXED_COPPER_BLOCK, Blocks.WAXED_CUT_COPPER_SLAB);
+				createCopperCrateRecipe(this, exporter, TCABlocks.COPPER_CRATE.waxedExposed(), Blocks.WAXED_EXPOSED_COPPER, Blocks.WAXED_EXPOSED_CUT_COPPER_SLAB);
+				createCopperCrateRecipe(this, exporter, TCABlocks.COPPER_CRATE.waxedWeathered(), Blocks.WAXED_WEATHERED_COPPER, Blocks.WAXED_WEATHERED_CUT_COPPER_SLAB);
+				createCopperCrateRecipe(this, exporter, TCABlocks.COPPER_CRATE.waxedOxidized(), Blocks.WAXED_OXIDIZED_COPPER, Blocks.WAXED_OXIDIZED_CUT_COPPER_SLAB);
+
 				RecipeExportNamespaceFix.clearCurrentGeneratingModId();
 			}
 		};
@@ -163,6 +173,17 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 			.pattern("X/X")
 			.pattern("XRX")
 			.unlockedBy(RecipeProvider.getHasName(copperBlock), recipeProvider.has(copperBlock))
+			.save(exporter);
+	}
+
+	private static void createCopperCrateRecipe(RecipeProvider provider, RecipeOutput exporter, Block crateBlock, Block copperBlock, Block copperSlabBlock) {
+		provider.shaped(RecipeCategory.REDSTONE, crateBlock, 4)
+			.define('#', Ingredient.of(copperBlock))
+			.define('-', Ingredient.of(copperSlabBlock))
+			.pattern("#-#")
+			.pattern("# #")
+			.pattern("###")
+			.unlockedBy(RecipeProvider.getHasName(copperBlock), provider.has(copperBlock))
 			.save(exporter);
 	}
 

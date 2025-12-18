@@ -24,6 +24,7 @@ import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.TCAFeatureFlags;
 import net.frozenblock.thecopperierage.block.ChimeBlock;
 import net.frozenblock.thecopperierage.block.CopperButtonBlock;
+import net.frozenblock.thecopperierage.block.CopperCrateBlock;
 import net.frozenblock.thecopperierage.block.CopperFanBlock;
 import net.frozenblock.thecopperierage.block.CopperFireBlock;
 import net.frozenblock.thecopperierage.block.CopperPressurePlateBlock;
@@ -31,6 +32,7 @@ import net.frozenblock.thecopperierage.block.GearboxBlock;
 import net.frozenblock.thecopperierage.block.RedstonePumpkinBlock;
 import net.frozenblock.thecopperierage.block.WeatheringChimeBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperButtonBlock;
+import net.frozenblock.thecopperierage.block.WeatheringCopperCrateBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperFanBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperPressurePlateBlock;
 import net.frozenblock.thecopperierage.block.WeatheringGearboxBlock;
@@ -139,6 +141,16 @@ public final class TCABlocks {
 			.noOcclusion()
 	);
 
+	public static final WeatheringCopperBlocks COPPER_CRATE = createWeatheringCopperSet(
+		"copper_crate",
+		TCABlocks::register,
+		CopperCrateBlock::new,
+		WeatheringCopperCrateBlock::new,
+		(weatherState) -> BlockBehaviour.Properties.of()
+			.mapColor(MapColor.NONE)
+			.strength(1.5F)
+	);
+
 	public static final WeatheringCopperBlocks COPPER_BUTTON = createWeatheringCopperSet(
 		"copper_button",
 		TCABlocks::register,
@@ -167,7 +179,7 @@ public final class TCABlocks {
 		throw new UnsupportedOperationException("TCABlocks contains only static declarations.");
 	}
 
-	public static void registerBlocks() {
+	public static void init() {
 		TCAConstants.logWithModId("Registering Blocks for", TCAConstants.UNSTABLE_LOGGING);
 	}
 

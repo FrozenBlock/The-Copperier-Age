@@ -60,7 +60,7 @@ public final class TCAItems {
 		throw new UnsupportedOperationException("WWItems contains only static declarations.");
 	}
 
-	public static void registerItems() {
+	public static void init() {
 	}
 
 	private static @NotNull <T extends Item> T register(String name, @NotNull Function<Item.Properties, Item> function, Item.@NotNull Properties properties) {

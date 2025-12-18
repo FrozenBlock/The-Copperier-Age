@@ -59,19 +59,22 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 		this.valueLookupBuilder(BlockTags.FIRE)
 			.add(TCABlocks.COPPER_FIRE);
 
-		TagAppender<Block, Block> gearboxesTag = this.valueLookupBuilder(TCABlockTags.GEARBOXES);
+		final TagAppender<Block, Block> gearboxesTag = this.valueLookupBuilder(TCABlockTags.GEARBOXES);
 		TCABlocks.GEARBOX.forEach(gearboxesTag::add);
 
-		TagAppender<Block, Block> copperFansTag = this.valueLookupBuilder(TCABlockTags.COPPER_FANS);
+		final TagAppender<Block, Block> copperFansTag = this.valueLookupBuilder(TCABlockTags.COPPER_FANS);
 		TCABlocks.COPPER_FAN.forEach(copperFansTag::add);
 
-		TagAppender<Block, Block> chimesTag = this.valueLookupBuilder(TCABlockTags.CHIMES);
+		final TagAppender<Block, Block> chimesTag = this.valueLookupBuilder(TCABlockTags.CHIMES);
 		TCABlocks.CHIME.forEach(chimesTag::add);
 
-		TagAppender<Block, Block> copperButtonsTag = this.valueLookupBuilder(TCABlockTags.COPPER_BUTTONS);
+		final TagAppender<Block, Block> copperCratesTag = this.valueLookupBuilder(TCABlockTags.COPPER_CRATES);
+		TCABlocks.COPPER_CRATE.forEach(copperCratesTag::add);
+
+		final TagAppender<Block, Block> copperButtonsTag = this.valueLookupBuilder(TCABlockTags.COPPER_BUTTONS);
 		TCABlocks.COPPER_BUTTON.forEach(copperButtonsTag::add);
 
-		TagAppender<Block, Block> copperPressurePlatesTag = this.valueLookupBuilder(TCABlockTags.COPPER_PRESSURE_PLATES);
+		final TagAppender<Block, Block> copperPressurePlatesTag = this.valueLookupBuilder(TCABlockTags.COPPER_PRESSURE_PLATES);
 		TCABlocks.WEIGHTED_PRESSURE_PLATE.forEach(copperPressurePlatesTag::add);
 
 		this.valueLookupBuilder(BlockTags.MINEABLE_WITH_AXE)
@@ -85,6 +88,7 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 			.addOptionalTag(TCABlockTags.GEARBOXES)
 			.addOptionalTag(TCABlockTags.COPPER_FANS)
 			.addOptionalTag(TCABlockTags.CHIMES)
+			.addOptionalTag(TCABlockTags.COPPER_CRATES)
 			.addOptionalTag(TCABlockTags.COPPER_BUTTONS)
 			.addOptionalTag(TCABlockTags.COPPER_PRESSURE_PLATES);
 
@@ -139,12 +143,11 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 			.add(TCABlocks.COPPER_JACK_O_LANTERN, TCABlocks.REDSTONE_JACK_O_LANTERN);
 	}
 
-	@NotNull
 	private TagKey<Block> getTag(String id) {
 		return TagKey.create(this.registryKey, ResourceLocation.parse(id));
 	}
 
-	@NotNull private ResourceKey<Block> getKey(String namespace, String path) {
+	private ResourceKey<Block> getKey(String namespace, String path) {
 		return ResourceKey.create(this.registryKey, ResourceLocation.fromNamespaceAndPath(namespace, path));
 	}
 }

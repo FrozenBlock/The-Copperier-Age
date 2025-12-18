@@ -76,6 +76,18 @@ public final class TCACreativeInventorySorting {
 		addAfterInBuildingBlocks(TCABlocks.COPPER_FAN.oxidized(), TCABlocks.CHIME.oxidized());
 		addAfterInBuildingBlocks(TCABlocks.COPPER_FAN.waxedOxidized(), TCABlocks.CHIME.waxedOxidized());
 
+		// COPPER CRATE
+		addAfterInFunctionalBlocks(Items.BARREL, TCABlocks.COPPER_CRATE.unaffected());
+		addAfterInFunctionalBlocks(TCABlocks.COPPER_CRATE.unaffected(), TCABlocks.COPPER_CRATE.exposed());
+		addAfterInFunctionalBlocks(TCABlocks.COPPER_CRATE.exposed(), TCABlocks.COPPER_CRATE.weathered());
+		addAfterInFunctionalBlocks(TCABlocks.COPPER_CRATE.weathered(), TCABlocks.COPPER_CRATE.oxidized());
+		addAfterInFunctionalBlocks(TCABlocks.COPPER_CRATE.oxidized(), TCABlocks.COPPER_CRATE.waxed());
+		addAfterInFunctionalBlocks(TCABlocks.COPPER_CRATE.waxed(), TCABlocks.COPPER_CRATE.waxedExposed());
+		addAfterInFunctionalBlocks(TCABlocks.COPPER_CRATE.waxedExposed(), TCABlocks.COPPER_CRATE.waxedWeathered());
+		addAfterInFunctionalBlocks(TCABlocks.COPPER_CRATE.waxedWeathered(), TCABlocks.COPPER_CRATE.waxedOxidized());
+
+		addAfterInRedstoneBlocks(Items.BARREL, TCABlocks.COPPER_CRATE.waxed());
+
 		// BUTTON
 		addAfterInRedstoneBlocks(Items.STONE_BUTTON, TCABlocks.COPPER_BUTTON.waxed());
 		addAfterInRedstoneBlocks(TCABlocks.COPPER_BUTTON.waxed(), TCABlocks.COPPER_BUTTON.waxedExposed());

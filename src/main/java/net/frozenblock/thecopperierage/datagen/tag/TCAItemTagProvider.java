@@ -44,19 +44,22 @@ public final class TCAItemTagProvider extends FabricTagProvider.ItemTagProvider 
 		this.builder(ItemTags.BUTTONS)
 			.addOptionalTag(TCAItemTags.COPPER_BUTTONS);
 
-		TagAppender<Item, Item> gearboxesTag = this.valueLookupBuilder(TCAItemTags.GEARBOXES);
+		final TagAppender<Item, Item> gearboxesTag = this.valueLookupBuilder(TCAItemTags.GEARBOXES);
 		TCABlocks.GEARBOX.forEach(block -> gearboxesTag.add(block.asItem()));
 
-		TagAppender<Item, Item> copperFansTag = this.valueLookupBuilder(TCAItemTags.COPPER_FANS);
+		final TagAppender<Item, Item> copperFansTag = this.valueLookupBuilder(TCAItemTags.COPPER_FANS);
 		TCABlocks.COPPER_FAN.forEach(block -> copperFansTag.add(block.asItem()));
 
-		TagAppender<Item, Item> chimesTag = this.valueLookupBuilder(TCAItemTags.CHIMES);
+		final TagAppender<Item, Item> chimesTag = this.valueLookupBuilder(TCAItemTags.CHIMES);
 		TCABlocks.CHIME.forEach(block -> chimesTag.add(block.asItem()));
 
-		TagAppender<Item, Item> copperButtonsTag = this.valueLookupBuilder(TCAItemTags.COPPER_BUTTONS);
+		final TagAppender<Item, Item> copperCratesTag = this.valueLookupBuilder(TCAItemTags.COPPER_CRATES);
+		TCABlocks.COPPER_CRATE.forEach(block -> copperCratesTag.add(block.asItem()));
+
+		final TagAppender<Item, Item> copperButtonsTag = this.valueLookupBuilder(TCAItemTags.COPPER_BUTTONS);
 		TCABlocks.COPPER_BUTTON.forEach(block -> copperButtonsTag.add(block.asItem()));
 
-		TagAppender<Item, Item> copperPressurePlatesTag = this.valueLookupBuilder(TCAItemTags.COPPER_PRESSURE_PLATES);
+		final TagAppender<Item, Item> copperPressurePlatesTag = this.valueLookupBuilder(TCAItemTags.COPPER_PRESSURE_PLATES);
 		TCABlocks.WEIGHTED_PRESSURE_PLATE.forEach(block -> copperPressurePlatesTag.add(block.asItem()));
 
 		this.valueLookupBuilder(ItemTags.BREAKS_DECORATED_POTS)
@@ -84,7 +87,7 @@ public final class TCAItemTagProvider extends FabricTagProvider.ItemTagProvider 
 		return TagKey.create(this.registryKey, ResourceLocation.parse(id));
 	}
 
-	@NotNull private ResourceKey<Item> getKey(String namespace, String path) {
+	private ResourceKey<Item> getKey(String namespace, String path) {
 		return ResourceKey.create(this.registryKey, ResourceLocation.fromNamespaceAndPath(namespace, path));
 	}
 }

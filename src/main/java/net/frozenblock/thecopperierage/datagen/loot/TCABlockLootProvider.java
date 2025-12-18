@@ -34,11 +34,12 @@ public final class TCABlockLootProvider extends FabricBlockLootTableProvider {
 
 	@Override
 	public void generate() {
-		HolderLookup.RegistryLookup<Enchantment> registryLookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
+		final HolderLookup.RegistryLookup<Enchantment> enchantments = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
 
 		TCABlocks.GEARBOX.forEach(this::dropSelf);
 		TCABlocks.COPPER_FAN.forEach(this::dropSelf);
 		TCABlocks.CHIME.forEach(this::dropSelf);
+		TCABlocks.COPPER_CRATE.forEach(this::dropSelf);
 		TCABlocks.COPPER_BUTTON.forEach(this::dropSelf);
 		TCABlocks.WEIGHTED_PRESSURE_PLATE.forEach(this::dropSelf);
 

@@ -27,6 +27,7 @@ import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCACreativeInventorySorting;
 import net.frozenblock.thecopperierage.registry.TCAItems;
+import net.frozenblock.thecopperierage.registry.TCAMenuTypes;
 import net.frozenblock.thecopperierage.registry.TCAParticleTypes;
 import net.frozenblock.thecopperierage.registry.TCAResources;
 import net.frozenblock.thecopperierage.registry.TCASounds;
@@ -42,13 +43,14 @@ public final class TheCopperierAge extends FrozenModInitializer {
 		TCAFeatureFlags.init();
 		FeatureFlagApi.rebuild();
 
-		TCABlocks.registerBlocks();
+		TCABlocks.init();
 		TCABlockEntityTypes.init();
-		TCAItems.registerItems();
+		TCAItems.init();
 		OxidizableItemHelper.bootstrap();
 		TCASounds.init();
 		TCACreativeInventorySorting.init();
 		TCAParticleTypes.registerParticles();
+		TCAMenuTypes.init();
 		TCABlocks.registerBlockProperties();
 		TCAModIntegrations.init();
 		TCANetworking.init();

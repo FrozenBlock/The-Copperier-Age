@@ -27,6 +27,7 @@ public final class TCAItemTags {
 	public static final TagKey<Item> GEARBOXES = bind("gearboxes");
 	public static final TagKey<Item> COPPER_FANS = bind("copper_fans");
 	public static final TagKey<Item> CHIMES = bind("chimes");
+	public static final TagKey<Item> COPPER_CRATES = bind("copper_crates");
 	public static final TagKey<Item> COPPER_BUTTONS = bind("copper_buttons");
 	public static final TagKey<Item> COPPER_PRESSURE_PLATES = bind("copper_pressure_plates");
 	public static final TagKey<Item> OXIDIZABLE_EQUIPMENT = bind("oxidizable_equipment");

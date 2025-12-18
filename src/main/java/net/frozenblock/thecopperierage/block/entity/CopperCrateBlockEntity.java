@@ -24,6 +24,8 @@ import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Vec3i;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -92,6 +94,18 @@ public class CopperCrateBlockEntity extends RandomizableContainerBlockEntity {
 		super.loadAdditional(input);
 		this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
 		if (!this.tryLoadLootTable(input)) ContainerHelper.loadAllItems(input, this.items);
+	}
+
+	@Override
+	protected void collectImplicitComponents(DataComponentMap.Builder builder) {
+		super.collectImplicitComponents(builder);
+
+		final List<ItemStack> items = this.getItems();
+		if (!items.isEmpty() && items.stream().anyMatch(stack -> !stack.isEmpty())) {
+			builder.set(DataComponents.MAX_STACK_SIZE, 1);
+		} else {
+			builder.set(DataComponents.MAX_STACK_SIZE, this.getBlockState().getBlock().asItem().getDefaultMaxStackSize());
+		}
 	}
 
 	@Override

@@ -24,14 +24,12 @@ import net.frozenblock.thecopperierage.item.WrenchItem;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.Instrument;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.InstrumentComponent;
 import org.jetbrains.annotations.NotNull;
 
 public final class TCAItems {
-
 	public static final WrenchItem WRENCH = register("wrench",
 		WrenchItem::new,
 		new Item.Properties()
@@ -39,21 +37,11 @@ public final class TCAItems {
 			.durability(128)
 	);
 
-	// INSTRUMENT
-	public static final ResourceKey<Instrument> SAX_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("sax_copper_horn"));
-	public static final ResourceKey<Instrument> TUBA_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("tuba_copper_horn"));
-	public static final ResourceKey<Instrument> RECORDER_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("recorder_copper_horn"));
-	public static final ResourceKey<Instrument> FLUTE_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("flute_copper_horn"));
-	public static final ResourceKey<Instrument> OBOE_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("oboe_copper_horn"));
-	public static final ResourceKey<Instrument> CLARINET_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("clarinet_copper_horn"));
-	public static final ResourceKey<Instrument> TRUMPET_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("trumpet_copper_horn"));
-	public static final ResourceKey<Instrument> TROMBONE_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("trombone_copper_horn"));
-
 	public static final CopperHornItem COPPER_HORN = register("copper_horn",
 		CopperHornItem::new,
 		new Item.Properties()
 			.stacksTo(1)
-			.component(DataComponents.INSTRUMENT, new InstrumentComponent(SAX_COPPER_HORN))
+			.component(DataComponents.INSTRUMENT, new InstrumentComponent(TCAInstruments.SAX_COPPER_HORN))
 	);
 
 	private TCAItems() {

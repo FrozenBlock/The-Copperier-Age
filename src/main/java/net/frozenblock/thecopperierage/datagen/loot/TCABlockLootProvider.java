@@ -68,6 +68,7 @@ public final class TCABlockLootProvider extends FabricBlockLootTableProvider {
 								.include(DataComponents.CONTAINER)
 								.include(DataComponents.LOCK)
 								.include(DataComponents.CONTAINER_LOOT)
+								.include(DataComponents.MAX_STACK_SIZE)
 						)
 					)
 				)

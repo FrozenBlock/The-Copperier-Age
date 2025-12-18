@@ -20,7 +20,7 @@ package net.frozenblock.thecopperierage.datagen.tag;
 import java.util.concurrent.CompletableFuture;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.frozenblock.thecopperierage.registry.TCAItems;
+import net.frozenblock.thecopperierage.registry.TCAInstruments;
 import net.frozenblock.thecopperierage.tag.TCAInstrumentTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -36,13 +36,13 @@ public final class TCAInstrumentTagProvider extends FabricTagProvider<Instrument
 	@Override
 	public void addTags(@NotNull HolderLookup.Provider arg) {
 		this.builder(TCAInstrumentTags.COPPER_HORNS)
-			.add(TCAItems.RECORDER_COPPER_HORN)
-			.add(TCAItems.FLUTE_COPPER_HORN)
-			.add(TCAItems.OBOE_COPPER_HORN)
-			.add(TCAItems.CLARINET_COPPER_HORN)
-			.add(TCAItems.SAX_COPPER_HORN)
-			.add(TCAItems.TRUMPET_COPPER_HORN)
-			.add(TCAItems.TROMBONE_COPPER_HORN)
-			.add(TCAItems.TUBA_COPPER_HORN);
+			.add(TCAInstruments.RECORDER_COPPER_HORN)
+			.add(TCAInstruments.FLUTE_COPPER_HORN)
+			.add(TCAInstruments.OBOE_COPPER_HORN)
+			.add(TCAInstruments.CLARINET_COPPER_HORN)
+			.add(TCAInstruments.SAX_COPPER_HORN)
+			.add(TCAInstruments.TRUMPET_COPPER_HORN)
+			.add(TCAInstruments.TROMBONE_COPPER_HORN)
+			.add(TCAInstruments.TUBA_COPPER_HORN);
 	}
 }

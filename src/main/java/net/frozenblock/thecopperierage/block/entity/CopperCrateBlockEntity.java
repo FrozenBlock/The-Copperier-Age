@@ -48,7 +48,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 public class CopperCrateBlockEntity extends RandomizableContainerBlockEntity {
 	public static int ROW_COUNT = 4;
 	public static final int CONTAINER_SIZE = ROW_COUNT * 9;
-	private static final Component DEFAULT_NAME = Component.translatable("container.copper_crate");
+	private static final Component DEFAULT_NAME = Component.translatable("container.thecopperierage.copper_crate");
 	private NonNullList<ItemStack> items = NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY);
 	private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
 		@Override
@@ -129,7 +129,7 @@ public class CopperCrateBlockEntity extends RandomizableContainerBlockEntity {
 
 	@Override
 	public boolean canPlaceItem(int slot, ItemStack stack) {
-		return CopperCrateBlock.verifyStackForPlacement(stack, this);
+		return CopperCrateBlock.verifyStackForPlacement(stack, this).isSuccess();
 	}
 
 	@Override

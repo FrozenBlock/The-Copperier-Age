@@ -20,15 +20,15 @@ package net.frozenblock.thecopperierage.registry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.frozenblock.thecopperierage.TCAConstants;
+import net.frozenblock.thecopperierage.client.gui.screens.inventory.CrateScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.gui.screens.inventory.ContainerScreen;
 
 @Environment(EnvType.CLIENT)
 public final class TCAMenuScreens {
 
 	public static void init() {
 		TCAConstants.logWithModId("Registering MenuScreens for", TCAConstants.UNSTABLE_LOGGING);
-		MenuScreens.register(TCAMenuTypes.CRATE, ContainerScreen::new);
+		MenuScreens.register(TCAMenuTypes.CRATE, CrateScreen::new);
 	}
 
 }

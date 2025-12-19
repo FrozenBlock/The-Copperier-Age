@@ -20,10 +20,12 @@ package net.frozenblock.thecopperierage.block;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.List;
+import java.util.Optional;
 import net.frozenblock.thecopperierage.block.entity.CopperCrateBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -112,13 +114,14 @@ public class CopperCrateBlock extends BaseEntityBlock {
 		return this.weatherState;
 	}
 
-	public static boolean verifyStackForPlacement(ItemStack stack, Container container) {
-		if (stack.isEmpty()) return false;
-		if (!stack.getComponents().getOrDefault(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY).isEmpty()) return false;
-		if (stack.getComponents().getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).nonEmptyStream().findAny().isPresent()) return false;
+	public static SlotResult verifyStackForPlacement(ItemStack stack, Container container) {
+		if (stack.isEmpty()) return SlotResult.FAILURE_EMPTY_ITEM;
+		if (!stack.getComponents().getOrDefault(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY).isEmpty()) return SlotResult.FAILURE_CONTAINER_ITEM;
+		if (stack.getComponents().getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).nonEmptyStream().findAny().isPresent()) return SlotResult.FAILURE_CONTAINER_ITEM;
 
 		final Item item = stack.getItem();
-		return !container.hasAnyMatching(containerStack -> !containerStack.isEmpty() && !containerStack.is(item));
+		if (container.hasAnyMatching(containerStack -> !containerStack.isEmpty() && !containerStack.is(item))) return SlotResult.FAILURE_MISMATCHING_ITEM;
+		return SlotResult.SUCCESS;
 	}
 
 	// TODO: custom stat
@@ -229,5 +232,29 @@ public class CopperCrateBlock extends BaseEntityBlock {
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite());
+	}
+
+	public enum SlotResult {
+		SUCCESS(Optional.empty()),
+		FAILURE_EMPTY_ITEM(Optional.empty()),
+		FAILURE_CONTAINER_ITEM(Optional.of(Component.translatable("gui.thecopperierage.crate_cannot_fit_container_item"))),
+		FAILURE_MISMATCHING_ITEM(Optional.of(Component.translatable("gui.thecopperierage.crate_mismatching_item")));
+		private final Optional<Component> tooltip;
+
+		SlotResult(Optional<Component> tooltip) {
+			this.tooltip = tooltip;
+		}
+
+		public boolean isSuccess() {
+			return this == SUCCESS;
+		}
+
+		public boolean isEmptyItem() {
+			return this == FAILURE_EMPTY_ITEM;
+		}
+
+		public Optional<Component> getTooltip() {
+			return this.tooltip;
+		}
 	}
 }

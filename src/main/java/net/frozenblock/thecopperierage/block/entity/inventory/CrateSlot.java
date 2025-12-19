@@ -30,6 +30,6 @@ public class CrateSlot extends Slot {
 
 	@Override
 	public boolean mayPlace(ItemStack stack) {
-		return CopperCrateBlock.verifyStackForPlacement(stack, this.container);
+		return CopperCrateBlock.verifyStackForPlacement(stack, this.container).isSuccess();
 	}
 }

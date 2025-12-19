@@ -30,6 +30,7 @@ import net.minecraft.client.gui.screens.inventory.ContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.sounds.SoundManager;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -55,14 +56,25 @@ public class CrateScreen extends ContainerScreen {
 		return null;
 	}
 
+	private boolean shouldForceBlock(ItemStack slotStack, ItemStack stack) {
+		return slotStack.has(DataComponents.BUNDLE_CONTENTS) && stack != slotStack && stack != null && !stack.isEmpty() && !stack.has(DataComponents.BUNDLE_CONTENTS);
+	}
+
 	@Override
 	public void renderSlot(GuiGraphics guiGraphics, Slot slot) {
 		renderBlockedSlot: {
-			if (!(slot instanceof CrateSlot crateSlot) || slot.hasItem()) break renderBlockedSlot;
+			if (!(slot instanceof CrateSlot crateSlot)) break renderBlockedSlot;
 
 			ItemStack selectedStack = this.menu.getCarried();
 			if (selectedStack == null || selectedStack.isEmpty()) selectedStack = this.getHoveredItem();
-			final CopperCrateBlock.SlotResult slotResult = CopperCrateBlock.verifyStackForPlacement(selectedStack, this.menu.getContainer());
+
+			final ItemStack slotStack = slot.getItem();
+			boolean forceBlock = this.shouldForceBlock(slotStack, selectedStack);
+			if (!forceBlock && !slotStack.isEmpty()) break renderBlockedSlot;
+
+			final CopperCrateBlock.SlotResult slotResult = forceBlock
+				? CopperCrateBlock.SlotResult.FAILURE_CONTAINER_ITEM
+				: CopperCrateBlock.verifyStackForPlacement(selectedStack, this.menu.getContainer());
 			if (slotResult.isSuccess() || slotResult.isEmptyItem()) break renderBlockedSlot;
 
 			this.renderBlockedSlot(guiGraphics, crateSlot);
@@ -108,7 +120,7 @@ public class CrateScreen extends ContainerScreen {
 	}
 
 	public static void playBlockedSlotClickSound(SoundManager soundManager) {
-		soundManager.play(SimpleSoundInstance.forUI(TCASounds.UI_CRATE_CLICK_FAIL.value(), 1F));
+		soundManager.play(SimpleSoundInstance.forUI(TCASounds.UI_CRATE_CLICK_FAIL, 1F));
 	}
 
 }

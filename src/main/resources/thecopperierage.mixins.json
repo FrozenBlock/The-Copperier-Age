@@ -17,6 +17,7 @@
     "worldgen.TrickierTrialsPackCheckerMixin"
   ],
   "client": [
+    "client.copper_crate.AbstractContainerMenuMixin",
     "client.copper_crate.MovingBlockRenderStateMixin",
     "client.copper_crate.PistonHeadRendererMixin",
     "client.copper_fire.BaseFireBlockMixin",

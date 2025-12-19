@@ -136,6 +136,7 @@ public final class TCABlocks {
 		ChimeBlock::new,
 		WeatheringChimeBlock::new,
 		(weatherState) -> BlockBehaviour.Properties.of()
+			.mapColor(MapColor.METAL)
 			.requiresCorrectToolForDrops()
 			.strength(5F, 6F)
 			.sound(TCASounds.CHIME)
@@ -148,8 +149,10 @@ public final class TCABlocks {
 		CopperCrateBlock::new,
 		WeatheringCopperCrateBlock::new,
 		(weatherState) -> BlockBehaviour.Properties.of()
-			.mapColor(MapColor.NONE)
-			.strength(1.5F)
+			.mapColor(getMapColorForWeatherState(weatherState))
+			.requiresCorrectToolForDrops()
+			.strength(3F, 6F)
+			.sound(SoundType.COPPER)
 	);
 
 	public static final WeatheringCopperBlocks COPPER_BUTTON = createWeatheringCopperSet(
@@ -170,7 +173,7 @@ public final class TCABlocks {
 		CopperPressurePlateBlock::new,
 		WeatheringCopperPressurePlateBlock::new,
 		(weatherState) -> BlockBehaviour.Properties.of()
-			.mapColor(MapColor.NONE)
+			.mapColor(getMapColorForWeatherState(weatherState))
 			.strength(0.5F)
 			.noCollision()
 			.pushReaction(PushReaction.DESTROY)
@@ -238,6 +241,14 @@ public final class TCABlocks {
 	}
 
 	private static void registerDispenses() {
+	}
+
+	public static MapColor getMapColorForWeatherState(WeatheringCopper.WeatherState weatherState) {
+		if (weatherState == WeatheringCopper.WeatherState.UNAFFECTED) return MapColor.COLOR_ORANGE;
+		if (weatherState == WeatheringCopper.WeatherState.EXPOSED) return MapColor.TERRACOTTA_LIGHT_GRAY;
+		if (weatherState == WeatheringCopper.WeatherState.WEATHERED) return MapColor.WARPED_STEM;
+		if (weatherState == WeatheringCopper.WeatherState.OXIDIZED) return MapColor.WARPED_NYLIUM;
+		return MapColor.NONE;
 	}
 
 	public static <W extends Block> @NotNull WeatheringCopperBlocks createWeatheringCopperSet(

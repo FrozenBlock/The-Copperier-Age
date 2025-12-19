@@ -79,8 +79,11 @@ public class CopperCrateBlockEntity extends RandomizableContainerBlockEntity {
 		super(TCABlockEntityTypes.COPPER_CRATE, pos, state);
 	}
 
+	// TODO: Config
 	@Override
 	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+		if (!true) return;
+		super.preRemoveSideEffects(pos, state);
 	}
 
 	@Override

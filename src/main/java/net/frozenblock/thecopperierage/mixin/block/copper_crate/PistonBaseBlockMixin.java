@@ -176,4 +176,26 @@ public class PistonBaseBlockMixin {
 		return original;
 	}
 
+	@WrapOperation(
+		method = "moveBlocks",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/level/Level;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z",
+			ordinal = 0
+		),
+		slice = @Slice(
+			from = @At(
+				value = "INVOKE",
+				target = "Ljava/util/Map;keySet()Ljava/util/Set;"
+			)
+		)
+	)
+	public boolean theCopperierAge$saveBlockEntityToMovingBlocks(Level instance, BlockPos pos, BlockState state, int flags, Operation<Boolean> original) {
+		// The AND check for 256 dictates whether `BlockEntity$preRemoveSideEffects` is called.
+		// With 82, & 256 returns 0.
+		// Adding 256 makes this not return 0, while keeping all other calls intact.
+		if (instance.getBlockState(pos).is(TCABlockTags.HAS_PUSHABLE_BLOCK_ENTITY) && (flags & 256) == 0) flags += 256;
+		return original.call(instance, pos, state, flags);
+	}
+
 }

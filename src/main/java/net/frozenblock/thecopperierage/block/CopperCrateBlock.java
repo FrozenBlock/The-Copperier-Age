@@ -188,6 +188,8 @@ public class CopperCrateBlock extends BaseEntityBlock {
 	@Override
 	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
 		saveItemsToDrop:{
+			// TODO: config
+			if (true) break saveItemsToDrop;
 			if (!(level.getBlockEntity(pos) instanceof CopperCrateBlockEntity crate)) break saveItemsToDrop;
 
 			if (level.isClientSide() || !player.preventsBlockDrops() || crate.isEmpty()) {

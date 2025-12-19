@@ -23,6 +23,7 @@ import java.util.List;
 import net.frozenblock.thecopperierage.block.entity.CopperCrateBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -40,6 +41,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.BundleContents;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -109,8 +112,11 @@ public class CopperCrateBlock extends BaseEntityBlock {
 		return this.weatherState;
 	}
 
-	public static boolean verifyAllStacksMatch(ItemStack stack, Container container) {
+	public static boolean veryStackForPlacement(ItemStack stack, Container container) {
 		if (stack.isEmpty()) return false;
+		if (!stack.getComponents().getOrDefault(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY).isEmpty()) return false;
+		if (stack.getComponents().getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).nonEmptyStream().findAny().isPresent()) return false;
+
 		final Item item = stack.getItem();
 		return !container.hasAnyMatching(containerStack -> !containerStack.isEmpty() && !containerStack.is(item));
 	}

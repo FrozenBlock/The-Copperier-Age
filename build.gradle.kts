@@ -59,7 +59,6 @@ base {
 version = getModVersion()
 group = maven_group
 
-val local_frozenlib = findProject(":FrozenLib") != null
 val release = findProperty("releaseType") == "stable"
 
 val datagen by sourceSets.registering {
@@ -171,11 +170,7 @@ dependencies {
     implementation("net.fabricmc.fabric-api:fabric-api:$fabric_api_version")
 
     // FrozenLib
-    if (local_frozenlib) {
-        api(project(":FrozenLib", configuration = "namedElements"))
-        compileOnly(project(":FrozenLib"))
-    } else
-        api("maven.modrinth:frozenlib:$frozenlib_version")
+    api("maven.modrinth:frozenlib:$frozenlib_version")
 
     // Mod Menu
     //compileOnly("com.terraformersmc:modmenu:$modmenu_version")

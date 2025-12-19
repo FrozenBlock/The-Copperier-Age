@@ -5,8 +5,8 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "block.copper_crate.AbstractContainerMenuMixin",
-    "block.copper_crate.PistonBaseBlockMixin",
-    "block.copper_crate.PistonMovingBlockEntityMixin",
+    "block.piston.PistonBaseBlockMixin",
+    "block.piston.PistonMovingBlockEntityMixin",
     "block.copper_fan.EntityMixin",
     "block.copper_fire.BaseFireBlockMixin",
     "block.copper_fire.CampfireBlockMixin",
@@ -17,8 +17,8 @@
     "worldgen.TrickierTrialsPackCheckerMixin"
   ],
   "client": [
-    "client.copper_crate.MovingBlockRenderStateMixin",
-    "client.copper_crate.PistonHeadRendererMixin",
+    "client.piston.MovingBlockRenderStateMixin",
+    "client.piston.PistonHeadRendererMixin",
     "client.copper_fire.BaseFireBlockMixin",
     "client.copper_fire.CampfireBlockMixin",
     "client.copper_fire.LavaParticleMixin",

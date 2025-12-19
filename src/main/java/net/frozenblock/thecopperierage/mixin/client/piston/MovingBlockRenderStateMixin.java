@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.mixin.client.copper_crate;
+package net.frozenblock.thecopperierage.mixin.client.piston;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

@@ -65,6 +65,7 @@
   "block.thecopperierage.waxed_oxidized_copper_crate": "Waxed Oxidized Copper Crate",
   "container.thecopperierage.copper_crate": "Copper Crate",
   "gui.thecopperierage.crate_cannot_fit_container_item": "Items containing items cannot fit",
+  "gui.thecopperierage.crate_cannot_place_bundle": "Cannot place bundles in crates",
   "gui.thecopperierage.crate_mismatching_item": "Only the same item type can fit",
   "subtitles.block.copper_crate.open": "Copper Crate opened",
   "subtitles.block.copper_crate.close": "Copper Crate closed",

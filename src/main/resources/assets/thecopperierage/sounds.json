@@ -287,5 +287,15 @@
       "thecopperierage:item/wrench/wrench5"
     ],
     "subtitle": "subtitles.item.wrench.use"
+  },
+  "ui.crate.click_fail": {
+    "sounds": [
+      "minecraft:random/wood_click",
+      {
+        "name": "random/wood_click",
+        "pitch": 1,
+        "volume": 0.5
+      }
+    ]
   }
 }

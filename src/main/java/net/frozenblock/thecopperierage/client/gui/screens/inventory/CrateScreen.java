@@ -23,14 +23,19 @@ import net.fabricmc.api.Environment;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.CopperCrateBlock;
 import net.frozenblock.thecopperierage.block.entity.inventory.CrateSlot;
+import net.frozenblock.thecopperierage.registry.TCASounds;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.ContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ChestMenu;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
@@ -44,13 +49,20 @@ public class CrateScreen extends ContainerScreen {
 		this.player = inventory.player;
 	}
 
+	private ItemStack getHoveredItem() {
+		final Slot hoveredSlot = this.hoveredSlot;
+		if (hoveredSlot != null) return hoveredSlot.getItem();
+		return null;
+	}
+
 	@Override
 	public void renderSlot(GuiGraphics guiGraphics, Slot slot) {
 		renderBlockedSlot: {
 			if (!(slot instanceof CrateSlot crateSlot) || slot.hasItem()) break renderBlockedSlot;
 
-			final ItemStack carried = this.menu.getCarried();
-			final CopperCrateBlock.SlotResult slotResult = CopperCrateBlock.verifyStackForPlacement(carried, this.menu.getContainer());
+			ItemStack selectedStack = this.menu.getCarried();
+			if (selectedStack == null || selectedStack.isEmpty()) selectedStack = this.getHoveredItem();
+			final CopperCrateBlock.SlotResult slotResult = CopperCrateBlock.verifyStackForPlacement(selectedStack, this.menu.getContainer());
 			if (slotResult.isSuccess() || slotResult.isEmptyItem()) break renderBlockedSlot;
 
 			this.renderBlockedSlot(guiGraphics, crateSlot);
@@ -78,6 +90,25 @@ public class CrateScreen extends ContainerScreen {
 			final Optional<Component> tooltip = slotResult.getTooltip();
 			tooltip.ifPresent(component -> guiGraphics.setTooltipForNextFrame(this.font, component, x, y));
 		}
+	}
+
+	@Override
+	protected void slotClicked(Slot slot, int x, int y, ClickType type) {
+		playBlockedSlotSound: {
+			if (!(slot instanceof CrateSlot) || slot.hasItem()) break playBlockedSlotSound;
+
+			final ItemStack carried = this.menu.getCarried();
+			final CopperCrateBlock.SlotResult slotResult = CopperCrateBlock.verifyStackForPlacement(carried, this.menu.getContainer());
+			if (slotResult.isSuccess() || slotResult.isEmptyItem()) break playBlockedSlotSound;
+
+			playBlockedSlotClickSound(Minecraft.getInstance().getSoundManager());
+		}
+
+		super.slotClicked(slot, x, y, type);
+	}
+
+	public static void playBlockedSlotClickSound(SoundManager soundManager) {
+		soundManager.play(SimpleSoundInstance.forUI(TCASounds.UI_CRATE_CLICK_FAIL.value(), 1F));
 	}
 
 }

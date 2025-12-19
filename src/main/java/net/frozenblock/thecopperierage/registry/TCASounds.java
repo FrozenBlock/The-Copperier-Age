@@ -64,6 +64,9 @@ public final class TCASounds {
 	public static final Holder.Reference<SoundEvent> ITEM_COPPER_HORN_TRUMPET = registerForHolder("item.copper_horn.trumpet");
 	public static final Holder.Reference<SoundEvent> ITEM_COPPER_HORN_TROMBONE = registerForHolder("item.copper_horn.trombone");
 
+	// UI
+	public static final Holder.Reference<SoundEvent> UI_CRATE_CLICK_FAIL = registerForHolder("ui.crate.click_fail");
+
 	public static final SoundEvent ITEM_WRENCH_USE = register("item.wrench.use");
 
 	private TCASounds() {

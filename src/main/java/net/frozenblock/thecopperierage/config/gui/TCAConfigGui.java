@@ -17,7 +17,8 @@
 
 package net.frozenblock.thecopperierage.config.gui;
 
-import me.shedaniel.clothconfig2.api.ConfigBuilder;
+// TODO: Re-enable when modmenu is unobfuscated
+/*import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.fabricmc.api.EnvType;
@@ -152,3 +153,4 @@ public final class TCAConfigGui {
 		return Component.translatable("enum." + TCAConstants.MOD_ID + "." + key);
 	}
 }
+*/

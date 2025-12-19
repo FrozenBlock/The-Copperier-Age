@@ -165,7 +165,7 @@ public class WrenchItem extends Item {
 
 	public static InteractionResult onSuccessfulWrench(UseOnContext context, Level level, BlockPos pos, Runnable serverRunnable) {
 		final Player player = context.getPlayer();
-		level.playSound(player, pos, TCASounds.ITEM_WRENCH_USE, SoundSource.BLOCKS, 0.75F, 0.9F + (level.random.nextFloat() * 0.2F));
+		level.playSound(player, pos, TCASounds.ITEM_WRENCH_USE, SoundSource.BLOCKS, 0.75F, 0.9F + (level.getRandom().nextFloat() * 0.2F));
 		if (!level.isClientSide()) {
 			serverRunnable.run();
 			if (player != null) context.getItemInHand().hurtAndBreak(1, player, context.getHand());

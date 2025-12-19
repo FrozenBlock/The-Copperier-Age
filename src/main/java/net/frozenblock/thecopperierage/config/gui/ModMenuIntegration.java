@@ -15,7 +15,8 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.config.gui;
+// TODO: Re-enable when modmenu is unobfuscated
+/*package net.frozenblock.thecopperierage.config.gui;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
@@ -34,3 +35,4 @@ public final class ModMenuIntegration implements ModMenuApi {
     }
 
 }
+*/

@@ -50,7 +50,7 @@ public class CopperCampfireSmokeParticle extends CampfireSmokeParticle {
 		this.rCol = this.startRColor = Math.max(this.targetRColor - 0.3F, 0F);
 		this.targetBColor = this.bCol;
 		this.bCol = this.startBColor = Math.max(this.targetBColor - 0.3F, 0F);
-		this.colorLerpEndsAt = level.random.nextInt(20, 40);
+		this.colorLerpEndsAt = level.getRandom().nextInt(20, 40);
 	}
 
 	@Override
@@ -60,11 +60,11 @@ public class CopperCampfireSmokeParticle extends CampfireSmokeParticle {
 	}
 
 	@Override
-	protected int getLightColor(float partialTick) {
+	protected int getLightCoords(float partialTick) {
 		final float colorLerp = Math.min((this.colorLerpTicks + partialTick), this.colorLerpEndsAt) / this.colorLerpEndsAt;
 		this.rCol = Mth.lerp(colorLerp, this.startRColor, this.targetRColor);
 		this.bCol = Mth.lerp(colorLerp, this.startBColor, this.targetBColor);
-		return super.getLightColor(partialTick);
+		return super.getLightCoords(partialTick);
 	}
 
 	public record CosyProvider(SpriteSet spriteSet) implements ParticleProvider<SimpleParticleType> {

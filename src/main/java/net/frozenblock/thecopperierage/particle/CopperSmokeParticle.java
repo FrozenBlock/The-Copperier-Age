@@ -55,10 +55,10 @@ public class CopperSmokeParticle extends SmokeParticle {
 	}
 
 	@Override
-	protected int getLightColor(float partialTick) {
+	protected int getLightCoords(float partialTick) {
 		final float colorLerp = Math.min((this.colorLerpTicks + partialTick), this.colorLerpEndsAt) / this.colorLerpEndsAt;
 		this.gCol = Mth.lerp(colorLerp, this.startGColor, this.targetGColor);
-		return super.getLightColor(partialTick);
+		return super.getLightCoords(partialTick);
 	}
 
 	public record Provider(SpriteSet spriteSet) implements ParticleProvider<SimpleParticleType> {

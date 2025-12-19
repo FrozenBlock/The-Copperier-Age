@@ -128,7 +128,7 @@ public class CopperCrateBlockEntity extends RandomizableContainerBlockEntity {
 
 	@Override
 	public boolean canPlaceItem(int slot, ItemStack stack) {
-		return CopperCrateBlock.veryStackForPlacement(stack, this);
+		return CopperCrateBlock.verifyStackForPlacement(stack, this);
 	}
 
 	@Override

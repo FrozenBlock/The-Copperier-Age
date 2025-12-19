@@ -112,7 +112,7 @@ public class CopperCrateBlock extends BaseEntityBlock {
 		return this.weatherState;
 	}
 
-	public static boolean veryStackForPlacement(ItemStack stack, Container container) {
+	public static boolean verifyStackForPlacement(ItemStack stack, Container container) {
 		if (stack.isEmpty()) return false;
 		if (!stack.getComponents().getOrDefault(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY).isEmpty()) return false;
 		if (stack.getComponents().getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).nonEmptyStream().findAny().isPresent()) return false;

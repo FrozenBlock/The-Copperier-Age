@@ -5,11 +5,12 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "block.copper_crate.AbstractContainerMenuMixin",
-    "block.piston.PistonBaseBlockMixin",
-    "block.piston.PistonMovingBlockEntityMixin",
     "block.copper_fan.EntityMixin",
     "block.copper_fire.BaseFireBlockMixin",
     "block.copper_fire.CampfireBlockMixin",
+    "block.piston.PistonBaseBlockMixin",
+    "block.piston.PistonMovingBlockEntityMixin",
+    "block.piston.PistonStructureResolverMixin",
     "block.redstone.RedstoneWireBlockMixin",
     "datafix.DataFixersMixin",
     "datafix.v4533Mixin",
@@ -17,8 +18,6 @@
     "worldgen.TrickierTrialsPackCheckerMixin"
   ],
   "client": [
-    "client.piston.MovingBlockRenderStateMixin",
-    "client.piston.PistonHeadRendererMixin",
     "client.copper_fire.BaseFireBlockMixin",
     "client.copper_fire.CampfireBlockMixin",
     "client.copper_fire.LavaParticleMixin",
@@ -27,6 +26,8 @@
     "client.copper_fire.WallTorchBlockMixin",
     "client.oxidized_armor.EquipmentLayerRendererMixin",
     "client.oxidized_items.SelectItemModelPropertiesMixin",
+    "client.piston.MovingBlockRenderStateMixin",
+    "client.piston.PistonHeadRendererMixin",
     "datagen.client.VariantMutatorMixin"
   ],
   "injectors": {

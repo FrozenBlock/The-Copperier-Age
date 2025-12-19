@@ -162,8 +162,9 @@ public class CopperCrateBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	protected MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
+		// TODO: config
+		if (!true) return null;
 		return super.getMenuProvider(state, level, pos);
-		//return null;
 	}
 
 	@Override

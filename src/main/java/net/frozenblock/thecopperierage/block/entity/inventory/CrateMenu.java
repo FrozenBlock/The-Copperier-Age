@@ -17,6 +17,7 @@
 
 package net.frozenblock.thecopperierage.block.entity.inventory;
 
+import net.frozenblock.thecopperierage.block.entity.CopperCrateBlockEntity;
 import net.frozenblock.thecopperierage.registry.TCAMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -25,14 +26,13 @@ import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.inventory.MenuType;
 
 public class CrateMenu extends ChestMenu {
-	private static final int ROW_COUNT = 6;
 
 	public CrateMenu(MenuType<?> menuType, int i, Inventory inventory, Container container) {
-		super(menuType, i, inventory, container, ROW_COUNT);
+		super(menuType, i, inventory, container, CopperCrateBlockEntity.ROW_COUNT);
 	}
 
 	public static CrateMenu create(int i, Inventory inventory) {
-		return new CrateMenu(TCAMenuTypes.CRATE, i, inventory, new SimpleContainer(9 * ROW_COUNT));
+		return new CrateMenu(TCAMenuTypes.CRATE, i, inventory, new SimpleContainer(9 * CopperCrateBlockEntity.ROW_COUNT));
 	}
 
 	public static CrateMenu create(int i, Inventory inventory, Container container) {

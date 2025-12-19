@@ -46,7 +46,8 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class CopperCrateBlockEntity extends RandomizableContainerBlockEntity {
-	private static final int CONTAINER_SIZE = 54;
+	public static int ROW_COUNT = 4;
+	public static final int CONTAINER_SIZE = ROW_COUNT * 9;
 	private static final Component DEFAULT_NAME = Component.translatable("container.copper_crate");
 	private NonNullList<ItemStack> items = NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY);
 	private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {

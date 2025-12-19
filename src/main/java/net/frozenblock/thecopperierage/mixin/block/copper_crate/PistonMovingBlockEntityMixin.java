@@ -25,6 +25,7 @@ import net.frozenblock.thecopperierage.block.entity.impl.PushableBlockEntityUtil
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.piston.PistonMovingBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
@@ -38,16 +39,46 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(PistonMovingBlockEntity.class)
 public class PistonMovingBlockEntityMixin implements PistonMovingBlockEntityInterface {
 	@Unique
-	private CompoundTag theCopperierAge$getPushedBlockEntityTag = null;
+	private CompoundTag theCopperierAge$pushedBlockEntityTag = null;
+	@Unique
+	private BlockEntity theCopperierAge$fakeBlockEntity = null;
 
+	@Unique
 	@Override
 	public void theCopperierAge$setPushedBlockEntityTag(CompoundTag tag) {
-		this.theCopperierAge$getPushedBlockEntityTag = tag;
+		this.theCopperierAge$pushedBlockEntityTag = tag;
 	}
 
+	@Unique
 	@Override
 	public CompoundTag theCopperierAge$getPushedBlockEntityTag() {
-		return this.theCopperierAge$getPushedBlockEntityTag;
+		return this.theCopperierAge$pushedBlockEntityTag;
+	}
+
+	@Unique
+	@Override
+	public BlockEntity theCopperierAge$getPushedFakeBlockEntity() {
+		if (this.theCopperierAge$pushedBlockEntityTag == null) {
+			this.theCopperierAge$fakeBlockEntity = null;
+			return null;
+		}
+
+		if (this.theCopperierAge$fakeBlockEntity == null) {
+			final PistonMovingBlockEntity movingBlockEntity = PistonMovingBlockEntity.class.cast(this);
+			final Level level = movingBlockEntity.getLevel();
+			if (level == null) return null;
+
+			final BlockEntity blockEntity = BlockEntity.loadStatic(
+				movingBlockEntity.getBlockPos(),
+				movingBlockEntity.getMovedState(),
+				this.theCopperierAge$pushedBlockEntityTag,
+				level.registryAccess()
+			);
+			if (blockEntity != null) blockEntity.setLevel(level);
+			this.theCopperierAge$fakeBlockEntity = blockEntity;
+		}
+
+		return this.theCopperierAge$fakeBlockEntity;
 	}
 
 	@WrapOperation(
@@ -79,12 +110,12 @@ public class PistonMovingBlockEntityMixin implements PistonMovingBlockEntityInte
 
 	@Inject(method = "loadAdditional", at = @At("TAIL"))
 	public void theCopperierAge$loadAdditional(ValueInput input, CallbackInfo info) {
-		this.theCopperierAge$getPushedBlockEntityTag = input.read("TheCopperierAge_PushedBlockEntity", CompoundTag.CODEC).orElse(null);
+		this.theCopperierAge$pushedBlockEntityTag = input.read("TheCopperierAge_PushedBlockEntity", CompoundTag.CODEC).orElse(null);
 	}
 
 	@Inject(method = "saveAdditional", at = @At("TAIL"))
 	public void theCopperierAge$saveAdditional(ValueOutput output, CallbackInfo info) {
-		output.storeNullable("TheCopperierAge_PushedBlockEntity", CompoundTag.CODEC, this.theCopperierAge$getPushedBlockEntityTag);
+		output.storeNullable("TheCopperierAge_PushedBlockEntity", CompoundTag.CODEC, this.theCopperierAge$pushedBlockEntityTag);
 	}
 
 }

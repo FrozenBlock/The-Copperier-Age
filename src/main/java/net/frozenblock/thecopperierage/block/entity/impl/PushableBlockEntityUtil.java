@@ -61,4 +61,9 @@ public class PushableBlockEntityUtil {
 		return setBlock;
 	}
 
+	public static BlockEntity getFakeBlockEntity(BlockEntity pistonEntity) {
+		if (!(pistonEntity instanceof PistonMovingBlockEntityInterface pistonInterface)) return null;
+		return pistonInterface.theCopperierAge$getPushedFakeBlockEntity();
+	}
+
 }

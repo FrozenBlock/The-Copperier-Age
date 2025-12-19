@@ -43,6 +43,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.BundleContents;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -115,7 +116,7 @@ public class CopperCrateBlock extends BaseEntityBlock {
 
 	public static SlotResult verifyStackForPlacement(ItemStack stack, Container container) {
 		if (stack == null || stack.isEmpty()) return SlotResult.FAILURE_EMPTY_ITEM;
-		if (stack.getComponents().has(DataComponents.BUNDLE_CONTENTS)) return SlotResult.FAILURE_BUNDLE;
+		if (!stack.getComponents().getOrDefault(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY).isEmpty()) return SlotResult.FAILURE_CONTAINER_ITEM;
 		if (stack.getComponents().getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).nonEmptyStream().findAny().isPresent()) return SlotResult.FAILURE_CONTAINER_ITEM;
 
 		final Item item = stack.getItem();
@@ -237,7 +238,6 @@ public class CopperCrateBlock extends BaseEntityBlock {
 		SUCCESS(Optional.empty()),
 		FAILURE_EMPTY_ITEM(Optional.empty()),
 		FAILURE_CONTAINER_ITEM(Optional.of(Component.translatable("gui.thecopperierage.crate_cannot_fit_container_item"))),
-		FAILURE_BUNDLE(Optional.of(Component.translatable("gui.thecopperierage.crate_cannot_place_bundle"))),
 		FAILURE_MISMATCHING_ITEM(Optional.of(Component.translatable("gui.thecopperierage.crate_mismatching_item")));
 		private final Optional<Component> tooltip;
 

@@ -194,7 +194,9 @@ public class PistonBaseBlockMixin {
 		// The AND check for 256 dictates whether `BlockEntity$preRemoveSideEffects` is called.
 		// With 82, & 256 returns 0.
 		// Adding 256 makes this not return 0, while keeping all other calls intact.
-		if (instance.getBlockState(pos).is(TCABlockTags.HAS_PUSHABLE_BLOCK_ENTITY) && (flags & 256) == 0) flags += 256;
+		if (instance.getBlockState(pos).is(TCABlockTags.HAS_PUSHABLE_BLOCK_ENTITY) && (flags & PistonBaseBlock.UPDATE_SKIP_BLOCK_ENTITY_SIDEEFFECTS) == 0) {
+			flags += PistonBaseBlock.UPDATE_SKIP_BLOCK_ENTITY_SIDEEFFECTS;
+		}
 		return original.call(instance, pos, state, flags);
 	}
 

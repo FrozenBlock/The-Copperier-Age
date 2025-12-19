@@ -12,6 +12,7 @@
     "block.piston.PistonMovingBlockEntityMixin",
     "block.piston.PistonStructureResolverMixin",
     "block.redstone.RedstoneWireBlockMixin",
+    "chainstone_temp.PistonStructureResolverMixin",
     "datafix.DataFixersMixin",
     "datafix.v4533Mixin",
     "item.ItemStackMixin",

@@ -8,9 +8,6 @@
     "block.copper_fan.EntityMixin",
     "block.copper_fire.BaseFireBlockMixin",
     "block.copper_fire.CampfireBlockMixin",
-    "block.piston.PistonBaseBlockMixin",
-    "block.piston.PistonMovingBlockEntityMixin",
-    "block.piston.PistonStructureResolverMixin",
     "block.redstone.RedstoneWireBlockMixin",
     "chainstone_temp.PistonStructureResolverMixin",
     "datafix.DataFixersMixin",
@@ -27,8 +24,6 @@
     "client.copper_fire.WallTorchBlockMixin",
     "client.oxidized_armor.EquipmentLayerRendererMixin",
     "client.oxidized_items.SelectItemModelPropertiesMixin",
-    "client.piston.MovingBlockRenderStateMixin",
-    "client.piston.PistonHeadRendererMixin",
     "datagen.client.VariantMutatorMixin"
   ],
   "injectors": {

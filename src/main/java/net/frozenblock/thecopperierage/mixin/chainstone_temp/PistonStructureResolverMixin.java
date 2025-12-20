@@ -81,9 +81,8 @@ public class PistonStructureResolverMixin {
 		return false;
 	}
 
-	/*
 	@Unique
-	private static boolean pushierPistons$figureOutChainCombo(BlockState state1, BlockState state2, Direction.Axis spacialAxis) {
+	private static boolean pushierPistons$figureOutChainComboWithAxisRespect(BlockState state1, BlockState state2, Direction.Axis spacialAxis) {
 		final boolean is1Chain = state1.is(BlockTags.CHAINS);
 		final boolean is2Chain = state2.is(BlockTags.CHAINS);
 		if (!is1Chain && !is2Chain) return false;
@@ -98,6 +97,5 @@ public class PistonStructureResolverMixin {
 
 		return axis2 == spacialAxis;
 	}
-	 */
 
 }

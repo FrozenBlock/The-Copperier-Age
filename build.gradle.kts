@@ -50,6 +50,10 @@ val modmenu_version: String by project
 val cloth_config_version: String by project
 val copperpipes_version: String by project
 
+val lithium_version: String by project
+val run_lithium: String by project
+val shouldRunLithium = run_lithium == "true"
+
 val sodium_version: String by project
 val run_sodium: String by project
 val shouldRunSodium = run_sodium == "true"
@@ -201,6 +205,12 @@ dependencies {
         exclude(group = "net.fabricmc.fabric-api")
         exclude(group = "com.terraformersmc")
     }
+
+    // Lithium
+    if (shouldRunLithium)
+        modImplementation("maven.modrinth:lithium:${lithium_version}")
+    else
+        modCompileOnly("maven.modrinth:lithium:${lithium_version}")
 
     // Sodium
     if (shouldRunSodium)

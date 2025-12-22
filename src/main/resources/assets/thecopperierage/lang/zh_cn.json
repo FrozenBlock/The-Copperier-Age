@@ -73,5 +73,16 @@
     "option.thecopperierage.copper_fire_poisons": "铜火使生物中毒",
     "tooltip.thecopperierage.copper_fire_poisons": "铜火是否能使生物中毒。",
     "option.thecopperierage.copper_buttons_in_trial_chambers": "试炼密室的铜按钮",
-    "tooltip.thecopperierage.copper_buttons_in_trial_chambers": "试炼密室中的橡木按钮是否会被铜按钮所取代。"
+    "tooltip.thecopperierage.copper_buttons_in_trial_chambers": "试炼密室中的橡木按钮是否会被铜按钮所取代。",
+    "option.thecopperierage.copper_chests_in_trial_chambers": "试炼密室的铜箱子",
+    "tooltip.thecopperierage.copper_chests_in_trial_chambers": "试炼密室中的箱子是否会被铜箱子所取代。",
+    "option.thecopperierage.copper_pressure_plates_in_trial_chambers": "试炼密室的铜压力板",
+    "tooltip.thecopperierage.copper_pressure_plates_in_trial_chambers": "试炼密室中的橡木压力板是否会被铜压力板所取代。",
+    "option.thecopperierage.oxidizable_copper_equipment": "氧化铜装备",
+    "tooltip.thecopperierage.oxidizable_copper_equipment": "铜装备在耐久度耗尽时是否会氧化。\n装备氧化程度越高，其属性值就越接近铁装备。\n此选项同时适用于工具与盔甲。",
+    "option.thecopperierage.copper_particles": "铜粒子",
+    "tooltip.thecopperierage.copper_particles": "由铜火相关方块生成的特定粒子是否会呈现绿色调。\n此类方块包括铜火、铜营火和铜火把。\n烟雾状粒子的绿色调将逐渐褪去。",
+    "pack.thecopperierage.copperier_copper": "更铜的铜",
+    "pack.thecopperierage.green_copper_bulbs": "绿色铜灯",
+    "pack.thecopperierage.trickier_trials": "更棘巧的试炼"
 }

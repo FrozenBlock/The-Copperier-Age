@@ -1,0 +1,127 @@
+package net.frozenblock.thecopperierage.mixin.client.oxidizing_auto_models;
+
+import com.google.common.collect.ImmutableMap;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
+import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.frozenblock.thecopperierage.TCAConstants;
+import net.frozenblock.thecopperierage.client.renderer.item.FakeUnbakedItemModel;
+import net.frozenblock.thecopperierage.client.resources.model.BlockModelOxidization;
+import net.frozenblock.thecopperierage.datagen.model.TCAModelProvider;
+import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
+import net.frozenblock.thecopperierage.registry.TCAResources;
+import net.minecraft.client.renderer.block.model.TextureSlots;
+import net.minecraft.client.renderer.item.BlockModelWrapper;
+import net.minecraft.client.renderer.item.ItemModel;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.ModelBaker;
+import net.minecraft.client.resources.model.ModelState;
+import net.minecraft.client.resources.model.QuadCollection;
+import net.minecraft.client.resources.model.ResolvedModel;
+import net.minecraft.resources.ResourceLocation;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import java.util.Map;
+
+@Environment(EnvType.CLIENT)
+@Mixin(value = BlockModelWrapper.Unbaked.class, priority = 1005)
+public abstract class BlockModelWrapperUnbakedMixin {
+
+	@Shadow
+	public abstract ResourceLocation model();
+
+	@Shadow
+	public abstract ItemModel bake(ItemModel.BakingContext bakingContext);
+
+	@Unique
+	private boolean theCopperierAge$generatingNewModel = false;
+	@Unique
+	private TextureSlots theCopperierAge$newTextureSlots = null;
+	@Unique
+	private BlockModelOxidization theCopperierAge$modelOxidization = null;
+
+	@ModifyReturnValue(
+		method = "bake",
+		at = @At("RETURN")
+	)
+	public ItemModel theCopperierAge$createOxidizingArmors(
+		ItemModel original,
+		@Local(argsOnly = true) ItemModel.BakingContext context,
+		@Local TextureSlots slots
+	) {
+		if (this.theCopperierAge$generatingNewModel) return original;
+
+		final ResourceLocation id = this.model();
+		final String path = id.getPath();
+		if (!(path.contains("item/copper_") || path.equals("item/brush") || path.contains("item/brush_brushing_") || path.equals("item/wrench"))) return original;
+		if (OxidizableItemHelper.OXIDIZING_AUTO_MODEL_SEARCH_TERMS.stream().noneMatch(path::contains)) return original;
+
+		final Material layer0Material = slots.getMaterial("layer0");
+		if (layer0Material == null) return original;
+
+		final ResourceLocation texture = layer0Material.texture();
+		final String texturePath = texture.getPath();
+		final ItemModel.Unbaked[] oxidizingModels = new ItemModel.Unbaked[3];
+
+		this.theCopperierAge$generatingNewModel = true;
+		for (int i = 0; i < 3; i++) {
+			final String suffix = OxidizableItemHelper.OXIDIZING_SUFFIXES.get(i);
+			if (path.contains(suffix)) {
+				TCAConstants.log("Item model " + id + " already has suffix " + suffix, TCAConstants.UNSTABLE_LOGGING);
+				return original;
+			}
+			final String suffixedPath = texturePath + "_" + suffix;
+			final Material newMaterial = new Material(layer0Material.atlasLocation(), TCAConstants.id(suffixedPath));
+
+			final Map<String, Material> newSlotsMap = new Object2ObjectLinkedOpenHashMap<>();
+			newSlotsMap.putAll(slots.resolvedValues);
+			newSlotsMap.put("layer0", newMaterial);
+			newSlotsMap.put("particle", newMaterial);
+
+			this.theCopperierAge$newTextureSlots = new TextureSlots(ImmutableMap.copyOf(newSlotsMap));
+			this.theCopperierAge$modelOxidization = BlockModelOxidization.values()[i];
+			oxidizingModels[i] = new FakeUnbakedItemModel(this.bake(context));
+		}
+
+		return TCAModelProvider.createOxidizableDispatch(
+			new FakeUnbakedItemModel(original),
+			oxidizingModels[0],
+			oxidizingModels[1],
+			oxidizingModels[2]
+		).bake(context);
+	}
+
+	@ModifyExpressionValue(
+		method = "bake",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/client/resources/model/ResolvedModel;getTopTextureSlots()Lnet/minecraft/client/renderer/block/model/TextureSlots;"
+		)
+	)
+	public TextureSlots theCopperierAge$useOxidizingSlots(TextureSlots original) {
+		if (this.theCopperierAge$generatingNewModel) return this.theCopperierAge$newTextureSlots;
+		return original;
+	}
+
+	@WrapOperation(
+		method = "bake",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/client/resources/model/ResolvedModel;bakeTopGeometry(Lnet/minecraft/client/renderer/block/model/TextureSlots;Lnet/minecraft/client/resources/model/ModelBaker;Lnet/minecraft/client/resources/model/ModelState;)Lnet/minecraft/client/resources/model/QuadCollection;"
+		)
+	)
+	public QuadCollection theCopperierAge$useOxidizingModelState(
+		ResolvedModel instance, TextureSlots slots, ModelBaker baker, ModelState modelState, Operation<QuadCollection> original
+	) {
+		if (this.theCopperierAge$generatingNewModel) return original.call(instance, this.theCopperierAge$newTextureSlots, baker, this.theCopperierAge$modelOxidization);
+		return original.call(instance, slots, baker, modelState);
+	}
+
+}

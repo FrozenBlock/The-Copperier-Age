@@ -47,6 +47,10 @@ import net.minecraft.world.item.component.Tool;
 import org.jetbrains.annotations.NotNull;
 
 public final class OxidizableItemHelper {
+	public static final List<String> OXIDIZING_SUFFIXES = ImmutableList.of("exposed", "weathered", "oxidized");
+	public static final List<String> OXIDIZING_AUTO_MODEL_SEARCH_TERMS = ImmutableList.of(
+		"_helmet", "_chestplate", "_leggings", "_boots", "_axe", "_pickaxe", "_shovel", "_sword", "_hoe", "_spear", "brush", "wrench"
+	);
 	private static final Map<Item, Pair<ItemAttributeModifiers, ItemAttributeModifiers>> OXIDIZABLE_ATTRIBUTES = new Object2ObjectLinkedOpenHashMap<>();
 	private static final float COPPER_MINING_SPEED = ToolMaterial.COPPER.speed();
 	private static final float IRON_MINING_SPEED = ToolMaterial.IRON.speed();

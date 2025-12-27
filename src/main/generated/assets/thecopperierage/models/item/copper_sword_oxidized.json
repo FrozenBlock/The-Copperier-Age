@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/handheld",
-  "textures": {
-    "layer0": "thecopperierage:item/copper_sword_oxidized"
-  }
-}

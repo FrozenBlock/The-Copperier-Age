@@ -17,18 +17,39 @@
 
 package net.frozenblock.thecopperierage.client.resources.model;
 
+import com.mojang.math.Transformation;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.resources.model.ModelState;
+import net.minecraft.core.Direction;
+import org.joml.Matrix4fc;
 
 @Environment(EnvType.CLIENT)
-public enum BlockModelOxidization implements ModelState {
-	EXPOSED("exposed"),
-	WEATHERED("weathered"),
-	OXIDIZED("oxidized");
-
+public class BlockModelOxidization implements ModelState {
 	private final String name;
-	BlockModelOxidization(String name) {
+	private final ModelState modelState;
+
+	BlockModelOxidization(String name, ModelState modelState) {
 		this.name = name;
+		this.modelState = modelState;
+	}
+
+	public static BlockModelOxidization create(ModelState modelState) {
+		return new BlockModelOxidization(String.valueOf(Math.random() * 10000D), modelState);
+	}
+
+	@Override
+	public Transformation transformation() {
+		return this.modelState.transformation();
+	}
+
+	@Override
+	public Matrix4fc faceTransformation(Direction direction) {
+		return this.modelState.faceTransformation(direction);
+	}
+
+	@Override
+	public Matrix4fc inverseFaceTransformation(Direction direction) {
+		return this.modelState.inverseFaceTransformation(direction);
 	}
 }

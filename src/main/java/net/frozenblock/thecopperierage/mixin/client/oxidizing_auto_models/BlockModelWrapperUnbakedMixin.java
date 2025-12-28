@@ -31,7 +31,6 @@ import net.frozenblock.thecopperierage.client.renderer.item.FakeUnbakedItemModel
 import net.frozenblock.thecopperierage.client.resources.model.BlockModelOxidization;
 import net.frozenblock.thecopperierage.datagen.model.TCAModelProvider;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
-import net.frozenblock.thecopperierage.registry.TCAResources;
 import net.minecraft.client.renderer.block.model.TextureSlots;
 import net.minecraft.client.renderer.item.BlockModelWrapper;
 import net.minecraft.client.renderer.item.ItemModel;
@@ -48,7 +47,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import java.util.Map;
 
 @Environment(EnvType.CLIENT)
-@Mixin(value = BlockModelWrapper.Unbaked.class, priority = 1005)
+@Mixin(value = BlockModelWrapper.Unbaked.class, priority = 899)
 public abstract class BlockModelWrapperUnbakedMixin {
 
 	@Shadow
@@ -60,9 +59,7 @@ public abstract class BlockModelWrapperUnbakedMixin {
 	@Unique
 	private boolean theCopperierAge$generatingNewModel = false;
 	@Unique
-	private TextureSlots theCopperierAge$newTextureSlots = null;
-	@Unique
-	private BlockModelOxidization theCopperierAge$modelOxidization = null;
+	private Material theCopperierAge$material = null;
 
 	@ModifyReturnValue(
 		method = "bake",
@@ -94,18 +91,13 @@ public abstract class BlockModelWrapperUnbakedMixin {
 				TCAConstants.log("Item model " + id + " already has suffix " + suffix, TCAConstants.UNSTABLE_LOGGING);
 				return original;
 			}
-			final String suffixedPath = texturePath + "_" + suffix;
-			final Material newMaterial = new Material(layer0Material.atlasLocation(), TCAConstants.id(suffixedPath));
 
-			final Map<String, Material> newSlotsMap = new Object2ObjectLinkedOpenHashMap<>();
-			newSlotsMap.putAll(slots.resolvedValues);
-			newSlotsMap.put("layer0", newMaterial);
-			newSlotsMap.put("particle", newMaterial);
-
-			this.theCopperierAge$newTextureSlots = new TextureSlots(ImmutableMap.copyOf(newSlotsMap));
-			this.theCopperierAge$modelOxidization = BlockModelOxidization.values()[i];
+			this.theCopperierAge$material = new Material(layer0Material.atlasLocation(), TCAConstants.id(texturePath + "_" + suffix));
 			oxidizingModels[i] = new FakeUnbakedItemModel(this.bake(context));
 		}
+
+		this.theCopperierAge$generatingNewModel = false;
+		this.theCopperierAge$material = null;
 
 		return TCAModelProvider.createOxidizableDispatch(
 			new FakeUnbakedItemModel(original),
@@ -123,8 +115,13 @@ public abstract class BlockModelWrapperUnbakedMixin {
 		)
 	)
 	public TextureSlots theCopperierAge$useOxidizingSlots(TextureSlots original) {
-		if (this.theCopperierAge$generatingNewModel) return this.theCopperierAge$newTextureSlots;
-		return original;
+		if (!this.theCopperierAge$generatingNewModel) return original;
+
+		final Map<String, Material> newSlotsMap = new Object2ObjectLinkedOpenHashMap<>();
+		newSlotsMap.putAll(original.resolvedValues);
+		newSlotsMap.put("layer0", this.theCopperierAge$material);
+		newSlotsMap.put("particle", this.theCopperierAge$material);
+		return new TextureSlots(ImmutableMap.copyOf(newSlotsMap));
 	}
 
 	@WrapOperation(
@@ -137,7 +134,7 @@ public abstract class BlockModelWrapperUnbakedMixin {
 	public QuadCollection theCopperierAge$useOxidizingModelState(
 		ResolvedModel instance, TextureSlots slots, ModelBaker baker, ModelState modelState, Operation<QuadCollection> original
 	) {
-		if (this.theCopperierAge$generatingNewModel) return original.call(instance, this.theCopperierAge$newTextureSlots, baker, this.theCopperierAge$modelOxidization);
+		if (this.theCopperierAge$generatingNewModel) return original.call(instance, slots, baker, BlockModelOxidization.create(modelState));
 		return original.call(instance, slots, baker, modelState);
 	}
 

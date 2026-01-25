@@ -10,7 +10,6 @@ import net.minecraft.client.animation.KeyframeAnimations;
 @Environment(EnvType.CLIENT)
 public class TCACopperGolemAnimation {
 	public static final AnimationDefinition COPPER_GOLEM_PRESS_BUTTON = AnimationDefinition.Builder.withLength(1.5F)
-		.looping()
 		.addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.125F, KeyframeAnimations.degreeVec(0F, 0F, 0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.1667F, KeyframeAnimations.degreeVec(14F, 0F, 0F), AnimationChannel.Interpolations.LINEAR),

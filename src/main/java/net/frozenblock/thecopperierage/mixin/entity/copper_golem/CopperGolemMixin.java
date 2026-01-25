@@ -54,10 +54,7 @@ public abstract class CopperGolemMixin extends AbstractGolem implements CopperGo
 
 	@Inject(method = "setupAnimationStates", at = @At("HEAD"))
 	private void theCopperierAge$setupPressingButtonAnimationState(CallbackInfo info) {
-		if (this.getState() != TCACopperGolemStates.PRESSING_BUTTON) {
-			this.theCopperierAge$pressingButtonAnimationState.stop();
-			return;
-		}
+		if (this.getState() != TCACopperGolemStates.PRESSING_BUTTON) return;
 
 		this.idleAnimationState.stop();
 		this.idleAnimationStartTick = 0;

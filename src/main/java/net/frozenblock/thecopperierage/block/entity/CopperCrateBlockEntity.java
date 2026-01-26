@@ -18,17 +18,26 @@
 package net.frozenblock.thecopperierage.block.entity;
 
 import java.util.List;
+import java.util.Optional;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.frozenblock.thecopperierage.block.CopperCrateBlock;
 import net.frozenblock.thecopperierage.block.entity.inventory.CrateMenu;
 import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.ContainerUser;
 import net.minecraft.world.entity.player.Inventory;
@@ -44,6 +53,7 @@ import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
 
 public class CopperCrateBlockEntity extends RandomizableContainerBlockEntity {
 	public static int ROW_COUNT = 4;
@@ -128,8 +138,77 @@ public class CopperCrateBlockEntity extends RandomizableContainerBlockEntity {
 	}
 
 	@Override
-	public boolean canPlaceItem(int slot, ItemStack stack) {
-		return CopperCrateBlock.verifyStackForPlacement(stack, this).isSuccess();
+	public void setItem(int slot, ItemStack stack) {
+		this.unpackLootTable(null);
+		if (!CopperCrateBlock.verifyStackForPlacement(stack, this).isSuccess()) {
+			final Level level = this.getLevel();
+			final BlockPos pos = this.getBlockPos();
+			final BlockState state = this.getBlockState();
+			this.moveOut(level, pos, state, stack);
+			this.dispense(level, pos, state, Optional.of(stack), true);
+			return;
+		}
+
+		super.setItem(slot, stack);
+	}
+
+	private boolean moveOut(Level level, BlockPos pos, BlockState state, ItemStack stack) {
+		if (stack.isEmpty()) return false;
+
+		final Direction facing = state.getValue(CopperCrateBlock.FACING);
+		final BlockPos facingPos = pos.relative(facing);
+		final BlockState outputState = level.getBlockState(facingPos);
+
+		final Storage<ItemVariant> outputInventory = ItemStorage.SIDED.find(level, facingPos, outputState, level.getBlockEntity(facingPos), facing.getOpposite());
+		if (outputInventory == null) return false;
+		if (!outputInventory.supportsInsertion()) return false;
+
+		final Transaction transaction = Transaction.openOuter();
+		final ItemVariant item = ItemVariant.of(stack);
+		final long inserted = outputInventory.insert(item, stack.getCount(), transaction);
+		if (inserted > 0) { // successfully inserted item
+			transaction.commit(); // applies the changes
+			stack.shrink((int) inserted);
+			return true;
+		}
+
+		transaction.close(); // if it can't commit, close it.
+		return false;
+	}
+
+	private boolean dispense(Level level, BlockPos pos, BlockState state, Optional<ItemStack> selectedStack, boolean dispenseWholeStack) {
+		final int slot = selectedStack.isPresent() ? 0 : this.chooseNonEmptySlot(level.random);
+		if (slot < 0) return false;
+
+		final ItemStack stack = selectedStack.orElse(this.getItem(slot));
+		if (stack.isEmpty()) return false;
+
+		final ItemStack dispensedItem = this.dispenseItem(level, pos, state, stack, dispenseWholeStack);
+		if (selectedStack.isEmpty()) this.setItem(slot, dispensedItem);
+
+		return true;
+	}
+
+	private ItemStack dispenseItem(Level level, BlockPos pos, BlockState state, ItemStack stack, boolean dispenseWholeStack) {
+		final Direction facing = state.getValue(CopperCrateBlock.FACING);
+		final Vec3 dispensePos = pos.getCenter().relative(facing, 0.7D);
+		final ItemStack dispenseStack = dispenseWholeStack ? stack.copyAndClear() : stack.split(1);
+		//level.levelEvent(LevelEvent.PARTICLES_SHOOT_SMOKE, pos, facing.get3DDataValue());
+		DefaultDispenseItemBehavior.spawnItem(level, dispenseStack, 2, facing, dispensePos);
+		// TODO: sound
+		level.playSound(null, pos, SoundEvents.DISPENSER_DISPENSE, SoundSource.BLOCKS, 0.2F, (level.random.nextFloat() * 0.25F) + 0.8F);
+
+		return stack;
+	}
+
+	public int chooseNonEmptySlot(RandomSource random) {
+		this.unpackLootTable(null);
+		int slot = -1;
+		int selectionChance = 1;
+		for (int k = 0; k < this.items.size(); ++k) {
+			if (!this.items.get(k).isEmpty() && random.nextInt(selectionChance++) == 0) slot = k;
+		}
+		return slot;
 	}
 
 	@Override

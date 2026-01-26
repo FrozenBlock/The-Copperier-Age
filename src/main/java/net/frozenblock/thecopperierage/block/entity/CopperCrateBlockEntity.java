@@ -19,6 +19,7 @@ package net.frozenblock.thecopperierage.block.entity;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
@@ -40,6 +41,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.ContainerUser;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -55,10 +57,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
-public class CopperCrateBlockEntity extends RandomizableContainerBlockEntity {
+public class CopperCrateBlockEntity extends RandomizableContainerBlockEntity implements WorldlyContainer {
 	public static int ROW_COUNT = 4;
 	public static final int CONTAINER_SIZE = ROW_COUNT * 9;
+	private static final int[] SLOTS = IntStream.range(0, CONTAINER_SIZE).toArray();
 	private static final Component DEFAULT_NAME = Component.translatable("container.thecopperierage.copper_crate");
 	private NonNullList<ItemStack> items = NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY);
 	private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
@@ -261,5 +265,20 @@ public class CopperCrateBlockEntity extends RandomizableContainerBlockEntity {
 		final double y = this.worldPosition.getY() + 0.5D + directionOffset.getY() / 2D;
 		final double z = this.worldPosition.getZ() + 0.5D + directionOffset.getZ() / 2D;
 		this.level.playSound(null, x, y, z, sound, SoundSource.BLOCKS, 0.5F, this.level.random.nextFloat() * 0.1F + 0.9F);
+	}
+
+	@Override
+	public int[] getSlotsForFace(Direction direction) {
+		return SLOTS;
+	}
+
+	@Override
+	public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction direction) {
+		return direction == null || direction != this.getBlockState().getValue(CopperCrateBlock.FACING);
+	}
+
+	@Override
+	public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction direction) {
+		return true;
 	}
 }

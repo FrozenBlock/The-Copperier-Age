@@ -29,6 +29,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Predicate;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.config.TCAConfig;
+import net.frozenblock.thecopperierage.registry.TCADataComponents;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
@@ -85,6 +86,14 @@ public final class OxidizableItemHelper {
 		OXIDIZABLE_ATTRIBUTES.put(copper, Pair.of(copperAttributes, ironAttributes));
 	}
 
+	public static boolean isWaxed(ItemStack stack) {
+		return stack.has(TCADataComponents.WAXED);
+	}
+
+	public static int getDamageOrWaxedDamage(ItemStack stack) {
+		return stack.getComponents().getOrDefault(TCADataComponents.WAXED, stack.getDamageValue());
+	}
+
 	public static float getOxidizeProgress(@NotNull ItemStack stack) {
 		return getOxidizeProgress(stack, OptionalInt.empty());
 	}
@@ -92,7 +101,7 @@ public final class OxidizableItemHelper {
 	public static float getOxidizeProgress(@NotNull ItemStack stack, @NotNull OptionalInt optionalInt) {
 		if (!TCAConfig.OXIDIZABLE_COPPER_EQUIPMENT) return 0F;
 
-		final float damage = optionalInt.orElse(stack.getDamageValue());
+		final float damage = optionalInt.orElse(getDamageOrWaxedDamage(stack));
 		final float maxDamage = stack.getMaxDamage();
 		final float damageProgress = Mth.clamp(damage / maxDamage, 0F, 1F);
 		if (damageProgress >= OXIDIZED_THRESHOLD) return 1F;
@@ -111,8 +120,9 @@ public final class OxidizableItemHelper {
 
 	public static void onDamageUpdated(@NotNull ItemStack stack, int damageValue) {
 		final Item item = stack.getItem();
-		updateMiningSpeed(stack, item, damageValue);
-		updateAttributes(stack, item, damageValue);
+		final int damageToUse = stack.getComponents().getOrDefault(TCADataComponents.WAXED, damageValue);
+		updateMiningSpeed(stack, item, damageToUse);
+		updateAttributes(stack, item, damageToUse);
 	}
 
 	private static void updateMiningSpeed(ItemStack stack, Item item, int damageValue) {

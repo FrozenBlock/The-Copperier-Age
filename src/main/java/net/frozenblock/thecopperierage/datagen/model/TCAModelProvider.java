@@ -25,6 +25,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.CopperFanBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
+import net.frozenblock.thecopperierage.client.renderer.item.properties.select.DamageOrWaxedDamage;
 import net.frozenblock.thecopperierage.client.renderer.item.properties.select.OxidizedItemsEnabled;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
@@ -44,7 +45,6 @@ import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
 import net.minecraft.client.renderer.block.model.VariantMutator;
 import static net.minecraft.client.renderer.item.ItemModel.Unbaked;
-import net.minecraft.client.renderer.item.properties.numeric.Damage;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -297,7 +297,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 			ItemModelUtils.when(
 				true,
 				ItemModelUtils.rangeSelect(
-					new Damage(true),
+					new DamageOrWaxedDamage(true),
 					unaffected,
 					ItemModelUtils.override(exposed, OxidizableItemHelper.EXPOSED_THRESHOLD),
 					ItemModelUtils.override(weathered, OxidizableItemHelper.WEATHERED_THRESHOLD),

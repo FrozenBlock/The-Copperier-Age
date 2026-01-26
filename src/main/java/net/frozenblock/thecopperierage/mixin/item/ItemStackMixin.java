@@ -17,19 +17,32 @@
 
 package net.frozenblock.thecopperierage.mixin.item;
 
+import java.util.function.Consumer;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.component.TypedDataComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import org.jetbrains.annotations.Nullable;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import net.minecraft.ChatFormatting;
 
 @Mixin(ItemStack.class)
 public class ItemStackMixin {
+
+	@Unique
+	private static final Component THECOPPERIERAGE$WAXED_TOOLTIP = Component.translatable("item.thecopperierage.waxed").withStyle(ChatFormatting.BLUE);
 
 	@Inject(method = "set(Lnet/minecraft/core/component/DataComponentType;Ljava/lang/Object;)Ljava/lang/Object;", at = @At("HEAD"))
 	public <T> void theCopperierAge$onDamageSet(DataComponentType<T> dataComponentType, @Nullable T value, CallbackInfoReturnable<T> info) {
@@ -50,6 +63,22 @@ public class ItemStackMixin {
 	public <T> void theCopperierAge$onDamageSet(DataComponentType<T> dataComponentType, CallbackInfoReturnable<T> info) {
 		if (dataComponentType != DataComponents.DAMAGE) return;
 		OxidizableItemHelper.onDamageUpdated(ItemStack.class.cast(this), 0);
+	}
+
+	@Inject(
+		method = "addDetailsToTooltip",
+		at = @At(
+			value = "FIELD",
+			target = "Lnet/minecraft/core/component/DataComponents;UNBREAKABLE:Lnet/minecraft/core/component/DataComponentType;",
+			opcode = Opcodes.GETSTATIC,
+			ordinal = 0,
+			shift = At.Shift.BEFORE
+		)
+	)
+	public void theCopperierAge$addWaxedTooltip(
+		Item.TooltipContext context, TooltipDisplay display, @Nullable Player player, TooltipFlag flag, Consumer<Component> consumer, CallbackInfo info
+	) {
+		if (OxidizableItemHelper.isWaxed(ItemStack.class.cast(this))) consumer.accept(THECOPPERIERAGE$WAXED_TOOLTIP);
 	}
 
 }

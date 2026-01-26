@@ -5,3 +5,5 @@ Put the changelog BELOW the dashes. ANYTHING ABOVE IS IGNORED.
 - Fixed Weighted Pressure Plates not having map colors.
 - Fixed Chimes not having map colors.
 - Added Crates.
+- Copper Golems can now occasionally press Copper Buttons.
+- Added waxing recipes that were missing.

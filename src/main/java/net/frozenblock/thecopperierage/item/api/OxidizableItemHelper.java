@@ -48,7 +48,7 @@ import org.jetbrains.annotations.NotNull;
 
 public final class OxidizableItemHelper {
 	public static final List<String> OXIDIZING_SUFFIXES = ImmutableList.of("exposed", "weathered", "oxidized");
-	public static final List<String> OXIDIZING_AUTO_MODEL_SEARCH_TERMS = ImmutableList.of(
+	private static List<String> OXIDIZING_AUTO_MODEL_SEARCH_TERMS = ImmutableList.of(
 		"_helmet", "_chestplate", "_leggings", "_boots", "_axe", "_pickaxe", "_shovel", "_sword", "_hoe", "_spear", "brush", "wrench"
 	);
 	private static final Map<Item, Pair<ItemAttributeModifiers, ItemAttributeModifiers>> OXIDIZABLE_ATTRIBUTES = new Object2ObjectLinkedOpenHashMap<>();
@@ -64,6 +64,14 @@ public final class OxidizableItemHelper {
 		addOxidizableAttributesItem(Items.COPPER_PICKAXE, Items.IRON_PICKAXE);
 		addOxidizableAttributesItem(Items.COPPER_AXE, Items.IRON_AXE);
 		addOxidizableAttributesItem(Items.COPPER_HOE, Items.IRON_HOE);
+	}
+
+	public static List<String> getOxidizingModelSearchTerms() {
+		return ImmutableList.copyOf(OXIDIZING_AUTO_MODEL_SEARCH_TERMS);
+	}
+
+	public static void addOxidizingModelSearchTerm(String term) {
+		OXIDIZING_AUTO_MODEL_SEARCH_TERMS.add(term);
 	}
 
 	public static void addOxidizableAttributesItem(@NotNull Item copper, @NotNull Item iron) {

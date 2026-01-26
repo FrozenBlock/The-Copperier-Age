@@ -75,7 +75,7 @@ public abstract class BlockModelWrapperUnbakedMixin {
 		final ResourceLocation id = this.model();
 		final String path = id.getPath();
 		if (!(path.contains("item/copper_") || path.equals("item/brush") || path.contains("item/brush_brushing_") || path.equals("item/wrench"))) return original;
-		if (OxidizableItemHelper.OXIDIZING_AUTO_MODEL_SEARCH_TERMS.stream().noneMatch(path::contains)) return original;
+		if (OxidizableItemHelper.getOxidizingModelSearchTerms().stream().noneMatch(path::contains)) return original;
 
 		final Material layer0Material = slots.getMaterial("layer0");
 		if (layer0Material == null) return original;

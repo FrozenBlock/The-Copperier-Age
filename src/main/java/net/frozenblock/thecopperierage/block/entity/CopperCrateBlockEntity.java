@@ -26,6 +26,7 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.frozenblock.thecopperierage.block.CopperCrateBlock;
 import net.frozenblock.thecopperierage.block.entity.inventory.CrateMenu;
 import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
+import net.frozenblock.thecopperierage.tag.TCABlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -158,6 +159,7 @@ public class CopperCrateBlockEntity extends RandomizableContainerBlockEntity {
 		final Direction facing = state.getValue(CopperCrateBlock.FACING);
 		final BlockPos facingPos = pos.relative(facing);
 		final BlockState outputState = level.getBlockState(facingPos);
+		if (outputState.is(TCABlockTags.COPPER_CRATES)) return false;
 
 		final Storage<ItemVariant> outputInventory = ItemStorage.SIDED.find(level, facingPos, outputState, level.getBlockEntity(facingPos), facing.getOpposite());
 		if (outputInventory == null) return false;

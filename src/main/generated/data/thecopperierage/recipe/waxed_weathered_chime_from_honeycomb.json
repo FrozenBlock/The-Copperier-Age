@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "waxed_weathered_chime",
+  "ingredients": [
+    "thecopperierage:weathered_chime",
+    "minecraft:honeycomb"
+  ],
+  "result": {
+    "count": 1,
+    "id": "thecopperierage:waxed_weathered_chime"
+  }
+}

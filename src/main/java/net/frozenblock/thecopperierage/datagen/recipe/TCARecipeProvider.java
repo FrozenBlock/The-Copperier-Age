@@ -22,6 +22,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.frozenblock.lib.recipe.api.RecipeExportNamespaceFix;
 import net.frozenblock.thecopperierage.TCAConstants;
+import net.frozenblock.thecopperierage.TCAFeatureFlags;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.minecraft.core.HolderLookup;
@@ -51,6 +52,7 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 			public void buildRecipes() {
 				RecipeExportNamespaceFix.setCurrentGeneratingModId(TCAConstants.MOD_ID);
 
+				this.waxRecipes(TCAFeatureFlags.THE_COPPERIER_AGE_FLAG_SET);
 				CopperHornRecipeProvider.buildRecipes(this, registries, exporter);
 
 				this.shaped(RecipeCategory.TOOLS, TCAItems.WRENCH)

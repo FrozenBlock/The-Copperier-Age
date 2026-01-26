@@ -48,7 +48,7 @@ import org.jetbrains.annotations.NotNull;
 
 public final class OxidizableItemHelper {
 	public static final List<String> OXIDIZING_SUFFIXES = ImmutableList.of("exposed", "weathered", "oxidized");
-	private static List<String> OXIDIZING_AUTO_MODEL_SEARCH_TERMS = ImmutableList.of(
+	private static final List<String> OXIDIZING_AUTO_MODEL_SEARCH_TERMS = ImmutableList.of(
 		"_helmet", "_chestplate", "_leggings", "_boots", "_axe", "_pickaxe", "_shovel", "_sword", "_hoe", "_spear", "brush", "wrench"
 	);
 	private static final Map<Item, Pair<ItemAttributeModifiers, ItemAttributeModifiers>> OXIDIZABLE_ATTRIBUTES = new Object2ObjectLinkedOpenHashMap<>();

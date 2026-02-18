@@ -34,6 +34,6 @@ public class BaseFireBlockMixin {
 
     @Inject(method = "getState", at = @At("HEAD"), cancellable = true)
     private static void theCopperierAge$placeCopperFire(BlockGetter level, BlockPos pos, CallbackInfoReturnable<BlockState> info) {
-        if (CopperFireBlock.canSurviveOnBlock(level, pos.below()) && TCAConfig.get().copperFireEnabled) info.setReturnValue(TCABlocks.COPPER_FIRE.defaultBlockState());
+        if (CopperFireBlock.canSurviveOnBlock(level, pos.below()) && TCAConfig.COPPER_FIRE_ENABLED.get()) info.setReturnValue(TCABlocks.COPPER_FIRE.defaultBlockState());
     }
 }

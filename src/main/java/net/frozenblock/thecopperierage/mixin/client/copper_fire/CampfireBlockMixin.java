@@ -76,7 +76,7 @@ public class CampfireBlockMixin {
 		SimpleParticleType original,
 		@Share("theCopperierAge$blockState") LocalRef<BlockState> state
 	) {
-		return TCAConfig.COPPER_PARTICLES && state.get().is(TCABlocks.COPPER_CAMPFIRE) ? TCAParticleTypes.COPPER_CAMPFIRE_SIGNAL_SMOKE : original;
+		return TCAConfig.COPPER_PARTICLES.get() && state.get().is(TCABlocks.COPPER_CAMPFIRE) ? TCAParticleTypes.COPPER_CAMPFIRE_SIGNAL_SMOKE : original;
 	}
 
 	@ModifyExpressionValue(
@@ -91,7 +91,7 @@ public class CampfireBlockMixin {
 		SimpleParticleType original,
 		@Share("theCopperierAge$blockState") LocalRef<BlockState> state
 	) {
-		return TCAConfig.COPPER_PARTICLES && state.get().is(TCABlocks.COPPER_CAMPFIRE) ? TCAParticleTypes.COPPER_CAMPFIRE_COSY_SMOKE : original;
+		return TCAConfig.COPPER_PARTICLES.get() && state.get().is(TCABlocks.COPPER_CAMPFIRE) ? TCAParticleTypes.COPPER_CAMPFIRE_COSY_SMOKE : original;
 	}
 
 	@ModifyExpressionValue(
@@ -106,7 +106,7 @@ public class CampfireBlockMixin {
 		SimpleParticleType original,
 		@Share("theCopperierAge$blockState") LocalRef<BlockState> state
 	) {
-		return TCAConfig.COPPER_PARTICLES && state.get().is(TCABlocks.COPPER_CAMPFIRE) ? TCAParticleTypes.COPPER_SMOKE : original;
+		return TCAConfig.COPPER_PARTICLES.get() && state.get().is(TCABlocks.COPPER_CAMPFIRE) ? TCAParticleTypes.COPPER_SMOKE : original;
 	}
 
 }

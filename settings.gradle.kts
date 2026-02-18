@@ -29,7 +29,6 @@ rootProject.name = "The Copperier Age"
 
 localRepository("FrozenLib", "maven.modrinth:frozenlib", true, true)
 
-
 fun localRepository(repo: String, dependencySub: String, kotlin: Boolean, enabled: Boolean) {
     if (!enabled) return
     println("Attempting to include local repo $repo")

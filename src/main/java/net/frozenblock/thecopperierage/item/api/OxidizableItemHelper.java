@@ -78,7 +78,7 @@ public final class OxidizableItemHelper {
 	}
 
 	public static float getOxidizeProgress(ItemStack stack, OptionalInt optionalInt) {
-		if (!TCAConfig.OXIDIZABLE_COPPER_EQUIPMENT) return 0F;
+		if (!TCAConfig.OXIDIZABLE_COPPER_EQUIPMENT.get()) return 0F;
 
 		final float damage = optionalInt.orElse(stack.getDamageValue());
 		final float maxDamage = stack.getMaxDamage();

@@ -17,71 +17,21 @@
 
 package net.frozenblock.thecopperierage.config;
 
-import net.frozenblock.lib.config.api.instance.Config;
-import net.frozenblock.lib.config.api.instance.json.JsonConfig;
-import net.frozenblock.lib.config.api.instance.json.JsonType;
-import net.frozenblock.lib.config.api.registry.ConfigRegistry;
-import net.frozenblock.lib.config.api.sync.SyncBehavior;
-import net.frozenblock.lib.config.api.sync.annotation.EntrySyncData;
+import net.frozenblock.lib.config.v2.config.ConfigData;
+import net.frozenblock.lib.config.v2.config.ConfigSettings;
+import net.frozenblock.lib.config.v2.entry.ConfigEntry;
+import net.frozenblock.lib.config.v2.entry.EntryType;
+import net.frozenblock.lib.config.v2.registry.ID;
 import net.frozenblock.thecopperierage.TCAConstants;
 
 public class TCAConfig {
-	public static final Config<TCAConfig> INSTANCE = ConfigRegistry.register(
-		new JsonConfig<>(
-			TCAConstants.MOD_ID,
-			TCAConfig.class,
-			JsonType.JSON5_UNQUOTED_KEYS,
-			true
-		) {
-			@Override
-			public void onSave() throws Exception {
-				super.onSave();
-				this.onSync(null);
-			}
+	public static final ConfigData<?> CONFIG = ConfigData.createAndRegister(ID.of(TCAConstants.id("main")), ConfigSettings.JSON5);
 
-			@Override
-			public void onSync(TCAConfig syncInstance) {
-				var config = this.config();
-				OXIDIZABLE_COPPER_EQUIPMENT = config.oxidizableCopperEquipment;
-				COPPER_PARTICLES = config.copperParticles;
-			}
-		}
-	);
-
-	public static volatile boolean OXIDIZABLE_COPPER_EQUIPMENT = true;
-	public static volatile boolean COPPER_PARTICLES = true;
-
-	@EntrySyncData("copperFireEnabled")
-	public boolean copperFireEnabled = true;
-
-	@EntrySyncData("copperFirePoisons")
-	public boolean copperFirePoisons = true;
-
-	@EntrySyncData("copperButtonsInTrialChambers")
-	public boolean copperButtonsInTrialChambers = true;
-
-	@EntrySyncData("copperChestsInTrialChambers")
-	public boolean copperChestsInTrialChambers = true;
-
-	@EntrySyncData("copperPressurePlatesInTrialChambers")
-	public boolean copperPressurePlatesInTrialChambers = true;
-
-	@EntrySyncData("oxidizableCopperEquipment")
-	public boolean oxidizableCopperEquipment = true;
-
-	@EntrySyncData(value = "copperParticles", behavior = SyncBehavior.UNSYNCABLE)
-	public boolean copperParticles = true;
-
-	public static TCAConfig get(boolean real) {
-		if (real) return INSTANCE.instance();
-		return INSTANCE.config();
-	}
-
-	public static TCAConfig get() {
-		return get(false);
-	}
-
-	public static TCAConfig getWithSync() {
-		return INSTANCE.configWithSync();
-	}
+	public static final ConfigEntry<Boolean> COPPER_FIRE_ENABLED = CONFIG.entry("copperFireEnabled", EntryType.BOOL, true);
+	public static final ConfigEntry<Boolean> COPPER_FIRE_POISONS = CONFIG.entry("copperFirePoisons", EntryType.BOOL, true);
+	public static final ConfigEntry<Boolean> COPPER_BUTTONS_IN_TRIAL_CHAMBERS = CONFIG.entryBuilder("copperButtonsInTrialChambers", EntryType.BOOL, true).requireRestart().build();
+	public static final ConfigEntry<Boolean> COPPER_CHESTS_IN_TRIAL_CHAMBERS = CONFIG.entryBuilder("copperChestsInTrialChambers", EntryType.BOOL, true).requireRestart().build();
+	public static final ConfigEntry<Boolean> COPPER_PRESSURE_PLATES_IN_TRIAL_CHAMBERS = CONFIG.entryBuilder("copperPressurePlatesInTrialChambers", EntryType.BOOL, true).requireRestart().build();
+	public static final ConfigEntry<Boolean> OXIDIZABLE_COPPER_EQUIPMENT = CONFIG.entry("oxidizableCopperEquipment", EntryType.BOOL, true);
+	public static final ConfigEntry<Boolean> COPPER_PARTICLES = CONFIG.unsyncableEntry("copperParticles", EntryType.BOOL, true);
 }

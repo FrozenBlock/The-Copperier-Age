@@ -64,7 +64,7 @@ public class EquipmentLayerRendererMixin {
 		Identifier texture, Operation<RenderType> original,
 		@Local(argsOnly = true) ItemStack stack
 	) {
-		if (!TCAConfig.OXIDIZABLE_COPPER_EQUIPMENT || !texture.getPath().contains("humanoid") || !stack.is(TCAItemTags.OXIDIZABLE_EQUIPMENT)) return original.call(texture);
+		if (!TCAConfig.OXIDIZABLE_COPPER_EQUIPMENT.get() || !texture.getPath().contains("humanoid") || !stack.is(TCAItemTags.OXIDIZABLE_EQUIPMENT)) return original.call(texture);
 		if (stack.is(ItemTags.LEG_ARMOR)) return original.call(
 			OxidizableItemHelper.getValueForOxidization(
 				stack,

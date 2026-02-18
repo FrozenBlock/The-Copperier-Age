@@ -18,7 +18,7 @@
 package net.frozenblock.thecopperierage.datagen;
 
 import java.util.concurrent.CompletableFuture;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.minecraft.core.HolderGetter;
@@ -27,7 +27,7 @@ import net.minecraft.core.registries.Registries;
 
 final class TCARegistryProvider extends FabricDynamicRegistryProvider {
 
-	TCARegistryProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+	TCARegistryProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
 		super(output, registriesFuture);
 	}
 

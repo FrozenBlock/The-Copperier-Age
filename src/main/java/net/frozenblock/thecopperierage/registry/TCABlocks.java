@@ -207,13 +207,13 @@ public final class TCABlocks {
 	public static void registerBlockProperties() {
 		registerDispenses();
 
-		BlockEntityType.CAMPFIRE.addSupportedBlock(TCABlocks.COPPER_CAMPFIRE);
+		BlockEntityType.CAMPFIRE.addValidBlock(TCABlocks.COPPER_CAMPFIRE);
 
-		OxidizableBlocksRegistry.registerCopperBlockSet(GEARBOX);
-		OxidizableBlocksRegistry.registerCopperBlockSet(COPPER_FAN);
-		OxidizableBlocksRegistry.registerCopperBlockSet(CHIME);
-		OxidizableBlocksRegistry.registerCopperBlockSet(COPPER_BUTTON);
-		OxidizableBlocksRegistry.registerCopperBlockSet(WEIGHTED_PRESSURE_PLATE);
+		OxidizableBlocksRegistry.registerWeatheringCopperBlocks(GEARBOX);
+		OxidizableBlocksRegistry.registerWeatheringCopperBlocks(COPPER_FAN);
+		OxidizableBlocksRegistry.registerWeatheringCopperBlocks(CHIME);
+		OxidizableBlocksRegistry.registerWeatheringCopperBlocks(COPPER_BUTTON);
+		OxidizableBlocksRegistry.registerWeatheringCopperBlocks(WEIGHTED_PRESSURE_PLATE);
 	}
 
 	private static void registerDispenses() {

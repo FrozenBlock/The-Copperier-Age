@@ -18,7 +18,7 @@
 package net.frozenblock.thecopperierage.datagen.recipe;
 
 import java.util.concurrent.CompletableFuture;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.frozenblock.lib.recipe.api.RecipeExportNamespaceFix;
 import net.frozenblock.thecopperierage.TCAConstants;
@@ -37,7 +37,7 @@ import net.minecraft.world.level.block.Blocks;
 
 public final class TCARecipeProvider extends FabricRecipeProvider {
 
-	public TCARecipeProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+	public TCARecipeProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
 		super(output, registries);
 	}
 

@@ -24,7 +24,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 
 public final class TCANetworking {
 	public static void init() {
-		final PayloadTypeRegistry<RegistryFriendlyByteBuf> registry = PayloadTypeRegistry.playS2C();
+		final PayloadTypeRegistry<RegistryFriendlyByteBuf> registry = PayloadTypeRegistry.clientboundPlay();
 		registry.register(TCACopperFanBlowPacket.PACKET_TYPE, TCACopperFanBlowPacket.CODEC);
 		registry.register(TCAChimeInfluencePacket.PACKET_TYPE, TCAChimeInfluencePacket.CODEC);
 	}

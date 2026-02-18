@@ -37,7 +37,7 @@ public record TCAChimeInfluencePacket(BlockPos pos, Vec3 influence, double scale
 	public static final StreamCodec<FriendlyByteBuf, TCAChimeInfluencePacket> CODEC = StreamCodec.ofMember(TCAChimeInfluencePacket::write, TCAChimeInfluencePacket::new);
 
 	public TCAChimeInfluencePacket(FriendlyByteBuf buf) {
-		this(buf.readBlockPos(), buf.readVec3(), buf.readDouble(), buf.readOptional(ByteBufCodecs.VAR_INT));
+		this(buf.readBlockPos(), Vec3.STREAM_CODEC.decode(buf), buf.readDouble(), buf.readOptional(ByteBufCodecs.VAR_INT));
 	}
 
 	public static void sendToAll(ServerLevel level, BlockPos pos, Vec3 influence, double scaleEachTick, @Nullable Entity entity) {
@@ -47,7 +47,7 @@ public record TCAChimeInfluencePacket(BlockPos pos, Vec3 influence, double scale
 
 	public void write(FriendlyByteBuf buf) {
 		buf.writeBlockPos(this.pos());
-		buf.writeVec3(this.influence());
+		Vec3.STREAM_CODEC.encode(buf, this.influence());
 		buf.writeDouble(this.scaleEachTick());
 		buf.writeOptional(this.entityID(), ByteBufCodecs.VAR_INT);
 	}

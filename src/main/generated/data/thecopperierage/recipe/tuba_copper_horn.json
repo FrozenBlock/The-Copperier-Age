@@ -20,7 +20,6 @@
     "components": {
       "minecraft:instrument": "thecopperierage:tuba_copper_horn"
     },
-    "count": 1,
     "id": "thecopperierage:copper_horn"
   }
 }

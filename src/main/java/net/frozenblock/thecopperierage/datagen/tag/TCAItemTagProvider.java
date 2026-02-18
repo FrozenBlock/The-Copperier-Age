@@ -18,8 +18,8 @@
 package net.frozenblock.thecopperierage.datagen.tag;
 
 import java.util.concurrent.CompletableFuture;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.frozenblock.thecopperierage.tag.TCAItemTags;
@@ -32,9 +32,9 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 
-public final class TCAItemTagProvider extends FabricTagProvider.ItemTagProvider {
+public final class TCAItemTagProvider extends FabricTagsProvider.ItemTagsProvider {
 
-	public TCAItemTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+	public TCAItemTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
 		super(output, registries);
 	}
 

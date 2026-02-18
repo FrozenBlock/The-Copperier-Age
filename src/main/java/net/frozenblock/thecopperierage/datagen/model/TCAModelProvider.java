@@ -23,7 +23,7 @@ import java.util.Optional;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.CopperFanBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
@@ -43,6 +43,7 @@ import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.renderer.block.model.Material;
 import net.minecraft.client.renderer.block.model.VariantMutator;
 import net.minecraft.client.renderer.item.ClientItem;
 import static net.minecraft.client.renderer.item.ItemModel.Unbaked;
@@ -103,7 +104,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 	public static final ModelTemplate BRUSH_BRUSHING_1 = ModelTemplates.createItem("brush_brushing_1", TextureSlot.LAYER0);
 	public static final ModelTemplate BRUSH_BRUSHING_2 = ModelTemplates.createItem("brush_brushing_2", TextureSlot.LAYER0);
 
-	public TCAModelProvider(FabricDataOutput output) {
+	public TCAModelProvider(FabricPackOutput output) {
 		super(output);
 	}
 
@@ -372,9 +373,9 @@ public final class TCAModelProvider extends FabricModelProvider {
 	) {
 		final Identifier vanillaModel = ModelLocationUtils.getModelLocation(item);
 		final Identifier tcaModel = getItemModelWithTCANamespace(item, "");
-		final Identifier exposedTexture = getItemTextureWithTCANamespace(item, "_exposed");
-		final Identifier weatheredTexture = getItemTextureWithTCANamespace(item, "_weathered");
-		final Identifier oxidizedTexture = getItemTextureWithTCANamespace(item, "_oxidized");
+		final Material exposedTexture = getItemTextureWithTCANamespace(item, "_exposed");
+		final Material weatheredTexture = getItemTextureWithTCANamespace(item, "_weathered");
+		final Material oxidizedTexture = getItemTextureWithTCANamespace(item, "_oxidized");
 
 		final int trimMaterialListSize = ItemModelGenerators.TRIM_MATERIAL_MODELS.size();
 		final List<SelectItemModel.SwitchCase<ResourceKey<TrimMaterial>>> unaffectedList = new ArrayList<>(trimMaterialListSize);
@@ -383,7 +384,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 		final List<SelectItemModel.SwitchCase<ResourceKey<TrimMaterial>>> oxidizedList = new ArrayList<>(trimMaterialListSize);
 		for (ItemModelGenerators.TrimMaterialData trimMaterialData : ItemModelGenerators.TRIM_MATERIAL_MODELS) {
 			final ResourceKey<TrimMaterial> materialKey = trimMaterialData.materialKey();
-			final Identifier trimmedTexture = identifier.withSuffix("_" + trimMaterialData.assets().assetId(equipmentAsset).suffix());
+			final Material trimmedTexture = new Material(identifier.withSuffix("_" + trimMaterialData.assets().assetId(equipmentAsset).suffix()));
 
 			final Identifier unaffectedModel = vanillaModel.withSuffix("_" + trimMaterialData.assets().base().suffix() + "_trim");
 			final Unbaked unaffected = ItemModelUtils.plainModel(unaffectedModel);
@@ -434,8 +435,8 @@ public final class TCAModelProvider extends FabricModelProvider {
 		return TCAConstants.id(ModelLocationUtils.getModelLocation(item, suffix).getPath());
 	}
 
-	private static Identifier getItemTextureWithTCANamespace(Item item, String suffix) {
-		return TCAConstants.id(TextureMapping.getItemTexture(item, suffix).getPath());
+	private static Material getItemTextureWithTCANamespace(Item item, String suffix) {
+		return new Material(TCAConstants.id(TextureMapping.getItemTexture(item, suffix).sprite().getPath()));
 	}
 
 	private static Unbaked createOxidizableDispatch(Unbaked unaffected, Unbaked exposed, Unbaked weathered, Unbaked oxidized) {

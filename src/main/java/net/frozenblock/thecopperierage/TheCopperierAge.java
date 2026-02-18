@@ -45,7 +45,7 @@ public final class TheCopperierAge extends FrozenModInitializer {
 		TCABlocks.registerBlocks();
 		TCABlockEntityTypes.init();
 		TCAItems.registerItems();
-		OxidizableItemHelper.bootstrap();
+		OxidizableItemHelper.init();
 		TCASounds.init();
 		TCACreativeInventorySorting.init();
 		TCAParticleTypes.registerParticles();

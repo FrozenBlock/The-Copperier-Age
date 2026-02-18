@@ -19,7 +19,7 @@ package net.frozenblock.thecopperierage.client;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.client.model.ChimeModel;
 import net.frozenblock.thecopperierage.client.renderer.blockentity.ChimeRenderer;
@@ -33,6 +33,6 @@ public final class TCAModelLayers {
 
 	public static void init() {
 		BlockEntityRenderers.register(TCABlockEntityTypes.CHIME, ChimeRenderer::new);
-		EntityModelLayerRegistry.registerModelLayer(CHIME, ChimeModel::createLayerDefinition);
+		ModelLayerRegistry.registerModelLayer(CHIME, ChimeModel::createLayerDefinition);
 	}
 }

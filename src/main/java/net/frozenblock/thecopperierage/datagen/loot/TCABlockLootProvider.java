@@ -18,16 +18,16 @@
 package net.frozenblock.thecopperierage.datagen.loot;
 
 import java.util.concurrent.CompletableFuture;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootSubProvider;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.enchantment.Enchantment;
 
-public final class TCABlockLootProvider extends FabricBlockLootTableProvider {
+public final class TCABlockLootProvider extends FabricBlockLootSubProvider {
 
-	public TCABlockLootProvider(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registries) {
+	public TCABlockLootProvider(FabricPackOutput dataOutput, CompletableFuture<HolderLookup.Provider> registries) {
 		super(dataOutput, registries);
 	}
 

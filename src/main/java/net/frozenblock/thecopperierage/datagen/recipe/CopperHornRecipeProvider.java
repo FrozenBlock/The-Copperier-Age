@@ -18,7 +18,6 @@
 package net.frozenblock.thecopperierage.datagen.recipe;
 
 import net.fabricmc.fabric.api.recipe.v1.ingredient.DefaultCustomIngredients;
-import net.frozenblock.lib.recipe.api.ShapedRecipeBuilderExtension;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.minecraft.core.HolderLookup;
@@ -28,9 +27,11 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Instrument;
 import net.minecraft.world.item.Instruments;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.InstrumentComponent;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -50,30 +51,38 @@ public final class CopperHornRecipeProvider {
 
 	private static void copperHorn(
 		RecipeProvider provider,
-		HolderLookup.Provider lookup,
+		HolderLookup.Provider registries,
 		RecipeOutput exporter,
 		String name,
 		ResourceKey<Instrument> goatHornInstrument,
 		ResourceKey<Instrument> copperHornInstrument
 	) {
-		((ShapedRecipeBuilderExtension) provider.shaped(RecipeCategory.TOOLS, TCAItems.COPPER_HORN)
+		copperHornBuilder(provider, registries, copperHornInstrument)
 			.group("wilderwild_copper_horn")
 			.define('C', Ingredient.of(Items.COPPER_INGOT))
 			.define('G', DefaultCustomIngredients.components(
 				Ingredient.of(Items.GOAT_HORN),
 				DataComponentPatch.builder()
-					.set(DataComponents.INSTRUMENT, new InstrumentComponent(lookup.lookupOrThrow(Registries.INSTRUMENT).getOrThrow(goatHornInstrument)))
+					.set(DataComponents.INSTRUMENT, new InstrumentComponent(registries.lookupOrThrow(Registries.INSTRUMENT).getOrThrow(goatHornInstrument)))
 					.build()
 			))
 			.pattern("CGC")
 			.pattern(" C ")
 			.unlockedBy("has_horn", provider.has(Items.GOAT_HORN))
-		).frozenLib$patch(
-			DataComponentPatch.builder().set(
-				DataComponents.INSTRUMENT,
-				new InstrumentComponent(lookup.lookupOrThrow(Registries.INSTRUMENT).getOrThrow(copperHornInstrument))
-			).build()
-		).save(exporter, TCAConstants.string(name + "_copper_horn"));
+			.save(exporter, TCAConstants.string(name + "_copper_horn"));
+	}
+
+	private static ShapedRecipeBuilder copperHornBuilder(RecipeProvider provider, HolderLookup.Provider registries, ResourceKey<Instrument> instrument) {
+		return new ShapedRecipeBuilder(
+			provider.items,
+			RecipeCategory.TOOLS,
+			new ItemStackTemplate(
+				TCAItems.COPPER_HORN,
+				DataComponentPatch.builder().set(
+					DataComponents.INSTRUMENT,
+					new InstrumentComponent(registries.lookupOrThrow(Registries.INSTRUMENT).getOrThrow(instrument))
+			).build())
+		);
 	}
 
 }

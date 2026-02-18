@@ -21,7 +21,6 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.frozenblock.lib.menu.api.SplashTextAPI;
-import net.frozenblock.thecopperierage.client.TCABlockRenderLayers;
 import net.frozenblock.thecopperierage.client.TCAModelLayers;
 import net.frozenblock.thecopperierage.client.TCAParticleEngine;
 import net.frozenblock.thecopperierage.networking.TCAClientNetworking;
@@ -34,7 +33,6 @@ public final class TheCopperierAgeClient implements ClientModInitializer {
 		SplashTextAPI.addSplashLocation(TCAConstants.id("texts/splashes.txt"));
 
 		TCAParticleEngine.init();
-		TCABlockRenderLayers.init();
 		TCAModelLayers.init();
 		TCAClientNetworking.registerPacketReceivers();
 	}

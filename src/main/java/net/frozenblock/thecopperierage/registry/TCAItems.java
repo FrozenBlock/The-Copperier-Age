@@ -51,7 +51,7 @@ public final class TCAItems {
 		CopperHornItem::new,
 		new Item.Properties()
 			.stacksTo(1)
-			.component(DataComponents.INSTRUMENT, new InstrumentComponent(SAX_COPPER_HORN))
+			.delayedComponent(DataComponents.INSTRUMENT, context -> new InstrumentComponent(context.getOrThrow(SAX_COPPER_HORN)))
 	);
 
 	private TCAItems() {

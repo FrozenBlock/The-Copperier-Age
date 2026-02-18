@@ -67,7 +67,7 @@ public class CopperHornItem extends InstrumentItem {
 	@Override
 	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		final ItemStack stack = player.getItemInHand(hand);
-		final Optional<? extends Holder<Instrument>> optional = this.getInstrument(stack, level.registryAccess());
+		final Optional<? extends Holder<Instrument>> optional = this.getInstrument(stack);
 		if (optional.isEmpty()) return InteractionResult.FAIL;
 
 		player.startUsingItem(hand);

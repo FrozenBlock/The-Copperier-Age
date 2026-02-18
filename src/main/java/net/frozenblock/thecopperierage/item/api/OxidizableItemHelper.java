@@ -31,7 +31,6 @@ import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.tag.TCAItemTags;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
@@ -48,15 +47,15 @@ import net.minecraft.world.item.component.KineticWeapon;
 import net.minecraft.world.item.component.Tool;
 
 public final class OxidizableItemHelper {
-	private static final Map<Item, Pair<ItemAttributeModifiers, ItemAttributeModifiers>> OXIDIZABLE_ATTRIBUTES = new Object2ObjectLinkedOpenHashMap<>();
-	private static final Map<Item, Pair<KineticWeapon, KineticWeapon>> OXIDIZABLE_KINETIC_WEAPONS = new Object2ObjectLinkedOpenHashMap<>();
+	private static final Map<Item, Pair<Item, Item>> OXIDIZABLE_ATTRIBUTES = new Object2ObjectLinkedOpenHashMap<>();
+	private static final Map<Item, Pair<Item, Item>> OXIDIZABLE_KINETIC_WEAPONS = new Object2ObjectLinkedOpenHashMap<>();
 	private static final float COPPER_MINING_SPEED = ToolMaterial.COPPER.speed();
 	private static final float IRON_MINING_SPEED = ToolMaterial.IRON.speed();
 	public static final float EXPOSED_THRESHOLD = 0.2F;
 	public static final float WEATHERED_THRESHOLD = 0.45F;
 	public static final float OXIDIZED_THRESHOLD = 0.65F;
 
-	public static void bootstrap() {
+	public static void init() {
 		addOxidizableAttributesItem(Items.COPPER_SWORD, Items.IRON_SWORD);
 		addOxidizableAttributesItem(Items.COPPER_SHOVEL, Items.IRON_SHOVEL);
 		addOxidizableAttributesItem(Items.COPPER_PICKAXE, Items.IRON_PICKAXE);
@@ -67,25 +66,11 @@ public final class OxidizableItemHelper {
 	}
 
 	public static void addOxidizableAttributesItem(Item copper, Item iron) {
-		final DataComponentMap copperComponents = copper.components();
-		final DataComponentMap ironComponents = iron.components();
-
-		final ItemAttributeModifiers copperAttributes = copperComponents.get(DataComponents.ATTRIBUTE_MODIFIERS);
-		final ItemAttributeModifiers ironAttributes = ironComponents.get(DataComponents.ATTRIBUTE_MODIFIERS);
-		if (copperAttributes == null || ironAttributes == null) return;
-
-		OXIDIZABLE_ATTRIBUTES.put(copper, Pair.of(copperAttributes, ironAttributes));
+		OXIDIZABLE_ATTRIBUTES.put(copper, Pair.of(copper, iron));
 	}
 
 	public static void addOxidizableKineticWeaponItem(Item copper, Item iron) {
-		final DataComponentMap copperComponents = copper.components();
-		final DataComponentMap ironComponents = iron.components();
-
-		final KineticWeapon copperWeapon = copperComponents.get(DataComponents.KINETIC_WEAPON);
-		final KineticWeapon ironWeapon = ironComponents.get(DataComponents.KINETIC_WEAPON);
-		if (copperWeapon == null || ironWeapon == null) return;
-
-		OXIDIZABLE_KINETIC_WEAPONS.put(copper, Pair.of(copperWeapon, ironWeapon));
+		OXIDIZABLE_KINETIC_WEAPONS.put(copper, Pair.of(copper, iron));
 	}
 
 	public static float getOxidizeProgress(ItemStack stack) {
@@ -150,17 +135,18 @@ public final class OxidizableItemHelper {
 	}
 
 	private static void updateAttributes(ItemStack stack, Item item, int damageValue) {
-		final Pair<ItemAttributeModifiers, ItemAttributeModifiers> attributePair = OXIDIZABLE_ATTRIBUTES.get(item);
-		if (attributePair == null) return;
+		final Pair<Item, Item> itemPair = OXIDIZABLE_ATTRIBUTES.get(item);
+		if (itemPair == null) return;
 
 		final ItemAttributeModifiers stackAttributes = stack.get(DataComponents.ATTRIBUTE_MODIFIERS);
 		if (stackAttributes == null) return;
 
-		final ItemAttributeModifiers copperAttributes = attributePair.getFirst();
-		final ItemAttributeModifiers ironAttributes = attributePair.getSecond();
-		final float oxidizeProgress = getOxidizeProgress(stack, OptionalInt.of(damageValue));
+		final ItemAttributeModifiers copperAttributes = itemPair.getFirst().components().get(DataComponents.ATTRIBUTE_MODIFIERS);
+		final ItemAttributeModifiers ironAttributes = itemPair.getSecond().components().get(DataComponents.ATTRIBUTE_MODIFIERS);
+		if (copperAttributes == null || ironAttributes == null) return;
 
-		AtomicBoolean isEqual = new AtomicBoolean(true);
+		final float oxidizeProgress = getOxidizeProgress(stack, OptionalInt.of(damageValue));
+		final AtomicBoolean isEqual = new AtomicBoolean(true);
 		final List<ItemAttributeModifiers.Entry> entryList = new ArrayList<>();
 		for (ItemAttributeModifiers.Entry entry : stackAttributes.modifiers()) {
 			if (entry.attribute() == Attributes.ATTACK_DAMAGE && entry.modifier().is(Item.BASE_ATTACK_DAMAGE_ID)) {
@@ -231,14 +217,14 @@ public final class OxidizableItemHelper {
 	}
 
 	private static void updateKineticWeapon(ItemStack stack, Item item, int damageValue) {
-		final Pair<KineticWeapon, KineticWeapon> kineticWeaponPair = OXIDIZABLE_KINETIC_WEAPONS.get(item);
-		if (kineticWeaponPair == null) return;
+		final Pair<Item, Item> itemPair = OXIDIZABLE_KINETIC_WEAPONS.get(item);
+		if (itemPair == null) return;
 
 		final KineticWeapon stackKineticWeapon = stack.get(DataComponents.KINETIC_WEAPON);
 		if (stackKineticWeapon == null) return;
 
-		final KineticWeapon copperKineticWeapon = kineticWeaponPair.getFirst();
-		final KineticWeapon ironKineticWeapon = kineticWeaponPair.getSecond();
+		final KineticWeapon copperKineticWeapon = itemPair.getFirst().components().get(DataComponents.KINETIC_WEAPON);
+		final KineticWeapon ironKineticWeapon = itemPair.getSecond().components().get(DataComponents.KINETIC_WEAPON);
 		final float oxidizeProgress = getOxidizeProgress(stack, OptionalInt.of(damageValue));
 
 		boolean isEqual = true;

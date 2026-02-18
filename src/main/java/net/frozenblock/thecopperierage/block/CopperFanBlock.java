@@ -343,12 +343,14 @@ public class CopperFanBlock extends DirectionalBlock {
 				if (direction == Direction.UP) {
 					final Vec3 lastImpactPos = player.currentImpulseImpactPos;
 					final Vec3 playerPos = player.position();
-					player.currentImpulseImpactPos = new Vec3(
-						playerPos.x(),
-						lastImpactPos != null ? Math.min(lastImpactPos.y(), playerPos.y()) : playerPos.y(),
-						playerPos.z()
+					player.setIgnoreFallDamageFromCurrentImpulse(
+						true,
+						new Vec3(
+							playerPos.x(),
+							lastImpactPos != null ? Math.min(lastImpactPos.y(), playerPos.y()) : playerPos.y(),
+							playerPos.z()
+						)
 					);
-					player.setIgnoreFallDamageFromCurrentImpulse(true);
 				}
 			} else if (entity instanceof AbstractArrow abstractArrow) {
 				if (abstractArrow.isInGround()) continue;

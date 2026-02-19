@@ -66,10 +66,11 @@ public class CopperGolemPressButton extends Behavior<CopperGolem> {
 	public static final int TARGET_INTERACTION_FINISH_TIME = 30;
 	private static final int MAX_UNREACHABLE_POSITIONS = 25;
 	private static final int PASSENGER_MOB_TARGET_SEARCH_DISTANCE = 1;
+	private static final int POST_DEPOSIT_BUTTON_SEARCH_DISTANCE = 6;
 	private static final IntProvider COOLDOWN = UniformInt.of(140, 4800);
 	private static final IntProvider SMALL_COOLDOWN = UniformInt.of(140, 400);
 	private static final double CLOSE_ENOUGH_TO_START_INTERACTING_WITH_TARGET_DISTANCE = 0.5D;
-	private static final double BUTTON_CLIP_SEARCH_WIDTH = 0.05D;
+	private static final double BUTTON_CLIP_SEARCH_WIDTH = 0.45D;
 	private static final double CLOSE_ENOUGH_TO_START_INTERACTING_WITH_TARGET_PATH_END_DISTANCE = 1D;
 	private static final double CLOSE_ENOUGH_TO_CONTINUE_INTERACTING_WITH_TARGET = 2D;
 	private final float speedModifier;
@@ -92,10 +93,11 @@ public class CopperGolemPressButton extends Behavior<CopperGolem> {
 				TCAMemoryModuleTypes.UNREACHABLE_BUTTON_PRESS_BLOCK_POSITIONS, MemoryStatus.REGISTERED,
 				TCAMemoryModuleTypes.TARGETED_BUTTON, MemoryStatus.VALUE_ABSENT,
 				TCAMemoryModuleTypes.BUTTON_PRESS_COOLDOWN_TICKS, MemoryStatus.VALUE_ABSENT,
+					TCAMemoryModuleTypes.NEARBY_BUTTON_SEARCH_TICKS, MemoryStatus.REGISTERED,
 				TCAMemoryModuleTypes.NEARBY_COPPER_GOLEMS, MemoryStatus.REGISTERED,
 				MemoryModuleType.IS_PANICKING, MemoryStatus.VALUE_ABSENT,
-				MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT,
-				MemoryModuleType.TRANSPORT_ITEMS_COOLDOWN_TICKS, MemoryStatus.VALUE_PRESENT
+				MemoryModuleType.WALK_TARGET, MemoryStatus.REGISTERED,
+					MemoryModuleType.TRANSPORT_ITEMS_COOLDOWN_TICKS, MemoryStatus.REGISTERED
 			)
 		);
 		this.speedModifier = speedModifier;
@@ -112,12 +114,15 @@ public class CopperGolemPressButton extends Behavior<CopperGolem> {
 
 	@Override
 	protected boolean checkExtraStartConditions(final ServerLevel level, final CopperGolem body) {
-		return !body.isLeashed();
+		return !body.isLeashed() && this.canStartButtonPressing(body);
 	}
 
 	@Override
 	protected boolean canStillUse(final ServerLevel level, final CopperGolem body, final long timestamp) {
-		return body.getBrain().checkMemory(TCAMemoryModuleTypes.BUTTON_PRESS_COOLDOWN_TICKS, MemoryStatus.VALUE_ABSENT) && !body.isPanicking() && !body.isLeashed();
+		return body.getBrain().checkMemory(TCAMemoryModuleTypes.BUTTON_PRESS_COOLDOWN_TICKS, MemoryStatus.VALUE_ABSENT)
+			&& !body.isPanicking()
+			&& !body.isLeashed()
+			&& this.canStartButtonPressing(body);
 	}
 
 	@Override
@@ -151,6 +156,7 @@ public class CopperGolemPressButton extends Behavior<CopperGolem> {
 		}
 
 		this.stopTargetingCurrentTarget(body);
+		body.getBrain().eraseMemory(TCAMemoryModuleTypes.NEARBY_BUTTON_SEARCH_TICKS);
 		body.getBrain().setMemory(TCAMemoryModuleTypes.BUTTON_PRESS_COOLDOWN_TICKS, SMALL_COOLDOWN.sample(body.getRandom()));
 		return true;
 	}
@@ -180,6 +186,7 @@ public class CopperGolemPressButton extends Behavior<CopperGolem> {
 		this.onTargetInteraction(target, body);
 		if (this.ticksSinceReachingTarget >= TARGET_INTERACTION_FINISH_TIME) {
 			this.stopTargetingCurrentTarget(body);
+			body.getBrain().eraseMemory(TCAMemoryModuleTypes.NEARBY_BUTTON_SEARCH_TICKS);
 			body.getBrain().setMemory(TCAMemoryModuleTypes.BUTTON_PRESS_COOLDOWN_TICKS, COOLDOWN.sample(body.getRandom()));
 			this.onStartTravelling(body);
 		}
@@ -215,13 +222,20 @@ public class CopperGolemPressButton extends Behavior<CopperGolem> {
 	}
 
 	private Optional<PressButtonTarget> getPressButtonTarget(final ServerLevel level, final CopperGolem body) {
-		final AABB targetBlockSearchArea = this.getTargetSearchArea(body);
+		final boolean forceNearbySearch = this.isForcedNearbyButtonSearch(body);
+		final int horizontalSearchDistance = forceNearbySearch
+			? Math.min(POST_DEPOSIT_BUTTON_SEARCH_DISTANCE, this.getHorizontalSearchDistance(body))
+			: this.getHorizontalSearchDistance(body);
+		final int verticalSearchDistance = forceNearbySearch
+			? Math.min(POST_DEPOSIT_BUTTON_SEARCH_DISTANCE, this.getVerticalSearchDistance(body))
+			: this.getVerticalSearchDistance(body);
+		final AABB targetBlockSearchArea = this.getTargetSearchArea(body, horizontalSearchDistance, verticalSearchDistance);
 		final Set<GlobalPos> unreachablePositions = getUnreachablePositions(body);
 		final Set<Pair<Holder<PoiType>, BlockPos>> copperButtons = level.getPoiManager().findAllWithType(
 			holder -> holder.is(TCAPoiTypes.COPPER_BUTTON_KEY),
 			poiPos -> true,
 			body.blockPosition(),
-			Math.max(this.getHorizontalSearchDistance(body), this.getVerticalSearchDistance(body)),
+			Math.max(horizontalSearchDistance, verticalSearchDistance),
 			PoiManager.Occupancy.ANY
 		).collect(Collectors.toSet());
 
@@ -233,7 +247,11 @@ public class CopperGolemPressButton extends Behavior<CopperGolem> {
 			possibleTargets.add(targetValidToPick);
 		}
 
-		return possibleTargets.isEmpty() ? Optional.empty() : Optional.of(Util.getRandom(possibleTargets, body.getRandom()));
+		if (possibleTargets.isEmpty()) return Optional.empty();
+		if (!forceNearbySearch) return Optional.of(Util.getRandom(possibleTargets, body.getRandom()));
+
+		return possibleTargets.stream()
+			.min((first, second) -> Double.compare(first.pos.distSqr(body.blockPosition()), second.pos.distSqr(body.blockPosition())));
 	}
 
 	@Nullable
@@ -291,9 +309,8 @@ public class CopperGolemPressButton extends Behavior<CopperGolem> {
 		return target.state.trySetValue(ButtonBlock.POWERED, false).equals(level.getBlockState(target.pos).trySetValue(ButtonBlock.POWERED, false));
 	}
 
-	private AABB getTargetSearchArea(final CopperGolem mob) {
-		final int horizontalSearchDistance = this.getHorizontalSearchDistance(mob);
-		return new AABB(mob.blockPosition()).inflate(horizontalSearchDistance, this.getVerticalSearchDistance(mob), horizontalSearchDistance);
+	private AABB getTargetSearchArea(final CopperGolem mob, final int horizontalSearchDistance, final int verticalSearchDistance) {
+		return new AABB(mob.blockPosition()).inflate(horizontalSearchDistance, verticalSearchDistance, horizontalSearchDistance);
 	}
 
 	private int getHorizontalSearchDistance(final CopperGolem mob) {
@@ -348,10 +365,8 @@ public class CopperGolemPressButton extends Behavior<CopperGolem> {
 	private boolean isWithinTargetDistance(final double distance, final PressButtonTarget target, final Level level, final CopperGolem body, final Vec3 fromPos) {
 		final AABB boundingBox = body.getBoundingBox();
 		final AABB movedBoundBox = AABB.ofSize(fromPos, boundingBox.getXsize(), boundingBox.getYsize(), boundingBox.getZsize());
-		return target.state.trySetValue(ButtonBlock.POWERED, false).getShape(level, target.pos)
-			.bounds()
+		return new AABB(target.pos)
 			.inflate(distance, CLOSE_ENOUGH_TO_START_INTERACTING_WITH_TARGET_DISTANCE, distance)
-			.move(target.pos)
 			.intersects(movedBoundBox);
 	}
 
@@ -360,7 +375,7 @@ public class CopperGolemPressButton extends Behavior<CopperGolem> {
 	}
 
 	private boolean canSeeAnyTargetSide(final PressButtonTarget target, final Level level, final CopperGolem body, final Vec3 eyePosition) {
-		final Vec3 center = target.pos.getBottomCenter();
+		final Vec3 center = target.pos.getCenter();
 		return Direction.stream()
 			.map(
 				direction -> center.add(
@@ -371,6 +386,15 @@ public class CopperGolemPressButton extends Behavior<CopperGolem> {
 			)
 			.map(hitTarget -> level.clip(new ClipContext(eyePosition, hitTarget, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, body)))
 			.anyMatch(hitResult -> hitResult.getType() == HitResult.Type.BLOCK && hitResult.getBlockPos().equals(target.pos));
+	}
+
+	private boolean canStartButtonPressing(final CopperGolem body) {
+		return this.isForcedNearbyButtonSearch(body)
+			|| body.getBrain().checkMemory(MemoryModuleType.TRANSPORT_ITEMS_COOLDOWN_TICKS, MemoryStatus.VALUE_PRESENT);
+	}
+
+	private boolean isForcedNearbyButtonSearch(final CopperGolem body) {
+		return body.getBrain().checkMemory(TCAMemoryModuleTypes.NEARBY_BUTTON_SEARCH_TICKS, MemoryStatus.VALUE_PRESENT);
 	}
 
 	protected void stopTargetingCurrentTarget(final CopperGolem body) {

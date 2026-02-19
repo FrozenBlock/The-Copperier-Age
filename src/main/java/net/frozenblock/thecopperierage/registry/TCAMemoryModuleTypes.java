@@ -46,6 +46,7 @@ public final class TCAMemoryModuleTypes {
 	public static final MemoryModuleType<GlobalPos> TARGETED_BUTTON = register("targeted_button");
 	public static final MemoryModuleType<List<CopperGolem>> NEARBY_COPPER_GOLEMS = register("nearby_copper_golems");
 	public static final MemoryModuleType<Integer> BUTTON_PRESS_COOLDOWN_TICKS = register("button_press_cooldown_ticks", Codec.INT);
+	public static final MemoryModuleType<Integer> NEARBY_BUTTON_SEARCH_TICKS = register("nearby_button_search_ticks", Codec.INT);
 
 	private static <U> MemoryModuleType<U> register(String path, Codec<U> codec) {
 		return Registry.register(BuiltInRegistries.MEMORY_MODULE_TYPE, TCAConstants.id(path), new MemoryModuleType<>(Optional.of(codec)));

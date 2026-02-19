@@ -57,6 +57,7 @@ public class CopperGolemAiMixin {
 		final ArrayList<MemoryModuleType<?>> memoryTypes = new ArrayList<>(MEMORY_TYPES);
 		memoryTypes.add(TCAMemoryModuleTypes.UNREACHABLE_BUTTON_PRESS_BLOCK_POSITIONS);
 		memoryTypes.add(TCAMemoryModuleTypes.BUTTON_PRESS_COOLDOWN_TICKS);
+		memoryTypes.add(TCAMemoryModuleTypes.NEARBY_BUTTON_SEARCH_TICKS);
 		memoryTypes.add(TCAMemoryModuleTypes.TARGETED_BUTTON);
 		memoryTypes.add(TCAMemoryModuleTypes.NEARBY_COPPER_GOLEMS);
 		MEMORY_TYPES = ImmutableList.copyOf(memoryTypes);
@@ -76,6 +77,7 @@ public class CopperGolemAiMixin {
 	private static ImmutableList theCopperierAge$addPressButtonCountCooldown(ImmutableList original) {
 		final ArrayList behaviors = new ArrayList<>(original);
 		behaviors.add(new CountDownCooldownTicks(TCAMemoryModuleTypes.BUTTON_PRESS_COOLDOWN_TICKS));
+		behaviors.add(new CountDownCooldownTicks(TCAMemoryModuleTypes.NEARBY_BUTTON_SEARCH_TICKS));
 		return ImmutableList.copyOf(behaviors);
 	}
 
@@ -91,12 +93,12 @@ public class CopperGolemAiMixin {
 		final ArrayList behaviors = new ArrayList<>(original);
 		behaviors.add(
 			Pair.of(
-				1,
+				0,
 				new CopperGolemPressButton(
 					1F,
 					state -> state.is(TCABlockTags.COPPER_BUTTONS),
-					32,
-					8
+					12,
+					6
 				)
 			)
 		);

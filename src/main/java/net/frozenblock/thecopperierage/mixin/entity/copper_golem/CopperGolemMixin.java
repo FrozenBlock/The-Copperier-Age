@@ -19,7 +19,9 @@ package net.frozenblock.thecopperierage.mixin.entity.copper_golem;
 
 import net.frozenblock.thecopperierage.entity.impl.CopperGolemPressButtonInterface;
 import net.frozenblock.thecopperierage.entity.impl.TCACopperGolemStates;
+import net.frozenblock.thecopperierage.registry.TCAMemoryModuleTypes;
 import net.minecraft.world.entity.AnimationState;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.animal.coppergolem.CopperGolem;
@@ -68,6 +70,10 @@ public abstract class CopperGolemMixin extends AbstractGolem implements CopperGo
 
 	@Unique
 	private final AnimationState theCopperierAge$pressingButtonAnimationState = new AnimationState();
+	@Unique
+	private CopperGolemState theCopperierAge$previousState;
+	@Unique
+	private boolean theCopperierAge$previouslyHoldingItem;
 
 	@Inject(method = "setupAnimationStates", at = @At("HEAD"))
 	private void theCopperierAge$setupPressingButtonAnimationState(CallbackInfo info) {
@@ -89,5 +95,32 @@ public abstract class CopperGolemMixin extends AbstractGolem implements CopperGo
 	@Override
 	public AnimationState theCopperierAge$getPressingButtonAnimationState() {
 		return this.theCopperierAge$pressingButtonAnimationState;
+	}
+
+	@Inject(method = "tick", at = @At("TAIL"))
+	private void theCopperierAge$triggerNearbyButtonSearchAfterDeposit(CallbackInfo info) {
+		final CopperGolemState currentState = this.getState();
+		final boolean currentlyHoldingItem = !this.getMainHandItem().isEmpty() || !this.getOffhandItem().isEmpty();
+		if (!this.level().isClientSide() && this.theCopperierAge$previousState != currentState) {
+			final String stateName = currentState.getSerializedName();
+			final boolean isSuccessfulDrop = stateName.contains("drop_item") && !stateName.contains("drop_no_item");
+			if (isSuccessfulDrop) {
+				this.theCopperierAge$forceNearbyButtonSearch();
+			}
+		}
+		if (!this.level().isClientSide() && this.theCopperierAge$previouslyHoldingItem && !currentlyHoldingItem) {
+			this.theCopperierAge$forceNearbyButtonSearch();
+		}
+
+		this.theCopperierAge$previousState = currentState;
+		this.theCopperierAge$previouslyHoldingItem = currentlyHoldingItem;
+	}
+
+	@Unique
+	private void theCopperierAge$forceNearbyButtonSearch() {
+		this.getBrain().setMemory(TCAMemoryModuleTypes.NEARBY_BUTTON_SEARCH_TICKS, 120);
+		this.getBrain().eraseMemory(TCAMemoryModuleTypes.BUTTON_PRESS_COOLDOWN_TICKS);
+		this.getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
+		this.getNavigation().stop();
 	}
 }

@@ -58,7 +58,7 @@ public class ItemMixin {
 
 	@Unique
 	private static boolean isFallbackWeatheringCopperBlockPath(String path) {
-		return path.contains("copper") && isWeatheringVariantPath(path);
+		return path.contains("copper") && (isWeatheringVariantPath(path) || isWaxedPath(path));
 	}
 
 	@Unique

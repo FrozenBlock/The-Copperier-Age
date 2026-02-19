@@ -89,6 +89,13 @@
   "block.thecopperierage.waxed_oxidized_weighted_pressure_plate": "Waxed Oxidized Weighted Pressure Plate",
 
   "item.thecopperierage.waxed": "Waxed",
+  "item.thecopperierage.weathering.waxed": "Waxed",
+  "item.thecopperierage.weathering.state.exposed": "Exposed",
+  "item.thecopperierage.weathering.state.weathered": "Weathered",
+  "item.thecopperierage.weathering.state.oxidized": "Oxidized",
+  "item.thecopperierage.weathering.state.unknown": "Unknown Oxidization State",
+
+  "block.minecraft.copper": "Block of Copper",
 
   "subtitles.entity.copper_golem.button_press": "Copper Golem is pressing a button",
 

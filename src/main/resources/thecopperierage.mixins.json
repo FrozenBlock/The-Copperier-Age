@@ -4,6 +4,7 @@
   "package": "net.frozenblock.thecopperierage.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "block.WeatheringCopperBlocksMixin",
     "block.copper_crate.AbstractContainerMenuMixin",
     "block.copper_fan.EntityMixin",
     "block.copper_fire.BaseFireBlockMixin",
@@ -14,6 +15,7 @@
     "entity.copper_golem.CopperGolemAiMixin",
     "entity.copper_golem.CopperGolemMixin",
     "entity.copper_golem.CopperGolemStateMixin",
+    "item.ItemMixin",
     "item.ItemStackMixin",
     "worldgen.TrickierTrialsPackCheckerMixin"
   ],

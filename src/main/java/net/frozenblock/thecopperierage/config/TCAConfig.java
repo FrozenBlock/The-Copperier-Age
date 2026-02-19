@@ -45,12 +45,14 @@ public class TCAConfig {
 				var config = this.config();
 				OXIDIZABLE_COPPER_EQUIPMENT = config.oxidizableCopperEquipment;
 				COPPER_PARTICLES = config.copperParticles;
+				BETTER_COPPER_TOOLTIPS = config.betterCopperTooltips;
 			}
 		}
 	);
 
 	public static volatile boolean OXIDIZABLE_COPPER_EQUIPMENT = true;
 	public static volatile boolean COPPER_PARTICLES = true;
+	public static volatile boolean BETTER_COPPER_TOOLTIPS = true;
 
 	@EntrySyncData("copperFireEnabled")
 	public boolean copperFireEnabled = true;
@@ -72,6 +74,9 @@ public class TCAConfig {
 
 	@EntrySyncData(value = "copperParticles", behavior = SyncBehavior.UNSYNCABLE)
 	public boolean copperParticles = true;
+
+	@EntrySyncData("betterCopperTooltips")
+	public boolean betterCopperTooltips = true;
 
 	public static TCAConfig get(boolean real) {
 		if (real) return INSTANCE.instance();

@@ -18,6 +18,7 @@
 package net.frozenblock.thecopperierage.item.api;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ import net.minecraft.ChatFormatting;
 
 public final class OxidizableItemHelper {
 	public static final List<String> OXIDIZING_SUFFIXES = ImmutableList.of("exposed", "weathered", "oxidized");
-	private static final List<String> OXIDIZING_AUTO_MODEL_SEARCH_TERMS = ImmutableList.of(
+	private static final List<String> OXIDIZING_AUTO_MODEL_SEARCH_TERMS = Lists.newArrayList(
 		"_helmet", "_chestplate", "_leggings", "_boots", "_axe", "_pickaxe", "_shovel", "_sword", "_hoe", "_spear", "brush", "wrench"
 	);
 	private static final Map<Item, Pair<ItemAttributeModifiers, ItemAttributeModifiers>> OXIDIZABLE_ATTRIBUTES = new Object2ObjectLinkedOpenHashMap<>();
@@ -280,8 +281,8 @@ public final class OxidizableItemHelper {
 		float oxidizeProgress
 	) {
 		final Predicate<ItemAttributeModifiers.Entry> matchingEntry = entry -> entry.matches(attribute, attributeID);
-		Optional<ItemAttributeModifiers.Entry> optionalCopper = copper.modifiers().stream().filter(matchingEntry).findFirst();
-		Optional<ItemAttributeModifiers.Entry> optionalIron = iron.modifiers().stream().filter(matchingEntry).findFirst();
+		final Optional<ItemAttributeModifiers.Entry> optionalCopper = copper.modifiers().stream().filter(matchingEntry).findFirst();
+		final Optional<ItemAttributeModifiers.Entry> optionalIron = iron.modifiers().stream().filter(matchingEntry).findFirst();
 		if (optionalCopper.isEmpty() || optionalIron.isEmpty()) return Optional.empty();
 
 		final ItemAttributeModifiers.Entry copperEntry = optionalCopper.get();

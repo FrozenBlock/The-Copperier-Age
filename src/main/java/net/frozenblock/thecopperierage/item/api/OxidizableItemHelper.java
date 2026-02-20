@@ -147,6 +147,18 @@ public final class OxidizableItemHelper {
 		return stack.has(TCADataComponents.WAXED);
 	}
 
+	public static boolean isWaxed(ItemStack stack) {
+		if (hasWaxedComponent(stack)) return true;
+		if (stack.is(TCAItemTags.WEATHERING_WAXED)) return true;
+
+		final Item item = stack.getItem();
+		if (!(item instanceof BlockItem blockItem)) return false;
+
+		final Block block = blockItem.getBlock();
+		final Optional<Block> nonWaxedBlock = OxidizableItemHelper.getNonWaxedEquivalent(block);
+		return nonWaxedBlock.isPresent();
+	}
+
 	public static WeatheringCopper.WeatherState getWeatherState(ItemStack stack) {
 		return getWeatherState(stack, OptionalInt.empty());
 	}

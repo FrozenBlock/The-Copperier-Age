@@ -67,8 +67,8 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 		final TagAppender<Block, Block> chimesTag = this.valueLookupBuilder(TCABlockTags.CHIMES);
 		TCABlocks.CHIME.forEach(chimesTag::add);
 
-		final TagAppender<Block, Block> copperCratesTag = this.valueLookupBuilder(TCABlockTags.COPPER_CRATES);
-		TCABlocks.COPPER_CRATE.forEach(copperCratesTag::add);
+		final TagAppender<Block, Block> cratesTag = this.valueLookupBuilder(TCABlockTags.CRATES);
+		TCABlocks.CRATE.forEach(cratesTag::add);
 
 		final TagAppender<Block, Block> copperButtonsTag = this.valueLookupBuilder(TCABlockTags.COPPER_BUTTONS);
 		TCABlocks.COPPER_BUTTON.forEach(copperButtonsTag::add);
@@ -87,7 +87,7 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 			.addOptionalTag(TCABlockTags.GEARBOXES)
 			.addOptionalTag(TCABlockTags.COPPER_FANS)
 			.addOptionalTag(TCABlockTags.CHIMES)
-			.addOptionalTag(TCABlockTags.COPPER_CRATES)
+			.addOptionalTag(TCABlockTags.CRATES)
 			.addOptionalTag(TCABlockTags.COPPER_BUTTONS)
 			.addOptionalTag(TCABlockTags.COPPER_PRESSURE_PLATES);
 
@@ -105,7 +105,7 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 			.addOptional(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("trailiertales", "coffin")));
 
 		this.valueLookupBuilder(FrozenBlockTags.HAS_PUSHABLE_BLOCK_ENTITY)
-			.addOptionalTag(TCABlockTags.COPPER_CRATES);
+			.addOptionalTag(TCABlockTags.CRATES);
 
 		this.builder(FrozenBlockTags.BLOWING_CAN_PASS_THROUGH)
 			.addOptionalTag(TCABlockTags.COPPER_FANS)

@@ -24,7 +24,7 @@ import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.TCAFeatureFlags;
 import net.frozenblock.thecopperierage.block.ChimeBlock;
 import net.frozenblock.thecopperierage.block.CopperButtonBlock;
-import net.frozenblock.thecopperierage.block.CopperCrateBlock;
+import net.frozenblock.thecopperierage.block.CrateBlock;
 import net.frozenblock.thecopperierage.block.CopperFanBlock;
 import net.frozenblock.thecopperierage.block.CopperFireBlock;
 import net.frozenblock.thecopperierage.block.CopperPressurePlateBlock;
@@ -32,7 +32,7 @@ import net.frozenblock.thecopperierage.block.GearboxBlock;
 import net.frozenblock.thecopperierage.block.RedstonePumpkinBlock;
 import net.frozenblock.thecopperierage.block.WeatheringChimeBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperButtonBlock;
-import net.frozenblock.thecopperierage.block.WeatheringCopperCrateBlock;
+import net.frozenblock.thecopperierage.block.WeatheringCrateBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperFanBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperPressurePlateBlock;
 import net.frozenblock.thecopperierage.block.WeatheringGearboxBlock;
@@ -143,12 +143,12 @@ public final class TCABlocks {
 			.noOcclusion()
 	);
 
-	public static final WeatheringCopperBlocks COPPER_CRATE = createWeatheringCopperSet(
-		"copper_crate",
+	public static final WeatheringCopperBlocks CRATE = createWeatheringCopperSet(
+		"crate",
 		TCABlocks::registerWithContainerComponentItem,
-		CopperCrateBlock::new,
-		WeatheringCopperCrateBlock::new,
-		(weatherState) -> BlockBehaviour.Properties.of()
+		CrateBlock::new,
+		WeatheringCrateBlock::new,
+		weatherState -> BlockBehaviour.Properties.of()
 			.mapColor(getMapColorForWeatherState(weatherState))
 			.requiresCorrectToolForDrops()
 			.strength(3F, 6F)
@@ -236,6 +236,7 @@ public final class TCABlocks {
 		OxidizableBlocksRegistry.registerCopperBlockSet(GEARBOX);
 		OxidizableBlocksRegistry.registerCopperBlockSet(COPPER_FAN);
 		OxidizableBlocksRegistry.registerCopperBlockSet(CHIME);
+		OxidizableBlocksRegistry.registerCopperBlockSet(CRATE);
 		OxidizableBlocksRegistry.registerCopperBlockSet(COPPER_BUTTON);
 		OxidizableBlocksRegistry.registerCopperBlockSet(WEIGHTED_PRESSURE_PLATE);
 	}

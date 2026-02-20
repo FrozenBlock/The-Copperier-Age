@@ -77,16 +77,16 @@ public final class TCACreativeInventorySorting {
 		addAfterInBuildingBlocks(TCABlocks.COPPER_FAN.waxedOxidized(), TCABlocks.CHIME.waxedOxidized());
 
 		// COPPER CRATE
-		addAfterInFunctionalBlocks(Items.BARREL, TCABlocks.COPPER_CRATE.unaffected());
-		addAfterInFunctionalBlocks(TCABlocks.COPPER_CRATE.unaffected(), TCABlocks.COPPER_CRATE.exposed());
-		addAfterInFunctionalBlocks(TCABlocks.COPPER_CRATE.exposed(), TCABlocks.COPPER_CRATE.weathered());
-		addAfterInFunctionalBlocks(TCABlocks.COPPER_CRATE.weathered(), TCABlocks.COPPER_CRATE.oxidized());
-		addAfterInFunctionalBlocks(TCABlocks.COPPER_CRATE.oxidized(), TCABlocks.COPPER_CRATE.waxed());
-		addAfterInFunctionalBlocks(TCABlocks.COPPER_CRATE.waxed(), TCABlocks.COPPER_CRATE.waxedExposed());
-		addAfterInFunctionalBlocks(TCABlocks.COPPER_CRATE.waxedExposed(), TCABlocks.COPPER_CRATE.waxedWeathered());
-		addAfterInFunctionalBlocks(TCABlocks.COPPER_CRATE.waxedWeathered(), TCABlocks.COPPER_CRATE.waxedOxidized());
+		addAfterInFunctionalBlocks(Items.BARREL, TCABlocks.CRATE.unaffected());
+		addAfterInFunctionalBlocks(TCABlocks.CRATE.unaffected(), TCABlocks.CRATE.exposed());
+		addAfterInFunctionalBlocks(TCABlocks.CRATE.exposed(), TCABlocks.CRATE.weathered());
+		addAfterInFunctionalBlocks(TCABlocks.CRATE.weathered(), TCABlocks.CRATE.oxidized());
+		addAfterInFunctionalBlocks(TCABlocks.CRATE.oxidized(), TCABlocks.CRATE.waxed());
+		addAfterInFunctionalBlocks(TCABlocks.CRATE.waxed(), TCABlocks.CRATE.waxedExposed());
+		addAfterInFunctionalBlocks(TCABlocks.CRATE.waxedExposed(), TCABlocks.CRATE.waxedWeathered());
+		addAfterInFunctionalBlocks(TCABlocks.CRATE.waxedWeathered(), TCABlocks.CRATE.waxedOxidized());
 
-		addAfterInRedstoneBlocks(Items.BARREL, TCABlocks.COPPER_CRATE.waxed());
+		addAfterInRedstoneBlocks(Items.BARREL, TCABlocks.CRATE.waxed());
 
 		// BUTTON
 		addAfterInRedstoneBlocks(Items.STONE_BUTTON, TCABlocks.COPPER_BUTTON.waxed());

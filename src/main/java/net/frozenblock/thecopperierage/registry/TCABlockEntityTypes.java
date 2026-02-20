@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.Set;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.entity.ChimeBlockEntity;
-import net.frozenblock.thecopperierage.block.entity.CopperCrateBlockEntity;
+import net.frozenblock.thecopperierage.block.entity.CrateBlockEntity;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.datafix.fixes.References;
@@ -38,10 +38,10 @@ public final class TCABlockEntityTypes {
 		TCABlocks.CHIME.asList()
 	);
 
-	public static final BlockEntityType<CopperCrateBlockEntity> COPPER_CRATE = register(
-		"copper_crate",
-		CopperCrateBlockEntity::new,
-		TCABlocks.COPPER_CRATE.asList()
+	public static final BlockEntityType<CrateBlockEntity> CRATE = register(
+		"crate",
+		CrateBlockEntity::new,
+		TCABlocks.CRATE.asList()
 	);
 
 	public static void init() {

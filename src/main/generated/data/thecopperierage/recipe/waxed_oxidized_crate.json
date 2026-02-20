@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": "minecraft:waxed_oxidized_copper",
+    "-": "minecraft:waxed_oxidized_cut_copper_slab"
+  },
+  "pattern": [
+    "#-#",
+    "# #",
+    "###"
+  ],
+  "result": {
+    "count": 4,
+    "id": "thecopperierage:waxed_oxidized_crate"
+  }
+}

@@ -114,7 +114,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 		TCABlocks.GEARBOX.waxedMapping().forEach((block, waxedBlock) -> createGearbox(generator, block, waxedBlock));
 		TCABlocks.COPPER_FAN.waxedMapping().forEach((block, waxedBlock) -> createCopperFan(generator, block, waxedBlock));
 		TCABlocks.CHIME.waxedMapping().forEach((block, waxedBlock) -> createChime(generator, block, waxedBlock));
-		TCABlocks.COPPER_CRATE.waxedMapping().forEach((block, waxedBlock) -> createCopperCrate(generator, block, waxedBlock));
+		TCABlocks.CRATE.waxedMapping().forEach((block, waxedBlock) -> createCopperCrate(generator, block, waxedBlock));
 
 		createCopperButton(generator, TCABlocks.COPPER_BUTTON.unaffected(), TCABlocks.COPPER_BUTTON.waxed(), Blocks.COPPER_BLOCK);
 		createCopperButton(generator, TCABlocks.COPPER_BUTTON.exposed(), TCABlocks.COPPER_BUTTON.waxedExposed(), Blocks.EXPOSED_COPPER);

@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/cube_bottom_top",
-  "textures": {
-    "bottom": "thecopperierage:block/oxidized_copper_crate_bottom",
-    "side": "thecopperierage:block/oxidized_copper_crate_side",
-    "top": "thecopperierage:block/oxidized_copper_crate_top"
-  }
-}

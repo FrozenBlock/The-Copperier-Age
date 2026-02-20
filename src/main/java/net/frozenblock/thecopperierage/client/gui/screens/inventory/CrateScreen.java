@@ -21,7 +21,7 @@ import java.util.Optional;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.frozenblock.thecopperierage.TCAConstants;
-import net.frozenblock.thecopperierage.block.CopperCrateBlock;
+import net.frozenblock.thecopperierage.block.CrateBlock;
 import net.frozenblock.thecopperierage.block.entity.inventory.CrateSlot;
 import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.minecraft.client.Minecraft;
@@ -72,9 +72,9 @@ public class CrateScreen extends ContainerScreen {
 			boolean forceBlock = this.shouldForceBlock(slotStack, selectedStack);
 			if (!forceBlock && !slotStack.isEmpty()) break renderBlockedSlot;
 
-			final CopperCrateBlock.SlotResult slotResult = forceBlock
-				? CopperCrateBlock.SlotResult.FAILURE_CONTAINER_ITEM
-				: CopperCrateBlock.verifyStackForPlacement(selectedStack, this.menu.getContainer());
+			final CrateBlock.SlotResult slotResult = forceBlock
+				? CrateBlock.SlotResult.FAILURE_CONTAINER_ITEM
+				: CrateBlock.verifyStackForPlacement(selectedStack, this.menu.getContainer());
 			if (slotResult.isSuccess() || slotResult.isEmptyItem()) break renderBlockedSlot;
 
 			this.renderBlockedSlot(guiGraphics, crateSlot);
@@ -96,7 +96,7 @@ public class CrateScreen extends ContainerScreen {
 			if (!(this.hoveredSlot instanceof CrateSlot) || this.player.isSpectator()) break renderTooltip;
 
 			final ItemStack carried = this.menu.getCarried();
-			final CopperCrateBlock.SlotResult slotResult = CopperCrateBlock.verifyStackForPlacement(carried, this.menu.getContainer());
+			final CrateBlock.SlotResult slotResult = CrateBlock.verifyStackForPlacement(carried, this.menu.getContainer());
 			if (slotResult.isSuccess()) break renderTooltip;
 
 			final Optional<Component> tooltip = slotResult.getTooltip();
@@ -110,7 +110,7 @@ public class CrateScreen extends ContainerScreen {
 			if (!(slot instanceof CrateSlot) || slot.hasItem()) break playBlockedSlotSound;
 
 			final ItemStack carried = this.menu.getCarried();
-			final CopperCrateBlock.SlotResult slotResult = CopperCrateBlock.verifyStackForPlacement(carried, this.menu.getContainer());
+			final CrateBlock.SlotResult slotResult = CrateBlock.verifyStackForPlacement(carried, this.menu.getContainer());
 			if (slotResult.isSuccess() || slotResult.isEmptyItem()) break playBlockedSlotSound;
 
 			playBlockedSlotClickSound(Minecraft.getInstance().getSoundManager());

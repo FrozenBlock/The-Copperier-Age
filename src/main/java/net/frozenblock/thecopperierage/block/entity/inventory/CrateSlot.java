@@ -17,7 +17,7 @@
 
 package net.frozenblock.thecopperierage.block.entity.inventory;
 
-import net.frozenblock.thecopperierage.block.CopperCrateBlock;
+import net.frozenblock.thecopperierage.block.CrateBlock;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -30,6 +30,6 @@ public class CrateSlot extends Slot {
 
 	@Override
 	public boolean mayPlace(ItemStack stack) {
-		return CopperCrateBlock.verifyStackForPlacement(stack, this.container).isSuccess();
+		return CrateBlock.verifyStackForPlacement(stack, this.container).isSuccess();
 	}
 }

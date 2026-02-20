@@ -108,11 +108,7 @@ public class ItemStackMixin {
 			addedOxidizedTooltip = true;
 		}
 		if (!addedWaxedTooltip && stack.is(TCAItemTags.WEATHERING_WAXED)) {
-			consumer.accept(
-				weatherStateByTag.orElse(WeatheringCopper.WeatherState.UNAFFECTED) == WeatheringCopper.WeatherState.UNAFFECTED
-					? OxidizableItemHelper.WAXED_TOOLTIP
-					: OxidizableItemHelper.WEATHERING_WAXED_TOOLTIP
-			);
+			consumer.accept(OxidizableItemHelper.WAXED_TOOLTIP);
 			addedWaxedTooltip = true;
 		}
 
@@ -126,7 +122,7 @@ public class ItemStackMixin {
 		if (nonWaxedItem.orElse(item) instanceof BlockItem blockItem && blockItem.getBlock() instanceof WeatheringCopper weatheringCopper) {
 			theCopperierAge$addWeatherStateTooltip(consumer, weatheringCopper.getAge());
 		}
-		if (nonWaxedItem.isPresent()) consumer.accept(OxidizableItemHelper.WEATHERING_WAXED_TOOLTIP);
+		if (nonWaxedItem.isPresent()) consumer.accept(OxidizableItemHelper.WAXED_TOOLTIP);
 	}
 
 	@Unique

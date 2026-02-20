@@ -65,8 +65,7 @@ public final class OxidizableItemHelper {
 	public static final float EXPOSED_THRESHOLD = 0.2F;
 	public static final float WEATHERED_THRESHOLD = 0.45F;
 	public static final float OXIDIZED_THRESHOLD = 0.65F;
-	public static final Component WAXED_TOOLTIP = TCAConstants.itemComponent("waxed").withStyle(ChatFormatting.GOLD);
-	public static final Component WEATHERING_WAXED_TOOLTIP = TCAConstants.itemComponent("weathering.waxed").withStyle(ChatFormatting.GOLD);
+	public static final Component WAXED_TOOLTIP = TCAConstants.itemComponent("weathering.waxed").withStyle(ChatFormatting.GOLD);
 	private static final MutableComponent[] WEATHERING_NAMES = new MutableComponent[] {
 		TCAConstants.itemComponent("weathering.state.unaffected").withStyle(ChatFormatting.GRAY),
 		TCAConstants.itemComponent("weathering.state.exposed").withStyle(ChatFormatting.GRAY),

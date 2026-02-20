@@ -21,7 +21,6 @@ import net.frozenblock.thecopperierage.TCAConstants;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import org.jetbrains.annotations.NotNull;
 
 public final class TCAItemTags {
 	public static final TagKey<Item> GEARBOXES = bind("gearboxes");
@@ -31,13 +30,17 @@ public final class TCAItemTags {
 	public static final TagKey<Item> COPPER_BUTTONS = bind("copper_buttons");
 	public static final TagKey<Item> COPPER_PRESSURE_PLATES = bind("copper_pressure_plates");
 	public static final TagKey<Item> OXIDIZABLE_EQUIPMENT = bind("oxidizable_equipment");
+	public static final TagKey<Item> WEATHERING_UNAFFECTED = bind("weathering_unaffected");
+	public static final TagKey<Item> WEATHERING_EXPOSED = bind("weathering_exposed");
+	public static final TagKey<Item> WEATHERING_WEATHERED = bind("weathering_weathered");
+	public static final TagKey<Item> WEATHERING_OXIDIZED = bind("weathering_oxidized");
+	public static final TagKey<Item> WEATHERING_WAXED = bind("weathering_waxed");
 
 	private TCAItemTags() {
 		throw new UnsupportedOperationException("TCAItemTags contains only static declarations.");
 	}
 
-	@NotNull
-	private static TagKey<Item> bind(@NotNull String path) {
+	private static TagKey<Item> bind(String path) {
 		return TagKey.create(Registries.ITEM, TCAConstants.id(path));
 	}
 }

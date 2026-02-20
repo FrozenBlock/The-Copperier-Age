@@ -17,13 +17,16 @@
 
 package net.frozenblock.thecopperierage.datagen.tag;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.frozenblock.thecopperierage.tag.TCAItemTags;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.tags.TagAppender;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -31,16 +34,17 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.WeatheringCopper;
 
 public final class TCAItemTagProvider extends FabricTagProvider.ItemTagProvider {
 
-	public TCAItemTagProvider(@NotNull FabricDataOutput output, @NotNull CompletableFuture<HolderLookup.Provider> registries) {
+	public TCAItemTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registries) {
 		super(output, registries);
 	}
 
 	@Override
-	protected void addTags(@NotNull HolderLookup.Provider arg) {
+	protected void addTags(HolderLookup.Provider arg) {
 		this.builder(ItemTags.BUTTONS)
 			.addOptionalTag(TCAItemTags.COPPER_BUTTONS);
 
@@ -80,9 +84,29 @@ public final class TCAItemTagProvider extends FabricTagProvider.ItemTagProvider 
 			.add(Items.COPPER_BOOTS)
 			.add(Items.BRUSH)
 			.add(TCAItems.WRENCH);
+
+		final TagAppender<Item, Item> unaffectedTag = this.valueLookupBuilder(TCAItemTags.WEATHERING_UNAFFECTED);
+		final TagAppender<Item, Item> exposedTag = this.valueLookupBuilder(TCAItemTags.WEATHERING_EXPOSED);
+		final TagAppender<Item, Item> weatheredTag = this.valueLookupBuilder(TCAItemTags.WEATHERING_WEATHERED);
+		final TagAppender<Item, Item> oxidizedTag = this.valueLookupBuilder(TCAItemTags.WEATHERING_OXIDIZED);
+		final TagAppender<Item, Item> waxedTag = this.valueLookupBuilder(TCAItemTags.WEATHERING_WAXED);
+		arg.lookupOrThrow(Registries.BLOCK)
+			.listElements()
+			.forEach(block -> {
+				final Item item = block.value().asItem();
+
+				final Optional<Block> nonWaxedBlock = OxidizableItemHelper.getNonWaxedEquivalent(block.value());
+				if (nonWaxedBlock.orElse(block.value()) instanceof WeatheringCopper weatheringCopper) {
+					final WeatheringCopper.WeatherState weatherState = weatheringCopper.getAge();
+					if (weatherState == WeatheringCopper.WeatherState.UNAFFECTED) unaffectedTag.add(item);
+					if (weatherState == WeatheringCopper.WeatherState.EXPOSED) exposedTag.add(item);
+					if (weatherState == WeatheringCopper.WeatherState.WEATHERED) weatheredTag.add(item);
+					if (weatherState == WeatheringCopper.WeatherState.OXIDIZED) oxidizedTag.add(item);
+				}
+				if (nonWaxedBlock.isPresent()) waxedTag.add(item);
+			});
 	}
 
-	@NotNull
 	private TagKey<Item> getTag(String id) {
 		return TagKey.create(this.registryKey, ResourceLocation.parse(id));
 	}

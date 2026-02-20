@@ -30,6 +30,7 @@ import java.util.function.Predicate;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.registry.TCADataComponents;
+import net.frozenblock.thecopperierage.tag.TCAItemTags;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
@@ -82,44 +83,48 @@ public final class OxidizableItemHelper {
 		addOxidizableAttributesItem(Items.COPPER_HOE, Items.IRON_HOE);
 	}
 
-	public static Optional<Item> getNonWeatheringNonWaxedEquivalent(Item item, boolean isForTooltips) {
+	public static Optional<Item> getNonWeatheringNonWaxedEquivalent(Item item) {
 		if (!(item instanceof BlockItem blockItem)) return Optional.empty();
-		final Optional<Block> baseBlock = getNonWeatheringNonWaxedEquivalent(blockItem.getBlock(), isForTooltips);
+		final Optional<Block> baseBlock = getNonWeatheringNonWaxedEquivalent(blockItem.getBlock());
 		return baseBlock.map(Block::asItem);
 	}
 
-	public static Optional<Item> getNonWaxedEquivalent(Item item, boolean isForTooltips) {
+	public static Optional<Item> getNonWaxedEquivalent(Item item) {
 		if (!(item instanceof BlockItem blockItem)) return Optional.empty();
-		final Optional<Block> baseBlock = getNonWaxedEquivalent(blockItem.getBlock(), isForTooltips);
+		final Optional<Block> baseBlock = getNonWaxedEquivalent(blockItem.getBlock());
 		return baseBlock.map(Block::asItem);
 	}
 
-	public static Optional<Item> getNonWeatheringEquivalent(Item item, boolean isForTooltips) {
+	public static Optional<Item> getNonWeatheringEquivalent(Item item) {
 		if (!(item instanceof BlockItem blockItem)) return Optional.empty();
-		final Optional<Block> baseBlock = getNonWeatheringEquivalent(blockItem.getBlock(), isForTooltips);
+		final Optional<Block> baseBlock = getNonWeatheringEquivalent(blockItem.getBlock());
 		return baseBlock.map(Block::asItem);
 	}
 
-	public static Optional<Block> getNonWeatheringNonWaxedEquivalent(Block block, boolean isForTooltips) {
-		Block baseBlock = getNonWeatheringEquivalent(getNonWaxedEquivalent(block, isForTooltips).orElse(block), isForTooltips).orElse(block);
+	public static Optional<Block> getNonWeatheringNonWaxedEquivalent(Block block) {
+		Block baseBlock = getNonWeatheringEquivalent(getNonWaxedEquivalent(block).orElse(block)).orElse(block);
 		if (block == baseBlock) return Optional.empty();
 		return Optional.of(baseBlock);
 	}
 
-	public static Optional<Block> getNonWaxedEquivalent(Block block, boolean isForTooltips) {
-		if (isForTooltips && !TCAConfig.BETTER_COPPER_TOOLTIPS) return Optional.empty();
-
+	public static Optional<Block> getNonWaxedEquivalent(Block block) {
 		final Block nonWaxedBlock = HoneycombItem.WAX_OFF_BY_BLOCK.get().get(block);
 		if (nonWaxedBlock == null) return Optional.empty();
 		return Optional.of(nonWaxedBlock);
 	}
 
-	public static Optional<Block> getNonWeatheringEquivalent(Block block, boolean isForTooltips) {
-		if (isForTooltips && !TCAConfig.BETTER_COPPER_TOOLTIPS) return Optional.empty();
-
+	public static Optional<Block> getNonWeatheringEquivalent(Block block) {
 		final Block nonWeatheringBlock = WeatheringCopper.getFirst(block);
 		if (nonWeatheringBlock == block) return Optional.empty();
 		return Optional.of(nonWeatheringBlock);
+	}
+
+	public static Optional<WeatheringCopper.WeatherState> getWeatherStateByTag(ItemStack stack) {
+		if (stack.is(TCAItemTags.WEATHERING_UNAFFECTED)) return Optional.of(WeatheringCopper.WeatherState.UNAFFECTED);
+		if (stack.is(TCAItemTags.WEATHERING_EXPOSED)) return Optional.of(WeatheringCopper.WeatherState.EXPOSED);
+		if (stack.is(TCAItemTags.WEATHERING_WEATHERED)) return Optional.of(WeatheringCopper.WeatherState.WEATHERED);
+		if (stack.is(TCAItemTags.WEATHERING_OXIDIZED)) return Optional.of(WeatheringCopper.WeatherState.OXIDIZED);
+		return Optional.empty();
 	}
 
 	public static MutableComponent getWeatheringStateName(WeatheringCopper.WeatherState weatherState) {

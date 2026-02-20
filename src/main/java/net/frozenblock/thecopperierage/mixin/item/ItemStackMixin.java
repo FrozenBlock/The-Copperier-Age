@@ -19,6 +19,7 @@ package net.frozenblock.thecopperierage.mixin.item;
 
 import java.util.Optional;
 import java.util.function.Consumer;
+import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
 import net.frozenblock.thecopperierage.tag.TCAItemTags;
 import net.minecraft.core.component.DataComponentType;
@@ -78,6 +79,9 @@ public class ItemStackMixin {
 	public void theCopperierAge$addWeatheringAndWaxedTooltips(
 		Item.TooltipContext context, TooltipDisplay display, @Nullable Player player, TooltipFlag flag, Consumer<Component> consumer, CallbackInfo info
 	) {
+		boolean addedOxidizedTooltip = false;
+		boolean addedWaxedTooltip = false;
+
 		final ItemStack stack = ItemStack.class.cast(this);
 		if (stack.is(TCAItemTags.OXIDIZABLE_EQUIPMENT)) {
 			theCopperierAge$addWeatherStateTooltip(
@@ -90,11 +94,35 @@ public class ItemStackMixin {
 					WeatheringCopper.WeatherState.OXIDIZED
 				)
 			);
+			addedOxidizedTooltip = true;
 		}
-		if (OxidizableItemHelper.isWaxed(stack)) consumer.accept(OxidizableItemHelper.WAXED_TOOLTIP);
+		if (OxidizableItemHelper.isWaxed(stack)) {
+			consumer.accept(OxidizableItemHelper.WAXED_TOOLTIP);
+			addedWaxedTooltip = true;
+		}
+
+		if (!TCAConfig.BETTER_COPPER_TOOLTIPS) return;
+		final Optional<WeatheringCopper.WeatherState> weatherStateByTag = OxidizableItemHelper.getWeatherStateByTag(stack);
+		if (!addedOxidizedTooltip && weatherStateByTag.isPresent()) {
+			weatherStateByTag.ifPresent(weatherState -> theCopperierAge$addWeatherStateTooltip(consumer, weatherState));
+			addedOxidizedTooltip = true;
+		}
+		if (!addedWaxedTooltip && stack.is(TCAItemTags.WEATHERING_WAXED)) {
+			consumer.accept(
+				weatherStateByTag.orElse(WeatheringCopper.WeatherState.UNAFFECTED) == WeatheringCopper.WeatherState.UNAFFECTED
+					? OxidizableItemHelper.WAXED_TOOLTIP
+					: OxidizableItemHelper.WEATHERING_WAXED_TOOLTIP
+			);
+			addedWaxedTooltip = true;
+		}
+
+		// Cancel if the item is already known to be Oxidized or Waxed.
+		// The only time this will cause unintended behavior is if someone added a waxed Item to a weathering/waxed tag, but not the waxed/weathering one.
+		// At that point, it's their fault. So don't worry.
+		if (addedOxidizedTooltip || addedWaxedTooltip) return;
 
 		final Item item = stack.getItem();
-		final Optional<Item> nonWaxedItem = OxidizableItemHelper.getNonWaxedEquivalent(item, true);
+		final Optional<Item> nonWaxedItem = OxidizableItemHelper.getNonWaxedEquivalent(item);
 		if (nonWaxedItem.orElse(item) instanceof BlockItem blockItem && blockItem.getBlock() instanceof WeatheringCopper weatheringCopper) {
 			theCopperierAge$addWeatherStateTooltip(consumer, weatheringCopper.getAge());
 		}

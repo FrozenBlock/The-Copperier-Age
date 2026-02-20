@@ -33,16 +33,15 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import org.jetbrains.annotations.NotNull;
 
 public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
-	public TCABlockTagProvider(@NotNull FabricDataOutput output, @NotNull CompletableFuture<HolderLookup.Provider> registries) {
+	public TCABlockTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registries) {
 		super(output, registries);
 	}
 
 	@Override
-	protected void addTags(@NotNull HolderLookup.Provider registries) {
+	protected void addTags(HolderLookup.Provider registries) {
 		this.valueLookupBuilder(BlockTags.COPPER);
 
 		this.valueLookupBuilder(BlockTags.LANTERNS);
@@ -115,7 +114,7 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 		this.builder(FrozenBlockTags.STRUCTURE_PLACE_SCHEDULES_TICK)
 			.addOptionalTag(TCABlockTags.COPPER_FANS);
 
-		TagAppender<Block, Block> copperFireBaseBlocksTag = this.valueLookupBuilder(TCABlockTags.COPPER_FIRE_BASE_BLOCKS);
+		final TagAppender<Block, Block> copperFireBaseBlocksTag = this.valueLookupBuilder(TCABlockTags.COPPER_FIRE_BASE_BLOCKS);
 		registries.lookupOrThrow(Registries.BLOCK)
 			.listElements()
 			.forEach(block -> {

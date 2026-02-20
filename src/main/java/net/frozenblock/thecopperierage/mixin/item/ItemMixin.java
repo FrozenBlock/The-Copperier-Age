@@ -20,6 +20,7 @@ package net.frozenblock.thecopperierage.mixin.item;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import java.util.Optional;
+import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -34,9 +35,9 @@ public class ItemMixin {
 
 	@Inject(method = "getName()Lnet/minecraft/network/chat/Component;", at = @At("HEAD"), cancellable = true)
 	public void theCopperierAge$getNonWeatheringNonWaxedName(CallbackInfoReturnable<Component> info) {
-		final Optional<Item> baseItem = OxidizableItemHelper.getNonWeatheringNonWaxedEquivalent(Item.class.cast(this), true);
+		if (!TCAConfig.BETTER_COPPER_TOOLTIPS) return;
+		final Optional<Item> baseItem = OxidizableItemHelper.getNonWeatheringNonWaxedEquivalent(Item.class.cast(this));
 		if (baseItem.isEmpty()) return;
-
 		info.setReturnValue(baseItem.get().getName());
 	}
 
@@ -45,9 +46,9 @@ public class ItemMixin {
 		CallbackInfoReturnable<Component> info,
 		@Local(argsOnly = true) LocalRef<ItemStack> stack
 	) {
-		final Optional<Item> baseItem = OxidizableItemHelper.getNonWeatheringNonWaxedEquivalent(stack.get().getItem(), true);
+		if (!TCAConfig.BETTER_COPPER_TOOLTIPS) return;
+		final Optional<Item> baseItem = OxidizableItemHelper.getNonWeatheringNonWaxedEquivalent(stack.get().getItem());
 		if (baseItem.isEmpty()) return;
-
 		stack.set(stack.get().transmuteCopy(baseItem.get()));
 	}
 }

@@ -57,8 +57,8 @@ public final class TCAItemTagProvider extends FabricTagProvider.ItemTagProvider 
 		final TagAppender<Item, Item> chimesTag = this.valueLookupBuilder(TCAItemTags.CHIMES);
 		TCABlocks.CHIME.forEach(block -> chimesTag.add(block.asItem()));
 
-		final TagAppender<Item, Item> copperCratesTag = this.valueLookupBuilder(TCAItemTags.COPPER_CRATES);
-		TCABlocks.CRATE.forEach(block -> copperCratesTag.add(block.asItem()));
+		final TagAppender<Item, Item> cratesTag = this.valueLookupBuilder(TCAItemTags.CRATES);
+		TCABlocks.CRATE.forEach(block -> cratesTag.add(block.asItem()));
 
 		final TagAppender<Item, Item> copperButtonsTag = this.valueLookupBuilder(TCAItemTags.COPPER_BUTTONS);
 		TCABlocks.COPPER_BUTTON.forEach(block -> copperButtonsTag.add(block.asItem()));

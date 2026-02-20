@@ -88,22 +88,11 @@ public final class OxidizableItemHelper {
 		return baseBlock.map(Block::asItem);
 	}
 
-	public static Optional<Item> getNonWaxedEquivalent(Item item) {
-		if (!(item instanceof BlockItem blockItem)) return Optional.empty();
-		final Optional<Block> baseBlock = getNonWaxedEquivalent(blockItem.getBlock());
-		return baseBlock.map(Block::asItem);
-	}
-
-	public static Optional<Item> getNonWeatheringEquivalent(Item item) {
-		if (!(item instanceof BlockItem blockItem)) return Optional.empty();
-		final Optional<Block> baseBlock = getNonWeatheringEquivalent(blockItem.getBlock());
-		return baseBlock.map(Block::asItem);
-	}
-
 	public static Optional<Block> getNonWeatheringNonWaxedEquivalent(Block block) {
-		Block baseBlock = getNonWeatheringEquivalent(getNonWaxedEquivalent(block).orElse(block)).orElse(block);
-		if (block == baseBlock) return Optional.empty();
-		return Optional.of(baseBlock);
+		final Block nonWaxed = getNonWaxedEquivalent(block).orElse(block);
+		final Block nonWeatheringNonWaxed = getNonWeatheringEquivalent(nonWaxed).orElse(nonWaxed);
+		if (block == nonWeatheringNonWaxed) return Optional.empty();
+		return Optional.of(nonWeatheringNonWaxed);
 	}
 
 	public static Optional<Block> getNonWaxedEquivalent(Block block) {

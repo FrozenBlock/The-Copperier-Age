@@ -32,6 +32,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WeatheringCopper;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.Opcodes;
@@ -118,11 +119,12 @@ public class ItemStackMixin {
 		if (addedOxidizedTooltip || addedWaxedTooltip) return;
 
 		final Item item = stack.getItem();
-		final Optional<Item> nonWaxedItem = OxidizableItemHelper.getNonWaxedEquivalent(item);
-		if (nonWaxedItem.orElse(item) instanceof BlockItem blockItem && blockItem.getBlock() instanceof WeatheringCopper weatheringCopper) {
-			theCopperierAge$addWeatherStateTooltip(consumer, weatheringCopper.getAge());
-		}
-		if (nonWaxedItem.isPresent()) consumer.accept(OxidizableItemHelper.WAXED_TOOLTIP);
+		if (!(item instanceof BlockItem blockItem)) return;
+
+		final Block block = blockItem.getBlock();
+		final Optional<Block> nonWaxedBlock = OxidizableItemHelper.getNonWaxedEquivalent(block);
+		if (nonWaxedBlock.orElse(block) instanceof WeatheringCopper weatheringCopper) theCopperierAge$addWeatherStateTooltip(consumer, weatheringCopper.getAge());
+		if (nonWaxedBlock.isPresent()) consumer.accept(OxidizableItemHelper.WAXED_TOOLTIP);
 	}
 
 	@Unique

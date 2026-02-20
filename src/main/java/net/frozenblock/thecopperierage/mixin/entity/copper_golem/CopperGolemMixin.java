@@ -103,10 +103,9 @@ public abstract class CopperGolemMixin extends AbstractGolem implements CopperGo
 		final boolean currentlyHoldingItem = !this.getMainHandItem().isEmpty() || !this.getOffhandItem().isEmpty();
 		if (!this.level().isClientSide() && this.theCopperierAge$previousState != currentState) {
 			final String stateName = currentState.getSerializedName();
+			// TODO: figure out wtf the intent here is
 			final boolean isSuccessfulDrop = stateName.contains("drop_item") && !stateName.contains("drop_no_item");
-			if (isSuccessfulDrop) {
-				this.theCopperierAge$forceNearbyButtonSearch();
-			}
+			if (isSuccessfulDrop) this.theCopperierAge$forceNearbyButtonSearch();
 		}
 		if (!this.level().isClientSide() && this.theCopperierAge$previouslyHoldingItem && !currentlyHoldingItem) {
 			this.theCopperierAge$forceNearbyButtonSearch();

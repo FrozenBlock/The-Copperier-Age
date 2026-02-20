@@ -49,6 +49,8 @@ public class ItemMixin {
 		if (!TCAConfig.BETTER_COPPER_TOOLTIPS) return;
 		final Optional<Item> baseItem = OxidizableItemHelper.getNonWeatheringNonWaxedEquivalent(stack.get().getItem());
 		if (baseItem.isEmpty()) return;
+		// I'm using transmuteCopy here in case there's a weird case where the ITEM_NAME component is different from the default.
+		// For example, the Ominous Banner. Just want to cover random edge cases.
 		stack.set(stack.get().transmuteCopy(baseItem.get()));
 	}
 }

@@ -55,7 +55,7 @@ public class ItemWaxRecipe extends CustomRecipe {
 	private static ItemStack findWaxableItem(CraftingInput input) {
 		for (int i = 0; i < input.size(); i++) {
 			final ItemStack stack = input.getItem(i);
-			if (stack.is(TCAItemTags.OXIDIZABLE_EQUIPMENT) && !OxidizableItemHelper.isWaxed(stack)) return stack;
+			if (stack.is(TCAItemTags.OXIDIZABLE_EQUIPMENT) && !OxidizableItemHelper.hasWaxedComponent(stack)) return stack;
 		}
 		return ItemStack.EMPTY;
 	}

@@ -142,7 +142,7 @@ public final class OxidizableItemHelper {
 		OXIDIZABLE_ATTRIBUTES.put(copper, Pair.of(copperAttributes, ironAttributes));
 	}
 
-	public static boolean isWaxed(ItemStack stack) {
+	public static boolean hasWaxedComponent(ItemStack stack) {
 		return stack.has(TCADataComponents.WAXED);
 	}
 

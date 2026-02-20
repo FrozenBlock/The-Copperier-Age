@@ -97,7 +97,7 @@ public class ItemStackMixin {
 			);
 			addedOxidizedTooltip = true;
 		}
-		if (OxidizableItemHelper.isWaxed(stack)) {
+		if (OxidizableItemHelper.hasWaxedComponent(stack)) {
 			consumer.accept(OxidizableItemHelper.WAXED_TOOLTIP);
 			addedWaxedTooltip = true;
 		}

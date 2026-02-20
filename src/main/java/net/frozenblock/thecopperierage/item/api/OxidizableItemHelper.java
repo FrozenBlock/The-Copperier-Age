@@ -158,48 +158,52 @@ public final class OxidizableItemHelper {
 		return stack.has(TCADataComponents.WAXED);
 	}
 
-	public static int getDamageOrWaxedDamage(ItemStack stack) {
-		return stack.getComponents().getOrDefault(TCADataComponents.WAXED, stack.getDamageValue());
+	public static WeatheringCopper.WeatherState getWeatherState(ItemStack stack) {
+		return getWeatherState(stack, OptionalInt.empty());
 	}
 
-	public static float getOxidizeProgress(ItemStack stack) {
-		return getOxidizeProgress(stack, OptionalInt.empty());
-	}
+	public static WeatheringCopper.WeatherState getWeatherState(ItemStack stack, OptionalInt damageOverride) {
+		if (stack.has(TCADataComponents.WAXED)) return stack.get(TCADataComponents.WAXED);
 
-	public static float getOxidizeProgress(ItemStack stack, OptionalInt optionalInt) {
-		if (!TCAConfig.OXIDIZABLE_COPPER_EQUIPMENT) return 0F;
-
-		final float damage = optionalInt.orElse(getDamageOrWaxedDamage(stack));
+		final float damage = damageOverride.orElse(stack.getDamageValue());
 		final float maxDamage = stack.getMaxDamage();
 		final float damageProgress = Mth.clamp(damage / maxDamage, 0F, 1F);
-		if (damageProgress >= OXIDIZED_THRESHOLD) return 1F;
-		if (damageProgress >= WEATHERED_THRESHOLD) return 0.65F;
-		if (damageProgress >= EXPOSED_THRESHOLD) return 0.35F;
+		if (damageProgress >= OXIDIZED_THRESHOLD) return WeatheringCopper.WeatherState.OXIDIZED;
+		if (damageProgress >= WEATHERED_THRESHOLD) return WeatheringCopper.WeatherState.WEATHERED;
+		if (damageProgress >= EXPOSED_THRESHOLD) return WeatheringCopper.WeatherState.EXPOSED;
+		return WeatheringCopper.WeatherState.UNAFFECTED;
+	}
+
+	public static float getProgressFromOxidization(WeatheringCopper.WeatherState weatherState) {
+		if (!TCAConfig.OXIDIZABLE_COPPER_EQUIPMENT) return 0F;
+		if (weatherState == WeatheringCopper.WeatherState.OXIDIZED) return 1F;
+		if (weatherState == WeatheringCopper.WeatherState.WEATHERED) return 0.65F;
+		if (weatherState == WeatheringCopper.WeatherState.EXPOSED) return 0.35F;
 		return 0F;
 	}
 
 	public static <T> T getValueForOxidization(ItemStack stack, T unaffected, T exposed, T weathered, T oxidized) {
-		final float oxidizeProgress = getOxidizeProgress(stack);
-		if (oxidizeProgress == 0.35F) return exposed;
-		if (oxidizeProgress == 0.65F) return weathered;
-		if (oxidizeProgress == 1F) return oxidized;
+		final WeatheringCopper.WeatherState weatherState = getWeatherState(stack);
+		if (weatherState == WeatheringCopper.WeatherState.EXPOSED) return exposed;
+		if (weatherState == WeatheringCopper.WeatherState.WEATHERED) return weathered;
+		if (weatherState == WeatheringCopper.WeatherState.OXIDIZED) return oxidized;
 		return unaffected;
 	}
 
 	public static void onDamageUpdated(ItemStack stack, int damageValue) {
 		final Item item = stack.getItem();
-		final int damageToUse = stack.getComponents().getOrDefault(TCADataComponents.WAXED, damageValue);
-		updateMiningSpeed(stack, item, damageToUse);
-		updateAttributes(stack, item, damageToUse);
+		final WeatheringCopper.WeatherState weatherState = getWeatherState(stack, OptionalInt.of(damageValue));
+		updateMiningSpeed(stack, item, weatherState);
+		updateAttributes(stack, item, weatherState);
 	}
 
-	private static void updateMiningSpeed(ItemStack stack, Item item, int damageValue) {
+	private static void updateMiningSpeed(ItemStack stack, Item item, WeatheringCopper.WeatherState weatherState) {
 		if (!OXIDIZABLE_ATTRIBUTES.containsKey(item) || stack.is(ItemTags.SWORDS)) return;
 
 		final Tool stackTool = stack.get(DataComponents.TOOL);
 		if (stackTool == null) return;
 
-		final float oxidizeProgress = getOxidizeProgress(stack, OptionalInt.of(damageValue));
+		final float oxidizeProgress = getProgressFromOxidization(weatherState);
 		final float newSpeed = Mth.lerp(oxidizeProgress, COPPER_MINING_SPEED, IRON_MINING_SPEED);
 
 		boolean isEqual = true;
@@ -223,7 +227,7 @@ public final class OxidizableItemHelper {
 		stack.set(DataComponents.TOOL, finalTool);
 	}
 
-	private static void updateAttributes(ItemStack stack, Item item, int damageValue) {
+	private static void updateAttributes(ItemStack stack, Item item, WeatheringCopper.WeatherState weatherState) {
 		final Pair<ItemAttributeModifiers, ItemAttributeModifiers> attributePair = OXIDIZABLE_ATTRIBUTES.get(item);
 		if (attributePair == null) return;
 
@@ -232,7 +236,7 @@ public final class OxidizableItemHelper {
 
 		final ItemAttributeModifiers copperAttributes = attributePair.getFirst();
 		final ItemAttributeModifiers ironAttributes = attributePair.getSecond();
-		final float oxidizeProgress = getOxidizeProgress(stack, OptionalInt.of(damageValue));
+		final float oxidizeProgress = getProgressFromOxidization(weatherState);
 
 		AtomicBoolean isEqual = new AtomicBoolean(true);
 		final List<ItemAttributeModifiers.Entry> entryList = new ArrayList<>();

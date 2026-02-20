@@ -25,9 +25,8 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.CopperFanBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
-import net.frozenblock.thecopperierage.client.renderer.item.properties.select.DamageOrWaxedDamage;
 import net.frozenblock.thecopperierage.client.renderer.item.properties.select.OxidizedItemsEnabled;
-import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
+import net.frozenblock.thecopperierage.client.renderer.item.properties.select.WeatherState;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.minecraft.client.data.models.BlockModelGenerators;
@@ -50,6 +49,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -281,27 +281,19 @@ public final class TCAModelProvider extends FabricModelProvider {
 		generator.generateBooleanDispatch(item, ItemModelUtils.isUsingItem(), tooting, model);
 	}
 
-	private static @NotNull ResourceLocation getItemModelWithTCANamespace(Item item, String suffix) {
-		return TCAConstants.id(ModelLocationUtils.getModelLocation(item, suffix).getPath());
-	}
-
-	private static @NotNull ResourceLocation getItemTextureWithTCANamespace(Item item, String suffix) {
-		return TCAConstants.id(TextureMapping.getItemTexture(item, suffix).getPath());
-	}
-
 	@Contract("_, _, _, _ -> new")
-	public static @NotNull Unbaked createOxidizableDispatch(Unbaked unaffected, Unbaked exposed, Unbaked weathered, Unbaked oxidized) {
+	public static Unbaked createOxidizableDispatch(Unbaked unaffected, Unbaked exposed, Unbaked weathered, Unbaked oxidized) {
 		return ItemModelUtils.select(
 			new OxidizedItemsEnabled(),
 			unaffected,
 			ItemModelUtils.when(
 				true,
-				ItemModelUtils.rangeSelect(
-					new DamageOrWaxedDamage(true),
+				ItemModelUtils.select(
+					new WeatherState(),
 					unaffected,
-					ItemModelUtils.override(exposed, OxidizableItemHelper.EXPOSED_THRESHOLD),
-					ItemModelUtils.override(weathered, OxidizableItemHelper.WEATHERED_THRESHOLD),
-					ItemModelUtils.override(oxidized, OxidizableItemHelper.OXIDIZED_THRESHOLD)
+					ItemModelUtils.when(WeatheringCopper.WeatherState.EXPOSED, exposed),
+					ItemModelUtils.when(WeatheringCopper.WeatherState.WEATHERED, weathered),
+					ItemModelUtils.when(WeatheringCopper.WeatherState.OXIDIZED, oxidized)
 				)
 			)
 		);

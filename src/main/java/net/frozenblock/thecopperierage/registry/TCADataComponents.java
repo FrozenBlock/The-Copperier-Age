@@ -22,13 +22,12 @@ import net.frozenblock.thecopperierage.TCAConstants;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.level.block.WeatheringCopper;
 
 public final class TCADataComponents {
-	public static final DataComponentType<Integer> WAXED = register(
+	public static final DataComponentType<WeatheringCopper.WeatherState> WAXED = register(
 		"waxed",
-		builder -> builder.persistent(ExtraCodecs.NON_NEGATIVE_INT).networkSynchronized(ByteBufCodecs.VAR_INT)
+		builder -> builder.persistent(WeatheringCopper.WeatherState.CODEC).networkSynchronized(WeatheringCopper.WeatherState.STREAM_CODEC)
 	);
 
 	public static void init() {}

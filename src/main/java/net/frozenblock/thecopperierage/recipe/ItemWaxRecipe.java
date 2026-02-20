@@ -48,7 +48,7 @@ public class ItemWaxRecipe extends CustomRecipe {
 	@Override
 	public ItemStack assemble(CraftingInput input, HolderLookup.Provider provider) {
 		final ItemStack stackToWax = findWaxableItem(input).copyWithCount(1);
-		stackToWax.set(TCADataComponents.WAXED, stackToWax.getDamageValue());
+		stackToWax.set(TCADataComponents.WAXED, OxidizableItemHelper.getWeatherState(stackToWax));
 		return stackToWax;
 	}
 
@@ -57,7 +57,6 @@ public class ItemWaxRecipe extends CustomRecipe {
 			final ItemStack stack = input.getItem(i);
 			if (stack.is(TCAItemTags.OXIDIZABLE_EQUIPMENT) && !OxidizableItemHelper.isWaxed(stack)) return stack;
 		}
-
 		return ItemStack.EMPTY;
 	}
 

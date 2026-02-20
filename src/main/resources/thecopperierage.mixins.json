@@ -29,7 +29,6 @@
     "client.copper_golem.CopperGolemRendererMixin",
     "client.copper_golem.CopperGolemRenderStateMixin",
     "client.oxidized_armor.EquipmentLayerRendererMixin",
-    "client.oxidized_items.RangeSelectItemModelPropertiesMixin",
     "client.oxidized_items.SelectItemModelPropertiesMixin",
     "client.oxidizing_auto_models.BlockModelWrapperUnbakedMixin",
     "datagen.client.VariantMutatorMixin"

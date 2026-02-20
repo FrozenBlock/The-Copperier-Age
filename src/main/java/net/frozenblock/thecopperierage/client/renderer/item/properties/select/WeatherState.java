@@ -19,34 +19,36 @@ package net.frozenblock.thecopperierage.client.renderer.item.properties.select;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemModelProperty;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.ItemOwner;
+import net.minecraft.client.renderer.item.properties.select.SelectItemModelProperty;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.WeatheringCopper;
 import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
-public record DamageOrWaxedDamage(boolean normalize) implements RangeSelectItemModelProperty {
-	public static final MapCodec<DamageOrWaxedDamage> MAP_CODEC = RecordCodecBuilder.mapCodec(
-		instance -> instance.group(
-			Codec.BOOL.optionalFieldOf("normalize", true).forGetter(DamageOrWaxedDamage::normalize)
-		).apply(instance, DamageOrWaxedDamage::new)
+public record WeatherState() implements SelectItemModelProperty<WeatheringCopper.WeatherState> {
+	private static final WeatherState INSTANCE = new WeatherState();
+	public static final SelectItemModelProperty.Type<WeatherState, WeatheringCopper.WeatherState> TYPE = SelectItemModelProperty.Type.create(
+		MapCodec.unit(new WeatherState()), WeatheringCopper.WeatherState.CODEC
 	);
 
 	@Override
-	public float get(ItemStack stack, @Nullable ClientLevel level, @Nullable ItemOwner owner, int i) {
-		float damage = OxidizableItemHelper.getDamageOrWaxedDamage(stack);
-		float maxDamage = stack.getMaxDamage();
-		return this.normalize ? Mth.clamp(damage / maxDamage, 0F, 1F) : Mth.clamp(damage, 0F, maxDamage);
+	public WeatheringCopper.WeatherState get(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity owner, int seed, ItemDisplayContext context) {
+		return OxidizableItemHelper.getWeatherState(stack);
 	}
 
 	@Override
-	public MapCodec<DamageOrWaxedDamage> type() {
-		return MAP_CODEC;
+	public SelectItemModelProperty.Type<WeatherState, WeatheringCopper.WeatherState> type() {
+		return TYPE;
+	}
+
+	@Override
+	public Codec<WeatheringCopper.WeatherState> valueCodec() {
+		return WeatheringCopper.WeatherState.CODEC;
 	}
 }

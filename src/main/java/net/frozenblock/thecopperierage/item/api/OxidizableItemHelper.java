@@ -33,19 +33,25 @@ import net.frozenblock.thecopperierage.registry.TCADataComponents;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.HoneycombItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.Tool;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.WeatheringCopper;
+import net.minecraft.ChatFormatting;
 
 public final class OxidizableItemHelper {
 	public static final List<String> OXIDIZING_SUFFIXES = ImmutableList.of("exposed", "weathered", "oxidized");
@@ -58,6 +64,15 @@ public final class OxidizableItemHelper {
 	public static final float EXPOSED_THRESHOLD = 0.2F;
 	public static final float WEATHERED_THRESHOLD = 0.45F;
 	public static final float OXIDIZED_THRESHOLD = 0.65F;
+	public static final Component WAXED_TOOLTIP = TCAConstants.itemComponent("waxed").withStyle(ChatFormatting.GOLD);
+	public static final Component WEATHERING_WAXED_TOOLTIP = TCAConstants.itemComponent("weathering.waxed").withStyle(ChatFormatting.GOLD);
+	private static final MutableComponent[] WEATHERING_NAMES = new MutableComponent[] {
+		TCAConstants.itemComponent("weathering.state.unaffected").withStyle(ChatFormatting.GRAY),
+		TCAConstants.itemComponent("weathering.state.exposed").withStyle(ChatFormatting.GRAY),
+		TCAConstants.itemComponent("weathering.state.weathered").withStyle(ChatFormatting.GRAY),
+		TCAConstants.itemComponent("weathering.state.oxidized").withStyle(ChatFormatting.GRAY),
+		TCAConstants.itemComponent("weathering.state.unknown").withStyle(ChatFormatting.GRAY)
+	};
 
 	public static void bootstrap() {
 		addOxidizableAttributesItem(Items.COPPER_SWORD, Items.IRON_SWORD);
@@ -65,6 +80,54 @@ public final class OxidizableItemHelper {
 		addOxidizableAttributesItem(Items.COPPER_PICKAXE, Items.IRON_PICKAXE);
 		addOxidizableAttributesItem(Items.COPPER_AXE, Items.IRON_AXE);
 		addOxidizableAttributesItem(Items.COPPER_HOE, Items.IRON_HOE);
+	}
+
+	public static Optional<Item> getNonWeatheringNonWaxedEquivalent(Item item, boolean isForTooltips) {
+		if (!(item instanceof BlockItem blockItem)) return Optional.empty();
+		final Optional<Block> baseBlock = getNonWeatheringNonWaxedEquivalent(blockItem.getBlock(), isForTooltips);
+		return baseBlock.map(Block::asItem);
+	}
+
+	public static Optional<Item> getNonWaxedEquivalent(Item item, boolean isForTooltips) {
+		if (!(item instanceof BlockItem blockItem)) return Optional.empty();
+		final Optional<Block> baseBlock = getNonWaxedEquivalent(blockItem.getBlock(), isForTooltips);
+		return baseBlock.map(Block::asItem);
+	}
+
+	public static Optional<Item> getNonWeatheringEquivalent(Item item, boolean isForTooltips) {
+		if (!(item instanceof BlockItem blockItem)) return Optional.empty();
+		final Optional<Block> baseBlock = getNonWeatheringEquivalent(blockItem.getBlock(), isForTooltips);
+		return baseBlock.map(Block::asItem);
+	}
+
+	public static Optional<Block> getNonWeatheringNonWaxedEquivalent(Block block, boolean isForTooltips) {
+		Block baseBlock = getNonWeatheringEquivalent(getNonWaxedEquivalent(block, isForTooltips).orElse(block), isForTooltips).orElse(block);
+		if (block == baseBlock) return Optional.empty();
+		return Optional.of(baseBlock);
+	}
+
+	public static Optional<Block> getNonWaxedEquivalent(Block block, boolean isForTooltips) {
+		if (isForTooltips && !TCAConfig.BETTER_COPPER_TOOLTIPS) return Optional.empty();
+
+		final Block nonWaxedBlock = HoneycombItem.WAX_OFF_BY_BLOCK.get().get(block);
+		if (nonWaxedBlock == null) return Optional.empty();
+		return Optional.of(nonWaxedBlock);
+	}
+
+	public static Optional<Block> getNonWeatheringEquivalent(Block block, boolean isForTooltips) {
+		if (isForTooltips && !TCAConfig.BETTER_COPPER_TOOLTIPS) return Optional.empty();
+
+		final Block nonWeatheringBlock = WeatheringCopper.getFirst(block);
+		if (nonWeatheringBlock == block) return Optional.empty();
+		return Optional.of(nonWeatheringBlock);
+	}
+
+	public static MutableComponent getWeatheringStateName(WeatheringCopper.WeatherState weatherState) {
+		if (weatherState == WeatheringCopper.WeatherState.UNAFFECTED) return WEATHERING_NAMES[0];
+		if (weatherState == WeatheringCopper.WeatherState.EXPOSED) return WEATHERING_NAMES[1];
+		if (weatherState == WeatheringCopper.WeatherState.WEATHERED) return  WEATHERING_NAMES[2];
+		if (weatherState == WeatheringCopper.WeatherState.OXIDIZED) return WEATHERING_NAMES[3];
+		return WEATHERING_NAMES[4];
 	}
 
 	public static List<String> getOxidizingModelSearchTerms() {
@@ -75,7 +138,7 @@ public final class OxidizableItemHelper {
 		OXIDIZING_AUTO_MODEL_SEARCH_TERMS.add(term);
 	}
 
-	public static void addOxidizableAttributesItem(@NotNull Item copper, @NotNull Item iron) {
+	public static void addOxidizableAttributesItem(Item copper, Item iron) {
 		final DataComponentMap copperComponents = copper.components();
 		final DataComponentMap ironComponents = iron.components();
 
@@ -94,11 +157,11 @@ public final class OxidizableItemHelper {
 		return stack.getComponents().getOrDefault(TCADataComponents.WAXED, stack.getDamageValue());
 	}
 
-	public static float getOxidizeProgress(@NotNull ItemStack stack) {
+	public static float getOxidizeProgress(ItemStack stack) {
 		return getOxidizeProgress(stack, OptionalInt.empty());
 	}
 
-	public static float getOxidizeProgress(@NotNull ItemStack stack, @NotNull OptionalInt optionalInt) {
+	public static float getOxidizeProgress(ItemStack stack, OptionalInt optionalInt) {
 		if (!TCAConfig.OXIDIZABLE_COPPER_EQUIPMENT) return 0F;
 
 		final float damage = optionalInt.orElse(getDamageOrWaxedDamage(stack));
@@ -118,7 +181,7 @@ public final class OxidizableItemHelper {
 		return unaffected;
 	}
 
-	public static void onDamageUpdated(@NotNull ItemStack stack, int damageValue) {
+	public static void onDamageUpdated(ItemStack stack, int damageValue) {
 		final Item item = stack.getItem();
 		final int damageToUse = stack.getComponents().getOrDefault(TCADataComponents.WAXED, damageValue);
 		updateMiningSpeed(stack, item, damageToUse);
@@ -213,8 +276,8 @@ public final class OxidizableItemHelper {
 	}
 
 	private static Optional<ItemAttributeModifiers.Entry> getLerpedAttributeEntry(
-		@NotNull ItemAttributeModifiers copper,
-		@NotNull ItemAttributeModifiers iron,
+		ItemAttributeModifiers copper,
+		ItemAttributeModifiers iron,
 		Holder<Attribute> attribute,
 		ResourceLocation attributeID,
 		float oxidizeProgress

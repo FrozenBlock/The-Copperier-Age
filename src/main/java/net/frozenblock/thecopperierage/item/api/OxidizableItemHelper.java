@@ -28,13 +28,16 @@ import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Predicate;
+import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.config.TCAConfig;
+import net.frozenblock.thecopperierage.item.impl.ItemOxidizationCacheInterface;
 import net.frozenblock.thecopperierage.registry.TCADataComponents;
 import net.frozenblock.thecopperierage.tag.TCAItemTags;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -81,12 +84,44 @@ public final class OxidizableItemHelper {
 		addOxidizableAttributesItem(Items.COPPER_PICKAXE, Items.IRON_PICKAXE);
 		addOxidizableAttributesItem(Items.COPPER_AXE, Items.IRON_AXE);
 		addOxidizableAttributesItem(Items.COPPER_HOE, Items.IRON_HOE);
-	}
 
-	public static Optional<Item> getNonWeatheringNonWaxedEquivalent(Item item) {
-		if (!(item instanceof BlockItem blockItem)) return Optional.empty();
-		final Optional<Block> baseBlock = getNonWeatheringNonWaxedEquivalent(blockItem.getBlock());
-		return baseBlock.map(Block::asItem);
+		CommonLifecycleEvents.TAGS_LOADED.register((registries, client) -> {
+			registries.lookupOrThrow(Registries.ITEM)
+				.stream()
+				.toList()
+				.forEach(item -> {
+					if (!(item instanceof ItemOxidizationCacheInterface oxidizationCache)) return;
+
+					oxidizationCache.theCopperierAge$clearOxidizationCache();
+					final Holder.Reference<Item> holder = item.builtInRegistryHolder();
+					if (holder.is(TCAItemTags.OXIDIZABLE_EQUIPMENT)) return;
+
+					boolean hasCachedAnyState = false;
+					final Optional<WeatheringCopper.WeatherState> weatherStateByTag = OxidizableItemHelper.getWeatherStateByTag(holder);
+					if (weatherStateByTag.isPresent()) {
+						weatherStateByTag.ifPresent(oxidizationCache::theCopperierAge$setWeatherState);
+						hasCachedAnyState = true;
+					}
+					if (holder.is(TCAItemTags.WEATHERING_WAXED)) {
+						oxidizationCache.theCopperierAge$setWaxed(true);
+						hasCachedAnyState = true;
+					}
+
+					if (!(item instanceof BlockItem blockItem)) return;
+					final Block block = blockItem.getBlock();
+					final Optional<Block> baseBlock = getNonWeatheringNonWaxedEquivalent(block);
+					baseBlock.ifPresent(base -> oxidizationCache.theCopperierAge$setBaseItem(base.asItem()));
+
+					// Cancel if the item is already known to be Oxidized or Waxed.
+					// The only time this will cause unintended behavior is if someone added a waxed Item to a weathering/waxed tag, but not the waxed/weathering one.
+					// At that point, it's their fault. So don't worry.
+					if (hasCachedAnyState) return;
+
+					final Optional<Block> nonWaxedBlock = OxidizableItemHelper.getNonWaxedEquivalent(block);
+					if (nonWaxedBlock.orElse(block) instanceof WeatheringCopper weatheringCopper) oxidizationCache.theCopperierAge$setWeatherState(weatheringCopper.getAge());
+					if (nonWaxedBlock.isPresent()) oxidizationCache.theCopperierAge$setWaxed(true);
+				});
+		});
 	}
 
 	public static Optional<Block> getNonWeatheringNonWaxedEquivalent(Block block) {
@@ -108,11 +143,11 @@ public final class OxidizableItemHelper {
 		return Optional.of(nonWeatheringBlock);
 	}
 
-	public static Optional<WeatheringCopper.WeatherState> getWeatherStateByTag(ItemStack stack) {
-		if (stack.is(TCAItemTags.WEATHERING_UNAFFECTED)) return Optional.of(WeatheringCopper.WeatherState.UNAFFECTED);
-		if (stack.is(TCAItemTags.WEATHERING_EXPOSED)) return Optional.of(WeatheringCopper.WeatherState.EXPOSED);
-		if (stack.is(TCAItemTags.WEATHERING_WEATHERED)) return Optional.of(WeatheringCopper.WeatherState.WEATHERED);
-		if (stack.is(TCAItemTags.WEATHERING_OXIDIZED)) return Optional.of(WeatheringCopper.WeatherState.OXIDIZED);
+	public static Optional<WeatheringCopper.WeatherState> getWeatherStateByTag(Holder<Item> holder) {
+		if (holder.is(TCAItemTags.WEATHERING_UNAFFECTED)) return Optional.of(WeatheringCopper.WeatherState.UNAFFECTED);
+		if (holder.is(TCAItemTags.WEATHERING_EXPOSED)) return Optional.of(WeatheringCopper.WeatherState.EXPOSED);
+		if (holder.is(TCAItemTags.WEATHERING_WEATHERED)) return Optional.of(WeatheringCopper.WeatherState.WEATHERED);
+		if (holder.is(TCAItemTags.WEATHERING_OXIDIZED)) return Optional.of(WeatheringCopper.WeatherState.OXIDIZED);
 		return Optional.empty();
 	}
 
@@ -149,14 +184,8 @@ public final class OxidizableItemHelper {
 
 	public static boolean isWaxed(ItemStack stack) {
 		if (hasWaxedComponent(stack)) return true;
-		if (stack.is(TCAItemTags.WEATHERING_WAXED)) return true;
-
-		final Item item = stack.getItem();
-		if (!(item instanceof BlockItem blockItem)) return false;
-
-		final Block block = blockItem.getBlock();
-		final Optional<Block> nonWaxedBlock = OxidizableItemHelper.getNonWaxedEquivalent(block);
-		return nonWaxedBlock.isPresent();
+		if (!(stack.getItem() instanceof ItemOxidizationCacheInterface oxidizationCache)) return false;
+		return oxidizationCache.theCopperierAge$waxed();
 	}
 
 	public static WeatheringCopper.WeatherState getWeatherState(ItemStack stack) {

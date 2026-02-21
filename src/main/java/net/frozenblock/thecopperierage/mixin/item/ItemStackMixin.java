@@ -17,22 +17,20 @@
 
 package net.frozenblock.thecopperierage.mixin.item;
 
-import java.util.Optional;
 import java.util.function.Consumer;
 import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
+import net.frozenblock.thecopperierage.item.impl.ItemOxidizationCacheInterface;
 import net.frozenblock.thecopperierage.tag.TCAItemTags;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WeatheringCopper;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.Opcodes;
@@ -80,9 +78,6 @@ public class ItemStackMixin {
 	public void theCopperierAge$addWeatheringAndWaxedTooltips(
 		Item.TooltipContext context, TooltipDisplay display, @Nullable Player player, TooltipFlag flag, Consumer<Component> consumer, CallbackInfo info
 	) {
-		boolean addedOxidizedTooltip = false;
-		boolean addedWaxedTooltip = false;
-
 		final ItemStack stack = ItemStack.class.cast(this);
 		if (stack.is(TCAItemTags.OXIDIZABLE_EQUIPMENT)) {
 			theCopperierAge$addWeatherStateTooltip(
@@ -95,36 +90,15 @@ public class ItemStackMixin {
 					WeatheringCopper.WeatherState.OXIDIZED
 				)
 			);
-			addedOxidizedTooltip = true;
 		}
-		if (OxidizableItemHelper.hasWaxedComponent(stack)) {
-			consumer.accept(OxidizableItemHelper.WAXED_TOOLTIP);
-			addedWaxedTooltip = true;
-		}
+		if (OxidizableItemHelper.hasWaxedComponent(stack)) consumer.accept(OxidizableItemHelper.WAXED_TOOLTIP);
 
 		if (!TCAConfig.BETTER_COPPER_TOOLTIPS) return;
-		final Optional<WeatheringCopper.WeatherState> weatherStateByTag = OxidizableItemHelper.getWeatherStateByTag(stack);
-		if (!addedOxidizedTooltip && weatherStateByTag.isPresent()) {
-			weatherStateByTag.ifPresent(weatherState -> theCopperierAge$addWeatherStateTooltip(consumer, weatherState));
-			addedOxidizedTooltip = true;
-		}
-		if (!addedWaxedTooltip && stack.is(TCAItemTags.WEATHERING_WAXED)) {
-			consumer.accept(OxidizableItemHelper.WAXED_TOOLTIP);
-			addedWaxedTooltip = true;
-		}
+		if (!(stack.getItem() instanceof ItemOxidizationCacheInterface oxidizationCache)) return;
 
-		// Cancel if the item is already known to be Oxidized or Waxed.
-		// The only time this will cause unintended behavior is if someone added a waxed Item to a weathering/waxed tag, but not the waxed/weathering one.
-		// At that point, it's their fault. So don't worry.
-		if (addedOxidizedTooltip || addedWaxedTooltip) return;
-
-		final Item item = stack.getItem();
-		if (!(item instanceof BlockItem blockItem)) return;
-
-		final Block block = blockItem.getBlock();
-		final Optional<Block> nonWaxedBlock = OxidizableItemHelper.getNonWaxedEquivalent(block);
-		if (nonWaxedBlock.orElse(block) instanceof WeatheringCopper weatheringCopper) theCopperierAge$addWeatherStateTooltip(consumer, weatheringCopper.getAge());
-		if (nonWaxedBlock.isPresent()) consumer.accept(OxidizableItemHelper.WAXED_TOOLTIP);
+		final WeatheringCopper.WeatherState weatherState = oxidizationCache.theCopperierAge$weatherState();
+		if (weatherState != null) theCopperierAge$addWeatherStateTooltip(consumer, weatherState);
+		if (oxidizationCache.theCopperierAge$waxed()) consumer.accept(OxidizableItemHelper.WAXED_TOOLTIP);
 	}
 
 	@Unique

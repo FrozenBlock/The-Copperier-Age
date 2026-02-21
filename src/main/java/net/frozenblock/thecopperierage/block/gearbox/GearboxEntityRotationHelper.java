@@ -49,12 +49,12 @@ public final class GearboxEntityRotationHelper {
 		final int y = Mth.floor(entity.getBoundingBox().minY - 0.05D);
 		if (y != pos.getY()) return false;
 
-		final int minX = Mth.floor(entity.getBoundingBox().minX + 1.0E-4D);
-		final int maxX = Mth.floor(entity.getBoundingBox().maxX - 1.0E-4D);
+		final int minX = Mth.floor(entity.getBoundingBox().minX + 0.0001D);
+		final int maxX = Mth.floor(entity.getBoundingBox().maxX - 0.0001D);
 		if (pos.getX() < minX || pos.getX() > maxX) return false;
 
-		final int minZ = Mth.floor(entity.getBoundingBox().minZ + 1.0E-4D);
-		final int maxZ = Mth.floor(entity.getBoundingBox().maxZ - 1.0E-4D);
+		final int minZ = Mth.floor(entity.getBoundingBox().minZ + 0.0001D);
+		final int maxZ = Mth.floor(entity.getBoundingBox().maxZ - 0.0001D);
 		return pos.getZ() >= minZ && pos.getZ() <= maxZ;
 	}
 
@@ -72,10 +72,10 @@ public final class GearboxEntityRotationHelper {
 		}
 
 		final int y = Mth.floor(entity.getBoundingBox().minY - 0.05D);
-		final int minX = Mth.floor(entity.getBoundingBox().minX + 1.0E-4D);
-		final int maxX = Mth.floor(entity.getBoundingBox().maxX - 1.0E-4D);
-		final int minZ = Mth.floor(entity.getBoundingBox().minZ + 1.0E-4D);
-		final int maxZ = Mth.floor(entity.getBoundingBox().maxZ - 1.0E-4D);
+		final int minX = Mth.floor(entity.getBoundingBox().minX + 0.0001D);
+		final int maxX = Mth.floor(entity.getBoundingBox().maxX - 0.0001D);
+		final int minZ = Mth.floor(entity.getBoundingBox().minZ + 0.0001D);
+		final int maxZ = Mth.floor(entity.getBoundingBox().maxZ - 0.0001D);
 		if (minX == maxX && minZ == maxZ && onX == minX && onY == y && onZ == minZ) return 0F;
 
 		int selectedPower = 0;

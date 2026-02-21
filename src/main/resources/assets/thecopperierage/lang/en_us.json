@@ -120,6 +120,8 @@
   "tooltip.thecopperierage.better_copper_tooltips": "Whether copper related items utilise a new tooltip style. \nWaxed and Oxidisation statuses will be communicated through lore. \nRelated prefixes are removed from copper item names.",
   "option.thecopperierage.waxed_item_icon_overlay": "Waxed Icon Overlay",
   "tooltip.thecopperierage.waxed_item_icon_overlay": "Whether waxed items have a special overlay for their items. \nDisplays a visual to indicate to players that an item is waxed without having to read tooltip. \n Only present in hud, inventory screens, and other GUIs, not in world or hand.",
+  "option.thecopperierage.extra_item_icon_overlays": "Extra Item Icon Overlays",
+  "tooltip.thecopperierage.extra_item_icon_overlays": "Whether additional special overlays are used. \nProvides Trapped Chests and Infested blocks special UI overlays similar to the waxed ones. \nDisabled by default.",
 
   "pack.thecopperierage.copperier_copper": "Copperier Copper",
   "pack.thecopperierage.green_copper_bulbs": "Green Copper Bulbs",

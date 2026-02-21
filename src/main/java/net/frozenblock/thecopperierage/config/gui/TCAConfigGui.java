@@ -131,6 +131,45 @@ public final class TCAConfigGui {
 			)
 		);
 
+		var betterCopperTooltips = category.addEntry(
+			FrozenClothConfig.syncedEntry(
+				entryBuilder.startBooleanToggle(text("better_copper_tooltips"), modifiedConfig.waxedItemIconOverlay)
+					.setDefaultValue(defaultConfig.betterCopperTooltips)
+					.setSaveConsumer(newValue -> config.betterCopperTooltips = newValue)
+					.setTooltip(tooltip("better_copper_tooltips"))
+					.build(),
+				config.getClass(),
+				"betterCopperTooltips",
+				configInstance
+			)
+		);
+
+		var waxedItemIconOverlay = category.addEntry(
+			FrozenClothConfig.syncedEntry(
+				entryBuilder.startBooleanToggle(text("waxed_item_icon_overlay"), modifiedConfig.waxedItemIconOverlay)
+					.setDefaultValue(defaultConfig.waxedItemIconOverlay)
+					.setSaveConsumer(newValue -> config.waxedItemIconOverlay = newValue)
+					.setTooltip(tooltip("waxed_item_icon_overlay"))
+					.build(),
+				config.getClass(),
+				"waxedItemIconOverlay",
+				configInstance
+			)
+		);
+
+		var extraItemIconOverlays = category.addEntry(
+			FrozenClothConfig.syncedEntry(
+				entryBuilder.startBooleanToggle(text("extra_item_icon_overlays"), modifiedConfig.extraItemIconOverlays)
+					.setDefaultValue(defaultConfig.extraItemIconOverlays)
+					.setSaveConsumer(newValue -> config.extraItemIconOverlays = newValue)
+					.setTooltip(tooltip("extra_item_icon_overlays"))
+					.build(),
+				config.getClass(),
+				"extraItemIconOverlays",
+				configInstance
+			)
+		);
+
 	}
 
 	public static Screen buildScreen(Screen parent) {

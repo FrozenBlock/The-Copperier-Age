@@ -116,6 +116,10 @@
   "tooltip.thecopperierage.oxidizable_copper_equipment": "Whether Copper equipment will oxidize as it runs out of durability.\nThe more oxidized the equipment becomes, the closer its stats will be to Iron equipment.\nThis includes both tools and armor.",
   "option.thecopperierage.copper_particles": "Copper Particles",
   "tooltip.thecopperierage.copper_particles": "Whether certain particles created by Copper Fire-related blocks will emit green-tinted particles.\nThis includes Copper Fire, Copper Campfires, and Copper Torches.\nThe green tint of smoke-like particles will fade away.",
+  "option.thecopperierage.better_copper_tooltips": "Copper Tooltips",
+  "tooltip.thecopperierage.better_copper_tooltips": "Whether copper related items utilise a new tooltip style. \nWaxed and Oxidisation statuses will be communicated through lore. \nRelated prefixes are removed from copper item names.",
+  "option.thecopperierage.waxed_item_icon_overlay": "Waxed Icon Overlay",
+  "tooltip.thecopperierage.waxed_item_icon_overlay": "Whether waxed items have a special overlay for their items. \nDisplays a visual to indicate to players that an item is waxed without having to read tooltip. \n Only present in hud, inventory screens, and other GUIs, not in world or hand.",
 
   "pack.thecopperierage.copperier_copper": "Copperier Copper",
   "pack.thecopperierage.green_copper_bulbs": "Green Copper Bulbs",

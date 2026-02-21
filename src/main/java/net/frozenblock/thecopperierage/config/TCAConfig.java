@@ -46,6 +46,7 @@ public class TCAConfig {
 				OXIDIZABLE_COPPER_EQUIPMENT = config.oxidizableCopperEquipment;
 				COPPER_PARTICLES = config.copperParticles;
 				BETTER_COPPER_TOOLTIPS = config.betterCopperTooltips;
+				WAZED_ITEM_ICON_OVERLAY = config.waxedItemIconOverlay;
 			}
 		}
 	);
@@ -53,6 +54,7 @@ public class TCAConfig {
 	public static volatile boolean OXIDIZABLE_COPPER_EQUIPMENT = true;
 	public static volatile boolean COPPER_PARTICLES = true;
 	public static volatile boolean BETTER_COPPER_TOOLTIPS = true;
+	public static volatile boolean WAZED_ITEM_ICON_OVERLAY = true;
 
 	@EntrySyncData("copperFireEnabled")
 	public boolean copperFireEnabled = true;
@@ -77,6 +79,9 @@ public class TCAConfig {
 
 	@EntrySyncData("betterCopperTooltips")
 	public boolean betterCopperTooltips = true;
+
+	@EntrySyncData("waxedItemIconOverlay")
+	public boolean waxedItemIconOverlay = true;
 
 	public static TCAConfig get(boolean real) {
 		if (real) return INSTANCE.instance();

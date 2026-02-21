@@ -21,6 +21,7 @@ import com.mojang.blaze3d.pipeline.RenderPipeline;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.frozenblock.thecopperierage.TCAConstants;
+import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -54,8 +55,7 @@ public abstract class GuiGraphicsMixin {
 		)
 	)
 	private void theCopperierAge$blitWaxedOverlay(LivingEntity owner, Level level, ItemStack stack, int x, int y, int seed, CallbackInfo info) {
-		// TODO: config
-		if (!OxidizableItemHelper.isWaxed(stack)) return;
+		if (!OxidizableItemHelper.isWaxed(stack) || !TCAConfig.WAZED_ITEM_ICON_OVERLAY) return;
 		this.blitSprite(RenderPipelines.GUI_TEXTURED, THECOPPERIERAGE$WAXED_OVERLAY, x - 2, y - 2, 20, 20);
 	}
 

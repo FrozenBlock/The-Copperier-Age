@@ -22,12 +22,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import net.frozenblock.thecopperierage.block.gearbox.GearboxBlockEvaluator;
+import net.frozenblock.thecopperierage.block.gearbox.GearboxRotationSessionInterface;
 import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -114,6 +116,15 @@ public class GearboxBlock extends DirectionalBlock {
 	) {
 		if (level.isClientSide() || level.getBlockTicks().hasScheduledTick(pos, this)) return;
 		level.scheduleTick(pos, this, 1);
+	}
+
+	@Override
+	public void stepOn(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Entity entity) {
+		super.stepOn(level, pos, state, entity);
+		if (state.getValue(FACING) != Direction.UP || state.getValue(POWER) <= 0) return;
+		if (entity instanceof GearboxRotationSessionInterface gearboxRotationSessionInterface) {
+			gearboxRotationSessionInterface.theCopperierAge$activateGearboxRotationSession(entity.tickCount, pos);
+		}
 	}
 
 	@Override

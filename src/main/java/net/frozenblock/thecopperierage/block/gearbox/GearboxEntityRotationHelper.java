@@ -1,0 +1,126 @@
+/*
+ * Copyright 2025-2026 FrozenBlock
+ * This file is part of The Copperier Age.
+ *
+ * This program is free software; you can modify it under
+ * the terms of version 1 of the FrozenBlock Modding Oasis License
+ * as published by FrozenBlock Modding Oasis.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * FrozenBlock Modding Oasis License for more details.
+ *
+ * You should have received a copy of the FrozenBlock Modding Oasis License
+ * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
+ */
+
+package net.frozenblock.thecopperierage.block.gearbox;
+
+import net.frozenblock.thecopperierage.TCAConstants;
+import net.frozenblock.thecopperierage.block.GearboxBlock;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+
+public final class GearboxEntityRotationHelper {
+	private static final float GEARBOX_ACTIVE_YAW_DELTA = 3.5F;
+	private static final boolean DEBUG_GEARBOX_ROTATION = TCAConstants.UNSTABLE_LOGGING && Boolean.getBoolean("tca.debug.gearbox_rotation");
+
+	private GearboxEntityRotationHelper() {
+	}
+
+	public static float getYawDeltaFromPower(int power) {
+		if (power <= 0) return 0F;
+		return (power & 1) == 0 ? GEARBOX_ACTIVE_YAW_DELTA : -GEARBOX_ACTIVE_YAW_DELTA;
+	}
+
+	public static boolean isStandingOnBlock(Entity entity, BlockPos pos) {
+		if (entity.isPassenger()) return false;
+
+		final BlockPos onPos = entity.getOnPos();
+		if (onPos.getX() == pos.getX() && onPos.getY() == pos.getY() && onPos.getZ() == pos.getZ()) return true;
+
+		final int y = Mth.floor(entity.getBoundingBox().minY - 0.05D);
+		if (y != pos.getY()) return false;
+
+		final int minX = Mth.floor(entity.getBoundingBox().minX + 1.0E-4D);
+		final int maxX = Mth.floor(entity.getBoundingBox().maxX - 1.0E-4D);
+		if (pos.getX() < minX || pos.getX() > maxX) return false;
+
+		final int minZ = Mth.floor(entity.getBoundingBox().minZ + 1.0E-4D);
+		final int maxZ = Mth.floor(entity.getBoundingBox().maxZ - 1.0E-4D);
+		return pos.getZ() >= minZ && pos.getZ() <= maxZ;
+	}
+
+	public static float getGearboxYawDelta(Entity entity) {
+		if (!entity.onGround() || entity.isPassenger()) return 0F;
+		final Level level = entity.level();
+
+		final BlockPos onPos = entity.getOnPos();
+		final int onX = onPos.getX();
+		final int onY = onPos.getY();
+		final int onZ = onPos.getZ();
+		final BlockState onState = level.getBlockState(onPos);
+		if (onState.getBlock() instanceof GearboxBlock && onState.getValue(GearboxBlock.FACING) == Direction.UP) {
+			return getYawDeltaFromPower(onState.getValue(GearboxBlock.POWER));
+		}
+
+		final int y = Mth.floor(entity.getBoundingBox().minY - 0.05D);
+		final int minX = Mth.floor(entity.getBoundingBox().minX + 1.0E-4D);
+		final int maxX = Mth.floor(entity.getBoundingBox().maxX - 1.0E-4D);
+		final int minZ = Mth.floor(entity.getBoundingBox().minZ + 1.0E-4D);
+		final int maxZ = Mth.floor(entity.getBoundingBox().maxZ - 1.0E-4D);
+		if (minX == maxX && minZ == maxZ && onX == minX && onY == y && onZ == minZ) return 0F;
+
+		int selectedPower = 0;
+		final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+		for (int x = minX; x <= maxX; x++) {
+			for (int z = minZ; z <= maxZ; z++) {
+				final BlockState state;
+				if (x == onX && y == onY && z == onZ) {
+					state = onState;
+				} else {
+					mutablePos.set(x, y, z);
+					state = level.getBlockState(mutablePos);
+				}
+				if (!(state.getBlock() instanceof GearboxBlock)) continue;
+				if (state.getValue(GearboxBlock.FACING) != Direction.UP) continue;
+
+				final int power = state.getValue(GearboxBlock.POWER);
+				if (power > selectedPower) selectedPower = power;
+				if (selectedPower >= 15) return getYawDeltaFromPower(selectedPower);
+			}
+		}
+
+		return getYawDeltaFromPower(selectedPower);
+	}
+
+	public static void applyRotation(Entity entity, float yawDelta, boolean ignored) {
+		if (yawDelta == 0F) return;
+
+		final float oldYaw = entity.getYRot();
+		entity.yRotO = oldYaw;
+		final float newYaw = Mth.wrapDegrees(oldYaw + yawDelta);
+		entity.setYRot(newYaw);
+
+		if (!(entity instanceof LivingEntity livingEntity) || livingEntity instanceof ArmorStand) return;
+		final float oldBodyYaw = livingEntity.yBodyRot;
+		final float oldHeadYaw = livingEntity.getYHeadRot();
+		livingEntity.yBodyRotO = oldBodyYaw;
+		livingEntity.yHeadRotO = oldHeadYaw;
+		livingEntity.setYBodyRot(newYaw);
+		livingEntity.setYHeadRot(newYaw);
+	}
+
+	public static void debug(Entity entity, float yawDelta) {
+		if (!DEBUG_GEARBOX_ROTATION || yawDelta == 0F) return;
+		if (entity.tickCount % 20 != 0) return;
+		TCAConstants.LOGGER.info("Gearbox rotate {} yawDelta={} yRot={}", entity.getType(), yawDelta, entity.getYRot());
+	}
+}

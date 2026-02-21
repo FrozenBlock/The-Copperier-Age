@@ -56,7 +56,7 @@ public abstract class GuiGraphicsMixin {
 	)
 	private void theCopperierAge$blitWaxedOverlay(LivingEntity owner, Level level, ItemStack stack, int x, int y, int seed, CallbackInfo info) {
 		if (!OxidizableItemHelper.isWaxed(stack) || !TCAConfig.WAZED_ITEM_ICON_OVERLAY) return;
-		this.blitSprite(RenderPipelines.GUI_TEXTURED, THECOPPERIERAGE$WAXED_OVERLAY, x - 2, y - 2, 20, 20);
+		this.blitSprite(RenderPipelines.GUI_TEXTURED, THECOPPERIERAGE$WAXED_OVERLAY, x - 3, y - 3, 24, 24);
 	}
 
 }

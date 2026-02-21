@@ -20,7 +20,6 @@ package net.frozenblock.thecopperierage.mixin.client.gearbox;
 import net.frozenblock.thecopperierage.block.gearbox.GearboxEntityRotationHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.util.Mth;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -92,16 +91,7 @@ public class LocalPlayerGearboxRotationMixin {
 		if (yawDeltaPerTick == 0F) return;
 
 		final float yawDeltaThisFrame = yawDeltaPerTick * 20F * deltaSeconds;
-		final float oldYaw = player.getYRot();
-		final float oldHeadYaw = player.getYHeadRot();
-		final float newYaw = Mth.wrapDegrees(oldYaw + yawDeltaThisFrame);
-
-		player.yRotO = oldYaw;
-		player.yHeadRotO = oldHeadYaw;
-		player.setYRot(newYaw);
-		player.setYHeadRot(newYaw);
-		player.setYBodyRot(newYaw);
-
+		GearboxEntityRotationHelper.applyRotation(player, yawDeltaThisFrame, false);
 		GearboxEntityRotationHelper.debug(player, yawDeltaThisFrame);
 	}
 }

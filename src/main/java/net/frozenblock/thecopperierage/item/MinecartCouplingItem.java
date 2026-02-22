@@ -64,10 +64,12 @@ public class MinecartCouplingItem extends Item {
 		if (coupling.equals(CouplingData.EMPTY)) return false;
 		if (level.isClientSide()) return true;
 
-		MinecartCouplingUtil.uncoupleTo(minecart, false);
-		MinecartCouplingUtil.uncoupleFrom(minecart, false);
+		int couplings = 0;
+		if (MinecartCouplingUtil.uncoupleTo(minecart, false)) couplings += 1;
+		if (MinecartCouplingUtil.uncoupleFrom(minecart, false)) couplings += 1;
+		if (couplings <= 0) return false;
 
-		player.getInventory().placeItemBackInInventory(new ItemStack(TCAItems.MINECART_COUPLING, 1));
+		player.getInventory().placeItemBackInInventory(new ItemStack(TCAItems.MINECART_COUPLING, couplings));
 		player.getItemInHand(hand).hurtAndBreak(1, player, hand);
 		return true;
 	}

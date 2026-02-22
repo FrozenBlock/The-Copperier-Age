@@ -37,6 +37,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MinecartCouplingUtil {
 	private static final int MAX_COUPLING_DISTANCE = 3;
@@ -273,7 +274,7 @@ public class MinecartCouplingUtil {
 		cart2.setAttached(TCAAttachments.MINECART_COUPLING, getCoupling(cart2).coupleFrom(cart1.getUUID()));
 	}
 
-	public static void uncoupleTo(Entity cart, boolean drop) {
+	public static boolean uncoupleTo(Entity cart, boolean drop) {
 		final CouplingData coupling = cart.getAttachedOrCreate(TCAAttachments.MINECART_COUPLING);
 		cart.setAttached(TCAAttachments.MINECART_COUPLING, coupling.uncoupleTo());
 
@@ -284,21 +285,18 @@ public class MinecartCouplingUtil {
 			}
 		);
 
-		if (drop && coupling.isCoupledTo() && cart.level() instanceof ServerLevel serverLevel) cart.spawnAtLocation(serverLevel, TCAItems.MINECART_COUPLING);
+		if (coupling.isCoupledTo()) {
+			if (drop && cart.level() instanceof ServerLevel serverLevel) cart.spawnAtLocation(serverLevel, TCAItems.MINECART_COUPLING);
+			return true;
+		}
+		return false;
 	}
 
-	public static void uncoupleFrom(Entity cart, boolean drop) {
+	public static boolean uncoupleFrom(Entity cart, boolean drop) {
+		final AtomicBoolean uncoupled = new AtomicBoolean(false);
 		final CouplingData coupling = cart.getAttachedOrCreate(TCAAttachments.MINECART_COUPLING);
 		cart.setAttached(TCAAttachments.MINECART_COUPLING, coupling.uncoupleFrom());
-
-		coupling.getCoupledFrom(cart.level()).ifPresent(
-			entity -> {
-				final CouplingData fromCoupling = entity.getAttachedOrCreate(TCAAttachments.MINECART_COUPLING);
-				if (!fromCoupling.isCoupledTo(cart.getUUID())) return;
-
-				entity.setAttached(TCAAttachments.MINECART_COUPLING, fromCoupling.uncoupleTo());
-				if (drop && fromCoupling.isCoupledTo() && cart.level() instanceof ServerLevel serverLevel) entity.spawnAtLocation(serverLevel, TCAItems.MINECART_COUPLING);
-			}
-		);
+		coupling.getCoupledFrom(cart.level()).ifPresent(entity -> uncoupled.set(uncoupleTo(entity, drop)));
+		return uncoupled.get();
 	}
 }

@@ -40,7 +40,7 @@ public interface ChestVehicleInterface {
 	float theCopperierAge$getLidOpenness(float partialTicks);
 
 	default void theCopperierAge$onContainerOpen() {
-		if (!(this instanceof Entity entity) || !entity.level().isClientSide()) return;
+		if (!(this instanceof Entity entity) || entity.level().isClientSide()) return;
 
 		final int openers = entity.getAttachedOrElse(TCAAttachments.CHEST_VEHICLE_OPENERS, 0);
 		entity.setAttached(TCAAttachments.CHEST_VEHICLE_OPENERS, openers + 1);
@@ -48,7 +48,7 @@ public interface ChestVehicleInterface {
 	}
 
 	default void theCopperierAge$onContainerClose() {
-		if (!(this instanceof Entity entity) || !entity.level().isClientSide()) return;
+		if (!(this instanceof Entity entity) || entity.level().isClientSide()) return;
 
 		final int openers = entity.getAttachedOrElse(TCAAttachments.CHEST_VEHICLE_OPENERS, 0);
 		if (openers <= 0) return;
@@ -62,7 +62,7 @@ public interface ChestVehicleInterface {
 	}
 
 	default void theCopperierAge$playChestSound(boolean opening) {
-		if (!(this instanceof Entity entity) || !entity.level().isClientSide()) return;
+		if (!(this instanceof Entity entity) || entity.level().isClientSide()) return;
 
 		entity.playSound(
 			opening ? SoundEvents.CHEST_OPEN : SoundEvents.CHEST_CLOSE,

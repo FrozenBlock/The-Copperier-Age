@@ -26,6 +26,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.MinecartItem;
 import net.minecraft.world.item.component.InstrumentComponent;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,6 +43,26 @@ public final class TCAItems {
 		new Item.Properties()
 			.stacksTo(1)
 			.component(DataComponents.INSTRUMENT, new InstrumentComponent(TCAInstruments.SAX_COPPER_HORN))
+	);
+
+	public static final MinecartItem CRATE_MINECART = register("crate_minecart",
+		properties -> new MinecartItem(TCAEntityTypes.CRATE_MINECART, properties),
+		new Item.Properties().stacksTo(1)
+	);
+
+	public static final MinecartItem COPPER_GOLEM_STATUE_MINECART = register("copper_golem_statue_minecart",
+		properties -> new MinecartItem(TCAEntityTypes.COPPER_GOLEM_STATUE_MINECART, properties),
+		new Item.Properties().stacksTo(1)
+	);
+
+	public static final MinecartItem DISPENSER_MINECART = register("dispenser_minecart",
+		properties -> new MinecartItem(TCAEntityTypes.DISPENSER_MINECART, properties),
+		new Item.Properties().stacksTo(1)
+	);
+
+	public static final MinecartItem DROPPER_MINECART = register("dropper_minecart",
+		properties -> new MinecartItem(TCAEntityTypes.DROPPER_MINECART, properties),
+		new Item.Properties().stacksTo(1)
 	);
 
 	private TCAItems() {

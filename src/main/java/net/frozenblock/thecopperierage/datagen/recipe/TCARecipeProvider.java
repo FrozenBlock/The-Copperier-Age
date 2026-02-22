@@ -142,6 +142,30 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 				createCrateRecipe(this, exporter, TCABlocks.CRATE.waxedWeathered(), Blocks.WAXED_WEATHERED_COPPER, Blocks.WAXED_WEATHERED_CUT_COPPER_SLAB);
 				createCrateRecipe(this, exporter, TCABlocks.CRATE.waxedOxidized(), Blocks.WAXED_OXIDIZED_COPPER, Blocks.WAXED_OXIDIZED_CUT_COPPER_SLAB);
 
+				this.shapeless(RecipeCategory.TRANSPORTATION, TCAItems.CRATE_MINECART)
+					.requires(Items.MINECART)
+					.requires(TCABlocks.CRATE.unaffected())
+					.unlockedBy(RecipeProvider.getHasName(Items.MINECART), this.has(Items.MINECART))
+					.save(this.output);
+
+				this.shapeless(RecipeCategory.TRANSPORTATION, TCAItems.COPPER_GOLEM_STATUE_MINECART)
+					.requires(Items.MINECART)
+					.requires(Items.COPPER_GOLEM_STATUE)
+					.unlockedBy(RecipeProvider.getHasName(Items.MINECART), this.has(Items.MINECART))
+					.save(this.output);
+
+				this.shapeless(RecipeCategory.TRANSPORTATION, TCAItems.DISPENSER_MINECART)
+					.requires(Items.MINECART)
+					.requires(Items.DISPENSER)
+					.unlockedBy(RecipeProvider.getHasName(Items.MINECART), this.has(Items.MINECART))
+					.save(this.output);
+
+				this.shapeless(RecipeCategory.TRANSPORTATION, TCAItems.DROPPER_MINECART)
+					.requires(Items.MINECART)
+					.requires(Items.DROPPER)
+					.unlockedBy(RecipeProvider.getHasName(Items.MINECART), this.has(Items.MINECART))
+					.save(this.output);
+
 				RecipeExportNamespaceFix.clearCurrentGeneratingModId();
 			}
 		};

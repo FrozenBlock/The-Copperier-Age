@@ -20,18 +20,23 @@ package net.frozenblock.thecopperierage.mixin.block.copper_crate;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.frozenblock.thecopperierage.block.entity.inventory.CrateSlot;
+import net.frozenblock.thecopperierage.entity.impl.ChestLidAnimating;
 import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.SlotAccess;
+import net.minecraft.world.entity.vehicle.AbstractChestBoat;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BundleItem;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AbstractContainerMenu.class)
 public class AbstractContainerMenuMixin {
@@ -54,6 +59,15 @@ public class AbstractContainerMenuMixin {
 			return false;
 		}
 		return original.call(instance, otherStack, slot, clickAction, player, slotAccess);
+	}
+
+	@Inject(method = "removed", at = @At("TAIL"), require = 0)
+	private void theCopperierAge$closeChestBoatLidOnMenuRemoved(Player player, CallbackInfo info) {
+		if (!((Object) this instanceof ChestMenu chestMenu)) return;
+
+		if (chestMenu.getContainer() instanceof AbstractChestBoat boat && boat instanceof ChestLidAnimating lidAnimating) {
+			lidAnimating.theCopperierAge$onContainerClose();
+		}
 	}
 
 }

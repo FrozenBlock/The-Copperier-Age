@@ -11,6 +11,10 @@
   "subtitles.item.copper_horn.call": "Copper Horn plays",
 
   "item.thecopperierage.wrench": "Wrench",
+  "item.thecopperierage.crate_minecart": "Minecart with Crate",
+  "item.thecopperierage.copper_golem_statue_minecart": "Minecart with Copper Golem Statue",
+  "item.thecopperierage.dispenser_minecart": "Minecart with Dispenser",
+  "item.thecopperierage.dropper_minecart": "Minecart with Dropper",
   "subtitles.item.wrench.use": "Wrench used",
 
   "block.thecopperierage.chime": "Chime",

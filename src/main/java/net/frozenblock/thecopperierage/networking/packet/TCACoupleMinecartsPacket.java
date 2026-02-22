@@ -19,7 +19,7 @@ package net.frozenblock.thecopperierage.networking.packet;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.frozenblock.thecopperierage.TCAConstants;
-import net.frozenblock.thecopperierage.entity.impl.MinecartCouplingManager;
+import net.frozenblock.thecopperierage.entity.coupling.MinecartCouplingUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -43,7 +43,7 @@ public record TCACoupleMinecartsPacket(boolean usedOffHand, int firstCartId, int
 	public static void handle(TCACoupleMinecartsPacket packet, ServerPlayNetworking.Context context) {
 		final ServerPlayer player = context.player();
 		if (player.isRemoved()) return;
-		MinecartCouplingManager.attemptCouple(
+		MinecartCouplingUtil.attemptCouple(
 			player,
 			player.level(),
 			packet.usedOffHand() ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND,

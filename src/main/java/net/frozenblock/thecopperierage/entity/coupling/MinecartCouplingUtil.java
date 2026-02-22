@@ -15,9 +15,8 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.entity.impl;
+package net.frozenblock.thecopperierage.entity.coupling;
 
-import java.util.UUID;
 import net.frozenblock.thecopperierage.registry.TCAAttachments;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.minecraft.core.BlockPos;
@@ -39,7 +38,7 @@ import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public class MinecartCouplingManager {
+public class MinecartCouplingUtil {
 	private static final int MAX_COUPLING_DISTANCE = 3;
 	private static final float MIN_COUPLING_LENGTH = 1.5F;
 	private static final float COUPLING_WIGGLE_ROOM = 0.2F;
@@ -62,32 +61,32 @@ public class MinecartCouplingManager {
 		final Entity entity2 = serverLevel.getEntity(id2);
 		if (!(entity1 instanceof AbstractMinecart cart1) || !(entity2 instanceof AbstractMinecart cart2)) return false;
 
-		final UUID uuid1 = cart1.getUUID();
-		final UUID uuid2 = cart2.getUUID();
-		if (hasCoupling(cart1) || isCoupledTo(cart1, uuid2) || isCoupledTo(cart2, uuid1)) return false;
+		final CouplingData cart1Coupling = getCoupling(cart1);
+		final CouplingData cart2Coupling = getCoupling(cart2);
+		if (cart1Coupling.isCoupledTo() || cart2Coupling.isCoupledFrom()) return false;
 
 		final double distance = cart1.distanceTo(cart2);
 		if (distance >= MAX_COUPLING_DISTANCE) return false;
 
 		stack.consume(1, player);
-		coupleTo(cart1, uuid2);
+		coupleTo(cart1, cart2);
 		cart1.playSound(SoundEvents.ANVIL_USE);
 		return true;
 	}
 
 	public static void tickCoupling(AbstractMinecart cart) {
-		final AbstractMinecart coupledTo = getCoupledTo(cart);
-		if (hasCoupling(cart) && coupledTo == null) {
-			uncouple(cart, true);
-			return;
-		}
-
-		if (coupledTo == null) return;
-
-		if (!tickCoupling(cart.level(), cart, coupledTo)) {
-			uncouple(cart, true);
-			return;
-		}
+		final CouplingData coupling = getCoupling(cart);
+		coupling.getCoupledTo(cart.level())
+			.filter(entity -> entity instanceof AbstractMinecart)
+			.map(AbstractMinecart.class::cast)
+			.ifPresentOrElse(
+				cart2 -> {
+					if (!tickCoupling(cart.level(), cart, cart2)) uncoupleTo(cart, true);
+				},
+				() -> {
+					uncoupleTo(cart, true);
+				}
+			);
 	}
 
 	private static boolean tickCoupling(Level level, AbstractMinecart cart1, AbstractMinecart cart2) {
@@ -265,33 +264,41 @@ public class MinecartCouplingManager {
 		return onto.scale(vec.dot(onto) / denominator);
 	}
 
-	public static boolean isCoupledTo(AbstractMinecart cart1, AbstractMinecart cart2) {
-		return cart1.getAttachedOrElse(TCAAttachments.MINECART_COUPLED_UUID, null) == cart2.getUUID();
+	public static CouplingData getCoupling(Entity entity) {
+		return entity.getAttachedOrCreate(TCAAttachments.MINECART_COUPLING);
 	}
 
-	public static boolean isCoupledTo(AbstractMinecart cart1, UUID cart2UUID) {
-		return cart1.getAttachedOrElse(TCAAttachments.MINECART_COUPLED_UUID, null) == cart2UUID;
+	public static void coupleTo(AbstractMinecart cart1, AbstractMinecart cart2) {
+		cart1.setAttached(TCAAttachments.MINECART_COUPLING, getCoupling(cart1).coupleTo(cart2.getUUID()));
+		cart2.setAttached(TCAAttachments.MINECART_COUPLING, getCoupling(cart2).coupleFrom(cart1.getUUID()));
 	}
 
-	public static boolean hasCoupling(AbstractMinecart cart) {
-		return cart.hasAttached(TCAAttachments.MINECART_COUPLED_UUID);
+	public static void uncoupleTo(Entity cart, boolean drop) {
+		final CouplingData coupling = cart.getAttachedOrCreate(TCAAttachments.MINECART_COUPLING);
+		cart.setAttached(TCAAttachments.MINECART_COUPLING, coupling.uncoupleTo());
+
+		coupling.getCoupledTo(cart.level()).ifPresent(
+			entity -> {
+				final CouplingData fromCoupling = entity.getAttachedOrCreate(TCAAttachments.MINECART_COUPLING);
+				if (fromCoupling.isCoupledFrom(cart.getUUID())) entity.setAttached(TCAAttachments.MINECART_COUPLING, fromCoupling.uncoupleFrom());
+			}
+		);
+
+		if (drop && coupling.isCoupledTo() && cart.level() instanceof ServerLevel serverLevel) cart.spawnAtLocation(serverLevel, TCAItems.MINECART_COUPLING);
 	}
 
-	public static void coupleTo(AbstractMinecart cart1, UUID cart2UUID) {
-		cart1.setAttached(TCAAttachments.MINECART_COUPLED_UUID, cart2UUID);
-	}
+	public static void uncoupleFrom(Entity cart, boolean drop) {
+		final CouplingData coupling = cart.getAttachedOrCreate(TCAAttachments.MINECART_COUPLING);
+		cart.setAttached(TCAAttachments.MINECART_COUPLING, coupling.uncoupleFrom());
 
-	public static void uncouple(AbstractMinecart cart, boolean drop) {
-		cart.removeAttached(TCAAttachments.MINECART_COUPLED_UUID);
-		if (drop && cart.level() instanceof ServerLevel serverLevel) cart.spawnAtLocation(serverLevel, TCAItems.MINECART_COUPLING);
-	}
+		coupling.getCoupledFrom(cart.level()).ifPresent(
+			entity -> {
+				final CouplingData fromCoupling = entity.getAttachedOrCreate(TCAAttachments.MINECART_COUPLING);
+				if (!fromCoupling.isCoupledTo(cart.getUUID())) return;
 
-	@Nullable
-	public static AbstractMinecart getCoupledTo(AbstractMinecart cart) {
-		final UUID uuid = cart.getAttached(TCAAttachments.MINECART_COUPLED_UUID);
-		if (uuid == null) return null;
-
-		if (cart.level().getEntity(uuid) instanceof AbstractMinecart cart2 && cart2.isAlive()) return cart2;
-		return null;
+				entity.setAttached(TCAAttachments.MINECART_COUPLING, fromCoupling.uncoupleTo());
+				if (drop && fromCoupling.isCoupledTo() && cart.level() instanceof ServerLevel serverLevel) entity.spawnAtLocation(serverLevel, TCAItems.MINECART_COUPLING);
+			}
+		);
 	}
 }

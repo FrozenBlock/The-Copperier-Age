@@ -18,7 +18,8 @@
 package net.frozenblock.thecopperierage.item;
 
 import net.frozenblock.thecopperierage.client.coupling.TCAMinecartCouplingClientHandler;
-import net.frozenblock.thecopperierage.entity.impl.MinecartCouplingManager;
+import net.frozenblock.thecopperierage.entity.coupling.CouplingData;
+import net.frozenblock.thecopperierage.entity.coupling.MinecartCouplingUtil;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -59,15 +60,15 @@ public class MinecartCouplingItem extends Item {
 
 	private static boolean onWrenchInteractOnMinecart(Player player, InteractionHand hand, AbstractMinecart minecart) {
 		final Level level = player.level();
-		if (!MinecartCouplingManager.hasCoupling(minecart)) return false;
-
+		final CouplingData coupling = MinecartCouplingUtil.getCoupling(minecart);
+		if (coupling.equals(CouplingData.EMPTY)) return false;
 		if (level.isClientSide()) return true;
 
-		MinecartCouplingManager.uncouple(minecart, false);
-		if (!player.hasInfiniteMaterials()) {
-			player.getInventory().placeItemBackInInventory(new ItemStack(TCAItems.MINECART_COUPLING, 1));
-			player.getItemInHand(hand).hurtAndBreak(1, player, hand);
-		}
+		MinecartCouplingUtil.uncoupleTo(minecart, false);
+		MinecartCouplingUtil.uncoupleFrom(minecart, false);
+
+		player.getInventory().placeItemBackInInventory(new ItemStack(TCAItems.MINECART_COUPLING, 1));
+		player.getItemInHand(hand).hurtAndBreak(1, player, hand);
 		return true;
 	}
 }

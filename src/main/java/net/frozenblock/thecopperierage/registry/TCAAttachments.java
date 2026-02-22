@@ -17,12 +17,11 @@
 
 package net.frozenblock.thecopperierage.registry;
 
-import java.util.UUID;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.frozenblock.thecopperierage.TCAConstants;
-import net.minecraft.core.UUIDUtil;
+import net.frozenblock.thecopperierage.entity.coupling.CouplingData;
 import net.minecraft.network.codec.ByteBufCodecs;
 
 public final class TCAAttachments {
@@ -33,11 +32,12 @@ public final class TCAAttachments {
 			builder.syncWith(ByteBufCodecs.VAR_INT, AttachmentSyncPredicate.all());
 		}
 	);
-	public static final AttachmentType<UUID> MINECART_COUPLED_UUID = AttachmentRegistry.create(
+	public static final AttachmentType<CouplingData> MINECART_COUPLING = AttachmentRegistry.create(
 		TCAConstants.id("minecart_coupled_uuid"),
 		builder -> {
-			builder.persistent(UUIDUtil.CODEC);
-			builder.syncWith(UUIDUtil.STREAM_CODEC, AttachmentSyncPredicate.all());
+			builder.persistent(CouplingData.CODEC);
+			builder.syncWith(CouplingData.STREAM_CODEC, AttachmentSyncPredicate.all());
+			builder.initializer(() -> CouplingData.EMPTY);
 		}
 	);
 

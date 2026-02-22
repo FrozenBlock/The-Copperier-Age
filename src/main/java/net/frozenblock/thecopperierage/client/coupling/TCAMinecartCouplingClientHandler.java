@@ -20,10 +20,10 @@ package net.frozenblock.thecopperierage.client.coupling;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.frozenblock.thecopperierage.networking.packet.TCACoupleMinecartsPacket;
-import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -60,6 +60,6 @@ public final class TCAMinecartCouplingClientHandler {
 
 		final ItemStack mainHand = player.getMainHandItem();
 		final ItemStack offHand = player.getOffhandItem();
-		if (!mainHand.is(TCAItems.MINECART_COUPLING) && !offHand.is(TCAItems.MINECART_COUPLING)) selectedCartId = null;
+		if (!mainHand.is(ItemTags.CHAINS) && !offHand.is(ItemTags.CHAINS)) selectedCartId = null;
 	}
 }

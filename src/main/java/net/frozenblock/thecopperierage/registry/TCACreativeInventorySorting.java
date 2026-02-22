@@ -130,12 +130,10 @@ public final class TCACreativeInventorySorting {
 		addAfterInToolsAndUtilities(Items.FURNACE_MINECART, TCAItems.DISPENSER_MINECART);
 		addAfterInToolsAndUtilities(TCAItems.DISPENSER_MINECART, TCAItems.DROPPER_MINECART);
 		addAfterInToolsAndUtilities(TCAItems.DROPPER_MINECART, TCAItems.JUKEBOX_MINECART);
-		addBeforeInToolsAndUtilities(Items.GOAT_HORN, TCAItems.MINECART_COUPLING);
 		addAfterInRedstoneBlocks(Items.CHEST_MINECART, TCAItems.CRATE_MINECART);
 		addAfterInRedstoneBlocks(Items.FURNACE_MINECART, TCAItems.DISPENSER_MINECART);
 		addAfterInRedstoneBlocks(TCAItems.DISPENSER_MINECART, TCAItems.DROPPER_MINECART);
 		addAfterInRedstoneBlocks(TCAItems.DROPPER_MINECART, TCAItems.JUKEBOX_MINECART);
-		addBeforeInRedstoneBlocks(Items.OAK_CHEST_BOAT, TCAItems.MINECART_COUPLING);
 	}
 
 	private static void addBeforeInBuildingBlocks(ItemLike comparedItem, ItemLike item) {

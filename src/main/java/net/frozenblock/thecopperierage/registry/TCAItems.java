@@ -20,7 +20,6 @@ package net.frozenblock.thecopperierage.registry;
 import java.util.function.Function;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.item.CopperHornItem;
-import net.frozenblock.thecopperierage.item.MinecartCouplingItem;
 import net.frozenblock.thecopperierage.item.WrenchItem;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
@@ -37,11 +36,6 @@ public final class TCAItems {
 		new Item.Properties()
 			.stacksTo(1)
 			.durability(128)
-	);
-
-	public static final MinecartCouplingItem MINECART_COUPLING = register("minecart_coupling",
-		MinecartCouplingItem::new,
-		new Item.Properties().stacksTo(16)
 	);
 
 	public static final CopperHornItem COPPER_HORN = register("copper_horn",

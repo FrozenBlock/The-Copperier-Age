@@ -17,7 +17,7 @@
 
 package net.frozenblock.thecopperierage.mixin.entity.minecart_coupling;
 
-import net.frozenblock.thecopperierage.item.MinecartCouplingItem;
+import net.frozenblock.thecopperierage.entity.coupling.MinecartCouplingInteraction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -37,7 +37,7 @@ public class PlayerMinecartCouplingMixin {
 	)
 	private void theCopperierAge$handleMinecartCoupling(Entity entity, InteractionHand hand, CallbackInfoReturnable<InteractionResult> info) {
 		final Player player = Player.class.cast(this);
-		final InteractionResult result = MinecartCouplingItem.handleInteractionWithMinecart(player, hand, entity);
+		final InteractionResult result = MinecartCouplingInteraction.handleInteractionWithMinecart(player, hand, entity);
 		if (result != null) info.setReturnValue(result);
 	}
 }

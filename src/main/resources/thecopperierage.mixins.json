@@ -44,6 +44,7 @@
     "client.copper_golem.CopperGolemRendererMixin",
     "client.copper_golem.CopperGolemRenderStateMixin",
     "client.gearbox.LocalPlayerGearboxRotationMixin",
+    "client.minecart_coupling.AbstractMinecartRendererMixin",
     "client.oxidized_armor.EquipmentLayerRendererMixin",
     "client.oxidized_items.SelectItemModelPropertiesMixin",
     "client.oxidizing_auto_models.BlockModelWrapperUnbakedMixin",

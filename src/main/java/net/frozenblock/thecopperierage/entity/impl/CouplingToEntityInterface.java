@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 FrozenBlock
+ * Copyright 2025-2026 FrozenBlock
  * This file is part of The Copperier Age.
  *
  * This program is free software; you can modify it under
@@ -15,17 +15,18 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.item.impl;
+package net.frozenblock.thecopperierage.entity.impl;
 
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.WeatheringCopper;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
-public interface ItemOxidizationCacheInterface {
-	void theCopperierAge$setWeatherState(WeatheringCopper.WeatherState weatherState);
-	void theCopperierAge$setWaxed(boolean waxed);
-	void theCopperierAge$setBaseItem(Item item);
-	WeatheringCopper.WeatherState theCopperierAge$weatherState();
-	boolean theCopperierAge$waxed();
-	Item theCopperierAge$baseItem();
-	void theCopperierAge$clearOxidizationCache();
+public interface CouplingToEntityInterface {
+	void theCopperierAge$setCoupledTo(@Nullable Entity entity);
+
+	@Nullable
+	Vec3 theCopperierAge$getCoupleStartOffset(float partialTicks);
+
+	@Nullable
+	Vec3 theCopperierAge$getCoupleVector(float partialTicks);
 }

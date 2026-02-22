@@ -17,12 +17,13 @@
 
 package net.frozenblock.thecopperierage.entity.coupling;
 
+import net.frozenblock.thecopperierage.entity.impl.CouplingToEntityInterface;
 import net.frozenblock.thecopperierage.registry.TCAAttachments;
-import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -48,7 +49,7 @@ public class MinecartCouplingUtil {
 
 	public static boolean attemptCouple(Player player, Level level, InteractionHand hand, int id1, int id2) {
 		final ItemStack stack = player.getItemInHand(hand);
-		if (!stack.is(TCAItems.MINECART_COUPLING)) return false;
+		if (!stack.is(ItemTags.CHAINS)) return false;
 
 		return attemptOneWayCouple(player, level, stack, id1, id2) || attemptOneWayCouple(player, level, stack, id2, id1);
 	}
@@ -68,13 +69,15 @@ public class MinecartCouplingUtil {
 		final double distance = cart1.distanceTo(cart2);
 		if (distance >= MAX_COUPLING_DISTANCE) return false;
 
+		final ItemStack couplingItem = stack.copyWithCount(1);
 		stack.consume(1, player);
-		coupleTo(cart1, cart2);
+		coupleTo(cart1, cart2, couplingItem);
 		cart1.playSound(SoundEvents.ANVIL_USE);
 		return true;
 	}
 
 	public static void tickCoupling(AbstractMinecart cart) {
+		if (cart.isFirstTick() && cart.level().isClientSide()) return;
 		final CouplingData coupling = getCoupling(cart);
 
 		coupling.getCoupledTo(cart.level())
@@ -82,10 +85,15 @@ public class MinecartCouplingUtil {
 			.map(AbstractMinecart.class::cast)
 			.ifPresentOrElse(
 				cart2 -> {
-					if (!tickCoupling(cart.level(), cart, cart2)) uncoupleTo(cart, true);
+					if (!tickCoupling(cart.level(), cart, cart2)) {
+						uncoupleTo(cart, true);
+					} else {
+						if (cart instanceof CouplingToEntityInterface coupleInterface) coupleInterface.theCopperierAge$setCoupledTo(cart2);
+					}
 				},
 				() -> {
 					uncoupleTo(cart, !cart.isFirstTick());
+					if (cart instanceof CouplingToEntityInterface coupleInterface) coupleInterface.theCopperierAge$setCoupledTo(null);
 				});
 
 		coupling.getCoupledFrom(cart.level())
@@ -297,9 +305,9 @@ public class MinecartCouplingUtil {
 		return entity.getAttachedOrCreate(TCAAttachments.MINECART_COUPLING);
 	}
 
-	public static void coupleTo(AbstractMinecart cart1, AbstractMinecart cart2) {
-		cart1.setAttached(TCAAttachments.MINECART_COUPLING, getCoupling(cart1).coupleTo(cart2.getUUID()));
-		cart2.setAttached(TCAAttachments.MINECART_COUPLING, getCoupling(cart2).coupleFrom(cart1.getUUID()));
+	public static void coupleTo(AbstractMinecart cart1, AbstractMinecart cart2, ItemStack item) {
+		cart1.setAttached(TCAAttachments.MINECART_COUPLING, getCoupling(cart1).coupleTo(cart2.getUUID(), item));
+		cart2.setAttached(TCAAttachments.MINECART_COUPLING, getCoupling(cart2).coupleFrom(cart1.getUUID(), item));
 	}
 
 	public static boolean uncoupleTo(Entity cart, boolean drop) {
@@ -313,8 +321,11 @@ public class MinecartCouplingUtil {
 			}
 		);
 
-		if (drop && coupling.isCoupledTo() && cart.level() instanceof ServerLevel serverLevel) cart.spawnAtLocation(serverLevel, TCAItems.MINECART_COUPLING);
-		return coupling.isCoupledTo();
+		if (coupling.isCoupledTo()) {
+			if (drop && cart.level() instanceof ServerLevel serverLevel) coupling.getCoupledToItem().ifPresent(item -> cart.spawnAtLocation(serverLevel, item));
+			return true;
+		}
+		return false;
 	}
 
 	public static boolean uncoupleFrom(Entity cart, boolean drop) {
@@ -328,7 +339,10 @@ public class MinecartCouplingUtil {
 			}
 		);
 
-		if (drop && coupling.isCoupledFrom() && cart.level() instanceof ServerLevel serverLevel) cart.spawnAtLocation(serverLevel, TCAItems.MINECART_COUPLING);
-		return coupling.isCoupledFrom();
+		if (coupling.isCoupledFrom()) {
+			if (drop && cart.level() instanceof ServerLevel serverLevel) coupling.getCoupledFromItem().ifPresent(item -> cart.spawnAtLocation(serverLevel, item));
+			return true;
+		}
+		return false;
 	}
 }

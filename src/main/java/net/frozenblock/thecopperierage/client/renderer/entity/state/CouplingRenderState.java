@@ -31,16 +31,17 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.state.MinecartRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.phys.Vec3;
 
 @Environment(EnvType.CLIENT)
 public class CouplingRenderState {
+	private static float Y_OFFSET = 1.5F / 16F;
 	private static final RenderType COUPLING_1_RENDER_TYPE = FrozenLibRenderTypes.entityCutoutNoShading(TCAConstants.id("textures/entity/minecart/coupling1.png"));
 	private static final RenderType COUPLING_2_RENDER_TYPE = FrozenLibRenderTypes.entityCutoutNoShading(TCAConstants.id("textures/entity/minecart/coupling2.png"));
 	public static final RenderStateDataKey<CouplingRenderState> COUPLING_RENDER_STATE = RenderStateDataKey.create();
 	private static final float COUPLING_ROTATION = 0F;
-	public Vec3 start = Vec3.ZERO;
 	public Vec3 vector = Vec3.ZERO;
 
 	public CouplingRenderState() {
@@ -49,13 +50,11 @@ public class CouplingRenderState {
 	public static void extract(AbstractMinecart minecart, MinecartRenderState renderState, float partialTicks) {
 		if (!(minecart instanceof CouplingToEntityInterface coupleInterface)) return;
 
-		final Vec3 startOffset = coupleInterface.theCopperierAge$getCoupleStartOffset(partialTicks);
-		final Vec3 vector = coupleInterface.theCopperierAge$getCoupleVector(partialTicks);
-		if (startOffset == null || vector == null) return;
+		final Entity coupledTo = coupleInterface.theCopperierAge$getCoupledTo();
+		if (coupledTo == null) return;
 
 		final CouplingRenderState couplingRenderState = new CouplingRenderState();
-		couplingRenderState.start = startOffset;
-		couplingRenderState.vector = vector;
+		couplingRenderState.vector = coupledTo.getPosition(partialTicks).subtract(minecart.getPosition(partialTicks));
 		renderState.setData(COUPLING_RENDER_STATE, couplingRenderState);
 	}
 
@@ -75,7 +74,7 @@ public class CouplingRenderState {
 		float yRot = (float) ((Mth.PI / 2F) - Math.atan2(couplingVector.z, couplingVector.x));
 
 		poseStack.pushPose();
-		poseStack.translate(couplingRenderState.start);
+		poseStack.translate(0F, Y_OFFSET, 0F);
 
 		poseStack.pushPose();
 		poseStack.mulPose(Axis.YP.rotationDegrees(yRot * (180F / Mth.PI)));
@@ -86,10 +85,6 @@ public class CouplingRenderState {
 		float wz = Mth.sin((COUPLING_ROTATION + Mth.PI)) * rr1;
 		float ex = Mth.cos((COUPLING_ROTATION + 0F)) * rr1;
 		float ez = Mth.sin((COUPLING_ROTATION + 0F)) * rr1;
-		float nx = Mth.cos((COUPLING_ROTATION + (Mth.PI / 2F))) * rr1;
-		float nz = Mth.sin((COUPLING_ROTATION + (Mth.PI / 2F))) * rr1;
-		float sx = Mth.cos((COUPLING_ROTATION + (Mth.PI * 1.5F))) * rr1;
-		float sz = Mth.sin((COUPLING_ROTATION + (Mth.PI * 1.5F))) * rr1;
 		float minU = 0F;
 		float maxU = 3F / 16F;
 		float minV = 0F;
@@ -101,11 +96,6 @@ public class CouplingRenderState {
 			vertex(buffer, pose, wx, 0F, wz, maxU, minV, lightCoords);
 			vertex(buffer, pose, ex, 0F, ez, minU, minV, lightCoords);
 			vertex(buffer, pose, ex, length, ez, minU, maxV, lightCoords);
-
-			vertex(buffer, pose, nx, 0F, nz, maxU, maxV, lightCoords);
-			vertex(buffer, pose, nx, length, nz, maxU, minV, lightCoords);
-			vertex(buffer, pose, sx, length, sz, minU, minV, lightCoords);
-			vertex(buffer, pose, sx, 0F, sz, minU, maxV, lightCoords);
 		});
 
 		collector.submitCustomGeometry(poseStack, COUPLING_2_RENDER_TYPE, (pose, buffer) -> {
@@ -113,11 +103,6 @@ public class CouplingRenderState {
 			vertex(buffer, pose, wx, length, wz, maxU, minV, lightCoords);
 			vertex(buffer, pose, ex, length, ez, minU, minV, lightCoords);
 			vertex(buffer, pose, ex, 0F, ez, minU, maxV, lightCoords);
-
-			vertex(buffer, pose, nx, length, nz, maxU, maxV, lightCoords);
-			vertex(buffer, pose, nx, 0F, nz, maxU, minV, lightCoords);
-			vertex(buffer, pose, sx, 0F, sz, minU, minV, lightCoords);
-			vertex(buffer, pose, sx, length, sz, minU, maxV, lightCoords);
 		});
 
 		poseStack.popPose();

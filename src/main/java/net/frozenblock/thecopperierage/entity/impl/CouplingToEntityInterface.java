@@ -18,15 +18,11 @@
 package net.frozenblock.thecopperierage.entity.impl;
 
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public interface CouplingToEntityInterface {
 	void theCopperierAge$setCoupledTo(@Nullable Entity entity);
 
 	@Nullable
-	Vec3 theCopperierAge$getCoupleStartOffset(float partialTicks);
-
-	@Nullable
-	Vec3 theCopperierAge$getCoupleVector(float partialTicks);
+	Entity theCopperierAge$getCoupledTo();
 }

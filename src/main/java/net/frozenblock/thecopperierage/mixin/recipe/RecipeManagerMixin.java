@@ -29,6 +29,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.BlastingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -53,20 +54,8 @@ public abstract class RecipeManagerMixin {
 		Collection<RecipeHolder<SmeltingRecipe>> smeltingRecipes = this.recipes.byType(RecipeType.SMELTING);
 		if (smeltingRecipes.isEmpty()) return;
 
-		Set<net.minecraft.world.item.Item> smokingItems = collectItems(
-			this.recipes.byType(RecipeType.SMOKING)
-				.stream()
-				.map(RecipeHolder::value)
-				.map(SmokingRecipe::input)
-				.toList()
-		);
-		Set<net.minecraft.world.item.Item> blastingItems = collectItems(
-			this.recipes.byType(RecipeType.BLASTING)
-				.stream()
-				.map(RecipeHolder::value)
-				.map(BlastingRecipe::input)
-				.toList()
-		);
+		Set<net.minecraft.world.item.Item> smokingItems = collectItems(this.recipes.byType(RecipeType.SMOKING));
+		Set<net.minecraft.world.item.Item> blastingItems = collectItems(this.recipes.byType(RecipeType.BLASTING));
 
 		List<RecipeHolder<?>> allRecipes = new ArrayList<>(this.recipes.values());
 		for (RecipeHolder<SmeltingRecipe> smeltingRecipeHolder : smeltingRecipes) {
@@ -86,9 +75,11 @@ public abstract class RecipeManagerMixin {
 		this.recipes = RecipeMap.create(allRecipes);
 	}
 
-	private static Set<net.minecraft.world.item.Item> collectItems(List<Ingredient> ingredients) {
+	@SuppressWarnings("deprecation")
+	private static <T extends AbstractCookingRecipe> Set<net.minecraft.world.item.Item> collectItems(Collection<RecipeHolder<T>> recipes) {
 		Set<net.minecraft.world.item.Item> items = new HashSet<>();
-		for (Ingredient ingredient : ingredients) {
+		for (RecipeHolder<T> recipeHolder : recipes) {
+			Ingredient ingredient = recipeHolder.value().input();
 			for (Holder<net.minecraft.world.item.Item> itemHolder : (Iterable<Holder<net.minecraft.world.item.Item>>) ingredient.items()::iterator) {
 				items.add(itemHolder.value());
 			}
@@ -96,6 +87,7 @@ public abstract class RecipeManagerMixin {
 		return items;
 	}
 
+	@SuppressWarnings("deprecation")
 	private static boolean overlapsAny(Ingredient ingredient, Set<net.minecraft.world.item.Item> blockedItems) {
 		if (blockedItems.isEmpty()) return false;
 

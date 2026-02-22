@@ -43,6 +43,15 @@ import org.jetbrains.annotations.Nullable;
 
 public class KilnBlock extends FurnaceBlock {
 	public static final MapCodec<FurnaceBlock> CODEC = simpleCodec(KilnBlock::new);
+	private static final double TOP_SMOKE_OFFSET_Y = 1.0;
+	private static final double TOP_SMOKE_SPEED_Y = 0.04;
+	private static final double FACE_PARTICLE_DEPTH = 0.53;
+	private static final double FACE_MIN_U = 3.5 / 16.0;
+	private static final double FACE_MAX_U = 12.5 / 16.0;
+	private static final double FACE_MIN_V = 4.5 / 16.0;
+	private static final double FACE_MAX_V = 11.5 / 16.0;
+	private static final double FRONT_SMOKE_OFFSET_Y = 0.01;
+	private static final double FRONT_SMOKE_SPEED_Y = 0.015;
 
 	public KilnBlock(Properties properties) {
 		super(properties);
@@ -104,24 +113,18 @@ public class KilnBlock extends FurnaceBlock {
 		final double centerX = pos.getX() + 0.5;
 		final double centerZ = pos.getZ() + 0.5;
 
-		level.addParticle(ParticleTypes.SMOKE, centerX, pos.getY() + 1.0, centerZ, 0.0, 0.04, 0.0);
+		level.addParticle(ParticleTypes.SMOKE, centerX, pos.getY() + TOP_SMOKE_OFFSET_Y, centerZ, 0.0, TOP_SMOKE_SPEED_Y, 0.0);
 
 		final Direction facing = state.getValue(FACING);
-		final double faceDepth = 0.53;
-		final double minU = 3.5 / 16.0;
-		final double maxU = 12.5 / 16.0;
-		final double minV = 4.5 / 16.0;
-		final double maxV = 11.5 / 16.0;
-
-		final double u = minU + random.nextDouble() * (maxU - minU);
-		final double v = minV + random.nextDouble() * (maxV - minV);
+		final double u = FACE_MIN_U + random.nextDouble() * (FACE_MAX_U - FACE_MIN_U);
+		final double v = FACE_MIN_V + random.nextDouble() * (FACE_MAX_V - FACE_MIN_V);
 		final double lateral = u - 0.5;
 
-		final double frontX = centerX + facing.getStepX() * faceDepth + facing.getClockWise().getStepX() * lateral;
-		final double frontZ = centerZ + facing.getStepZ() * faceDepth + facing.getClockWise().getStepZ() * lateral;
+		final double frontX = centerX + facing.getStepX() * FACE_PARTICLE_DEPTH + facing.getClockWise().getStepX() * lateral;
+		final double frontZ = centerZ + facing.getStepZ() * FACE_PARTICLE_DEPTH + facing.getClockWise().getStepZ() * lateral;
 		final double frontY = pos.getY() + (1.0 - v);
 
 		level.addParticle(ParticleTypes.FLAME, frontX, frontY, frontZ, 0.0, 0.0, 0.0);
-		level.addParticle(ParticleTypes.SMOKE, frontX, frontY + 0.01, frontZ, 0.0, 0.015, 0.0);
+		level.addParticle(ParticleTypes.SMOKE, frontX, frontY + FRONT_SMOKE_OFFSET_Y, frontZ, 0.0, FRONT_SMOKE_SPEED_Y, 0.0);
 	}
 }

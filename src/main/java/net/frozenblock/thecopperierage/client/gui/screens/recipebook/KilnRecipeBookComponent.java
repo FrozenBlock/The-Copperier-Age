@@ -39,7 +39,7 @@ public class KilnRecipeBookComponent extends FurnaceRecipeBookComponent {
 		recipeCollection.selectRecipes(stackedItemContents, recipeDisplay -> {
 			if (!(recipeDisplay instanceof FurnaceRecipeDisplay furnaceRecipeDisplay)) return false;
 			if (!(furnaceRecipeDisplay.craftingStation() instanceof SlotDisplay.ItemSlotDisplay itemSlotDisplay)) return false;
-			return itemSlotDisplay.item().value() == TCABlocks.KILN.asItem();
+			return itemSlotDisplay.item().value().equals(TCABlocks.KILN.asItem());
 		});
 	}
 }

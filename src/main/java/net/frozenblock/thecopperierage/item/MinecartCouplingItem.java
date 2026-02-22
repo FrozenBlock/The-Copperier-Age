@@ -43,22 +43,22 @@ public class MinecartCouplingItem extends Item {
 
 		final ItemStack heldItem = player.getItemInHand(hand);
 		if (heldItem.is(TCAItems.MINECART_COUPLING)) {
-			onCouplingInteractOnMinecart(player, hand, minecart);
+			interactWithCoupling(player, hand, minecart);
 			return InteractionResult.SUCCESS;
 		}
 
-		if (heldItem.is(TCAItems.WRENCH) && onWrenchInteractOnMinecart(player, hand, minecart)) {
+		if (heldItem.is(TCAItems.WRENCH) && interactWithWrench(player, hand, minecart)) {
 			return InteractionResult.SUCCESS;
 		}
 
 		return null;
 	}
 
-	private static void onCouplingInteractOnMinecart(Player player, InteractionHand hand, AbstractMinecart minecart) {
+	private static void interactWithCoupling(Player player, InteractionHand hand, AbstractMinecart minecart) {
 		if (player.level().isClientSide()) TCAMinecartCouplingClientHandler.onCartClicked(player, hand, minecart);
 	}
 
-	private static boolean onWrenchInteractOnMinecart(Player player, InteractionHand hand, AbstractMinecart minecart) {
+	private static boolean interactWithWrench(Player player, InteractionHand hand, AbstractMinecart minecart) {
 		final Level level = player.level();
 		final CouplingData coupling = MinecartCouplingUtil.getCoupling(minecart);
 		if (coupling.equals(CouplingData.EMPTY)) return false;

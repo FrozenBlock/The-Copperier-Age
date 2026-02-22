@@ -57,7 +57,6 @@ public class AbstractBoatRendererMixin {
 		if (!isChestBoat || !(boat instanceof ChestVehicleInterface lidAnimating)) return;
 		if (!(state instanceof ChestLidRenderStateAccess chestState)) return;
 
-		lidAnimating.theCopperierAge$tickLidController();
 		chestState.theCopperierAge$setLidOpenness(lidAnimating.theCopperierAge$getLidOpenness(partialTicks));
 	}
 

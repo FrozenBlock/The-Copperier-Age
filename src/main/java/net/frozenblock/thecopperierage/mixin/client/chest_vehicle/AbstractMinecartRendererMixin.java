@@ -56,7 +56,6 @@ public class AbstractMinecartRendererMixin {
 		if (!(minecart instanceof ChestVehicleInterface lidAnimating)) return;
 		if (!(state instanceof ChestLidRenderStateAccess chestState)) return;
 
-		lidAnimating.theCopperierAge$tickLidController();
 		float openness = lidAnimating.theCopperierAge$getLidOpenness(partialTicks);
 		chestState.theCopperierAge$setLidOpenness(openness);
 

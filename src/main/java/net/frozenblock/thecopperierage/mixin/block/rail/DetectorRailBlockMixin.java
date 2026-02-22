@@ -15,54 +15,28 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.mixin.block.redstone;
+package net.frozenblock.thecopperierage.mixin.block.rail;
 
-import java.util.List;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.frozenblock.thecopperierage.entity.JukeboxMinecart;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.Container;
 import net.minecraft.world.level.block.DetectorRailBlock;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(DetectorRailBlock.class)
 public class DetectorRailBlockMixin {
 
-	@Inject(
+	@WrapOperation(
 		method = "getAnalogOutputSignal(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;)I",
-		at = @At("HEAD"),
-		cancellable = true
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/inventory/AbstractContainerMenu;getRedstoneSignalFromContainer(Lnet/minecraft/world/Container;)I"
+		)
 	)
-	private void theCopperierAge$useJukeboxDiscComparatorValue(
-		BlockState state,
-		Level level,
-		BlockPos pos,
-		Direction direction,
-		CallbackInfoReturnable<Integer> cir
-	) {
-		if (!state.getValue(DetectorRailBlock.POWERED)) {
-			return;
-		}
-
-		final AABB searchBox = new AABB(
-			pos.getX() + 0.2D,
-			pos.getY(),
-			pos.getZ() + 0.2D,
-			pos.getX() + 0.8D,
-			pos.getY() + 0.8D,
-			pos.getZ() + 0.8D
-		);
-
-		final List<JukeboxMinecart> carts = level.getEntitiesOfClass(JukeboxMinecart.class, searchBox, entity -> true);
-		if (carts.isEmpty()) {
-			return;
-		}
-
-		cir.setReturnValue(carts.get(0).getComparatorOutput());
+	private int theCopperierAge$useJukeboxDiscComparatorValue(Container container, Operation<Integer> original) {
+		if (container instanceof JukeboxMinecart jukeboxMinecart) return jukeboxMinecart.getComparatorOutput();
+		return original.call(container);
 	}
 }

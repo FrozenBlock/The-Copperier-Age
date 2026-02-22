@@ -17,22 +17,26 @@
 
 package net.frozenblock.thecopperierage.mixin.block.gearbox;
 
+import net.frozenblock.thecopperierage.block.GearboxBlock;
 import net.frozenblock.thecopperierage.block.gearbox.GearboxEntityRotationHelper;
 import net.frozenblock.thecopperierage.block.gearbox.GearboxRotationSessionInterface;
-import net.frozenblock.thecopperierage.block.GearboxBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Entity.class)
-public class EntityMixin implements GearboxRotationSessionInterface {
+public abstract class EntityMixin implements GearboxRotationSessionInterface {
+
+	@Shadow
+	public abstract boolean isClientAuthoritative();
+
 	@Unique
 	private static final int theCopperierAge$INACTIVE_PROBE_INTERVAL = 14;
 	@Unique
@@ -47,6 +51,8 @@ public class EntityMixin implements GearboxRotationSessionInterface {
 	private boolean theCopperierAge$hasCachedSupportPos = false;
 	@Unique
 	private final BlockPos.MutableBlockPos theCopperierAge$cachedSupportPos = new BlockPos.MutableBlockPos();
+	@Unique
+	private float theCopperierAge$cachedGearboxYawDelta = 0F;
 
 	@Override
 	public void theCopperierAge$activateGearboxRotationSession(int currentTick, BlockPos supportPos) {
@@ -55,6 +61,16 @@ public class EntityMixin implements GearboxRotationSessionInterface {
 		this.theCopperierAge$nextActiveFullScanTick = currentTick;
 		this.theCopperierAge$hasCachedSupportPos = true;
 		this.theCopperierAge$cachedSupportPos.set(supportPos);
+	}
+
+	@Override
+	public float theCopperierAge$getGearboxYawDelta() {
+		return this.theCopperierAge$cachedGearboxYawDelta;
+	}
+
+	@Override
+	public boolean theCopperierAge$automaticallyRotatesWithGearbox() {
+		return !this.isClientAuthoritative();
 	}
 
 	@Unique
@@ -73,13 +89,9 @@ public class EntityMixin implements GearboxRotationSessionInterface {
 		this.theCopperierAge$hasCachedSupportPos = false;
 	}
 
-	@Inject(
-		method = "tick",
-		at = @At("TAIL")
-	)
+	@Inject(method = "tick", at = @At("TAIL"))
 	private void theCopperierAge$rotateFromUpFacingGearbox(CallbackInfo info) {
-		final Entity entity = (Entity) (Object) this;
-		if (entity instanceof Player) return;
+		final Entity entity = Entity.class.cast(this);
 
 		if (!this.theCopperierAge$activeGearboxRotation && entity.tickCount < this.theCopperierAge$nextGearboxProbeTick) return;
 
@@ -97,6 +109,7 @@ public class EntityMixin implements GearboxRotationSessionInterface {
 			}
 		}
 
+		this.theCopperierAge$cachedGearboxYawDelta = yawDelta;
 		if (yawDelta == 0F) {
 			if (this.theCopperierAge$activeGearboxRotation && !ranFullScan) return;
 			this.theCopperierAge$activeGearboxRotation = false;
@@ -112,7 +125,10 @@ public class EntityMixin implements GearboxRotationSessionInterface {
 			this.theCopperierAge$hasCachedSupportPos = true;
 			this.theCopperierAge$cachedSupportPos.set(onPos);
 		}
-		GearboxEntityRotationHelper.applyRotation(entity, yawDelta, true);
-		GearboxEntityRotationHelper.debug(entity, yawDelta);
+
+		if (this.theCopperierAge$automaticallyRotatesWithGearbox()) {
+			GearboxEntityRotationHelper.applyRotation(entity, yawDelta, true);
+			GearboxEntityRotationHelper.debug(entity, yawDelta);
+		}
 	}
 }

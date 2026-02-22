@@ -14,3 +14,16 @@ Put the changelog BELOW the dashes. ANYTHING ABOVE IS IGNORED.
   - This change was made in order to improve compatibility with other mods and resource packs.
   - Modders can now add `search terms` for The Copperier Age's automatic oxidizing model generation.
     - This method can be found in `OxidizableItemHelper`.
+- Added Minecart Coupling.
+- Added Jukebox Minecart.
+- Added Crate Minecart.
+- Added Dropper Minecart.
+- Added Dispenser Minecart.
+- Added Improved Vehicle Containers.
+  - Chests and Crates now visibly and audibly open when on vehicles.
+- Up facing Gearboxes now spin entities that are ontop of them.
+- Added Improved Copper Tooltips.
+  - Oxidisation and Waxed statuses moved to Lore instead of item name prefixes.
+- Added Waxed Item Slot Overlay.
+  - Renders a small icon ontop of waxed items for accessibility.
+  - Extra icons for Infested and Trapped blocks, disabled by default.

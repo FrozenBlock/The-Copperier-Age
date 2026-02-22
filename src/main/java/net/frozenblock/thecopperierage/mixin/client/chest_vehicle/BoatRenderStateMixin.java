@@ -17,20 +17,18 @@
 
 package net.frozenblock.thecopperierage.mixin.client.chest_vehicle;
 
-import net.frozenblock.thecopperierage.client.renderer.entity.state.ChestLidRenderStateAccess;
+import net.frozenblock.thecopperierage.client.renderer.entity.state.ChestLidRenderStateInterface;
 import net.frozenblock.thecopperierage.client.renderer.entity.state.ChestVehicleRenderStateAccess;
 import net.minecraft.client.renderer.entity.state.BoatRenderState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(BoatRenderState.class)
-public class BoatRenderStateMixin implements ChestLidRenderStateAccess, ChestVehicleRenderStateAccess {
+public class BoatRenderStateMixin implements ChestLidRenderStateInterface, ChestVehicleRenderStateAccess {
 	@Unique
 	private float theCopperierAge$lidOpenness;
 	@Unique
 	private boolean theCopperierAge$chestVehicle;
-	@Unique
-	private boolean theCopperierAge$chestRaft;
 
 	@Override
 	public float theCopperierAge$getLidOpenness() {
@@ -50,15 +48,5 @@ public class BoatRenderStateMixin implements ChestLidRenderStateAccess, ChestVeh
 	@Override
 	public void theCopperierAge$setChestVehicle(boolean chestVehicle) {
 		this.theCopperierAge$chestVehicle = chestVehicle;
-	}
-
-	@Override
-	public boolean theCopperierAge$isChestRaft() {
-		return this.theCopperierAge$chestRaft;
-	}
-
-	@Override
-	public void theCopperierAge$setChestRaft(boolean chestRaft) {
-		this.theCopperierAge$chestRaft = chestRaft;
 	}
 }

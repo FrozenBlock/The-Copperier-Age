@@ -17,12 +17,11 @@
 
 package net.frozenblock.thecopperierage.client.renderer.entity.state;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+@Environment(EnvType.CLIENT)
 public interface ChestVehicleRenderStateAccess {
 	boolean theCopperierAge$isChestVehicle();
-
 	void theCopperierAge$setChestVehicle(boolean chestVehicle);
-
-	boolean theCopperierAge$isChestRaft();
-
-	void theCopperierAge$setChestRaft(boolean chestRaft);
 }

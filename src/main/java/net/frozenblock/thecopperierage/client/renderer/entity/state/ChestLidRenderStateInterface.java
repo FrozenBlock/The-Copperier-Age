@@ -17,7 +17,11 @@
 
 package net.frozenblock.thecopperierage.client.renderer.entity.state;
 
-public interface ChestLidRenderStateAccess {
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+@Environment(EnvType.CLIENT)
+public interface ChestLidRenderStateInterface {
 	float theCopperierAge$getLidOpenness();
 
 	void theCopperierAge$setLidOpenness(float openness);

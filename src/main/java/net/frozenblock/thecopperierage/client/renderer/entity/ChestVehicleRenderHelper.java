@@ -17,7 +17,16 @@
 
 package net.frozenblock.thecopperierage.client.renderer.entity;
 
-public final class ChestVehicleRenderConstants {
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.renderer.blockentity.state.ChestRenderState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.properties.ChestType;
+
+@Environment(EnvType.CLIENT)
+public final class ChestVehicleRenderHelper {
 	public static final String CHEST_BOTTOM_PART = "chest_bottom";
 	public static final String CHEST_LID_PART = "chest_lid";
 	public static final String CHEST_LOCK_PART = "chest_lock";
@@ -25,11 +34,21 @@ public final class ChestVehicleRenderConstants {
 	public static final float CHEST_BASE_X = -0.125F;
 	public static final float CHEST_BASE_Y = -0.671875F;
 	public static final float CHEST_BASE_Z = -0.375F;
-	public static final float CHEST_RAFT_EXTRA_Y = -0.3125F;
-	public static final float CHEST_SCALE = 12.0F / 14.0F;
+	public static final float CHEST_RAFT_Y_OFFSET = -0.3125F;
+	public static final float CHEST_SCALE = 12F / 14F;
 	public static final float CHEST_PAD = 0.0625F;
 	public static final float HALF_BLOCK = 0.5F;
 
-	private ChestVehicleRenderConstants() {
+	public static ChestRenderState createChestRenderState(int lightCoords, float openness) {
+		final ChestRenderState chestRenderState = new ChestRenderState();
+		chestRenderState.blockPos = BlockPos.ZERO;
+		chestRenderState.blockState = Blocks.CHEST.defaultBlockState();
+		chestRenderState.blockEntityType = BlockEntityType.CHEST;
+		chestRenderState.lightCoords = lightCoords;
+		chestRenderState.type = ChestType.SINGLE;
+		chestRenderState.material = ChestRenderState.ChestMaterialType.REGULAR;
+		chestRenderState.open = openness;
+		chestRenderState.angle = 0F;
+		return chestRenderState;
 	}
 }

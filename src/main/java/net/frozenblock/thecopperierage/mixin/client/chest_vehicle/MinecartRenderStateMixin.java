@@ -17,13 +17,13 @@
 
 package net.frozenblock.thecopperierage.mixin.client.chest_vehicle;
 
-import net.frozenblock.thecopperierage.client.renderer.entity.state.ChestLidRenderStateAccess;
+import net.frozenblock.thecopperierage.client.renderer.entity.state.ChestLidRenderStateInterface;
 import net.minecraft.client.renderer.entity.state.MinecartRenderState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(MinecartRenderState.class)
-public class MinecartRenderStateMixin implements ChestLidRenderStateAccess {
+public class MinecartRenderStateMixin implements ChestLidRenderStateInterface {
 	@Unique
 	private float theCopperierAge$lidOpenness;
 

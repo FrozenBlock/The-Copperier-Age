@@ -18,13 +18,18 @@
 package net.frozenblock.thecopperierage.registry;
 
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.frozenblock.thecopperierage.TCAConstants;
+import net.minecraft.network.codec.ByteBufCodecs;
 
 public final class TCAAttachments {
-	public static final AttachmentType<Integer> CHEST_VEHICLE_OPENERS = AttachmentRegistry.createDefaulted(
+	public static final AttachmentType<Integer> CHEST_VEHICLE_OPENERS = AttachmentRegistry.create(
 		TCAConstants.id("chest_vehicle_openers"),
-		() -> 0
+		builder -> {
+			builder.initializer(() -> 0);
+			builder.syncWith(ByteBufCodecs.VAR_INT, AttachmentSyncPredicate.all());
+		}
 	);
 
 	private TCAAttachments() {

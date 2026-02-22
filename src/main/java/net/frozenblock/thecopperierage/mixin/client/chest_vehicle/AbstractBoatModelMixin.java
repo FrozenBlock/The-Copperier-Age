@@ -30,6 +30,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AbstractBoatModel.class)
 public abstract class AbstractBoatModelMixin {
+
 	@Inject(method = "setupAnim(Lnet/minecraft/client/renderer/entity/state/BoatRenderState;)V", at = @At("TAIL"))
 	private void theCopperierAge$setupAnim(BoatRenderState state, CallbackInfo info) {
 		final ModelPart root = ((AbstractBoatModel) (Object) this).root();

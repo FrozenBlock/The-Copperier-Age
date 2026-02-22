@@ -17,26 +17,18 @@
 
 package net.frozenblock.thecopperierage.mixin.entity.chest_vehicle;
 
-import net.frozenblock.thecopperierage.entity.impl.ChestLidAnimating;
-import net.frozenblock.thecopperierage.entity.impl.ChestVehicleAnimationConstants;
-import net.minecraft.world.entity.Entity;
+import net.frozenblock.thecopperierage.entity.impl.ChestVehicleInterface;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(Entity.class)
-public class EntityMixin {
-	@Inject(method = "handleEntityEvent", at = @At("HEAD"))
-	private void theCopperierAge$handleEntityEvent(byte eventId, CallbackInfo info) {
-		Entity entity = (Entity) (Object) this;
-		if (!(entity instanceof ChestLidAnimating lidAnimating)) return;
-		if (!entity.level().isClientSide()) return;
+@Mixin(AbstractMinecart.class)
+public class AbstractMinecartMixin {
 
-		if (eventId == ChestVehicleAnimationConstants.OPEN_EVENT) {
-			lidAnimating.theCopperierAge$setLidShouldBeOpen(true);
-		} else if (eventId == ChestVehicleAnimationConstants.CLOSE_EVENT) {
-			lidAnimating.theCopperierAge$setLidShouldBeOpen(false);
-		}
+	@Inject(method = "tick", at = @At("HEAD"))
+	public void theCopperierAge$tick(CallbackInfo info) {
+		if (AbstractMinecart.class.cast(this) instanceof ChestVehicleInterface chestLidAnimating) chestLidAnimating.theCopperierAge$tickLidController();
 	}
 }

@@ -15,10 +15,10 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.mixin.client.chest_minecart;
+package net.frozenblock.thecopperierage.mixin.client.chest_vehicle;
 
 import net.frozenblock.thecopperierage.client.renderer.entity.state.ChestLidRenderStateAccess;
-import net.frozenblock.thecopperierage.entity.impl.ChestLidAnimating;
+import net.frozenblock.thecopperierage.entity.impl.ChestVehicleInterface;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.AbstractMinecartRenderer;
 import net.minecraft.client.renderer.entity.state.MinecartRenderState;
@@ -35,7 +35,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AbstractMinecartRenderer.class)
 public class AbstractMinecartRendererMixin {
@@ -54,7 +53,7 @@ public class AbstractMinecartRendererMixin {
 
 	@Inject(method = "extractRenderState(Lnet/minecraft/world/entity/vehicle/AbstractMinecart;Lnet/minecraft/client/renderer/entity/state/MinecartRenderState;F)V", at = @At("TAIL"))
 	private void theCopperierAge$extractRenderState(AbstractMinecart minecart, MinecartRenderState state, float partialTicks, CallbackInfo info) {
-		if (!(minecart instanceof ChestLidAnimating lidAnimating)) return;
+		if (!(minecart instanceof ChestVehicleInterface lidAnimating)) return;
 		if (!(state instanceof ChestLidRenderStateAccess chestState)) return;
 
 		lidAnimating.theCopperierAge$tickLidController();

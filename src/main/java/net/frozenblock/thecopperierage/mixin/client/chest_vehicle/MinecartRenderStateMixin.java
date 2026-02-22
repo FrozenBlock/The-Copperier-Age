@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.mixin.client.chest_minecart;
+package net.frozenblock.thecopperierage.mixin.client.chest_vehicle;
 
 import net.frozenblock.thecopperierage.client.renderer.entity.state.ChestLidRenderStateAccess;
 import net.minecraft.client.renderer.entity.state.MinecartRenderState;

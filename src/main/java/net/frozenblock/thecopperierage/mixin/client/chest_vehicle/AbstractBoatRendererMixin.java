@@ -22,7 +22,7 @@ import com.mojang.math.Axis;
 import net.frozenblock.thecopperierage.client.renderer.entity.ChestVehicleRenderConstants;
 import net.frozenblock.thecopperierage.client.renderer.entity.state.ChestVehicleRenderStateAccess;
 import net.frozenblock.thecopperierage.client.renderer.entity.state.ChestLidRenderStateAccess;
-import net.frozenblock.thecopperierage.entity.impl.ChestLidAnimating;
+import net.frozenblock.thecopperierage.entity.impl.ChestVehicleInterface;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.state.ChestRenderState;
@@ -54,7 +54,7 @@ public class AbstractBoatRendererMixin {
 			chestVehicleState.theCopperierAge$setChestRaft(isChestRaft);
 		}
 
-		if (!isChestBoat || !(boat instanceof ChestLidAnimating lidAnimating)) return;
+		if (!isChestBoat || !(boat instanceof ChestVehicleInterface lidAnimating)) return;
 		if (!(state instanceof ChestLidRenderStateAccess chestState)) return;
 
 		lidAnimating.theCopperierAge$tickLidController();

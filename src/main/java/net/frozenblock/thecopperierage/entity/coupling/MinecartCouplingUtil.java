@@ -26,6 +26,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -35,15 +36,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MinecartCouplingUtil {
 	private static final int MAX_COUPLING_DISTANCE = 3;
 	private static final float MIN_COUPLING_LENGTH = 1.5F;
-	private static final float COUPLING_WIGGLE_ROOM = 0.2F;
-	private static final float TARGET_COUPLING_LENGTH = MIN_COUPLING_LENGTH + COUPLING_WIGGLE_ROOM;
 	private static final float MAX_HARD_CORRECTION_PER_TICK = 1.75F;
 	private static final double EPSILON = 1.0E-6D;
 
@@ -64,7 +63,7 @@ public class MinecartCouplingUtil {
 
 		final CouplingData cart1Coupling = getCoupling(cart1);
 		final CouplingData cart2Coupling = getCoupling(cart2);
-		if (cart1Coupling.isCoupledTo() || cart2Coupling.isCoupledFrom()) return false;
+		if (cart1Coupling.isCoupledTo() || cart2Coupling.isCoupledFrom() || cart1Coupling.hasAnyCoupling(cart2.getUUID()) || cart2Coupling.hasAnyCoupling(cart1.getUUID())) return false;
 
 		final double distance = cart1.distanceTo(cart2);
 		if (distance >= MAX_COUPLING_DISTANCE) return false;
@@ -77,6 +76,7 @@ public class MinecartCouplingUtil {
 
 	public static void tickCoupling(AbstractMinecart cart) {
 		final CouplingData coupling = getCoupling(cart);
+
 		coupling.getCoupledTo(cart.level())
 			.filter(entity -> entity instanceof AbstractMinecart)
 			.map(AbstractMinecart.class::cast)
@@ -85,19 +85,47 @@ public class MinecartCouplingUtil {
 					if (!tickCoupling(cart.level(), cart, cart2)) uncoupleTo(cart, true);
 				},
 				() -> {
-					uncoupleTo(cart, true);
-				}
-			);
+					uncoupleTo(cart, !cart.isFirstTick());
+				});
+
+		coupling.getCoupledFrom(cart.level())
+			.filter(entity -> entity instanceof AbstractMinecart)
+			.map(AbstractMinecart.class::cast).ifPresentOrElse(
+				cart2 -> {},
+				() -> {
+					if (coupling.isCoupledFrom()) uncoupleFrom(cart, true);
+				});
 	}
 
 	private static boolean tickCoupling(Level level, AbstractMinecart cart1, AbstractMinecart cart2) {
 		if (!cart1.isAlive() || !cart2.isAlive()) return false;
-		if (cart1.distanceTo(cart2) >= MAX_COUPLING_DISTANCE) return false;
+
+		final float additionalPassengerWidth = getAdditionalPassengerWidth(cart1, cart2);
+		if (cart1.distanceTo(cart2) >= MAX_COUPLING_DISTANCE + additionalPassengerWidth) return false;
 		if (level.tickRateManager().isEntityFrozen(cart1) && level.tickRateManager().isEntityFrozen(cart2)) return true;
 
-		softCollisionStep(level, cart1, cart2, TARGET_COUPLING_LENGTH);
-		hardCollisionStep(level, cart1, cart2, TARGET_COUPLING_LENGTH);
+		final float targetCouplingLength = MIN_COUPLING_LENGTH + additionalPassengerWidth;
+		softCollisionStep(level, cart1, cart2, targetCouplingLength);
+		hardCollisionStep(level, cart1, cart2, targetCouplingLength);
 		return true;
+	}
+
+	private static float getAdditionalPassengerWidth(AbstractMinecart cart1, AbstractMinecart cart2) {
+		final float cartWidth = EntityType.MINECART.getWidth();
+		float width = 0F;
+		final Entity passenger1 = cart1.getFirstPassenger();
+		if (passenger1 != null) {
+			final AABB boundingBox = passenger1.getBoundingBox();
+			width = (float) Math.max(width, (boundingBox.getXsize() + boundingBox.getZsize()) * 0.5D);
+		}
+
+		final Entity passenger2 = cart2.getFirstPassenger();
+		if (passenger2 != null) {
+			final AABB boundingBox = passenger2.getBoundingBox();
+			width = (float) Math.max(width, (boundingBox.getXsize() + boundingBox.getZsize()) * 0.5D);
+		}
+
+		return Math.max(0F, width - cartWidth);
 	}
 
 	private static void softCollisionStep(Level level, AbstractMinecart cart1, AbstractMinecart cart2, float couplingLength) {
@@ -285,18 +313,22 @@ public class MinecartCouplingUtil {
 			}
 		);
 
-		if (coupling.isCoupledTo()) {
-			if (drop && cart.level() instanceof ServerLevel serverLevel) cart.spawnAtLocation(serverLevel, TCAItems.MINECART_COUPLING);
-			return true;
-		}
-		return false;
+		if (drop && coupling.isCoupledTo() && cart.level() instanceof ServerLevel serverLevel) cart.spawnAtLocation(serverLevel, TCAItems.MINECART_COUPLING);
+		return coupling.isCoupledTo();
 	}
 
 	public static boolean uncoupleFrom(Entity cart, boolean drop) {
-		final AtomicBoolean uncoupled = new AtomicBoolean(false);
 		final CouplingData coupling = cart.getAttachedOrCreate(TCAAttachments.MINECART_COUPLING);
 		cart.setAttached(TCAAttachments.MINECART_COUPLING, coupling.uncoupleFrom());
-		coupling.getCoupledFrom(cart.level()).ifPresent(entity -> uncoupled.set(uncoupleTo(entity, drop)));
-		return uncoupled.get();
+
+		coupling.getCoupledFrom(cart.level()).ifPresent(
+			entity -> {
+				final CouplingData toCoupling = entity.getAttachedOrCreate(TCAAttachments.MINECART_COUPLING);
+				if (toCoupling.isCoupledTo(cart.getUUID())) entity.setAttached(TCAAttachments.MINECART_COUPLING, toCoupling.uncoupleTo());
+			}
+		);
+
+		if (drop && coupling.isCoupledFrom() && cart.level() instanceof ServerLevel serverLevel) cart.spawnAtLocation(serverLevel, TCAItems.MINECART_COUPLING);
+		return coupling.isCoupledFrom();
 	}
 }

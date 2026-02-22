@@ -50,6 +50,10 @@ public record CouplingData(Optional<UUID> coupledTo, Optional<UUID> coupledFrom)
 		return this.coupledTo.isPresent() && this.coupledTo.get().equals(uuid);
 	}
 
+	public boolean hasAnyCoupling(UUID uuid) {
+		return this.isCoupledFrom(uuid) || this.isCoupledTo(uuid);
+	}
+
 	public boolean isCoupledFrom() {
 		return this.coupledFrom.isPresent();
 	}

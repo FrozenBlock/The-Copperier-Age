@@ -23,7 +23,6 @@
     "entity.copper_golem.CopperGolemMixin",
     "entity.copper_golem.CopperGolemStateMixin",
     "entity.minecart_coupling.AbstractMinecartMixin",
-    "entity.minecart_coupling.EntityMixin",
     "entity.minecart_coupling.PlayerMinecartCouplingMixin",
     "item.ItemMixin",
     "item.ItemStackMixin",

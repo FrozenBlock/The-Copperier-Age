@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_copper_golem_statue_minecart": {
+    "has_minecart": {
       "conditions": {
         "items": [
           {
-            "items": "thecopperierage:copper_golem_statue_minecart"
+            "items": "minecraft:minecart"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thecopperierage:copper_golem_statue_minecart"
+        "recipe": "thecopperierage:jukebox_minecart"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_copper_golem_statue_minecart"
+      "has_minecart"
     ]
   ],
   "rewards": {
     "recipes": [
-      "thecopperierage:copper_golem_statue_minecart"
+      "thecopperierage:jukebox_minecart"
     ]
   }
 }

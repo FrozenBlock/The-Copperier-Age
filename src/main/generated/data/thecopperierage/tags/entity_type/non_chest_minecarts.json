@@ -1,0 +1,15 @@
+{
+  "values": [
+    "minecraft:minecart",
+    "minecraft:hopper_minecart",
+    "minecraft:tnt_minecart",
+    "minecraft:furnace_minecart",
+    "minecraft:command_block_minecart",
+    "minecraft:spawner_minecart",
+    "thecopperierage:copper_golem_statue_minecart",
+    "thecopperierage:crate_minecart",
+    "thecopperierage:dispenser_minecart",
+    "thecopperierage:dropper_minecart",
+    "thecopperierage:jukebox_minecart"
+  ]
+}

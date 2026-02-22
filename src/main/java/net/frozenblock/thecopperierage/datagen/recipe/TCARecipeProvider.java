@@ -151,7 +151,7 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 				this.shapeless(RecipeCategory.TRANSPORTATION, TCAItems.COPPER_GOLEM_STATUE_MINECART)
 					.requires(Items.MINECART)
 					.requires(Items.COPPER_GOLEM_STATUE)
-					.unlockedBy(RecipeProvider.getHasName(Items.MINECART), this.has(Items.MINECART))
+					.unlockedBy(RecipeProvider.getHasName(TCAItems.COPPER_GOLEM_STATUE_MINECART), this.has(TCAItems.COPPER_GOLEM_STATUE_MINECART))
 					.save(this.output);
 
 				this.shapeless(RecipeCategory.TRANSPORTATION, TCAItems.DISPENSER_MINECART)

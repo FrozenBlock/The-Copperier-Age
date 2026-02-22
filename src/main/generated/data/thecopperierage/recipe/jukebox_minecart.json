@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:minecart",
+    "minecraft:jukebox"
+  ],
+  "result": {
+    "count": 1,
+    "id": "thecopperierage:jukebox_minecart"
+  }
+}

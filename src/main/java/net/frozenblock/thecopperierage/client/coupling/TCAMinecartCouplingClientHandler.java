@@ -24,6 +24,7 @@ import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
@@ -35,7 +36,7 @@ public final class TCAMinecartCouplingClientHandler {
 		ClientTickEvents.END_CLIENT_TICK.register(TCAMinecartCouplingClientHandler::tick);
 	}
 
-	public static void onCartClicked(Player player, AbstractMinecart cart) {
+	public static void onCartClicked(Player player, InteractionHand hand, AbstractMinecart cart) {
 		if (Minecraft.getInstance().player != player) return;
 
 		if (selectedCartId == null || selectedCartId == cart.getId()) {
@@ -44,7 +45,7 @@ public final class TCAMinecartCouplingClientHandler {
 			return;
 		}
 
-		ClientPlayNetworking.send(new TCACoupleMinecartsPacket(selectedCartId, cart.getId()));
+		ClientPlayNetworking.send(new TCACoupleMinecartsPacket(hand == InteractionHand.OFF_HAND, selectedCartId, cart.getId()));
 		selectedCartId = null;
 	}
 

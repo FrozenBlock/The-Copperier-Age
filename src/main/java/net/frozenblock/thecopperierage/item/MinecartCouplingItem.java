@@ -18,7 +18,7 @@
 package net.frozenblock.thecopperierage.item;
 
 import net.frozenblock.thecopperierage.client.coupling.TCAMinecartCouplingClientHandler;
-import net.frozenblock.thecopperierage.item.coupling.TCAMinecartCouplingManager;
+import net.frozenblock.thecopperierage.entity.impl.MinecartCouplingManager;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -42,7 +42,7 @@ public class MinecartCouplingItem extends Item {
 
 		final ItemStack heldItem = player.getItemInHand(hand);
 		if (heldItem.is(TCAItems.MINECART_COUPLING)) {
-			onCouplingInteractOnMinecart(minecart, player);
+			onCouplingInteractOnMinecart(player, hand, minecart);
 			return InteractionResult.SUCCESS;
 		}
 
@@ -53,28 +53,21 @@ public class MinecartCouplingItem extends Item {
 		return null;
 	}
 
-	private static void onCouplingInteractOnMinecart(AbstractMinecart minecart, Player player) {
-		if (player.level().isClientSide()) TCAMinecartCouplingClientHandler.onCartClicked(player, minecart);
+	private static void onCouplingInteractOnMinecart(Player player, InteractionHand hand, AbstractMinecart minecart) {
+		if (player.level().isClientSide()) TCAMinecartCouplingClientHandler.onCartClicked(player, hand, minecart);
 	}
 
 	private static boolean onWrenchInteractOnMinecart(Player player, InteractionHand hand, AbstractMinecart minecart) {
 		final Level level = player.level();
-		if (!TCAMinecartCouplingManager.hasCoupling(level, minecart.getUUID())) return false;
+		if (!MinecartCouplingManager.hasCoupling(minecart)) return false;
 
-		if (level.isClientSide()) {
-			return true;
-		}
+		if (level.isClientSide()) return true;
 
-		final int removed = TCAMinecartCouplingManager.decoupleCart(level, minecart.getUUID());
-		if (removed <= 0) {
-			return false;
-		}
-
-		if (!player.isCreative()) {
-			player.getInventory().placeItemBackInInventory(new ItemStack(TCAItems.MINECART_COUPLING, removed));
+		MinecartCouplingManager.uncouple(minecart, false);
+		if (!player.hasInfiniteMaterials()) {
+			player.getInventory().placeItemBackInInventory(new ItemStack(TCAItems.MINECART_COUPLING, 1));
 			player.getItemInHand(hand).hurtAndBreak(1, player, hand);
 		}
-
 		return true;
 	}
 }

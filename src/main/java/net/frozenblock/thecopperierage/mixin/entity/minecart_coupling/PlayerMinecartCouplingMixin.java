@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.mixin.entity.minecart;
+package net.frozenblock.thecopperierage.mixin.entity.minecart_coupling;
 
 import net.frozenblock.thecopperierage.item.MinecartCouplingItem;
 import net.minecraft.world.InteractionHand;

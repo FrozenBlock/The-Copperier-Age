@@ -17,43 +17,41 @@
 
 package net.frozenblock.thecopperierage.networking.packet;
 
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.frozenblock.thecopperierage.TCAConstants;
-import net.frozenblock.thecopperierage.item.coupling.TCAMinecartCouplingManager;
+import net.frozenblock.thecopperierage.entity.impl.MinecartCouplingManager;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 
-public record TCACoupleMinecartsPacket(int firstCartId, int secondCartId) implements CustomPacketPayload {
+public record TCACoupleMinecartsPacket(boolean usedOffHand, int firstCartId, int secondCartId) implements CustomPacketPayload {
 	public static final Type<TCACoupleMinecartsPacket> PACKET_TYPE = new Type<>(TCAConstants.id("couple_minecarts"));
-
 	public static final StreamCodec<FriendlyByteBuf, TCACoupleMinecartsPacket> CODEC = StreamCodec.ofMember(TCACoupleMinecartsPacket::write, TCACoupleMinecartsPacket::new);
 
-	public TCACoupleMinecartsPacket(@NotNull FriendlyByteBuf buf) {
-		this(buf.readVarInt(), buf.readVarInt());
+	public TCACoupleMinecartsPacket(FriendlyByteBuf buf) {
+		this(buf.readBoolean(), buf.readVarInt(), buf.readVarInt());
 	}
 
-	public void write(@NotNull FriendlyByteBuf buf) {
-		buf.writeVarInt(firstCartId);
-		buf.writeVarInt(secondCartId);
+	public void write(FriendlyByteBuf buf) {
+		buf.writeBoolean(this.usedOffHand);
+		buf.writeVarInt(this.firstCartId);
+		buf.writeVarInt(this.secondCartId);
 	}
 
-	public static void handle(TCACoupleMinecartsPacket packet, net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking.Context context) {
-		context.server().execute(() -> {
-			if (context.player().isRemoved()) {
-				return;
-			}
-
-			TCAMinecartCouplingManager.tryToCouple(
-				context.player(),
-				context.player().level(),
-				packet.firstCartId,
-				packet.secondCartId
-			);
-		});
+	public static void handle(TCACoupleMinecartsPacket packet, ServerPlayNetworking.Context context) {
+		final ServerPlayer player = context.player();
+		if (player.isRemoved()) return;
+		MinecartCouplingManager.attemptCouple(
+			player,
+			player.level(),
+			packet.usedOffHand() ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND,
+			packet.firstCartId,
+			packet.secondCartId
+		);
 	}
 
-	@NotNull
 	@Override
 	public Type<?> type() {
 		return PACKET_TYPE;

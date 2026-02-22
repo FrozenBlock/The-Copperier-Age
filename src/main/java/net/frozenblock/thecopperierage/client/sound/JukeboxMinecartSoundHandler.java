@@ -22,6 +22,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.frozenblock.thecopperierage.entity.JukeboxMinecart;
 import net.minecraft.client.Minecraft;
@@ -33,13 +35,11 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.JukeboxSong;
 
+@Environment(EnvType.CLIENT)
 public final class JukeboxMinecartSoundHandler {
-	private static final float VOLUME = 4.0F;
-	private static final float PITCH = 1.0F;
+	private static final float VOLUME = 4F;
+	private static final float PITCH = 1F;
 	private static final Map<Integer, PlayingSong> PLAYING_SONGS = new HashMap<>();
-
-	private JukeboxMinecartSoundHandler() {
-	}
 
 	public static void init() {
 		ClientTickEvents.END_CLIENT_TICK.register(JukeboxMinecartSoundHandler::tick);
@@ -53,9 +53,8 @@ public final class JukeboxMinecartSoundHandler {
 
 		final SoundManager soundManager = minecraft.getSoundManager();
 		final Set<Integer> activeSongMinecartIds = new HashSet<>();
-
 		for (Entity entity : minecraft.level.entitiesForRendering()) {
-			if (!(entity instanceof JukeboxMinecart minecart) || !minecart.isSongPlaying()) continue;
+			if (!(entity instanceof JukeboxMinecart minecart) || !minecart.isSongPlaying() || minecart.isSongSilent()) continue;
 
 			final Optional<Holder<JukeboxSong>> song = minecart.getSong();
 			if (song.isEmpty()) continue;
@@ -63,18 +62,12 @@ public final class JukeboxMinecartSoundHandler {
 			activeSongMinecartIds.add(minecart.getId());
 
 			final PlayingSong current = PLAYING_SONGS.get(minecart.getId());
-			if (current != null && current.song().equals(song.get())) {
-				if (soundManager.isActive(current.soundInstance())) {
-					continue;
-				}
-				continue;
-			}
+			// Skip if song is still playing.
+			if (current != null && current.song().equals(song.get())) continue;
+			// Stop is song has changed.
+			if (current != null) soundManager.stop(current.soundInstance());
 
-			if (current != null) {
-				soundManager.stop(current.soundInstance());
-			}
-
-			final SoundInstance soundInstance = new EntityBoundSoundInstance(
+			final SoundInstance sound = new EntityBoundSoundInstance(
 				song.get().value().soundEvent().value(),
 				SoundSource.RECORDS,
 				VOLUME,
@@ -83,15 +76,12 @@ public final class JukeboxMinecartSoundHandler {
 				minecart.level().random.nextLong()
 			);
 
-			soundManager.play(soundInstance);
-			PLAYING_SONGS.put(minecart.getId(), new PlayingSong(song.get(), soundInstance));
+			soundManager.play(sound);
+			PLAYING_SONGS.put(minecart.getId(), new PlayingSong(song.get(), sound));
 		}
 
 		PLAYING_SONGS.entrySet().removeIf(entry -> {
-			if (activeSongMinecartIds.contains(entry.getKey())) {
-				return false;
-			}
-
+			if (activeSongMinecartIds.contains(entry.getKey())) return false;
 			soundManager.stop(entry.getValue().soundInstance());
 			return true;
 		});

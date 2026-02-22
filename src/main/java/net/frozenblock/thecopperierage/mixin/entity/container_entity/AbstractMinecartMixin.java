@@ -15,28 +15,20 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.mixin.entity.chest_vehicle;
+package net.frozenblock.thecopperierage.mixin.entity.container_entity;
 
 import net.frozenblock.thecopperierage.entity.impl.ChestVehicleInterface;
-import net.minecraft.world.entity.vehicle.MinecartChest;
-import net.minecraft.world.level.block.entity.ChestLidController;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(MinecartChest.class)
-public class MinecartChestMixin implements ChestVehicleInterface {
-	@Unique
-	private final ChestLidController theCopperierAge$lidController = new ChestLidController();
+@Mixin(AbstractMinecart.class)
+public class AbstractMinecartMixin {
 
-	@Unique
-	@Override
-	public ChestLidController theCopperierAge$getLidController() {
-		return this.theCopperierAge$lidController;
-	}
-
-	@Unique
-	@Override
-	public float theCopperierAge$getLidOpenness(float partialTicks) {
-		return this.theCopperierAge$lidController.getOpenness(partialTicks);
+	@Inject(method = "tick", at = @At("HEAD"))
+	public void theCopperierAge$tick(CallbackInfo info) {
+		if (AbstractMinecart.class.cast(this) instanceof ChestVehicleInterface chestLidAnimating) chestLidAnimating.theCopperierAge$tickLidController();
 	}
 }

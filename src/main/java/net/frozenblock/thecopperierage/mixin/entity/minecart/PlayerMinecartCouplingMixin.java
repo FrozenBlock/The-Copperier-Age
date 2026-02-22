@@ -28,22 +28,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Player.class)
-public abstract class PlayerMinecartCouplingMixin {
+public class PlayerMinecartCouplingMixin {
 
 	@Inject(
 		method = "interactOn(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/InteractionResult;",
 		at = @At("HEAD"),
 		cancellable = true
 	)
-	private void theCopperierAge$handleMinecartCoupling(
-		Entity entity,
-		InteractionHand hand,
-		CallbackInfoReturnable<InteractionResult> cir
-	) {
+	private void theCopperierAge$handleMinecartCoupling(Entity entity, InteractionHand hand, CallbackInfoReturnable<InteractionResult> info) {
 		final Player player = Player.class.cast(this);
 		final InteractionResult result = MinecartCouplingItem.handleInteractionWithMinecart(player, hand, entity);
-		if (result != null) {
-			cir.setReturnValue(result);
-		}
+		if (result != null) info.setReturnValue(result);
 	}
 }

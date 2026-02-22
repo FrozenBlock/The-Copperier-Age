@@ -18,7 +18,8 @@
 package net.frozenblock.thecopperierage.entity;
 
 import java.util.Optional;
-import net.minecraft.world.Container;
+import net.frozenblock.thecopperierage.registry.TCAEntityTypes;
+import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -26,16 +27,17 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.AbstractMinecartContainer;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.JukeboxSong;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.JukeboxBlock;
@@ -43,20 +45,19 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.frozenblock.thecopperierage.registry.TCAEntityTypes;
-import net.frozenblock.thecopperierage.registry.TCAItems;
+import org.jetbrains.annotations.Nullable;
 
-public class JukeboxMinecart extends AbstractMinecart implements Container {
-	public static final String SONG_ITEM_TAG_ID = "RecordItem";
+public class JukeboxMinecart extends AbstractMinecartContainer {
 	public static final String TICKS_SINCE_SONG_STARTED_TAG_ID = "ticks_since_song_started";
 	private static final long PLAY_EVENT_INTERVAL_TICKS = 20L;
-	private static final EntityDataAccessor<ItemStack> DATA_RECORD_ITEM = SynchedEntityData.defineId(JukeboxMinecart.class, EntityDataSerializers.ITEM_STACK);
-	private static final EntityDataAccessor<Boolean> DATA_IS_PLAYING = SynchedEntityData.defineId(JukeboxMinecart.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<ItemStack> DATA_CLIENT_RECORD_ITEM = SynchedEntityData.defineId(JukeboxMinecart.class, EntityDataSerializers.ITEM_STACK);
+	private static final EntityDataAccessor<Byte> DATA_PLAYING = SynchedEntityData.defineId(JukeboxMinecart.class, EntityDataSerializers.BYTE);
 	private static final int CONTAINER_SIZE = 1;
 	private long ticksSinceSongStarted;
 
-	public JukeboxMinecart(EntityType<? extends JukeboxMinecart> entityType, Level level) {
-		super(entityType, level);
+	public JukeboxMinecart(EntityType<? extends JukeboxMinecart> type, Level level) {
+		super(type, level);
+		this.clearItemStacks();
 	}
 
 	public JukeboxMinecart(Level level, double x, double y, double z) {
@@ -65,24 +66,21 @@ public class JukeboxMinecart extends AbstractMinecart implements Container {
 	}
 
 	@Override
-	protected void defineSynchedData(SynchedEntityData.Builder builder) {
-		super.defineSynchedData(builder);
-		builder.define(DATA_RECORD_ITEM, ItemStack.EMPTY);
-		builder.define(DATA_IS_PLAYING, false);
+	protected void defineSynchedData(SynchedEntityData.Builder entityData) {
+		super.defineSynchedData(entityData);
+		entityData.define(DATA_CLIENT_RECORD_ITEM, ItemStack.EMPTY);
+		entityData.define(DATA_PLAYING, (byte) 0);
 	}
 
 	@Override
 	public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
 		super.onSyncedDataUpdated(key);
-		if (DATA_RECORD_ITEM.equals(key)) {
-			this.updateDisplayState();
-		}
+		if (DATA_CLIENT_RECORD_ITEM.equals(key)) this.updateDisplayState();
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
-
 		if (this.level().isClientSide() || !this.isSongPlaying()) return;
 
 		final Optional<Holder<JukeboxSong>> song = this.getSong();
@@ -98,8 +96,8 @@ public class JukeboxMinecart extends AbstractMinecart implements Container {
 
 		if (this.ticksSinceSongStarted % PLAY_EVENT_INTERVAL_TICKS == 0L && this.level() instanceof ServerLevel serverLevel) {
 			this.level().gameEvent(GameEvent.JUKEBOX_PLAY, this.position(), GameEvent.Context.of(this));
-			final float noteOffset = this.level().random.nextInt(4) / 24.0F;
-			serverLevel.sendParticles(ParticleTypes.NOTE, this.getX(), this.getY() + 1.2D, this.getZ(), 0, noteOffset, 0.0D, 0.0D, 1.0D);
+			final float noteOffset = this.getRandom().nextInt(4) / 24F;
+			serverLevel.sendParticles(ParticleTypes.NOTE, this.getX(), this.getY() + this.getBlockTopOffset() + 0.2D, this.getZ(), 0, noteOffset, 0D, 0D, 1D);
 		}
 
 		this.ticksSinceSongStarted++;
@@ -107,30 +105,26 @@ public class JukeboxMinecart extends AbstractMinecart implements Container {
 
 	@Override
 	public InteractionResult interact(Player player, InteractionHand hand) {
-		final ItemStack heldStack = player.getItemInHand(hand);
-		final boolean canInsertSong = this.getRecordItem().isEmpty() && heldStack.has(DataComponents.JUKEBOX_PLAYABLE);
-		final boolean canEjectSong = !this.getRecordItem().isEmpty() && (player.isSecondaryUseActive() || heldStack.isEmpty());
-
-		if (this.level().isClientSide()) {
-			return canInsertSong || canEjectSong ? InteractionResult.SUCCESS : InteractionResult.PASS;
-		}
-
-		if (canInsertSong) {
-			final Optional<Holder<JukeboxSong>> song = JukeboxSong.fromStack(this.level().registryAccess(), heldStack);
-			if (song.isEmpty()) {
-				return InteractionResult.PASS;
-			}
-
-			this.setRecordItem(heldStack.copyWithCount(1));
-			this.startPlaying();
-			if (!player.getAbilities().instabuild) {
-				heldStack.shrink(1);
-			}
+		if (!(this.level().isClientSide() ? this.getClientRecordItem() : this.getItem(0)).isEmpty()) {
+			if (this.level() instanceof ServerLevel serverLevel) this.ejectRecord(serverLevel);
 			return InteractionResult.SUCCESS;
 		}
 
-		if (canEjectSong && this.level() instanceof ServerLevel serverLevel) {
-			this.ejectRecord(serverLevel, true);
+		final ItemStack heldStack = player.getItemInHand(hand);
+		final boolean canInsertSong = heldStack.has(DataComponents.JUKEBOX_PLAYABLE);
+
+		if (this.level().isClientSide()) {
+			return canInsertSong ? InteractionResult.SUCCESS : InteractionResult.PASS;
+		}
+
+		if (canInsertSong) {
+			final ItemStack insertStack = heldStack.consumeAndReturn(1, player);
+			this.setItem(0, insertStack);
+			player.awardStat(Stats.PLAY_RECORD);
+
+			final Optional<Holder<JukeboxSong>> song = JukeboxSong.fromStack(this.level().registryAccess(), heldStack);
+			if (song.isEmpty()) return InteractionResult.PASS;
+			this.startPlaying();
 			return InteractionResult.SUCCESS;
 		}
 
@@ -138,40 +132,26 @@ public class JukeboxMinecart extends AbstractMinecart implements Container {
 	}
 
 	@Override
-	protected void destroy(ServerLevel level, DamageSource source) {
-		final ItemStack removedRecord = this.removeRecordItem();
-		super.destroy(level, source);
-		if (!removedRecord.isEmpty() && level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
-			this.spawnAtLocation(level, removedRecord);
-		}
-	}
-
-	@Override
 	public void activateMinecart(int x, int y, int z, boolean powered) {
 		if (!powered) return;
-		if (this.level() instanceof ServerLevel serverLevel) {
-			this.ejectRecord(serverLevel, true);
-		}
+		if (this.level() instanceof ServerLevel serverLevel) this.ejectRecord(serverLevel);
 	}
 
 	@Override
 	protected void addAdditionalSaveData(ValueOutput output) {
 		super.addAdditionalSaveData(output);
-		if (!this.getRecordItem().isEmpty()) {
-			output.store(SONG_ITEM_TAG_ID, ItemStack.CODEC, this.getRecordItem());
-		}
-
-		if (this.isSongPlaying()) {
-			output.putLong(TICKS_SINCE_SONG_STARTED_TAG_ID, this.ticksSinceSongStarted);
-		}
+		if (this.isSongPlaying()) output.putLong(TICKS_SINCE_SONG_STARTED_TAG_ID, this.ticksSinceSongStarted);
 	}
 
 	@Override
 	protected void readAdditionalSaveData(ValueInput input) {
 		super.readAdditionalSaveData(input);
-		this.setRecordItem(input.read(SONG_ITEM_TAG_ID, ItemStack.CODEC).orElse(ItemStack.EMPTY));
-		this.ticksSinceSongStarted = 0L;
-		this.getEntityData().set(DATA_IS_PLAYING, false);
+		final ItemStack item = this.getItem(0);
+		this.setClientRecordItem(item);
+		input.getLong(TICKS_SINCE_SONG_STARTED_TAG_ID)
+			.ifPresent(ticks -> JukeboxSong.fromStack(input.lookup(), item)
+				.ifPresent(song -> this.setSongWithoutPlaying(song, ticks))
+			);
 	}
 
 	@Override
@@ -189,13 +169,12 @@ public class JukeboxMinecart extends AbstractMinecart implements Container {
 		return Blocks.JUKEBOX.defaultBlockState().setValue(JukeboxBlock.HAS_RECORD, false);
 	}
 
-	@Override
-	public int getDefaultDisplayOffset() {
-		return 6;
+	public double getBlockTopOffset() {
+		return 0.75D + (this.getDisplayOffset() * 0.75D / 16D);
 	}
 
 	public Optional<Holder<JukeboxSong>> getSong() {
-		return JukeboxSong.fromStack(this.level().registryAccess(), this.getRecordItem());
+		return JukeboxSong.fromStack(this.level().registryAccess(), this.getClientRecordItem());
 	}
 
 	public int getComparatorOutput() {
@@ -203,7 +182,17 @@ public class JukeboxMinecart extends AbstractMinecart implements Container {
 	}
 
 	public boolean isSongPlaying() {
-		return this.getEntityData().get(DATA_IS_PLAYING);
+		return (this.getEntityData().get(DATA_PLAYING) & 1) != 0;
+	}
+
+	public boolean isSongSilent() {
+		return (this.getEntityData().get(DATA_PLAYING) & 2) != 0;
+	}
+
+	public void setSongWithoutPlaying(Holder<JukeboxSong> song, long ticksSinceSongStarted) {
+		if (song.value().hasFinished(ticksSinceSongStarted)) return;
+		this.ticksSinceSongStarted = ticksSinceSongStarted;
+		this.getEntityData().set(DATA_PLAYING, (byte) 3);
 	}
 
 	private void startPlaying() {
@@ -213,45 +202,35 @@ public class JukeboxMinecart extends AbstractMinecart implements Container {
 		}
 
 		this.ticksSinceSongStarted = 0L;
-		this.getEntityData().set(DATA_IS_PLAYING, true);
+		this.getEntityData().set(DATA_PLAYING, (byte) 1);
 	}
 
 	private void stopPlaying() {
 		if (!this.isSongPlaying()) return;
 
 		this.ticksSinceSongStarted = 0L;
-		this.getEntityData().set(DATA_IS_PLAYING, false);
+		this.getEntityData().set(DATA_PLAYING, (byte) 0);
 		this.level().gameEvent(GameEvent.JUKEBOX_STOP_PLAY, this.position(), GameEvent.Context.of(this));
 	}
 
-	private ItemStack removeRecordItem() {
-		final ItemStack record = this.getRecordItem();
-		if (record.isEmpty()) return ItemStack.EMPTY;
-
-		this.setRecordItem(ItemStack.EMPTY);
-		this.stopPlaying();
-		return record;
+	private void ejectRecord(ServerLevel level) {
+		final ItemStack removedRecord = this.getItem(0).copyAndClear();
+		if (!removedRecord.isEmpty()) this.spawnAtLocation(level, removedRecord, (float) (this.getBlockTopOffset() + 0.01F));
+		this.setClientRecordItem(ItemStack.EMPTY);
 	}
 
-	private void ejectRecord(ServerLevel serverLevel, boolean dropInWorld) {
-		final ItemStack removedRecord = this.removeRecordItem();
-		if (dropInWorld && !removedRecord.isEmpty()) {
-			this.spawnAtLocation(serverLevel, removedRecord);
-		}
+	private ItemStack getClientRecordItem() {
+		return this.getEntityData().get(DATA_CLIENT_RECORD_ITEM);
 	}
 
-	private ItemStack getRecordItem() {
-		return this.getEntityData().get(DATA_RECORD_ITEM);
-	}
-
-	private void setRecordItem(ItemStack recordItem) {
-		this.getEntityData().set(DATA_RECORD_ITEM, recordItem.copyWithCount(Math.min(recordItem.getCount(), 1)));
+	private void setClientRecordItem(ItemStack recordItem) {
+		this.getEntityData().set(DATA_CLIENT_RECORD_ITEM, recordItem.copyWithCount(Math.min(recordItem.getCount(), 1)));
 		this.updateDisplayState();
 		this.setChanged();
 	}
 
 	private void updateDisplayState() {
-		final BlockState state = this.getDefaultDisplayBlockState().setValue(JukeboxBlock.HAS_RECORD, !this.getRecordItem().isEmpty());
+		final BlockState state = this.getDefaultDisplayBlockState().setValue(JukeboxBlock.HAS_RECORD, !this.getClientRecordItem().isEmpty());
 		this.setCustomDisplayBlockState(Optional.of(state));
 	}
 
@@ -261,75 +240,36 @@ public class JukeboxMinecart extends AbstractMinecart implements Container {
 	}
 
 	@Override
-	public boolean isEmpty() {
-		return this.getRecordItem().isEmpty();
-	}
-
-	@Override
-	public ItemStack getItem(int slot) {
-		return slot == 0 ? this.getRecordItem() : ItemStack.EMPTY;
-	}
-
-	@Override
 	public ItemStack removeItem(int slot, int amount) {
-		if (slot != 0) return ItemStack.EMPTY;
-
-		final ItemStack record = this.getRecordItem();
-		if (record.isEmpty() || amount <= 0) {
-			return ItemStack.EMPTY;
-		}
-
-		final int removedCount = Math.min(amount, record.getCount());
-		final ItemStack removed = record.copyWithCount(removedCount);
-		final ItemStack remaining = record.copy();
-		remaining.shrink(removedCount);
-		this.setRecordItem(remaining);
-		if (remaining.isEmpty()) {
-			this.stopPlaying();
-		}
-
+		final ItemStack removed = super.removeItem(slot, amount);
+		final ItemStack remaining = this.getItem(slot);
+		this.setClientRecordItem(remaining);
+		if (remaining.isEmpty()) this.stopPlaying();
 		return removed;
 	}
 
 	@Override
-	public ItemStack removeItemNoUpdate(int slot) {
-		if (slot != 0) return ItemStack.EMPTY;
-		return this.removeRecordItem();
-	}
-
-	@Override
 	public void setItem(int slot, ItemStack stack) {
-		if (slot != 0) return;
-
-		if (stack.isEmpty()) {
-			this.removeRecordItem();
-			return;
-		}
-
-		if (!stack.has(DataComponents.JUKEBOX_PLAYABLE)) {
-			return;
-		}
-
-		this.setRecordItem(stack.copyWithCount(1));
+		super.setItem(slot, stack);
+		this.setClientRecordItem(stack.copy());
+		if (!stack.has(DataComponents.JUKEBOX_PLAYABLE)) return;
 		this.startPlaying();
 	}
 
 	@Override
-	public boolean stillValid(Player player) {
-		return !this.isRemoved() && player.distanceToSqr(this) <= 64.0D;
-	}
-
-	@Override
-	public void setChanged() {
-	}
-
-	@Override
 	public boolean canPlaceItem(int slot, ItemStack stack) {
-		return slot == 0 && this.getRecordItem().isEmpty() && stack.has(DataComponents.JUKEBOX_PLAYABLE);
+		return stack.has(DataComponents.JUKEBOX_PLAYABLE) && this.getItem(slot).isEmpty();
 	}
 
+	@Nullable
 	@Override
-	public void clearContent() {
-		this.removeRecordItem();
+	public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
+		return null;
+	}
+
+	@Nullable
+	@Override
+	protected AbstractContainerMenu createMenu(int i, Inventory inventory) {
+		return null;
 	}
 }

@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.mixin.entity.chest_vehicle;
+package net.frozenblock.thecopperierage.mixin.entity.container_entity;
 
 import net.frozenblock.thecopperierage.entity.impl.ChestVehicleInterface;
 import net.minecraft.world.Container;

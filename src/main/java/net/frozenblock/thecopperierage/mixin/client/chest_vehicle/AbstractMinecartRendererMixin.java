@@ -53,7 +53,7 @@ public class AbstractMinecartRendererMixin {
 		AbstractMinecartRenderer instance, S renderState, BlockState state, PoseStack poseStack, SubmitNodeCollector collector, int lightCoords, Operation<Void> original,
 		@Local(argsOnly = true) CameraRenderState camera
 	) {
-		if (!(state instanceof ChestLidRenderStateInterface chestState) || !state.is(Blocks.CHEST)) {
+		if (!(renderState instanceof ChestLidRenderStateInterface chestState) || !state.is(Blocks.CHEST)) {
 			original.call(instance, renderState, state, poseStack, collector, lightCoords);
 			return;
 		}
@@ -66,11 +66,11 @@ public class AbstractMinecartRendererMixin {
 		method = "extractRenderState(Lnet/minecraft/world/entity/vehicle/AbstractMinecart;Lnet/minecraft/client/renderer/entity/state/MinecartRenderState;F)V",
 		at = @At("TAIL")
 	)
-	private void theCopperierAge$extractRenderState(AbstractMinecart minecart, MinecartRenderState state, float partialTicks, CallbackInfo info) {
-		if (!(minecart instanceof ChestVehicleInterface chestVehicle) || !(state instanceof ChestLidRenderStateInterface chestState)) return;
+	private void theCopperierAge$extractRenderState(AbstractMinecart minecart, MinecartRenderState renderState, float partialTicks, CallbackInfo info) {
+		if (!(minecart instanceof ChestVehicleInterface chestVehicle) || !(renderState instanceof ChestLidRenderStateInterface chestState)) return;
 
 		final float openness = chestVehicle.theCopperierAge$getLidOpenness(partialTicks);
 		chestState.theCopperierAge$setLidOpenness(openness);
-		state.displayBlockState = state.displayBlockState.trySetValue(BlockStateProperties.OPEN, openness > 0F);
+		renderState.displayBlockState = renderState.displayBlockState.trySetValue(BlockStateProperties.OPEN, openness > 0F);
 	}
 }

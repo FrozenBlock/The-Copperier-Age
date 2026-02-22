@@ -48,7 +48,6 @@ public final class ChestVehicleRenderHelper {
 		chestRenderState.type = ChestType.SINGLE;
 		chestRenderState.material = ChestRenderState.ChestMaterialType.REGULAR;
 		chestRenderState.open = openness;
-		chestRenderState.angle = 0F;
 		return chestRenderState;
 	}
 }

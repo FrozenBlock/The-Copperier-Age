@@ -119,15 +119,23 @@ public final class TCACreativeInventorySorting {
 		addAfterInBuildingBlocks(Items.WAXED_OXIDIZED_COPPER_TRAPDOOR, TCABlocks.WEIGHTED_PRESSURE_PLATE.waxedOxidized());
 
 		addAfterInFunctionalBlocks(Items.SOUL_CAMPFIRE, TCABlocks.COPPER_CAMPFIRE);
-		addAfterInToolsAndUtilities(Items.CHEST_MINECART, TCAItems.CRATE_MINECART);
-		addAfterInToolsAndUtilities(TCAItems.CRATE_MINECART, TCAItems.DISPENSER_MINECART);
-		addAfterInToolsAndUtilities(TCAItems.DISPENSER_MINECART, TCAItems.DROPPER_MINECART);
-		addAfterInToolsAndUtilities(TCAItems.DROPPER_MINECART, TCAItems.COPPER_GOLEM_STATUE_MINECART);
 		addBeforeInToolsAndUtilities(Items.BRUSH, TCAItems.WRENCH);
 		addInstrumentBefore(Items.MUSIC_DISC_13, TCAItems.COPPER_HORN, TCAInstrumentTags.COPPER_HORNS, CreativeModeTabs.TOOLS_AND_UTILITIES);
 		addAfterInNaturalBlocks(Blocks.JACK_O_LANTERN, TCABlocks.COPPER_JACK_O_LANTERN);
 		addAfterInNaturalBlocks(TCABlocks.COPPER_JACK_O_LANTERN, TCABlocks.REDSTONE_JACK_O_LANTERN);
 		addAfterInRedstoneBlocks(Blocks.REDSTONE_TORCH, TCABlocks.REDSTONE_JACK_O_LANTERN);
+
+		// MINECARTS
+		addAfterInToolsAndUtilities(Items.CHEST_MINECART, TCAItems.CRATE_MINECART);
+		addAfterInToolsAndUtilities(Items.FURNACE_MINECART, TCAItems.DISPENSER_MINECART);
+		addAfterInToolsAndUtilities(TCAItems.DISPENSER_MINECART, TCAItems.DROPPER_MINECART);
+		addAfterInToolsAndUtilities(TCAItems.DROPPER_MINECART, TCAItems.JUKEBOX_MINECART);
+		addBeforeInToolsAndUtilities(Items.GOAT_HORN, TCAItems.MINECART_COUPLING);
+		addAfterInRedstoneBlocks(Items.CHEST_MINECART, TCAItems.CRATE_MINECART);
+		addAfterInRedstoneBlocks(Items.FURNACE_MINECART, TCAItems.DISPENSER_MINECART);
+		addAfterInRedstoneBlocks(TCAItems.DISPENSER_MINECART, TCAItems.DROPPER_MINECART);
+		addAfterInRedstoneBlocks(TCAItems.DROPPER_MINECART, TCAItems.JUKEBOX_MINECART);
+		addBeforeInRedstoneBlocks(Items.OAK_CHEST_BOAT, TCAItems.MINECART_COUPLING);
 	}
 
 	private static void addBeforeInBuildingBlocks(ItemLike comparedItem, ItemLike item) {

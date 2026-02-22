@@ -41,6 +41,7 @@ public final class TCAModelLayers {
 		EntityRendererRegistry.register(TCAEntityTypes.COPPER_GOLEM_STATUE_MINECART, context -> new MinecartRenderer(context, ModelLayers.MINECART));
 		EntityRendererRegistry.register(TCAEntityTypes.DISPENSER_MINECART, context -> new MinecartRenderer(context, ModelLayers.MINECART));
 		EntityRendererRegistry.register(TCAEntityTypes.DROPPER_MINECART, context -> new MinecartRenderer(context, ModelLayers.MINECART));
+		EntityRendererRegistry.register(TCAEntityTypes.JUKEBOX_MINECART, context -> new MinecartRenderer(context, ModelLayers.MINECART));
 		EntityModelLayerRegistry.registerModelLayer(CHIME, ChimeModel::createLayerDefinition);
 	}
 }

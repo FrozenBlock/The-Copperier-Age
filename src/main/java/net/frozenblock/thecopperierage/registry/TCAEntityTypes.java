@@ -22,6 +22,7 @@ import net.frozenblock.thecopperierage.entity.CopperGolemStatueMinecart;
 import net.frozenblock.thecopperierage.entity.CrateMinecart;
 import net.frozenblock.thecopperierage.entity.DispenserMinecart;
 import net.frozenblock.thecopperierage.entity.DropperMinecart;
+import net.frozenblock.thecopperierage.entity.JukeboxMinecart;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -58,6 +59,14 @@ public final class TCAEntityTypes {
 	public static final EntityType<DropperMinecart> DROPPER_MINECART = register(
 		"dropper_minecart",
 		EntityType.Builder.<DropperMinecart>of(DropperMinecart::new, MobCategory.MISC)
+			.sized(0.98F, 0.7F)
+			.clientTrackingRange(8)
+			.updateInterval(3)
+	);
+
+	public static final EntityType<JukeboxMinecart> JUKEBOX_MINECART = register(
+		"jukebox_minecart",
+		EntityType.Builder.<JukeboxMinecart>of(JukeboxMinecart::new, MobCategory.MISC)
 			.sized(0.98F, 0.7F)
 			.clientTrackingRange(8)
 			.updateInterval(3)

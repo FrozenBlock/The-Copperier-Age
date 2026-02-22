@@ -11,11 +11,14 @@
   "subtitles.item.copper_horn.call": "Copper Horn plays",
 
   "item.thecopperierage.wrench": "Wrench",
+  "item.thecopperierage.minecart_coupling": "Minecart Coupling",
   "item.thecopperierage.crate_minecart": "Minecart with Crate",
   "item.thecopperierage.copper_golem_statue_minecart": "Minecart with Copper Golem Statue",
   "item.thecopperierage.dispenser_minecart": "Minecart with Dispenser",
   "item.thecopperierage.dropper_minecart": "Minecart with Dropper",
+  "item.thecopperierage.jukebox_minecart": "Minecart with Jukebox",
   "subtitles.item.wrench.use": "Wrench used",
+  "message.thecopperierage.minecart_coupling.first_selected": "Interact with another minecart to couple",
 
   "block.thecopperierage.chime": "Chime",
   "block.thecopperierage.exposed_chime": "Exposed Chime",

@@ -166,6 +166,12 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.unlockedBy(RecipeProvider.getHasName(Items.MINECART), this.has(Items.MINECART))
 					.save(this.output);
 
+				this.shapeless(RecipeCategory.TRANSPORTATION, TCAItems.JUKEBOX_MINECART)
+					.requires(Items.MINECART)
+					.requires(Items.JUKEBOX)
+					.unlockedBy(RecipeProvider.getHasName(Items.MINECART), this.has(Items.MINECART))
+					.save(this.output);
+
 				RecipeExportNamespaceFix.clearCurrentGeneratingModId();
 			}
 		};

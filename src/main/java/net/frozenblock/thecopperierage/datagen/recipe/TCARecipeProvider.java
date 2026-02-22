@@ -77,6 +77,16 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.unlockedBy("has_copper_nugget", this.has(Items.COPPER_NUGGET))
 					.save(this.output);
 
+				this.shaped(RecipeCategory.DECORATIONS, TCABlocks.KILN)
+					.define('~', Ingredient.of(Items.BRICKS))
+					.define('F', Ingredient.of(Items.FURNACE))
+					.define('#', Ingredient.of(Items.COPPER_INGOT))
+					.pattern("#~#")
+					.pattern("~F~")
+					.pattern("#~#")
+					.unlockedBy(RecipeProvider.getHasName(Items.FURNACE), this.has(Items.FURNACE))
+					.save(this.output);
+
 				this.shaped(RecipeCategory.BUILDING_BLOCKS, TCABlocks.COPPER_JACK_O_LANTERN)
 					.define('A', Items.CARVED_PUMPKIN)
 					.define('B', Items.COPPER_TORCH)

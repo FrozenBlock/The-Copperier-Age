@@ -22,9 +22,22 @@ import net.frozenblock.thecopperierage.recipe.ItemWaxRecipe;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.SmeltingRecipe;
 
 public final class TCARecipeTypes {
+	public static final RecipeType<SmeltingRecipe> KILN = Registry.register(
+		BuiltInRegistries.RECIPE_TYPE,
+		TCAConstants.id("kiln"),
+		new RecipeType<>() {
+			@Override
+			public String toString() {
+				return "thecopperierage:kiln";
+			}
+		}
+	);
+
 	public static final RecipeSerializer<ItemWaxRecipe> ITEM_WAX_RECIPE = Registry.register(
 		BuiltInRegistries.RECIPE_SERIALIZER,
 		TCAConstants.id("crafting_item_wax"),

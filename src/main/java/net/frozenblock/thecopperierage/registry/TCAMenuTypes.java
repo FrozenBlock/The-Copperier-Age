@@ -19,6 +19,7 @@ package net.frozenblock.thecopperierage.registry;
 
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.entity.inventory.CrateMenu;
+import net.frozenblock.thecopperierage.block.entity.inventory.KilnMenu;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.flag.FeatureFlag;
@@ -28,6 +29,7 @@ import net.minecraft.world.inventory.MenuType;
 
 public final class TCAMenuTypes {
 	public static final MenuType<CrateMenu> CRATE = register("crate", CrateMenu::create);
+	public static final MenuType<KilnMenu> KILN = register("kiln", KilnMenu::new);
 
 	public static void init() {
 		TCAConstants.logWithModId("Registering MenuTypes for", TCAConstants.UNSTABLE_LOGGING);

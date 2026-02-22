@@ -29,6 +29,7 @@ import net.frozenblock.thecopperierage.block.CopperFanBlock;
 import net.frozenblock.thecopperierage.block.CopperFireBlock;
 import net.frozenblock.thecopperierage.block.CopperPressurePlateBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
+import net.frozenblock.thecopperierage.block.KilnBlock;
 import net.frozenblock.thecopperierage.block.RedstonePumpkinBlock;
 import net.frozenblock.thecopperierage.block.WeatheringChimeBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperButtonBlock;
@@ -81,6 +82,15 @@ public final class TCABlocks {
 			.lightLevel(Blocks.litBlockEmission(15))
 			.noOcclusion()
 			.ignitedByLava()
+	);
+
+	public static final KilnBlock KILN = register("kiln",
+		KilnBlock::new,
+		BlockBehaviour.Properties.of()
+			.mapColor(MapColor.STONE)
+			.requiresCorrectToolForDrops()
+			.strength(3.5F)
+			.lightLevel(Blocks.litBlockEmission(13))
 	);
 
 	public static final CarvedPumpkinBlock COPPER_JACK_O_LANTERN = register("copper_jack_o_lantern",

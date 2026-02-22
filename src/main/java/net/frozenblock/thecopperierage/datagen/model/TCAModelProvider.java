@@ -64,6 +64,11 @@ public final class TCAModelProvider extends FabricModelProvider {
 		.select(Direction.SOUTH, BlockModelGenerators.Y_ROT_180)
 		.select(Direction.WEST, BlockModelGenerators.Y_ROT_270)
 		.select(Direction.EAST, BlockModelGenerators.Y_ROT_90);
+	private static final PropertyDispatch<VariantMutator> KILN_ROTATION = PropertyDispatch.modify(BlockStateProperties.HORIZONTAL_FACING)
+		.select(Direction.EAST, BlockModelGenerators.Y_ROT_90)
+		.select(Direction.SOUTH, BlockModelGenerators.Y_ROT_180)
+		.select(Direction.WEST, BlockModelGenerators.Y_ROT_270)
+		.select(Direction.NORTH, BlockModelGenerators.NOP);
 	private static final ModelTemplate GEARBOX_MODEL = new ModelTemplate(
 		Optional.of(TCAConstants.id("block/template_gearbox")),
 		Optional.empty(),
@@ -101,6 +106,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 		generator.createPumpkinVariant(TCABlocks.COPPER_JACK_O_LANTERN, TextureMapping.column(Blocks.PUMPKIN));
 		generator.createPumpkinVariant(TCABlocks.REDSTONE_JACK_O_LANTERN, TextureMapping.column(Blocks.PUMPKIN));
 		generator.createCampfires(TCABlocks.COPPER_CAMPFIRE);
+		createKiln(generator);
 
 		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.unaffected(), Blocks.COPPER_BLOCK);
 		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed(), Blocks.COPPER_BLOCK);
@@ -139,6 +145,40 @@ public final class TCAModelProvider extends FabricModelProvider {
 				.with(sideModels.with(BlockModelGenerators.Y_ROT_180))
 				.with(sideModels.with(BlockModelGenerators.Y_ROT_270))
 		);
+	}
+
+	private static void createKiln(@NotNull BlockModelGenerators generator) {
+		final ResourceLocation furnaceTop = TextureMapping.getBlockTexture(TCABlocks.KILN, "_top");
+		final ResourceLocation furnaceBottom = TextureMapping.getBlockTexture(TCABlocks.KILN, "_bottom");
+		final ResourceLocation furnaceSide = TextureMapping.getBlockTexture(TCABlocks.KILN, "_side");
+		final ResourceLocation furnaceFront = TextureMapping.getBlockTexture(TCABlocks.KILN, "_front");
+		final ResourceLocation furnaceFrontOn = TextureMapping.getBlockTexture(TCABlocks.KILN, "_front_lit");
+
+		final ResourceLocation model = TexturedModel.ORIENTABLE.get(TCABlocks.KILN)
+			.updateTextures(textureMapping -> textureMapping
+				.put(TextureSlot.TOP, furnaceTop)
+				.put(TextureSlot.BOTTOM, furnaceBottom)
+				.put(TextureSlot.SIDE, furnaceSide)
+				.put(TextureSlot.FRONT, furnaceFront)
+			)
+			.create(TCABlocks.KILN, generator.modelOutput);
+
+		final ResourceLocation modelOn = TexturedModel.ORIENTABLE.get(TCABlocks.KILN)
+			.updateTextures(textureMapping -> textureMapping
+				.put(TextureSlot.TOP, furnaceTop)
+				.put(TextureSlot.BOTTOM, furnaceBottom)
+				.put(TextureSlot.SIDE, furnaceSide)
+				.put(TextureSlot.FRONT, furnaceFrontOn)
+			)
+			.createWithSuffix(TCABlocks.KILN, "_lit", generator.modelOutput);
+
+		generator.blockStateOutput.accept(
+			MultiVariantGenerator.dispatch(TCABlocks.KILN)
+				.with(BlockModelGenerators.createBooleanModelDispatch(BlockStateProperties.LIT, BlockModelGenerators.plainVariant(modelOn), BlockModelGenerators.plainVariant(model)))
+				.with(KILN_ROTATION)
+		);
+
+		generator.registerSimpleItemModel(TCABlocks.KILN, model);
 	}
 
 	private static void createGearbox(@NotNull BlockModelGenerators generator, @NotNull Block block, @NotNull Block waxedBlock) {

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": "minecraft:copper_ingot",
+    "F": "minecraft:furnace",
+    "~": "minecraft:bricks"
+  },
+  "pattern": [
+    "#~#",
+    "~F~",
+    "#~#"
+  ],
+  "result": {
+    "count": 1,
+    "id": "thecopperierage:kiln"
+  }
+}

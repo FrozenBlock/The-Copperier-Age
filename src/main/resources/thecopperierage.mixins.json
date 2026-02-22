@@ -22,6 +22,8 @@
     "entity.copper_golem.CopperGolemStateMixin",
     "item.ItemMixin",
     "item.ItemStackMixin",
+    "recipe.RecipeManagerMixin",
+    "recipe.SingleItemRecipeAccessor",
     "worldgen.TrickierTrialsPackCheckerMixin"
   ],
   "client": [

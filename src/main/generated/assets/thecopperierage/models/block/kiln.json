@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "bottom": "thecopperierage:block/kiln_bottom",
+    "front": "thecopperierage:block/kiln_front",
+    "side": "thecopperierage:block/kiln_side",
+    "top": "thecopperierage:block/kiln_top"
+  }
+}

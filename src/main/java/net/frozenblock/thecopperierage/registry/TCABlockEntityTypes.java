@@ -18,10 +18,12 @@
 package net.frozenblock.thecopperierage.registry;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.entity.ChimeBlockEntity;
 import net.frozenblock.thecopperierage.block.entity.CrateBlockEntity;
+import net.frozenblock.thecopperierage.block.entity.KilnBlockEntity;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.datafix.fixes.References;
@@ -42,6 +44,12 @@ public final class TCABlockEntityTypes {
 		"crate",
 		CrateBlockEntity::new,
 		TCABlocks.CRATE.asList()
+	);
+
+	public static final BlockEntityType<KilnBlockEntity> KILN = register(
+		"kiln",
+		KilnBlockEntity::new,
+		List.of(TCABlocks.KILN)
 	);
 
 	public static void init() {

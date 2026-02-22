@@ -83,13 +83,14 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 		this.valueLookupBuilder(BlockTags.SWORD_EFFICIENT)
 			.add(TCABlocks.COPPER_JACK_O_LANTERN, TCABlocks.REDSTONE_JACK_O_LANTERN);
 
-		this.builder(BlockTags.MINEABLE_WITH_PICKAXE)
+		this.valueLookupBuilder(BlockTags.MINEABLE_WITH_PICKAXE)
 			.addOptionalTag(TCABlockTags.GEARBOXES)
 			.addOptionalTag(TCABlockTags.COPPER_FANS)
 			.addOptionalTag(TCABlockTags.CHIMES)
 			.addOptionalTag(TCABlockTags.CRATES)
 			.addOptionalTag(TCABlockTags.COPPER_BUTTONS)
-			.addOptionalTag(TCABlockTags.COPPER_PRESSURE_PLATES);
+			.addOptionalTag(TCABlockTags.COPPER_PRESSURE_PLATES)
+			.add(TCABlocks.KILN);
 
 		this.valueLookupBuilder(TCABlockTags.WRENCH_CANNOT_ROTATE)
 			.add(Blocks.VAULT)

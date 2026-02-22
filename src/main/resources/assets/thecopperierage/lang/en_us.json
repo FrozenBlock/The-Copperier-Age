@@ -34,6 +34,9 @@
 
   "block.thecopperierage.redstone_jack_o_lantern": "Redstone Jack o'Lantern",
 
+  "block.thecopperierage.kiln": "Kiln",
+  "container.thecopperierage.kiln": "Kiln",
+
   "block.thecopperierage.gearbox": "Gearbox",
   "block.thecopperierage.exposed_gearbox": "Exposed Gearbox",
   "block.thecopperierage.weathered_gearbox": "Weathered Gearbox",

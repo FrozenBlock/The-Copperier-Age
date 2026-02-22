@@ -118,6 +118,8 @@ public final class TCACreativeInventorySorting {
 		addAfterInBuildingBlocks(Items.OXIDIZED_COPPER_TRAPDOOR, TCABlocks.WEIGHTED_PRESSURE_PLATE.oxidized());
 		addAfterInBuildingBlocks(Items.WAXED_OXIDIZED_COPPER_TRAPDOOR, TCABlocks.WEIGHTED_PRESSURE_PLATE.waxedOxidized());
 
+		addAfterInFunctionalBlocks(Items.FURNACE, TCABlocks.KILN);
+
 		addAfterInFunctionalBlocks(Items.SOUL_CAMPFIRE, TCABlocks.COPPER_CAMPFIRE);
 		addAfterInToolsAndUtilities(Items.CHEST_MINECART, TCAItems.CRATE_MINECART);
 		addAfterInToolsAndUtilities(TCAItems.CRATE_MINECART, TCAItems.DISPENSER_MINECART);

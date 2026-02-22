@@ -23,6 +23,7 @@
     {
       "id": "#thecopperierage:copper_pressure_plates",
       "required": false
-    }
+    },
+    "thecopperierage:kiln"
   ]
 }

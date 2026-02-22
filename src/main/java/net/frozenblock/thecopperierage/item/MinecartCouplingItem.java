@@ -54,16 +54,12 @@ public class MinecartCouplingItem extends Item {
 	}
 
 	private static void onCouplingInteractOnMinecart(AbstractMinecart minecart, Player player) {
-		if (player.level().isClientSide()) {
-			TCAMinecartCouplingClientHandler.onCartClicked(player, minecart);
-		}
+		if (player.level().isClientSide()) TCAMinecartCouplingClientHandler.onCartClicked(player, minecart);
 	}
 
 	private static boolean onWrenchInteractOnMinecart(Player player, InteractionHand hand, AbstractMinecart minecart) {
 		final Level level = player.level();
-		if (!TCAMinecartCouplingManager.hasCoupling(level, minecart.getUUID())) {
-			return false;
-		}
+		if (!TCAMinecartCouplingManager.hasCoupling(level, minecart.getUUID())) return false;
 
 		if (level.isClientSide()) {
 			return true;

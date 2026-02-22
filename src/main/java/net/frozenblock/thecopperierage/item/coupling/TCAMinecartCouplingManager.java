@@ -82,9 +82,6 @@ public final class TCAMinecartCouplingManager {
 	private static MinecraftServer currentServer;
 	private static boolean dirty;
 
-	private TCAMinecartCouplingManager() {
-	}
-
 	public static void init() {
 		ServerLifecycleEvents.SERVER_STARTED.register(TCAMinecartCouplingManager::onServerStarted);
 		ServerTickEvents.END_WORLD_TICK.register(TCAMinecartCouplingManager::tickWorld);
@@ -96,45 +93,25 @@ public final class TCAMinecartCouplingManager {
 	}
 
 	public static boolean tryToCouple(Player player, Level level, int cartId1, int cartId2) {
-		if (!(level instanceof ServerLevel serverLevel)) {
-			return false;
-		}
-
-		if (cartId1 == cartId2) {
-			return false;
-		}
+		if (!(level instanceof ServerLevel serverLevel)) return false;
+		if (cartId1 == cartId2) return false;
 
 		final Entity entity1 = serverLevel.getEntity(cartId1);
 		final Entity entity2 = serverLevel.getEntity(cartId2);
-		if (!(entity1 instanceof AbstractMinecart cart1) || !(entity2 instanceof AbstractMinecart cart2)) {
-			return false;
-		}
+		if (!(entity1 instanceof AbstractMinecart cart1) || !(entity2 instanceof AbstractMinecart cart2)) return false;
 
 		final UUID id1 = cart1.getUUID();
 		final UUID id2 = cart2.getUUID();
-		if (isDirectlyCoupled(serverLevel.dimension(), id1, id2)) {
-			return false;
-		}
+		if (isDirectlyCoupled(serverLevel.dimension(), id1, id2)) return false;
 
 		final double distance = cart1.position().distanceTo(cart2.position());
-		if (distance > MAX_COUPLING_DISTANCE) {
-			return false;
-		}
+		if (distance > MAX_COUPLING_DISTANCE) return false;
 
 		final Map<UUID, Set<UUID>> graph = graph(serverLevel.dimension());
-		if (degree(graph, id1) >= MAX_COUPLINGS_PER_CART || degree(graph, id2) >= MAX_COUPLINGS_PER_CART) {
-			return false;
-		}
+		if (degree(graph, id1) >= MAX_COUPLINGS_PER_CART || degree(graph, id2) >= MAX_COUPLINGS_PER_CART) return false;
+		if (createsLoop(graph, id1, id2)) return false;
 
-		if (createsLoop(graph, id1, id2)) {
-			return false;
-		}
-
-		if (!player.isCreative()) {
-			if (!consumeOneCoupling(player)) {
-				return false;
-			}
-		}
+		if (!consumeOneCoupling(player)) return false;
 
 		final float length = TARGET_COUPLING_LENGTH;
 		couplings(serverLevel.dimension()).add(new CouplingData(id1, id2, length));
@@ -150,16 +127,12 @@ public final class TCAMinecartCouplingManager {
 	public static int decoupleCart(Level level, UUID cartId) {
 		final ResourceKey<Level> dimension = level.dimension();
 		final Set<CouplingData> couplings = couplings(dimension);
-		if (couplings.isEmpty()) {
-			return 0;
-		}
+		if (couplings.isEmpty()) return 0;
 
 		int removed = 0;
 		for (Iterator<CouplingData> iterator = couplings.iterator(); iterator.hasNext();) {
 			final CouplingData coupling = iterator.next();
-			if (!coupling.contains(cartId)) {
-				continue;
-			}
+			if (!coupling.contains(cartId)) continue;
 
 			iterator.remove();
 			removeTrackedPositions(dimension, coupling);
@@ -167,18 +140,13 @@ public final class TCAMinecartCouplingManager {
 			removed++;
 		}
 
-		if (removed > 0) {
-			markDirty();
-		}
-
+		if (removed > 0) markDirty();
 		return removed;
 	}
 
 	private static void tickWorld(ServerLevel level) {
 		final Set<CouplingData> couplings = couplings(level.dimension());
-		if (couplings.isEmpty()) {
-			return;
-		}
+		if (couplings.isEmpty()) return;
 
 		final Map<UUID, Set<UUID>> graph = graph(level.dimension());
 		boolean removedAny = false;
@@ -196,9 +164,7 @@ public final class TCAMinecartCouplingManager {
 				trackPosition(level.dimension(), coupling.second(), secondMinecart.position());
 			}
 
-			if (firstMissing && secondMissing) {
-				continue;
-			}
+			if (firstMissing && secondMissing) continue;
 
 			if (firstMissing != secondMissing) {
 				final UUID droppedFirstId = firstMissing ? coupling.first() : coupling.second();
@@ -245,13 +211,9 @@ public final class TCAMinecartCouplingManager {
 			}
 		}
 
-		if (removedAny) {
-			markDirty();
-		}
+		if (removedAny) markDirty();
 
-		if (level == level.getServer().overworld()) {
-			flushIfDirty();
-		}
+		if (level == level.getServer().overworld()) flushIfDirty();
 	}
 
 	private static boolean tickCoupling(ServerLevel level, AbstractMinecart first, AbstractMinecart second, float couplingLength) {
@@ -482,11 +444,9 @@ public final class TCAMinecartCouplingManager {
 	private static boolean consumeOneCoupling(Player player) {
 		for (InteractionHand hand : InteractionHand.values()) {
 			final ItemStack held = player.getItemInHand(hand);
-			if (!held.is(TCAItems.MINECART_COUPLING)) {
-				continue;
-			}
+			if (!held.is(TCAItems.MINECART_COUPLING)) continue;
 
-			held.shrink(1);
+			held.consume(1, player);
 			return true;
 		}
 
@@ -610,10 +570,7 @@ public final class TCAMinecartCouplingManager {
 	}
 
 	private static void flushIfDirty() {
-		if (!dirty || currentServer == null) {
-			return;
-		}
-
+		if (!dirty || currentServer == null) return;
 		saveToDisk(currentServer);
 		dirty = false;
 	}
@@ -621,58 +578,38 @@ public final class TCAMinecartCouplingManager {
 	private static void loadFromDisk(MinecraftServer server) {
 		clear();
 		final java.nio.file.Path path = server.getWorldPath(LevelResource.ROOT).resolve("data").resolve(SAVE_FILE);
-		if (!java.nio.file.Files.exists(path)) {
-			return;
-		}
+		if (!java.nio.file.Files.exists(path)) return;
 
 		try {
 			final String raw = java.nio.file.Files.readString(path, StandardCharsets.UTF_8);
 			final JsonElement parsed = JsonParser.parseString(raw);
-			if (!parsed.isJsonObject()) {
-				return;
-			}
+			if (!parsed.isJsonObject()) return;
 
 			final JsonObject root = parsed.getAsJsonObject();
-			if (!root.has(ROOT_LIST_KEY) || !root.get(ROOT_LIST_KEY).isJsonArray()) {
-				return;
-			}
+			if (!root.has(ROOT_LIST_KEY) || !root.get(ROOT_LIST_KEY).isJsonArray()) return;
 
 			final JsonArray dimensions = root.getAsJsonArray(ROOT_LIST_KEY);
 			for (JsonElement dimensionElement : dimensions) {
-				if (!dimensionElement.isJsonObject()) {
-					continue;
-				}
+				if (!dimensionElement.isJsonObject()) continue;
 
 				final JsonObject dimensionTag = dimensionElement.getAsJsonObject();
-				if (!dimensionTag.has(DIMENSION_KEY) || !dimensionTag.get(DIMENSION_KEY).isJsonPrimitive()) {
-					continue;
-				}
+				if (!dimensionTag.has(DIMENSION_KEY) || !dimensionTag.get(DIMENSION_KEY).isJsonPrimitive()) continue;
 
 				final ResourceLocation dimensionLocation = ResourceLocation.tryParse(dimensionTag.get(DIMENSION_KEY).getAsString());
-				if (dimensionLocation == null) {
-					continue;
-				}
+				if (dimensionLocation == null) continue;
 
 				final ResourceKey<Level> dimension = ResourceKey.create(net.minecraft.core.registries.Registries.DIMENSION, dimensionLocation);
-				if (!dimensionTag.has(COUPLINGS_KEY) || !dimensionTag.get(COUPLINGS_KEY).isJsonArray()) {
-					continue;
-				}
+				if (!dimensionTag.has(COUPLINGS_KEY) || !dimensionTag.get(COUPLINGS_KEY).isJsonArray()) continue;
 
 				for (JsonElement couplingElement : dimensionTag.getAsJsonArray(COUPLINGS_KEY)) {
-					if (!couplingElement.isJsonObject()) {
-						continue;
-					}
+					if (!couplingElement.isJsonObject()) continue;
 
 					final JsonObject couplingTag = couplingElement.getAsJsonObject();
-					if (!couplingTag.has(FIRST_KEY) || !couplingTag.has(SECOND_KEY) || !couplingTag.has(LENGTH_KEY)) {
-						continue;
-					}
+					if (!couplingTag.has(FIRST_KEY) || !couplingTag.has(SECOND_KEY) || !couplingTag.has(LENGTH_KEY)) continue;
 
 					final UUID firstId = parseUuid(couplingTag.get(FIRST_KEY));
 					final UUID secondId = parseUuid(couplingTag.get(SECOND_KEY));
-					if (firstId == null || secondId == null || !couplingTag.get(LENGTH_KEY).isJsonPrimitive()) {
-						continue;
-					}
+					if (firstId == null || secondId == null || !couplingTag.get(LENGTH_KEY).isJsonPrimitive()) continue;
 
 					final CouplingData coupling = new CouplingData(
 						firstId,
@@ -700,9 +637,7 @@ public final class TCAMinecartCouplingManager {
 			final JsonArray dimensions = new JsonArray();
 
 			for (Map.Entry<ResourceKey<Level>, Set<CouplingData>> entry : COUPLINGS.entrySet()) {
-				if (entry.getValue().isEmpty()) {
-					continue;
-				}
+				if (entry.getValue().isEmpty()) continue;
 
 				final JsonObject dimensionTag = new JsonObject();
 				dimensionTag.addProperty(DIMENSION_KEY, entry.getKey().location().toString());
@@ -726,9 +661,7 @@ public final class TCAMinecartCouplingManager {
 	}
 
 	private static @Nullable UUID parseUuid(JsonElement element) {
-		if (element == null || !element.isJsonPrimitive()) {
-			return null;
-		}
+		if (element == null || !element.isJsonPrimitive()) return null;
 
 		try {
 			return UUID.fromString(element.getAsString());
@@ -745,7 +678,6 @@ public final class TCAMinecartCouplingManager {
 	}
 
 	private record CouplingData(UUID first, UUID second, float length) {
-
 		private CouplingData(UUID first, UUID second, float length) {
 			if (first.compareTo(second) <= 0) {
 				this.first = first;
@@ -763,12 +695,8 @@ public final class TCAMinecartCouplingManager {
 
 		@Override
 		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-			if (!(obj instanceof CouplingData other)) {
-				return false;
-			}
+			if (this == obj) return true;
+			if (!(obj instanceof CouplingData other)) return false;
 			return first.equals(other.first) && second.equals(other.second);
 		}
 

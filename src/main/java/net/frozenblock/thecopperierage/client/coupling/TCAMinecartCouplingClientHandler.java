@@ -31,17 +31,12 @@ import net.minecraft.world.item.ItemStack;
 public final class TCAMinecartCouplingClientHandler {
 	private static Integer selectedCartId;
 
-	private TCAMinecartCouplingClientHandler() {
-	}
-
 	public static void init() {
 		ClientTickEvents.END_CLIENT_TICK.register(TCAMinecartCouplingClientHandler::tick);
 	}
 
 	public static void onCartClicked(Player player, AbstractMinecart cart) {
-		if (Minecraft.getInstance().player != player) {
-			return;
-		}
+		if (Minecraft.getInstance().player != player) return;
 
 		if (selectedCartId == null || selectedCartId == cart.getId()) {
 			selectedCartId = cart.getId();
@@ -54,9 +49,7 @@ public final class TCAMinecartCouplingClientHandler {
 	}
 
 	private static void tick(Minecraft minecraft) {
-		if (selectedCartId == null) {
-			return;
-		}
+		if (selectedCartId == null) return;
 
 		final LocalPlayer player = minecraft.player;
 		if (player == null || minecraft.level == null) {
@@ -66,8 +59,6 @@ public final class TCAMinecartCouplingClientHandler {
 
 		final ItemStack mainHand = player.getMainHandItem();
 		final ItemStack offHand = player.getOffhandItem();
-		if (!mainHand.is(TCAItems.MINECART_COUPLING) && !offHand.is(TCAItems.MINECART_COUPLING)) {
-			selectedCartId = null;
-		}
+		if (!mainHand.is(TCAItems.MINECART_COUPLING) && !offHand.is(TCAItems.MINECART_COUPLING)) selectedCartId = null;
 	}
 }

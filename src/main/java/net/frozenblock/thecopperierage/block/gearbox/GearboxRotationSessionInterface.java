@@ -23,5 +23,6 @@ public interface GearboxRotationSessionInterface {
 	void theCopperierAge$activateGearboxRotationSession(int currentTick, BlockPos supportPos);
 	float theCopperierAge$getGearboxYawDelta();
 	BlockPos theCopperierAge$getGearboxPosition();
+	void theCopperierAge$tickRotationSession(boolean invertVisualRot);
 	boolean theCopperierAge$automaticallyRotatesWithGearbox();
 }

@@ -100,8 +100,13 @@ public abstract class EntityMixin implements GearboxRotationSessionInterface {
 
 	@Inject(method = "tick", at = @At("TAIL"))
 	private void theCopperierAge$rotateFromUpFacingGearbox(CallbackInfo info) {
-		final Entity entity = Entity.class.cast(this);
+		this.theCopperierAge$tickRotationSession(false);
+	}
 
+	@Unique
+	@Override
+	public void theCopperierAge$tickRotationSession(boolean invertVisualRot) {
+		final Entity entity = Entity.class.cast(this);
 		if (!this.theCopperierAge$activeGearboxRotation && entity.tickCount < this.theCopperierAge$nextGearboxProbeTick) return;
 
 		float yawDelta = 0F;
@@ -135,6 +140,6 @@ public abstract class EntityMixin implements GearboxRotationSessionInterface {
 			this.theCopperierAge$cachedSupportPos.set(onPos);
 		}
 
-		GearboxEntityRotationHelper.applyRotation(entity, yawDelta, !this.theCopperierAge$automaticallyRotatesWithGearbox());
+		GearboxEntityRotationHelper.applyRotation(entity, yawDelta, invertVisualRot, !this.theCopperierAge$automaticallyRotatesWithGearbox());
 	}
 }

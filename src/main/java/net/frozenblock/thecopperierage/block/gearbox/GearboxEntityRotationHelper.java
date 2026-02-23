@@ -101,7 +101,7 @@ public final class GearboxEntityRotationHelper {
 		return getYawDeltaFromPower(selectedPower);
 	}
 
-	public static void applyRotation(Entity entity, float yawDelta, boolean skipRotation) {
+	public static void applyRotation(Entity entity, float yawDelta, boolean invertVisualRot, boolean skipRotation) {
 		if (yawDelta == 0F || !(entity instanceof GearboxRotationSessionInterface rotationSession)) return;
 
 		final BlockPos gearboxPos = rotationSession.theCopperierAge$getGearboxPosition();
@@ -115,6 +115,7 @@ public final class GearboxEntityRotationHelper {
 		entity.setOnGround(wasOnGround);
 
 		if (skipRotation) return;
+		yawDelta *= invertVisualRot ? -1F : 1F;
 		final float oldYaw = entity.getYRot();
 		entity.yRotO = oldYaw;
 		final float newYaw = Mth.wrapDegrees(oldYaw + yawDelta);

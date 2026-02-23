@@ -8,6 +8,7 @@
     "block.copper_fan.EntityMixin",
     "block.copper_fire.BaseFireBlockMixin",
     "block.copper_fire.CampfireBlockMixin",
+    "block.gearbox.AbstractMinecartMixin",
     "block.gearbox.EntityMixin",
     "block.rail.DetectorRailBlockMixin",
     "block.redstone.RedstoneWireBlockMixin",

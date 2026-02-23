@@ -82,6 +82,5 @@ public abstract class LocalPlayerGearboxRotationMixin {
 
 		final float yawDeltaThisFrame = gearboxYawDelta * 20F * deltaSeconds;
 		GearboxEntityRotationHelper.applyLocalRotation(player, yawDeltaThisFrame);
-		GearboxEntityRotationHelper.debug(player, yawDeltaThisFrame);
 	}
 }

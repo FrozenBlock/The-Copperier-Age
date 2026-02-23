@@ -17,7 +17,6 @@
 
 package net.frozenblock.thecopperierage.block.gearbox;
 
-import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,7 +29,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public final class GearboxEntityRotationHelper {
 	private static final float GEARBOX_ACTIVE_YAW_DELTA = 3.5F;
-	private static final boolean DEBUG_GEARBOX_ROTATION = TCAConstants.UNSTABLE_LOGGING && Boolean.getBoolean("tca.debug.gearbox_rotation");
 
 	private GearboxEntityRotationHelper() {
 	}
@@ -131,11 +129,5 @@ public final class GearboxEntityRotationHelper {
 
 		livingEntity.yHeadRotO += yawDelta;
 		livingEntity.setYHeadRot(livingEntity.yHeadRot + yawDelta);
-	}
-
-	public static void debug(Entity entity, float yawDelta) {
-		if (!DEBUG_GEARBOX_ROTATION || yawDelta == 0F) return;
-		if (entity.tickCount % 20 != 0) return;
-		TCAConstants.LOGGER.info("Gearbox rotate {} yawDelta={} yRot={}", entity.getType(), yawDelta, entity.getYRot());
 	}
 }

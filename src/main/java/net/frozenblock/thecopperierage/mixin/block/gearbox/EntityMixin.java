@@ -126,9 +126,6 @@ public abstract class EntityMixin implements GearboxRotationSessionInterface {
 			this.theCopperierAge$cachedSupportPos.set(onPos);
 		}
 
-		if (this.theCopperierAge$automaticallyRotatesWithGearbox()) {
-			GearboxEntityRotationHelper.applyRotation(entity, yawDelta);
-			GearboxEntityRotationHelper.debug(entity, yawDelta);
-		}
+		if (this.theCopperierAge$automaticallyRotatesWithGearbox()) GearboxEntityRotationHelper.applyRotation(entity, yawDelta);
 	}
 }

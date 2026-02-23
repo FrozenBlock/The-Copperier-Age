@@ -76,7 +76,7 @@ public class MinecartCouplingUtil {
 
 		stack.consume(1, player);
 		coupleTo(cart1, cart2);
-		cart1.playSound(TCASounds.ENTITY_MINECART_COUPLE);
+		cart1.playSound(TCASounds.ENTITY_MINECART_COUPLE, 1F, (cart1.getRandom().nextFloat() * 0.2F) + 0.9F);
 		return true;
 	}
 
@@ -368,7 +368,7 @@ public class MinecartCouplingUtil {
 		);
 
 		if (coupling.isCoupledTo()) {
-			if (playSound) cart.playSound(TCASounds.ENTITY_MINECART_COUPLE_BREAK);
+			if (playSound) cart.playSound(TCASounds.ENTITY_MINECART_COUPLE_BREAK, 0.9F, (cart.getRandom().nextFloat() * 0.2F) + 0.9F);
 			if (drop && cart.level() instanceof ServerLevel serverLevel) cart.spawnAtLocation(serverLevel, TCAItems.MINECART_COUPLING.getDefaultInstance());
 			return true;
 		}
@@ -387,7 +387,7 @@ public class MinecartCouplingUtil {
 		);
 
 		if (coupling.isCoupledFrom()) {
-			if (playSound) cart.playSound(TCASounds.ENTITY_MINECART_COUPLE_BREAK);
+			if (playSound) cart.playSound(TCASounds.ENTITY_MINECART_COUPLE_BREAK, 0.9F, (cart.getRandom().nextFloat() * 0.2F) + 0.9F);
 			if (drop && cart.level() instanceof ServerLevel serverLevel) cart.spawnAtLocation(serverLevel, TCAItems.MINECART_COUPLING.getDefaultInstance());
 			return true;
 		}

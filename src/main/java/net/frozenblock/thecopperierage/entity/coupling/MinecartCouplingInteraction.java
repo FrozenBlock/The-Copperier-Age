@@ -70,7 +70,7 @@ public class MinecartCouplingInteraction {
 		if (MinecartCouplingUtil.uncoupleFrom(minecart, false, false)) couplings += 1;
 		if (couplings == 0) return false;
 
-		minecart.playSound(TCASounds.ENTITY_MINECART_UNCOUPLE);
+		minecart.playSound(TCASounds.ENTITY_MINECART_UNCOUPLE, 0.5F, (minecart.getRandom().nextFloat() * 0.2F) + 0.9F);
 		player.getInventory().placeItemBackInInventory(new ItemStack(TCAItems.MINECART_COUPLING, couplings));
 		player.getItemInHand(hand).hurtAndBreak(1, player, hand);
 		return true;

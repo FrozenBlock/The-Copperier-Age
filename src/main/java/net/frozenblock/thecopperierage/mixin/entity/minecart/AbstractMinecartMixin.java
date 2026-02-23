@@ -17,8 +17,8 @@
 
 package net.frozenblock.thecopperierage.mixin.entity.minecart;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import net.frozenblock.thecopperierage.registry.TCASounds;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
@@ -48,10 +48,16 @@ public class AbstractMinecartMixin {
 		EntitySpawnReason reason,
 		ItemStack stack,
 		@Nullable Player player,
-		CallbackInfoReturnable<T> infoReturnable,
-		@Local T minecart
+		CallbackInfoReturnable<T> infoReturnable
 	) {
-		level.playSound(null, x, y, z, TCASounds.ENTITY_MINECART_PLACE, minecart.getSoundSource());
+		level.playSound(
+			null,
+			x, y, z,
+			TCASounds.ENTITY_MINECART_PLACE,
+			SoundSource.NEUTRAL,
+			1F,
+			(level.getRandom().nextFloat() * 0.3F) + 0.85F
+		);
 	}
 
 }

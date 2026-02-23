@@ -41,13 +41,13 @@ public class VehicleEntityMixin {
 	)
 	public void theCopperierAge$destroyMinecartSoundOnDiscard(ServerLevel level, DamageSource source, float damage, CallbackInfoReturnable<Boolean> info) {
 		if (!(VehicleEntity.class.cast(this) instanceof AbstractMinecart minecart)) return;
-		minecart.playSound(TCASounds.ENTITY_MINECART_BREAK);
+		minecart.playSound(TCASounds.ENTITY_MINECART_BREAK, 1F, (minecart.getRandom().nextFloat() * 0.3F) + 0.85F);
 	}
 
 	@Inject(method = "destroy(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/item/Item;)V", at = @At("HEAD"))
 	public void theCopperierAge$destroyMinecartSoundOnDestroy(ServerLevel serverLevel, Item dropItem, CallbackInfo info) {
 		if (!(VehicleEntity.class.cast(this) instanceof AbstractMinecart minecart)) return;
-		minecart.playSound(TCASounds.ENTITY_MINECART_BREAK);
+		minecart.playSound(TCASounds.ENTITY_MINECART_BREAK, 1F, (minecart.getRandom().nextFloat() * 0.3F) + 0.85F);
 	}
 
 }

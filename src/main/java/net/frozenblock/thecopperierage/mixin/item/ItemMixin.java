@@ -65,36 +65,43 @@ public class ItemMixin implements ItemOxidizationCacheInterface {
 		stack.set(stack.get().transmuteCopy(baseItem));
 	}
 
+	@Unique
 	@Override
 	public void theCopperierAge$setWeatherState(WeatheringCopper.WeatherState weatherState) {
 		this.theCopperierAge$weatherState = weatherState;
 	}
 
+	@Unique
 	@Override
 	public void theCopperierAge$setWaxed(boolean waxed) {
 		this.theCopperierAge$waxed = waxed;
 	}
 
+	@Unique
 	@Override
 	public void theCopperierAge$setBaseItem(Item item) {
 		this.theCopperierAge$baseItem = item;
 	}
 
+	@Unique
 	@Override
 	public WeatheringCopper.WeatherState theCopperierAge$weatherState() {
 		return this.theCopperierAge$weatherState;
 	}
 
+	@Unique
 	@Override
 	public boolean theCopperierAge$waxed() {
 		return this.theCopperierAge$waxed;
 	}
 
+	@Unique
 	@Override
 	public Item theCopperierAge$baseItem() {
 		return this.theCopperierAge$baseItem;
 	}
 
+	@Unique
 	@Override
 	public void theCopperierAge$clearOxidizationCache() {
 		this.theCopperierAge$weatherState = null;

@@ -25,7 +25,7 @@ import java.util.Set;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.frozenblock.thecopperierage.entity.JukeboxMinecart;
+import net.frozenblock.thecopperierage.entity.MinecartJukebox;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.EntityBoundSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
@@ -54,7 +54,7 @@ public final class JukeboxMinecartSoundHandler {
 		final SoundManager soundManager = minecraft.getSoundManager();
 		final Set<Integer> activeSongMinecartIds = new HashSet<>();
 		for (Entity entity : minecraft.level.entitiesForRendering()) {
-			if (!(entity instanceof JukeboxMinecart minecart) || !minecart.isSongPlaying() || minecart.isSongSilent()) continue;
+			if (!(entity instanceof MinecartJukebox minecart) || !minecart.isSongPlaying() || minecart.isSongSilent()) continue;
 
 			final Optional<Holder<JukeboxSong>> song = minecart.getSong();
 			if (song.isEmpty()) continue;

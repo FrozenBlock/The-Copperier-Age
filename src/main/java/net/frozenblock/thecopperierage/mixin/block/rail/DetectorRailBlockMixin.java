@@ -19,7 +19,7 @@ package net.frozenblock.thecopperierage.mixin.block.rail;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.frozenblock.thecopperierage.entity.JukeboxMinecart;
+import net.frozenblock.thecopperierage.entity.MinecartJukebox;
 import net.minecraft.world.Container;
 import net.minecraft.world.level.block.DetectorRailBlock;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,7 +36,7 @@ public class DetectorRailBlockMixin {
 		)
 	)
 	private int theCopperierAge$useJukeboxDiscComparatorValue(Container container, Operation<Integer> original) {
-		if (container instanceof JukeboxMinecart jukeboxMinecart) return jukeboxMinecart.getComparatorOutput();
+		if (container instanceof MinecartJukebox minecartJukebox) return minecartJukebox.getComparatorOutput();
 		return original.call(container);
 	}
 }

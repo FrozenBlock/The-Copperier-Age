@@ -38,14 +38,14 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class CrateMinecart extends AbstractMinecartContainer {
+public class MinecartCrate extends AbstractMinecartContainer {
 	private int openCount;
 
-	public CrateMinecart(EntityType<CrateMinecart> entityType, Level level) {
+	public MinecartCrate(EntityType<MinecartCrate> entityType, Level level) {
 		super(entityType, level);
 	}
 
-	public CrateMinecart(Level level, double x, double y, double z) {
+	public MinecartCrate(Level level, double x, double y, double z) {
 		this(TCAEntityTypes.CRATE_MINECART, level);
 		this.setPos(x, y, z);
 	}

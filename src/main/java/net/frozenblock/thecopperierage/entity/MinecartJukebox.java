@@ -47,20 +47,20 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
-public class JukeboxMinecart extends AbstractMinecartContainer {
+public class MinecartJukebox extends AbstractMinecartContainer {
 	public static final String TICKS_SINCE_SONG_STARTED_TAG_ID = "ticks_since_song_started";
 	private static final long PLAY_EVENT_INTERVAL_TICKS = 20L;
-	private static final EntityDataAccessor<ItemStack> DATA_CLIENT_RECORD_ITEM = SynchedEntityData.defineId(JukeboxMinecart.class, EntityDataSerializers.ITEM_STACK);
-	private static final EntityDataAccessor<Byte> DATA_PLAYING = SynchedEntityData.defineId(JukeboxMinecart.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<ItemStack> DATA_CLIENT_RECORD_ITEM = SynchedEntityData.defineId(MinecartJukebox.class, EntityDataSerializers.ITEM_STACK);
+	private static final EntityDataAccessor<Byte> DATA_PLAYING = SynchedEntityData.defineId(MinecartJukebox.class, EntityDataSerializers.BYTE);
 	private static final int CONTAINER_SIZE = 1;
 	private long ticksSinceSongStarted;
 
-	public JukeboxMinecart(EntityType<? extends JukeboxMinecart> type, Level level) {
+	public MinecartJukebox(EntityType<? extends MinecartJukebox> type, Level level) {
 		super(type, level);
 		this.clearItemStacks();
 	}
 
-	public JukeboxMinecart(Level level, double x, double y, double z) {
+	public MinecartJukebox(Level level, double x, double y, double z) {
 		this(TCAEntityTypes.JUKEBOX_MINECART, level);
 		this.setPos(x, y, z);
 	}

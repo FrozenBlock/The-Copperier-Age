@@ -36,14 +36,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.server.level.ServerLevel;
 
-public class DropperMinecart extends AbstractDispenserMinecart {
+public class MinecartDispenserDropper extends AbstractMinecartDispenser {
 	private static final DefaultDispenseItemBehavior DISPENSE_BEHAVIOR = new DefaultDispenseItemBehavior();
 
-	public DropperMinecart(EntityType<? extends DropperMinecart> entityType, Level level) {
+	public MinecartDispenserDropper(EntityType<? extends MinecartDispenserDropper> entityType, Level level) {
 		super(entityType, level);
 	}
 
-	public DropperMinecart(Level level, double x, double y, double z) {
+	public MinecartDispenserDropper(Level level, double x, double y, double z) {
 		this(TCAEntityTypes.DROPPER_MINECART, level);
 		this.setPos(x, y, z);
 	}
@@ -64,33 +64,26 @@ public class DropperMinecart extends AbstractDispenserMinecart {
 	}
 
 	@Override
-	public int getDefaultDisplayOffset() {
-		return 6;
-	}
-
-	@Override
 	protected DispenserBlockEntity createActivationBlockEntity(BlockPos blockPos, BlockState state) {
 		return new DropperBlockEntity(blockPos, state);
 	}
 
 	@Override
 	protected ItemStack trigger(
-		ServerLevel serverLevel,
-		BlockPos blockPos,
+		ServerLevel level,
+		BlockPos pos,
 		BlockState state,
 		DispenserBlockEntity dispenser,
 		BlockSource blockSource,
 		ItemStack stack
 	) {
 		final Direction direction = Direction.UP;
-		final Container container = HopperBlockEntity.getContainerAt(serverLevel, blockPos.relative(direction));
-		if (container == null) {
-			return DISPENSE_BEHAVIOR.dispense(blockSource, stack);
-		}
+		final Container container = HopperBlockEntity.getContainerAt(level, pos.relative(direction));
+		if (container == null) return DISPENSE_BEHAVIOR.dispense(blockSource, stack);
 
 		final ItemStack transferred = HopperBlockEntity.addItem(this, container, stack.copyWithCount(1), direction.getOpposite());
 		if (transferred.isEmpty()) {
-			ItemStack remaining = stack.copy();
+			final ItemStack remaining = stack.copy();
 			remaining.shrink(1);
 			return remaining;
 		}

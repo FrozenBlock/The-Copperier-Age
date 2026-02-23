@@ -28,16 +28,17 @@ import net.minecraft.world.inventory.DispenserMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.entity.DispenserBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.server.level.ServerLevel;
 
-public abstract class AbstractDispenserMinecart extends AbstractMinecartContainer {
+public abstract class AbstractMinecartDispenser extends AbstractMinecartContainer {
 	private static final int CONTAINER_SIZE = 9;
 	private static final int ACTIVATION_DELAY = 4;
 	private int lastActivatedTick;
 
-	protected AbstractDispenserMinecart(EntityType<?> entityType, Level level) {
+	protected AbstractMinecartDispenser(EntityType<?> entityType, Level level) {
 		super(entityType, level);
 	}
 
@@ -66,7 +67,7 @@ public abstract class AbstractDispenserMinecart extends AbstractMinecartContaine
 		final BlockState state = this.getDefaultDisplayBlockState().setValue(DispenserBlock.FACING, Direction.UP);
 		final int slot = this.getRandomNonEmptySlot(serverLevel);
 		if (slot < 0) {
-			serverLevel.levelEvent(1001, blockPos, 0);
+			serverLevel.levelEvent(LevelEvent.SOUND_DISPENSER_FAIL, blockPos, 0);
 			return;
 		}
 
@@ -76,9 +77,7 @@ public abstract class AbstractDispenserMinecart extends AbstractMinecartContaine
 		final DispenserBlockEntity dispenser = this.createActivationBlockEntity(blockPos, state);
 		final BlockSource blockSource = new BlockSource(serverLevel, blockPos, state, dispenser);
 		final ItemStack result = this.trigger(serverLevel, blockPos, state, dispenser, blockSource, stack.copy());
-		if (result != null) {
-			this.setItem(slot, result);
-		}
+		if (result != null) this.setItem(slot, result);
 	}
 
 	private int getRandomNonEmptySlot(ServerLevel serverLevel) {
@@ -87,9 +86,7 @@ public abstract class AbstractDispenserMinecart extends AbstractMinecartContaine
 
 		for (int slot = 0; slot < this.getContainerSize(); slot++) {
 			if (this.getItem(slot).isEmpty()) continue;
-			if (serverLevel.random.nextInt(nonEmptyCount++) == 0) {
-				selectedSlot = slot;
-			}
+			if (serverLevel.random.nextInt(nonEmptyCount++) == 0) selectedSlot = slot;
 		}
 
 		return selectedSlot;
@@ -98,8 +95,8 @@ public abstract class AbstractDispenserMinecart extends AbstractMinecartContaine
 	protected abstract DispenserBlockEntity createActivationBlockEntity(BlockPos blockPos, BlockState state);
 
 	protected abstract ItemStack trigger(
-		ServerLevel serverLevel,
-		BlockPos blockPos,
+		ServerLevel level,
+		BlockPos pos,
 		BlockState state,
 		DispenserBlockEntity dispenser,
 		BlockSource blockSource,

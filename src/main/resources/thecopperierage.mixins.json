@@ -50,7 +50,8 @@
     "client.oxidized_items.SelectItemModelPropertiesMixin",
     "client.oxidizing_auto_models.BlockModelWrapperUnbakedMixin",
     "client.waxed_items.GuiGraphicsMixin",
-    "datagen.client.VariantMutatorMixin"
+    "datagen.client.VariantMutatorMixin",
+    "entity.dispenser_minecart.AbstractMinecartMixin"
   ],
   "injectors": {
     "defaultRequire": 1

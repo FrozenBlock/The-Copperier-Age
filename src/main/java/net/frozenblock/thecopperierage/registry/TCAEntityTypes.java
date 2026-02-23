@@ -18,11 +18,11 @@
 package net.frozenblock.thecopperierage.registry;
 
 import net.frozenblock.thecopperierage.TCAConstants;
-import net.frozenblock.thecopperierage.entity.CopperGolemStatueMinecart;
-import net.frozenblock.thecopperierage.entity.CrateMinecart;
-import net.frozenblock.thecopperierage.entity.DispenserMinecart;
-import net.frozenblock.thecopperierage.entity.DropperMinecart;
-import net.frozenblock.thecopperierage.entity.JukeboxMinecart;
+import net.frozenblock.thecopperierage.entity.MinecartCopperGolemStatue;
+import net.frozenblock.thecopperierage.entity.MinecartCrate;
+import net.frozenblock.thecopperierage.entity.MinecartDispenser;
+import net.frozenblock.thecopperierage.entity.MinecartDispenserDropper;
+import net.frozenblock.thecopperierage.entity.MinecartJukebox;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -32,41 +32,41 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 
 public final class TCAEntityTypes {
-	public static final EntityType<CrateMinecart> CRATE_MINECART = register(
+	public static final EntityType<MinecartCrate> CRATE_MINECART = register(
 		"crate_minecart",
-		EntityType.Builder.<CrateMinecart>of(CrateMinecart::new, MobCategory.MISC)
+		EntityType.Builder.<MinecartCrate>of(MinecartCrate::new, MobCategory.MISC)
 			.sized(0.98F, 0.7F)
 			.clientTrackingRange(8)
 			.updateInterval(3)
 	);
 
-	public static final EntityType<CopperGolemStatueMinecart> COPPER_GOLEM_STATUE_MINECART = register(
+	public static final EntityType<MinecartCopperGolemStatue> COPPER_GOLEM_STATUE_MINECART = register(
 		"copper_golem_statue_minecart",
-		EntityType.Builder.<CopperGolemStatueMinecart>of(CopperGolemStatueMinecart::new, MobCategory.MISC)
+		EntityType.Builder.<MinecartCopperGolemStatue>of(MinecartCopperGolemStatue::new, MobCategory.MISC)
 			.sized(0.98F, 0.7F)
 			.clientTrackingRange(8)
 			.updateInterval(3)
 	);
 
-	public static final EntityType<DispenserMinecart> DISPENSER_MINECART = register(
+	public static final EntityType<MinecartDispenser> DISPENSER_MINECART = register(
 		"dispenser_minecart",
-		EntityType.Builder.<DispenserMinecart>of(DispenserMinecart::new, MobCategory.MISC)
+		EntityType.Builder.<MinecartDispenser>of(MinecartDispenser::new, MobCategory.MISC)
 			.sized(0.98F, 0.7F)
 			.clientTrackingRange(8)
 			.updateInterval(3)
 	);
 
-	public static final EntityType<DropperMinecart> DROPPER_MINECART = register(
+	public static final EntityType<MinecartDispenserDropper> DROPPER_MINECART = register(
 		"dropper_minecart",
-		EntityType.Builder.<DropperMinecart>of(DropperMinecart::new, MobCategory.MISC)
+		EntityType.Builder.<MinecartDispenserDropper>of(MinecartDispenserDropper::new, MobCategory.MISC)
 			.sized(0.98F, 0.7F)
 			.clientTrackingRange(8)
 			.updateInterval(3)
 	);
 
-	public static final EntityType<JukeboxMinecart> JUKEBOX_MINECART = register(
+	public static final EntityType<MinecartJukebox> JUKEBOX_MINECART = register(
 		"jukebox_minecart",
-		EntityType.Builder.<JukeboxMinecart>of(JukeboxMinecart::new, MobCategory.MISC)
+		EntityType.Builder.<MinecartJukebox>of(MinecartJukebox::new, MobCategory.MISC)
 			.sized(0.98F, 0.7F)
 			.clientTrackingRange(8)
 			.updateInterval(3)

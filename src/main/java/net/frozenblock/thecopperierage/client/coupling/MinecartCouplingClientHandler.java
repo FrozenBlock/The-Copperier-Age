@@ -48,6 +48,10 @@ public final class MinecartCouplingClientHandler {
 
 	public static void onCartClicked(Player player, InteractionHand hand, AbstractMinecart cart) {
 		if (Minecraft.getInstance().player != player) return;
+		if (player.isSpectator()) {
+			clearSelection();
+			return;
+		}
 
 		if (selectedCartId == null || selectedCartId == cart.getId()) {
 			selectedCartId = cart.getId();
@@ -67,7 +71,7 @@ public final class MinecartCouplingClientHandler {
 		}
 
 		final LocalPlayer player = minecraft.player;
-		if (player == null || minecraft.level == null || !(minecraft.level.getEntity(selectedCartId) instanceof AbstractMinecart)) {
+		if (player == null || player.isSpectator() || minecraft.level == null || !(minecraft.level.getEntity(selectedCartId) instanceof AbstractMinecart)) {
 			clearSelection();
 			return;
 		}

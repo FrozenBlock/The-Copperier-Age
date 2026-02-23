@@ -81,34 +81,51 @@ public class MinecartCouplingInteraction {
 	public static boolean isCouplingValidInWorld(Level level, AbstractMinecart selectedCart, Entity target, boolean checkEntityHitResult) {
 		if (target == null || selectedCart == null || level == null || level != selectedCart.level()) return false;
 		if (!target.isAlive() || target.isSpectator() || !selectedCart.isAlive() || selectedCart.isSpectator()) return false;
-		final Vec3 startPos = selectedCart.position().add(0D, 0.1D, 0D);
-		Vec3 targetPos = (!(target instanceof AbstractMinecart)) ? target.getEyePosition(1F) : target.position().add(0D, 0.1D, 0D);
-		if (startPos.distanceTo(targetPos) > MAX_PLAYER_DISTANCE) return false;
 
-		final BlockHitResult hitResult = level.clip(
-			new ClipContext(
-				startPos,
-				targetPos,
-				ClipContext.Block.COLLIDER,
-				ClipContext.Fluid.NONE,
-				selectedCart
-			)
-		);
-		if (hitResult.getType() != HitResult.Type.MISS) {
-			if (!checkEntityHitResult) return false;
-			targetPos = hitResult.getLocation();
-		} else if (!checkEntityHitResult) {
-			return true;
+		final Vec3 baseCartPos = selectedCart.position();
+		final Vec3 baseTargetPos = target.position();
+		if (baseCartPos.distanceTo(baseTargetPos) > MAX_PLAYER_DISTANCE) return false;
+
+
+		final Vec3[] startPoses = new Vec3[] {
+			baseCartPos.add(0D, 0.1D, 0D),
+			selectedCart.getEyePosition()
+		};
+		final Vec3[] targetPoses = new Vec3[] {
+			baseTargetPos.add(0D, 0.1D, 0D),
+			target.getEyePosition()
+		};
+
+		for (Vec3 startPos : startPoses) {
+			for (Vec3 targetPos : targetPoses) {
+				final BlockHitResult hitResult = level.clip(
+					new ClipContext(
+						startPos,
+						targetPos,
+						ClipContext.Block.COLLIDER,
+						ClipContext.Fluid.NONE,
+						selectedCart
+					)
+				);
+				if (hitResult.getType() != HitResult.Type.MISS) {
+					if (!checkEntityHitResult) continue;
+					targetPos = hitResult.getLocation();
+				} else if (!checkEntityHitResult) {
+					return true;
+				}
+
+				final EntityHitResult entityResult = ProjectileUtil.getEntityHitResult(
+					selectedCart,
+					startPos,
+					targetPos,
+					selectedCart.getBoundingBox().minmax(target.getBoundingBox()),
+					EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.NO_SPECTATORS),
+					MAX_PLAYER_DISTANCE_SQR
+				);
+				if (entityResult != null && entityResult.getEntity() == target) return true;
+			}
 		}
 
-		final EntityHitResult entityResult = ProjectileUtil.getEntityHitResult(
-			selectedCart,
-			startPos,
-			targetPos,
-			selectedCart.getBoundingBox().minmax(target.getBoundingBox()),
-			EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.NO_SPECTATORS),
-			MAX_PLAYER_DISTANCE_SQR
-		);
-		return entityResult != null && entityResult.getEntity() == target;
+		return false;
 	}
 }

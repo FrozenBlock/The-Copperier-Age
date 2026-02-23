@@ -54,27 +54,27 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(MinecartFurnace.class)
 public abstract class MinecartFurnaceMixin extends AbstractMinecart implements Container, MenuProvider, WorldlyContainer {
     @Unique
-    private static final int theCopperierAge$CONTAINER_SIZE = FurnaceMinecartMenu.SLOT_COUNT;
+    private static final int THECOPPERIERAGE$CONTAINER_SIZE = FurnaceMinecartMenu.SLOT_COUNT;
     @Unique
-    private static final int theCopperierAge$MAX_FUEL = 32000;
+    private static final int THECOPPERIERAGE$MAX_FUEL = 32000;
     @Unique
-    private static final int theCopperierAge$MIN_BURN_DURATION = 1;
+    private static final int THECOPPERIERAGE$MIN_BURN_DURATION = 1;
     @Unique
-    private static final int theCopperierAge$DEFAULT_FUEL_DURATION = 200;
+    private static final int THECOPPERIERAGE$DEFAULT_FUEL_DURATION = 200;
     @Unique
-    private static final int theCopperierAge$MENU_DATA_COUNT = 2;
+    private static final int THECOPPERIERAGE$MENU_DATA_COUNT = 2;
     @Unique
-    private static final String theCopperierAge$FUEL_DURATION_TAG_ID = "FuelDuration";
+    private static final String THECOPPERIERAGE$FUEL_DURATION_TAG_ID = "FuelDuration";
     @Unique
-    private static final int[] theCopperierAge$SLOTS_FOR_ALL_SIDES = IntStream.range(0, theCopperierAge$CONTAINER_SIZE).toArray();
+    private static final int[] THECOPPERIERAGE$SLOTS_FOR_ALL_SIDES = IntStream.range(0, THECOPPERIERAGE$CONTAINER_SIZE).toArray();
 
     @Shadow
     private int fuel;
 
     @Unique
-    private NonNullList<ItemStack> theCopperierAge$inventory = NonNullList.withSize(theCopperierAge$CONTAINER_SIZE, ItemStack.EMPTY);
+    private NonNullList<ItemStack> theCopperierAge$inventory = NonNullList.withSize(THECOPPERIERAGE$CONTAINER_SIZE, ItemStack.EMPTY);
     @Unique
-    private int theCopperierAge$fuelDuration = theCopperierAge$DEFAULT_FUEL_DURATION;
+    private int theCopperierAge$fuelDuration = THECOPPERIERAGE$DEFAULT_FUEL_DURATION;
     @Unique
     private final ContainerData theCopperierAge$menuData = new ContainerData() {
         @Override
@@ -93,7 +93,7 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
 
         @Override
         public int getCount() {
-            return theCopperierAge$MENU_DATA_COUNT;
+            return THECOPPERIERAGE$MENU_DATA_COUNT;
         }
     };
 
@@ -101,14 +101,14 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
         super(entityType, level);
     }
 
-    @Inject(method = "tick", at = @At("HEAD"), require = 0)
+    @Inject(method = "tick", at = @At("HEAD"))
     private void theCopperierAge$pullFuelFromInventory(CallbackInfo info) {
         if (this.level().isClientSide()) return;
         if (!TCAConfig.IMPROVED_FURNACE_MINECARTS) return;
 
-        final MinecartFurnace furnace = this.theCopperierAge$asFurnace();
-        if (!this.theCopperierAge$isFiniteHorizontal(furnace.push)) {
-            furnace.push = Vec3.ZERO;
+        final MinecartFurnace minecartFurnace = MinecartFurnace.class.cast(this);
+        if (!this.theCopperierAge$isFiniteHorizontal(minecartFurnace.push)) {
+            minecartFurnace.push = Vec3.ZERO;
         }
 
         if (this.fuel > 0) {
@@ -117,9 +117,7 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
         }
 
         for (int slot = 0; slot < this.theCopperierAge$inventory.size(); slot++) {
-            if (this.theCopperierAge$tryConsumeFuel(slot)) {
-                break;
-            }
+            if (this.theCopperierAge$tryConsumeFuel(slot)) break;
         }
     }
 
@@ -137,8 +135,8 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
             this.theCopperierAge$placeRemainder(slot, remainder.copy());
         }
 
-        this.fuel = Math.min(this.fuel + burnDuration, theCopperierAge$MAX_FUEL);
-        this.theCopperierAge$fuelDuration = Math.max(theCopperierAge$MIN_BURN_DURATION, burnDuration);
+        this.fuel = Math.min(this.fuel + burnDuration, THECOPPERIERAGE$MAX_FUEL);
+        this.theCopperierAge$fuelDuration = Math.max(THECOPPERIERAGE$MIN_BURN_DURATION, burnDuration);
         this.theCopperierAge$ensurePushDirection();
         this.setChanged();
         return true;
@@ -161,37 +159,28 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
             }
         }
 
-        if (this.level() instanceof ServerLevel serverLevel) {
-            this.spawnAtLocation(serverLevel, remainder);
-        }
+        if (this.level() instanceof ServerLevel serverLevel) this.spawnAtLocation(serverLevel, remainder);
     }
 
     @Unique
     private void theCopperierAge$ensurePushDirection() {
-        final MinecartFurnace furnace = this.theCopperierAge$asFurnace();
-        if (!this.theCopperierAge$isFiniteHorizontal(furnace.push)) {
-            furnace.push = Vec3.ZERO;
-        }
-        if (!Mth.equal((float) furnace.push.x, 0F) || !Mth.equal((float) furnace.push.z, 0F)) return;
+        final MinecartFurnace minecartFurnace = MinecartFurnace.class.cast(this);
+        if (!this.theCopperierAge$isFiniteHorizontal(minecartFurnace.push)) minecartFurnace.push = Vec3.ZERO;
+        if (!Mth.equal((float) minecartFurnace.push.x, 0F) || !Mth.equal((float) minecartFurnace.push.z, 0F)) return;
 
-        Vec3 horizontalVelocity = this.getDeltaMovement().multiply(1D, 0D, 1D);
+        final Vec3 horizontalVelocity = this.getDeltaMovement().multiply(1D, 0D, 1D);
         if (horizontalVelocity.lengthSqr() > 1.0E-4D) {
-            furnace.push = horizontalVelocity.normalize();
+            minecartFurnace.push = horizontalVelocity.normalize();
             return;
         }
 
-        Vec3 facingDirection = Vec3.directionFromRotation(0F, this.getYRot()).multiply(1D, 0D, 1D);
+        final Vec3 facingDirection = Vec3.directionFromRotation(0F, this.getYRot()).multiply(1D, 0D, 1D);
         if (facingDirection.lengthSqr() > 1.0E-4D) {
-            furnace.push = facingDirection.normalize();
+            minecartFurnace.push = facingDirection.normalize();
             return;
         }
 
-        furnace.push = new Vec3(1D, 0D, 0D);
-    }
-
-    @Unique
-    private MinecartFurnace theCopperierAge$asFurnace() {
-        return (MinecartFurnace) (Object) this;
+        minecartFurnace.push = new Vec3(1D, 0D, 0D);
     }
 
     @Unique
@@ -204,7 +193,7 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
         return slot >= 0 && slot < this.theCopperierAge$inventory.size();
     }
 
-    @Inject(method = "interact", at = @At("HEAD"), cancellable = true, require = 0)
+    @Inject(method = "interact", at = @At("HEAD"), cancellable = true)
     private void theCopperierAge$openInventory(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> info) {
         if (!TCAConfig.IMPROVED_FURNACE_MINECARTS) return;
         if (this.level().isClientSide()) {
@@ -216,17 +205,17 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
         info.setReturnValue(InteractionResult.CONSUME);
     }
 
-    @Inject(method = "addAdditionalSaveData", at = @At("TAIL"), require = 0)
+    @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
     private void theCopperierAge$saveInventory(ValueOutput output, CallbackInfo info) {
         ContainerHelper.saveAllItems(output, this.theCopperierAge$inventory);
-        output.putInt(theCopperierAge$FUEL_DURATION_TAG_ID, this.theCopperierAge$fuelDuration);
+        output.putInt(THECOPPERIERAGE$FUEL_DURATION_TAG_ID, this.theCopperierAge$fuelDuration);
     }
 
-    @Inject(method = "readAdditionalSaveData", at = @At("TAIL"), require = 0)
+    @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
     private void theCopperierAge$loadInventory(ValueInput input, CallbackInfo info) {
         this.theCopperierAge$inventory = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
         ContainerHelper.loadAllItems(input, this.theCopperierAge$inventory);
-        this.theCopperierAge$fuelDuration = input.getInt(theCopperierAge$FUEL_DURATION_TAG_ID).orElse(theCopperierAge$DEFAULT_FUEL_DURATION);
+        this.theCopperierAge$fuelDuration = input.getInt(THECOPPERIERAGE$FUEL_DURATION_TAG_ID).orElse(THECOPPERIERAGE$DEFAULT_FUEL_DURATION);
     }
 
     @Override
@@ -241,7 +230,7 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
 
     @Override
     public int getContainerSize() {
-        return theCopperierAge$CONTAINER_SIZE;
+        return THECOPPERIERAGE$CONTAINER_SIZE;
     }
 
     @Override
@@ -302,7 +291,7 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
 
     @Override
     public int[] getSlotsForFace(Direction side) {
-        return theCopperierAge$SLOTS_FOR_ALL_SIDES;
+        return THECOPPERIERAGE$SLOTS_FOR_ALL_SIDES;
     }
 
     @Override

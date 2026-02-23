@@ -45,6 +45,9 @@ public class MinecartCouplingUtil {
 	private static final int MAX_COUPLING_DISTANCE = 3;
 	private static final float MIN_COUPLING_LENGTH = 1.5F;
 	private static final float MAX_HARD_CORRECTION_PER_TICK = 1.75F;
+	private static final float EXPERIMENTAL_SOFT_CORRECTION_SCALE = 0.4F;
+	private static final float EXPERIMENTAL_RELATIVE_DAMPING = 0.3F;
+	private static final float EXPERIMENTAL_MAX_RELATIVE_CORRECTION = 0.08F;
 	private static final double EPSILON = 1.0E-6D;
 
 	public static boolean attemptCouple(Player player, Level level, InteractionHand hand, int id1, int id2) {
@@ -111,8 +114,13 @@ public class MinecartCouplingUtil {
 		if (level.tickRateManager().isEntityFrozen(cart1) && level.tickRateManager().isEntityFrozen(cart2)) return true;
 
 		final float targetCouplingLength = MIN_COUPLING_LENGTH + additionalPassengerWidth;
-		softCollisionStep(level, cart1, cart2, targetCouplingLength);
-		hardCollisionStep(level, cart1, cart2, targetCouplingLength);
+		if (isUsingExperimentalMinecartPhysics(level)) {
+			softCollisionStep(level, cart1, cart2, targetCouplingLength, EXPERIMENTAL_SOFT_CORRECTION_SCALE);
+			dampRelativeVelocity(cart1, cart2, EXPERIMENTAL_RELATIVE_DAMPING, EXPERIMENTAL_MAX_RELATIVE_CORRECTION);
+		} else {
+			softCollisionStep(level, cart1, cart2, targetCouplingLength, 1F);
+			hardCollisionStep(level, cart1, cart2, targetCouplingLength);
+		}
 		return true;
 	}
 
@@ -134,7 +142,7 @@ public class MinecartCouplingUtil {
 		return Math.max(0F, width - cartWidth);
 	}
 
-	private static void softCollisionStep(Level level, AbstractMinecart cart1, AbstractMinecart cart2, float couplingLength) {
+	private static void softCollisionStep(Level level, AbstractMinecart cart1, AbstractMinecart cart2, float couplingLength, float correctionScale) {
 		final boolean firstCanAddMotion = canAddMotion(cart1);
 		final boolean secondCanAddMotion = canAddMotion(cart2);
 		if (!firstCanAddMotion && !secondCanAddMotion) return;
@@ -162,6 +170,7 @@ public class MinecartCouplingUtil {
 
 			float correctionMagnitude = -futureStress / 2F;
 			if (!otherCanAddMotion) correctionMagnitude *= 2F;
+			correctionMagnitude *= correctionScale;
 
 			Vec3 correction;
 			final RailShape shape = current ? firstShape : secondShape;
@@ -183,6 +192,43 @@ public class MinecartCouplingUtil {
 
 		cart1.setDeltaMovement(clamp(firstMotion, getMaxCartSpeed(cart1)));
 		cart2.setDeltaMovement(clamp(secondMotion, getMaxCartSpeed(cart2)));
+	}
+
+	private static void dampRelativeVelocity(AbstractMinecart first, AbstractMinecart second, float dampingScale, float maxCorrection) {
+		final boolean firstCanAddMotion = canAddMotion(first);
+		final boolean secondCanAddMotion = canAddMotion(second);
+		if (!firstCanAddMotion && !secondCanAddMotion) return;
+
+		final Vec3 link = second.position().subtract(first.position());
+		final double linkLengthSq = link.lengthSqr();
+		if (linkLengthSq <= EPSILON) return;
+
+		final Vec3 linkDirection = link.scale(1D / Math.sqrt(linkLengthSq));
+		final double relativeSpeed = second.getDeltaMovement().subtract(first.getDeltaMovement()).dot(linkDirection);
+		if (Math.abs(relativeSpeed) <= EPSILON) return;
+
+		final double correction = Mth.clamp(relativeSpeed * dampingScale, -maxCorrection, maxCorrection);
+		if (Math.abs(correction) <= EPSILON) return;
+
+		if (firstCanAddMotion && secondCanAddMotion) {
+			final Vec3 impulse = linkDirection.scale(correction * 0.5D);
+			first.setDeltaMovement(clamp(first.getDeltaMovement().add(impulse), getMaxCartSpeed(first)));
+			second.setDeltaMovement(clamp(second.getDeltaMovement().subtract(impulse), getMaxCartSpeed(second)));
+		} else if (firstCanAddMotion) {
+			final Vec3 impulse = linkDirection.scale(correction);
+			first.setDeltaMovement(clamp(first.getDeltaMovement().add(impulse), getMaxCartSpeed(first)));
+		} else {
+			final Vec3 impulse = linkDirection.scale(correction);
+			second.setDeltaMovement(clamp(second.getDeltaMovement().subtract(impulse), getMaxCartSpeed(second)));
+		}
+	}
+
+	private static boolean isUsingExperimentalMinecartPhysics(Level level) {
+		try {
+			return AbstractMinecart.useExperimentalMovement(level);
+		} catch (Throwable ignored) {
+			return false;
+		}
 	}
 
 	private static void hardCollisionStep(Level level, AbstractMinecart first, AbstractMinecart second, float couplingLength) {

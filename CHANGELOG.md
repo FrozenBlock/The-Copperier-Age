@@ -6,6 +6,8 @@ Put the changelog BELOW the dashes. ANYTHING ABOVE IS IGNORED.
 - Fixed Chimes not having map colors.
 - Added Crates.
 - Copper Golems can now occasionally press Copper Buttons.
+  - Randomly occers when idle.
+  - Attempts directly after depositing items into a chest.
 - Added waxing recipes that were missing.
 - Added waxing recipes for Copper Tools/Equipment.
   - Both the stats and visuals of the item will remain the same once waxed.

@@ -17,11 +17,8 @@
 
 package net.frozenblock.thecopperierage.entity.coupling;
 
-import java.util.ArrayList;
-import java.util.List;
 import net.frozenblock.thecopperierage.client.coupling.TCAMinecartCouplingClientHandler;
 import net.frozenblock.thecopperierage.registry.TCAItems;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -38,7 +35,7 @@ public class MinecartCouplingInteraction {
 		if (!(interacted instanceof AbstractMinecart minecart)) return null;
 
 		final ItemStack heldItem = player.getItemInHand(hand);
-		if (heldItem.is(ItemTags.CHAINS)) {
+		if (heldItem.is(TCAItems.MINECART_COUPLING)) {
 			interactWithCoupling(player, hand, minecart);
 			return InteractionResult.SUCCESS;
 		}
@@ -60,12 +57,12 @@ public class MinecartCouplingInteraction {
 		if (coupling.equals(CouplingData.EMPTY)) return false;
 		if (level.isClientSide()) return true;
 
-		final List<ItemStack> couplings = new ArrayList<>();
-		if (MinecartCouplingUtil.uncoupleTo(minecart, false)) coupling.getCoupledToItem().ifPresent(item -> couplings.add(item.copyAndClear()));
-		if (MinecartCouplingUtil.uncoupleFrom(minecart, false)) coupling.getCoupledFromItem().ifPresent(item -> couplings.add(item.copyAndClear()));
-		if (couplings.isEmpty()) return false;
+		int couplings = 0;
+		if (MinecartCouplingUtil.uncoupleTo(minecart, false)) couplings += 1;
+		if (MinecartCouplingUtil.uncoupleFrom(minecart, false)) couplings += 1;
+		if (couplings == 0) return false;
 
-		couplings.forEach(item -> player.getInventory().placeItemBackInInventory(item));
+		player.getInventory().placeItemBackInInventory(new ItemStack(TCAItems.MINECART_COUPLING, couplings));
 		player.getItemInHand(hand).hurtAndBreak(1, player, hand);
 		return true;
 	}

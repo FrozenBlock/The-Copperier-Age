@@ -38,6 +38,11 @@ public final class TCAItems {
 			.durability(128)
 	);
 
+	public static final Item MINECART_COUPLING = register("minecart_coupling",
+		Item::new,
+		new Item.Properties().stacksTo(16)
+	);
+
 	public static final CopperHornItem COPPER_HORN = register("copper_horn",
 		CopperHornItem::new,
 		new Item.Properties()

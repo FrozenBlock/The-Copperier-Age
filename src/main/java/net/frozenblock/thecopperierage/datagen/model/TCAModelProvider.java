@@ -126,6 +126,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 	public void generateItemModels(@NotNull ItemModelGenerators generator) {
 		generateCopperHorn(generator, TCAItems.COPPER_HORN);
 		generator.generateFlatItem(TCAItems.WRENCH, ModelTemplates.FLAT_HANDHELD_ITEM);
+		generator.generateFlatItem(TCAItems.MINECART_COUPLING, ModelTemplates.FLAT_ITEM);
 		generator.generateFlatItem(TCAItems.CRATE_MINECART, ModelTemplates.FLAT_ITEM);
 		generator.generateFlatItem(TCAItems.COPPER_GOLEM_STATUE_MINECART, ModelTemplates.FLAT_ITEM);
 		generator.generateFlatItem(TCAItems.JUKEBOX_MINECART, ModelTemplates.FLAT_ITEM);

@@ -19,11 +19,11 @@ package net.frozenblock.thecopperierage.entity.coupling;
 
 import net.frozenblock.thecopperierage.entity.impl.CouplingToEntityInterface;
 import net.frozenblock.thecopperierage.registry.TCAAttachments;
+import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -49,7 +49,7 @@ public class MinecartCouplingUtil {
 
 	public static boolean attemptCouple(Player player, Level level, InteractionHand hand, int id1, int id2) {
 		final ItemStack stack = player.getItemInHand(hand);
-		if (!stack.is(ItemTags.CHAINS)) return false;
+		if (!stack.is(TCAItems.MINECART_COUPLING)) return false;
 
 		return attemptOneWayCouple(player, level, stack, id1, id2) || attemptOneWayCouple(player, level, stack, id2, id1);
 	}
@@ -69,9 +69,8 @@ public class MinecartCouplingUtil {
 		final double distance = cart1.distanceTo(cart2);
 		if (distance >= MAX_COUPLING_DISTANCE) return false;
 
-		final ItemStack couplingItem = stack.copyWithCount(1);
 		stack.consume(1, player);
-		coupleTo(cart1, cart2, couplingItem);
+		coupleTo(cart1, cart2);
 		cart1.playSound(SoundEvents.ANVIL_USE);
 		return true;
 	}
@@ -240,14 +239,14 @@ public class MinecartCouplingUtil {
 
 		final Vec3 delta = lineOrigin.subtract(sphereCenter);
 		final double a = directionLengthSq;
-		final double b = 2.0D * delta.dot(lineDirection);
+		final double b = 2D * delta.dot(lineDirection);
 		final double c = delta.lengthSqr() - sphereRadius * sphereRadius;
-		final double discriminant = b * b - 4.0D * a * c;
+		final double discriminant = b * b - 4D * a * c;
 		if (discriminant < 0D) return null;
 
 		final double sqrtDiscriminant = Math.sqrt(discriminant);
-		final double t1 = (-b - sqrtDiscriminant) / (2.0D * a);
-		final double t2 = (-b + sqrtDiscriminant) / (2.0D * a);
+		final double t1 = (-b - sqrtDiscriminant) / (2D * a);
+		final double t2 = (-b + sqrtDiscriminant) / (2D * a);
 		double t = t1;
 		if (Math.abs(t2) < Math.abs(t1)) t = t2;
 
@@ -304,9 +303,9 @@ public class MinecartCouplingUtil {
 		return entity.getAttachedOrCreate(TCAAttachments.MINECART_COUPLING);
 	}
 
-	public static void coupleTo(AbstractMinecart cart1, AbstractMinecart cart2, ItemStack item) {
-		cart1.setAttached(TCAAttachments.MINECART_COUPLING, getCoupling(cart1).coupleTo(cart2.getUUID(), item));
-		cart2.setAttached(TCAAttachments.MINECART_COUPLING, getCoupling(cart2).coupleFrom(cart1.getUUID(), item));
+	public static void coupleTo(AbstractMinecart cart1, AbstractMinecart cart2) {
+		cart1.setAttached(TCAAttachments.MINECART_COUPLING, getCoupling(cart1).coupleTo(cart2.getUUID()));
+		cart2.setAttached(TCAAttachments.MINECART_COUPLING, getCoupling(cart2).coupleFrom(cart1.getUUID()));
 	}
 
 	public static boolean uncoupleTo(Entity cart, boolean drop) {
@@ -321,7 +320,7 @@ public class MinecartCouplingUtil {
 		);
 
 		if (coupling.isCoupledTo()) {
-			if (drop && cart.level() instanceof ServerLevel serverLevel) coupling.getCoupledToItem().ifPresent(item -> cart.spawnAtLocation(serverLevel, item));
+			if (drop && cart.level() instanceof ServerLevel serverLevel) cart.spawnAtLocation(serverLevel, TCAItems.MINECART_COUPLING.getDefaultInstance());
 			return true;
 		}
 		return false;
@@ -339,7 +338,7 @@ public class MinecartCouplingUtil {
 		);
 
 		if (coupling.isCoupledFrom()) {
-			if (drop && cart.level() instanceof ServerLevel serverLevel) coupling.getCoupledFromItem().ifPresent(item -> cart.spawnAtLocation(serverLevel, item));
+			if (drop && cart.level() instanceof ServerLevel serverLevel) cart.spawnAtLocation(serverLevel, TCAItems.MINECART_COUPLING.getDefaultInstance());
 			return true;
 		}
 		return false;

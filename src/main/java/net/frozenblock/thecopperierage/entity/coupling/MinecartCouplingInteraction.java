@@ -66,8 +66,8 @@ public class MinecartCouplingInteraction {
 		if (level.isClientSide()) return true;
 
 		int couplings = 0;
-		if (MinecartCouplingUtil.uncoupleTo(minecart, false, false)) couplings += 1;
-		if (MinecartCouplingUtil.uncoupleFrom(minecart, false, false)) couplings += 1;
+		if (MinecartCouplingUtil.uncoupleTo(minecart, false)) couplings += 1;
+		if (MinecartCouplingUtil.uncoupleFrom(minecart, false)) couplings += 1;
 		if (couplings == 0) return false;
 
 		minecart.playSound(TCASounds.ENTITY_MINECART_UNCOUPLE, 0.5F, (minecart.getRandom().nextFloat() * 0.2F) + 0.9F);

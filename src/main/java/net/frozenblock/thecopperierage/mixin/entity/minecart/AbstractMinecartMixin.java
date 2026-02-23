@@ -55,7 +55,7 @@ public class AbstractMinecartMixin {
 			x, y, z,
 			TCASounds.ENTITY_MINECART_PLACE,
 			SoundSource.NEUTRAL,
-			1F,
+			0.75F,
 			(level.getRandom().nextFloat() * 0.3F) + 0.85F
 		);
 	}

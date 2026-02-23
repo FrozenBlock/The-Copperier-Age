@@ -25,7 +25,9 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey;
 import net.frozenblock.lib.render.FrozenLibRenderTypes;
 import net.frozenblock.thecopperierage.TCAConstants;
+import net.frozenblock.thecopperierage.client.coupling.MinecartCouplingClientHandler;
 import net.frozenblock.thecopperierage.entity.impl.CouplingToEntityInterface;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.state.MinecartRenderState;
@@ -40,6 +42,7 @@ public class CouplingRenderState {
 	private static final float THREE_AND_A_HALF_PIXELS = 1.5F / 16F;
 	private static final RenderType COUPLING_RENDER_TYPE = FrozenLibRenderTypes.entityCutoutNoShading(TCAConstants.id("textures/entity/minecart/coupling.png"));
 	public static final RenderStateDataKey<CouplingRenderState> COUPLING_RENDER_STATE = RenderStateDataKey.create();
+	public static final RenderStateDataKey<CouplingRenderState> COUPLING_HELD_RENDER_STATE = RenderStateDataKey.create();
 	public Vec3 vector = Vec3.ZERO;
 
 	public CouplingRenderState() {
@@ -47,6 +50,12 @@ public class CouplingRenderState {
 
 	public static void extract(AbstractMinecart minecart, MinecartRenderState renderState, float partialTicks) {
 		if (!(minecart instanceof CouplingToEntityInterface coupleInterface)) return;
+
+		final Minecraft minecraft = Minecraft.getInstance();
+		if (minecraft.player != null) {
+			MinecartCouplingClientHandler.createRenderState(minecraft.player, minecart, partialTicks)
+				.ifPresent(couplingRenderState -> renderState.setData(COUPLING_HELD_RENDER_STATE, couplingRenderState));
+		}
 
 		final Entity coupledTo = coupleInterface.theCopperierAge$getCoupledTo();
 		if (coupledTo == null) return;
@@ -60,9 +69,10 @@ public class CouplingRenderState {
 		PoseStack poseStack,
 		SubmitNodeCollector collector,
 		MinecartRenderState renderState,
-		int lightCoords
+		int lightCoords,
+		RenderStateDataKey<CouplingRenderState> key
 	) {
-		final CouplingRenderState couplingRenderState = renderState.getData(COUPLING_RENDER_STATE);
+		final CouplingRenderState couplingRenderState = renderState.getData(key);
 		if (couplingRenderState == null) return;
 
 		Vec3 couplingVector = couplingRenderState.vector;

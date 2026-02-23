@@ -17,15 +17,18 @@
 
 package net.frozenblock.thecopperierage.mixin.client.minecart_coupling;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.frozenblock.thecopperierage.client.coupling.MinecartCouplingClientHandler;
 import net.frozenblock.thecopperierage.client.renderer.entity.state.CouplingRenderState;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.AbstractMinecartRenderer;
 import net.minecraft.client.renderer.entity.state.MinecartRenderState;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.phys.AABB;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -59,7 +62,16 @@ public class AbstractMinecartRendererMixin {
 		CameraRenderState camera,
 		CallbackInfo info
 	) {
-		CouplingRenderState.renderCoupling(poseStack, collector, renderState, renderState.lightCoords);
+		CouplingRenderState.renderCoupling(poseStack, collector, renderState, renderState.lightCoords, CouplingRenderState.COUPLING_RENDER_STATE);
+		CouplingRenderState.renderCoupling(poseStack, collector, renderState, renderState.lightCoords, CouplingRenderState.COUPLING_HELD_RENDER_STATE);
+	}
+
+	@ModifyReturnValue(
+		method = "getBoundingBoxForCulling(Lnet/minecraft/world/entity/vehicle/AbstractMinecart;)Lnet/minecraft/world/phys/AABB;",
+		at = @At("RETURN")
+	)
+	public AABB theCopperierAge$modifyBoundingBoxForCulling(AABB original, AbstractMinecart minecart) {
+		return MinecartCouplingClientHandler.modifyBoundingBoxForCoupling(minecart, original);
 	}
 
 }

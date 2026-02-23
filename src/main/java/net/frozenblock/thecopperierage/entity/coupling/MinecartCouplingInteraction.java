@@ -17,7 +17,7 @@
 
 package net.frozenblock.thecopperierage.entity.coupling;
 
-import net.frozenblock.thecopperierage.client.coupling.TCAMinecartCouplingClientHandler;
+import net.frozenblock.thecopperierage.client.coupling.MinecartCouplingClientHandler;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -48,7 +48,7 @@ public class MinecartCouplingInteraction {
 	}
 
 	private static void interactWithCoupling(Player player, InteractionHand hand, AbstractMinecart minecart) {
-		if (player.level().isClientSide()) TCAMinecartCouplingClientHandler.onCartClicked(player, hand, minecart);
+		if (player.level().isClientSide()) MinecartCouplingClientHandler.onCartClicked(player, hand, minecart);
 	}
 
 	private static boolean interactWithWrench(Player player, InteractionHand hand, AbstractMinecart minecart) {

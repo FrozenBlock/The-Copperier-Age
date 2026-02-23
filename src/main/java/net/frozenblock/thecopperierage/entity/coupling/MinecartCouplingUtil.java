@@ -77,7 +77,6 @@ public class MinecartCouplingUtil {
 	}
 
 	public static void tickCoupling(AbstractMinecart cart) {
-		if (cart.isFirstTick() && cart.level().isClientSide()) return;
 		final CouplingData coupling = getCoupling(cart);
 
 		coupling.getCoupledTo(cart.level())

@@ -44,11 +44,11 @@ public record CouplingData(Optional<Couple> coupledTo, Optional<Couple> coupledF
 	public static CouplingData EMPTY = new CouplingData(Optional.empty(), Optional.empty());
 
 	public boolean isCoupledFrom(UUID uuid) {
-		return this.coupledFrom.isPresent() && this.coupledFrom.get().equals(uuid);
+		return this.coupledFrom.isPresent() && this.coupledFrom.get().uuid().equals(uuid);
 	}
 
 	public boolean isCoupledTo(UUID uuid) {
-		return this.coupledTo.isPresent() && this.coupledTo.get().equals(uuid);
+		return this.coupledTo.isPresent() && this.coupledTo.get().uuid().equals(uuid);
 	}
 
 	public boolean hasAnyCoupling(UUID uuid) {

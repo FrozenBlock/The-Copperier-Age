@@ -37,11 +37,9 @@ import net.minecraft.world.phys.Vec3;
 
 @Environment(EnvType.CLIENT)
 public class CouplingRenderState {
-	private static float Y_OFFSET = 1.5F / 16F;
-	private static final RenderType COUPLING_1_RENDER_TYPE = FrozenLibRenderTypes.entityCutoutNoShading(TCAConstants.id("textures/entity/minecart/coupling1.png"));
-	private static final RenderType COUPLING_2_RENDER_TYPE = FrozenLibRenderTypes.entityCutoutNoShading(TCAConstants.id("textures/entity/minecart/coupling2.png"));
+	private static final float THREE_AND_A_HALF_PIXELS = 1.5F / 16F;
+	private static final RenderType COUPLING_RENDER_TYPE = FrozenLibRenderTypes.entityCutoutNoShading(TCAConstants.id("textures/entity/minecart/coupling.png"));
 	public static final RenderStateDataKey<CouplingRenderState> COUPLING_RENDER_STATE = RenderStateDataKey.create();
-	private static final float COUPLING_ROTATION = 0F;
 	public Vec3 vector = Vec3.ZERO;
 
 	public CouplingRenderState() {
@@ -68,42 +66,51 @@ public class CouplingRenderState {
 		if (couplingRenderState == null) return;
 
 		Vec3 couplingVector = couplingRenderState.vector;
-		float length = (float) couplingVector.length() / 2F;
+		float length = (float) couplingVector.length();
 		couplingVector = couplingVector.normalize();
 		float xRot = (float) Math.acos(couplingVector.y);
 		float yRot = (float) ((Mth.PI / 2F) - Math.atan2(couplingVector.z, couplingVector.x));
 
 		poseStack.pushPose();
-		poseStack.translate(0F, Y_OFFSET, 0F);
+		poseStack.translate(0F, THREE_AND_A_HALF_PIXELS, 0F);
 
 		poseStack.pushPose();
-		poseStack.mulPose(Axis.YP.rotationDegrees(yRot * (180F / Mth.PI)));
-		poseStack.mulPose(Axis.XP.rotationDegrees(xRot * (180F / Mth.PI)));
+		poseStack.mulPose(Axis.YP.rotation(yRot));
+		poseStack.mulPose(Axis.XP.rotation(xRot));
 
-		float rr1 = 0.2F;
-		float wx = Mth.cos((COUPLING_ROTATION + Mth.PI)) * rr1;
-		float wz = Mth.sin((COUPLING_ROTATION + Mth.PI)) * rr1;
-		float ex = Mth.cos((COUPLING_ROTATION + 0F)) * rr1;
-		float ez = Mth.sin((COUPLING_ROTATION + 0F)) * rr1;
-		float minU = 0F;
-		float maxU = 3F / 16F;
-		float minV = 0F;
-		float maxV = minV + length * 2.5F;
+		float x1 = Mth.cos(Mth.PI) * THREE_AND_A_HALF_PIXELS;
+		float x2 = Mth.cos(0F) * THREE_AND_A_HALF_PIXELS;
+		float z1 = Mth.sin(0F) * THREE_AND_A_HALF_PIXELS;
+		float z2 = Mth.sin(Mth.PI) * THREE_AND_A_HALF_PIXELS;
 
+		final float minU = 0F;
+		final float maxU = 3F / 16F;
+		final float minV = 0F;
 
-		collector.submitCustomGeometry(poseStack, COUPLING_1_RENDER_TYPE, (pose, buffer) -> {
-			vertex(buffer, pose, wx, length, wz, maxU, maxV, lightCoords);
-			vertex(buffer, pose, wx, 0F, wz, maxU, minV, lightCoords);
-			vertex(buffer, pose, ex, 0F, ez, minU, minV, lightCoords);
-			vertex(buffer, pose, ex, length, ez, minU, maxV, lightCoords);
-		});
+		final int lengthInPixels = (int) (length * 16);
+		int lengthRendered = 0;
 
-		collector.submitCustomGeometry(poseStack, COUPLING_2_RENDER_TYPE, (pose, buffer) -> {
-			vertex(buffer, pose, wx, 0F, wz, maxU, maxV, lightCoords);
-			vertex(buffer, pose, wx, length, wz, maxU, minV, lightCoords);
-			vertex(buffer, pose, ex, length, ez, minU, minV, lightCoords);
-			vertex(buffer, pose, ex, 0F, ez, minU, maxV, lightCoords);
-		});
+		while (lengthRendered < lengthInPixels) {
+			final int prevLength = lengthRendered;
+			lengthRendered = Math.min(lengthRendered + 16, lengthInPixels);
+			final int lengthToRender = lengthRendered - prevLength;
+
+			final float lengthStart = prevLength / 16F;
+			final float lengthEnd = lengthRendered / 16F;
+			final float maxV = lengthToRender / 16F;
+
+			collector.submitCustomGeometry(poseStack, COUPLING_RENDER_TYPE, (pose, buffer) -> {
+				vertex(buffer, pose, x1, lengthEnd, z2, maxU, maxV, lightCoords);
+				vertex(buffer, pose, x1, lengthStart, z2, maxU, minV, lightCoords);
+				vertex(buffer, pose, x2, lengthStart, z1, minU, minV, lightCoords);
+				vertex(buffer, pose, x2, lengthEnd, z1, minU, maxV, lightCoords);
+
+				vertex(buffer, pose, x1, lengthStart, z2, maxU, maxV, lightCoords);
+				vertex(buffer, pose, x1, lengthEnd, z2, maxU, minV, lightCoords);
+				vertex(buffer, pose, x2, lengthEnd, z1, minU, minV, lightCoords);
+				vertex(buffer, pose, x2, lengthStart, z1, minU, maxV, lightCoords);
+			});
+		}
 
 		poseStack.popPose();
 		poseStack.popPose();

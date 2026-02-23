@@ -39,7 +39,8 @@ import net.minecraft.world.phys.Vec3;
 
 @Environment(EnvType.CLIENT)
 public class CouplingRenderState {
-	private static final float THREE_AND_A_HALF_PIXELS = 1.5F / 16F;
+	private static final float ONE_AND_A_HALF_PIXELS = 1.5F / 16F;
+	private static final float TWO_PIXELS = 2F / 16F;
 	private static final RenderType COUPLING_RENDER_TYPE = FrozenLibRenderTypes.entityCutoutNoShading(TCAConstants.id("textures/entity/minecart/coupling.png"));
 	public static final RenderStateDataKey<CouplingRenderState> COUPLING_RENDER_STATE = RenderStateDataKey.create();
 	public static final RenderStateDataKey<CouplingRenderState> COUPLING_HELD_RENDER_STATE = RenderStateDataKey.create();
@@ -82,16 +83,16 @@ public class CouplingRenderState {
 		float yRot = (float) ((Mth.PI / 2F) - Math.atan2(couplingVector.z, couplingVector.x));
 
 		poseStack.pushPose();
-		poseStack.translate(0F, THREE_AND_A_HALF_PIXELS, 0F);
+		poseStack.translate(0F, TWO_PIXELS, 0F);
 
 		poseStack.pushPose();
 		poseStack.mulPose(Axis.YP.rotation(yRot));
 		poseStack.mulPose(Axis.XP.rotation(xRot));
 
-		float x1 = Mth.cos(Mth.PI) * THREE_AND_A_HALF_PIXELS;
-		float x2 = Mth.cos(0F) * THREE_AND_A_HALF_PIXELS;
-		float z1 = Mth.sin(0F) * THREE_AND_A_HALF_PIXELS;
-		float z2 = Mth.sin(Mth.PI) * THREE_AND_A_HALF_PIXELS;
+		float x1 = Mth.cos(Mth.PI) * ONE_AND_A_HALF_PIXELS;
+		float x2 = Mth.cos(0F) * ONE_AND_A_HALF_PIXELS;
+		float z1 = Mth.sin(0F) * ONE_AND_A_HALF_PIXELS;
+		float z2 = Mth.sin(Mth.PI) * ONE_AND_A_HALF_PIXELS;
 
 		final float minU = 0F;
 		final float maxU = 3F / 16F;

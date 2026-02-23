@@ -23,6 +23,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.core.Direction;
 import org.joml.Matrix4fc;
+import java.util.Objects;
 
 @Environment(EnvType.CLIENT)
 public class BlockModelOxidization implements ModelState {
@@ -51,5 +52,11 @@ public class BlockModelOxidization implements ModelState {
 	@Override
 	public Matrix4fc inverseFaceTransformation(Direction direction) {
 		return this.modelState.inverseFaceTransformation(direction);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return this == obj
+			|| (obj instanceof BlockModelOxidization oxidization && oxidization.modelState == this.modelState && Objects.equals(oxidization.name, this.name));
 	}
 }

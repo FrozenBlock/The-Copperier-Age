@@ -40,7 +40,7 @@ public class MinecartChestMixin implements ChestVehicleInterface {
 	@Unique
 	@Override
 	public float theCopperierAge$getLidOpenness(float partialTicks) {
-		if (!TCAConfig.get().improvedVehicleChests) return 0.0F;
+		if (!TCAConfig.IMPROVED_VEHICLE_CHESTS) return 0F;
 		return this.theCopperierAge$lidController.getOpenness(partialTicks);
 	}
 }

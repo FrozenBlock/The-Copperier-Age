@@ -54,7 +54,7 @@ public class AbstractMinecartRendererMixin {
 		AbstractMinecartRenderer instance, S renderState, BlockState state, PoseStack poseStack, SubmitNodeCollector collector, int lightCoords, Operation<Void> original,
 		@Local(argsOnly = true) CameraRenderState camera
 	) {
-		if (!(renderState instanceof ChestLidRenderStateInterface chestState) || !state.is(Blocks.CHEST) || !TCAConfig.get().improvedVehicleChests) {
+		if (!(renderState instanceof ChestLidRenderStateInterface chestState) || !state.is(Blocks.CHEST) || !TCAConfig.IMPROVED_VEHICLE_CHESTS) {
 			original.call(instance, renderState, state, poseStack, collector, lightCoords);
 			return;
 		}

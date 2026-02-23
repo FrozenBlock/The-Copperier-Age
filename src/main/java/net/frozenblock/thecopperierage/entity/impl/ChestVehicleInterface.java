@@ -63,7 +63,7 @@ public interface ChestVehicleInterface {
 	}
 
 	default void theCopperierAge$playChestSound(boolean opening) {
-		if (!TCAConfig.get().improvedVehicleChests) return;
+		if (!TCAConfig.IMPROVED_VEHICLE_CHESTS) return;
 		if (!(this instanceof Entity entity) || entity.level().isClientSide()) return;
 
 		entity.playSound(

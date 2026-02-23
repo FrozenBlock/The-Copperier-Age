@@ -104,7 +104,7 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
     @Inject(method = "tick", at = @At("HEAD"), require = 0)
     private void theCopperierAge$pullFuelFromInventory(CallbackInfo info) {
         if (this.level().isClientSide()) return;
-        if (!TCAConfig.get().improvedFurnaceMinecarts) return;
+        if (!TCAConfig.IMPROVED_FURNACE_MINECARTS) return;
 
         final MinecartFurnace furnace = this.theCopperierAge$asFurnace();
         if (!this.theCopperierAge$isFiniteHorizontal(furnace.push)) {
@@ -206,7 +206,7 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
 
     @Inject(method = "interact", at = @At("HEAD"), cancellable = true, require = 0)
     private void theCopperierAge$openInventory(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> info) {
-        if (!TCAConfig.get().improvedFurnaceMinecarts) return;
+        if (!TCAConfig.IMPROVED_FURNACE_MINECARTS) return;
         if (this.level().isClientSide()) {
             info.setReturnValue(InteractionResult.SUCCESS);
             return;

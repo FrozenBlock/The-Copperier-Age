@@ -48,6 +48,8 @@ public class TCAConfig {
 				BETTER_COPPER_TOOLTIPS = config.betterCopperTooltips;
 				WAZED_ITEM_ICON_OVERLAY = config.waxedItemIconOverlay;
 				EXTRA_ITEM_ICON_OVERLAYS = config.extraItemIconOverlays;
+				IMPROVED_FURNACE_MINECARTS = config.improvedFurnaceMinecarts;
+				IMPROVED_VEHICLE_CHESTS = config.improvedVehicleChests;
 			}
 		}
 	);
@@ -95,7 +97,6 @@ public class TCAConfig {
 
 	@EntrySyncData("improvedVehicleChests")
 	public boolean improvedVehicleChests = true;
-
 
 	public static TCAConfig get(boolean real) {
 		if (real) return INSTANCE.instance();

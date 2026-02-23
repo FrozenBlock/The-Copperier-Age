@@ -55,7 +55,7 @@ public class AbstractBoatModelMixin {
 			state instanceof ChestVehicleRenderStateAccess chestVehicleState
 			&& chestVehicleState.theCopperierAge$isChestVehicle()
 			&& state instanceof ChestLidRenderStateInterface
-			&& TCAConfig.get().improvedVehicleChests;
+			&& TCAConfig.IMPROVED_VEHICLE_CHESTS;
 
 		this.theCopperierAge$chestBottom.visible = !useVanillaChestRender;
 		this.theCopperierAge$chestLid.visible = !useVanillaChestRender;

@@ -65,7 +65,7 @@ public class AbstractBoatRendererMixin {
 		)
 	)
 	public void theCopperierAge$submitVanillaChest(BoatRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState camera, CallbackInfo info) {
-		if (!(state instanceof ChestVehicleRenderStateAccess chestVehicleState) || !chestVehicleState.theCopperierAge$isChestVehicle() || !TCAConfig.get().improvedVehicleChests) return;
+		if (!(state instanceof ChestVehicleRenderStateAccess chestVehicleState) || !chestVehicleState.theCopperierAge$isChestVehicle() || !TCAConfig.IMPROVED_VEHICLE_CHESTS) return;
 		if (!(state instanceof ChestLidRenderStateInterface chestState)) return;
 		final float raftYOffset = AbstractBoatRenderer.class.cast(this) instanceof RaftRenderer ? ChestVehicleRenderHelper.CHEST_RAFT_Y_OFFSET : 0F;
 

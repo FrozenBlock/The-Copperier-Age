@@ -18,6 +18,7 @@
     "entity.container_entity.AbstractMinecartMixin",
     "entity.container_entity.ChestMenuMixin",
     "entity.container_entity.ContainerEntityMixin",
+    "entity.container_entity.MinecartFurnaceMixin",
     "entity.container_entity.MinecartChestMixin",
     "entity.copper_golem.CopperGolemAiMixin",
     "entity.copper_golem.CopperGolemMixin",

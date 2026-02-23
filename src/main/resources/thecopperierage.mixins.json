@@ -13,18 +13,19 @@
     "block.redstone.RedstoneWireBlockMixin",
     "datafix.DataFixersMixin",
     "datafix.v4533Mixin",
-    "entity.container_entity.AbstractBoatMixin",
-    "entity.container_entity.AbstractChestBoatMixin",
-    "entity.container_entity.AbstractMinecartMixin",
-    "entity.container_entity.ChestMenuMixin",
-    "entity.container_entity.ContainerEntityMixin",
-    "entity.container_entity.MinecartFurnaceMixin",
-    "entity.container_entity.MinecartChestMixin",
+    "entity.chest_vehicle.AbstractBoatMixin",
+    "entity.chest_vehicle.AbstractChestBoatMixin",
+    "entity.chest_vehicle.AbstractMinecartMixin",
+    "entity.chest_vehicle.ChestMenuMixin",
+    "entity.chest_vehicle.ContainerEntityMixin",
+    "entity.chest_vehicle.MinecartChestMixin",
     "entity.copper_golem.CopperGolemAiMixin",
     "entity.copper_golem.CopperGolemMixin",
     "entity.copper_golem.CopperGolemStateMixin",
     "entity.minecart_coupling.AbstractMinecartMixin",
     "entity.minecart_coupling.PlayerMinecartCouplingMixin",
+    "entity.minecart_dispenser.AbstractMinecartMixin",
+    "entity.minecart_furnace.MinecartFurnaceMixin",
     "item.ItemMixin",
     "item.ItemStackMixin",
     "worldgen.TrickierTrialsPackCheckerMixin"
@@ -50,8 +51,7 @@
     "client.oxidized_items.SelectItemModelPropertiesMixin",
     "client.oxidizing_auto_models.BlockModelWrapperUnbakedMixin",
     "client.waxed_items.GuiGraphicsMixin",
-    "datagen.client.VariantMutatorMixin",
-    "entity.dispenser_minecart.AbstractMinecartMixin"
+    "datagen.client.VariantMutatorMixin"
   ],
   "injectors": {
     "defaultRequire": 1

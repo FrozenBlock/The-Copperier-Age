@@ -15,20 +15,20 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.mixin.entity.container_entity;
+package net.frozenblock.thecopperierage.mixin.entity.chest_vehicle;
 
 import net.frozenblock.thecopperierage.entity.impl.ChestVehicleInterface;
-import net.minecraft.world.entity.vehicle.AbstractBoat;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(AbstractBoat.class)
-public class AbstractBoatMixin {
+@Mixin(AbstractMinecart.class)
+public class AbstractMinecartMixin {
 
 	@Inject(method = "tick", at = @At("HEAD"))
 	public void theCopperierAge$tick(CallbackInfo info) {
-		if (AbstractBoat.class.cast(this) instanceof ChestVehicleInterface chestLidAnimating) chestLidAnimating.theCopperierAge$tickLidController();
+		if (AbstractMinecart.class.cast(this) instanceof ChestVehicleInterface chestLidAnimating) chestLidAnimating.theCopperierAge$tickLidController();
 	}
 }

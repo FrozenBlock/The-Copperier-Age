@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.mixin.entity.container_entity;
+package net.frozenblock.thecopperierage.mixin.entity.chest_vehicle;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.frozenblock.thecopperierage.tag.TCAEntityTypeTags;

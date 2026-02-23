@@ -15,21 +15,19 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.mixin.entity.container_entity;
+package net.frozenblock.thecopperierage.mixin.entity.chest_vehicle;
 
 import net.frozenblock.thecopperierage.entity.impl.ChestVehicleInterface;
-import net.frozenblock.thecopperierage.config.TCAConfig;
-import net.minecraft.world.entity.vehicle.MinecartChest;
+import net.minecraft.world.entity.vehicle.AbstractChestBoat;
 import net.minecraft.world.level.block.entity.ChestLidController;
+import net.frozenblock.thecopperierage.config.TCAConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
-@Mixin(MinecartChest.class)
-public class MinecartChestMixin implements ChestVehicleInterface {
-
+@Mixin(AbstractChestBoat.class)
+public class AbstractChestBoatMixin implements ChestVehicleInterface {
 	@Unique
 	private final ChestLidController theCopperierAge$lidController = new ChestLidController();
-
 
 	@Unique
 	@Override

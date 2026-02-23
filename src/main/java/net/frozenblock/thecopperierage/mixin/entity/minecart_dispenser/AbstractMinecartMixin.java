@@ -15,12 +15,10 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.mixin.entity.dispenser_minecart;
+package net.frozenblock.thecopperierage.mixin.entity.minecart_dispenser;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import java.util.Optional;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.frozenblock.thecopperierage.entity.AbstractMinecartDispenser;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -41,7 +39,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Environment(EnvType.CLIENT)
 @Mixin(AbstractMinecart.class)
 public class AbstractMinecartMixin {
 

@@ -275,7 +275,7 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
 
     @Override
     public boolean stillValid(Player player) {
-        return this.isAlive() && player.canInteractWithEntity(this, 4.0D);
+        return this.isAlive() && player.canInteractWithEntity(this, 4D);
     }
 
     @Override

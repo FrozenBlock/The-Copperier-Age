@@ -27,6 +27,7 @@ import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.NewMinecartBehavior;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
@@ -60,6 +61,7 @@ public class AbstractMinecartMixin {
 		@Local T minecart
 	) {
 		if (!(minecart instanceof AbstractMinecartDispenser minecartDispenser) || player == null) return;
+		if (!(minecart.getBehavior() instanceof NewMinecartBehavior)) return;
 
 		Direction facing = Direction.orderedByNearest(player)[0].getOpposite();
 		fixDirection: {

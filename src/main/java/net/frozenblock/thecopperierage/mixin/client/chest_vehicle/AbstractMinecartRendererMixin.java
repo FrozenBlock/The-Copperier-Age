@@ -17,6 +17,7 @@
 
 package net.frozenblock.thecopperierage.mixin.client.chest_vehicle;
 
+import net.frozenblock.thecopperierage.config.TCAConfig;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -53,7 +54,7 @@ public class AbstractMinecartRendererMixin {
 		AbstractMinecartRenderer instance, S renderState, BlockState state, PoseStack poseStack, SubmitNodeCollector collector, int lightCoords, Operation<Void> original,
 		@Local(argsOnly = true) CameraRenderState camera
 	) {
-		if (!(renderState instanceof ChestLidRenderStateInterface chestState) || !state.is(Blocks.CHEST)) {
+		if (!(renderState instanceof ChestLidRenderStateInterface chestState) || !state.is(Blocks.CHEST) || !TCAConfig.get().improvedVehicleChests) {
 			original.call(instance, renderState, state, poseStack, collector, lightCoords);
 			return;
 		}

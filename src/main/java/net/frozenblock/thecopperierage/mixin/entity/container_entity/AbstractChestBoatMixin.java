@@ -20,6 +20,7 @@ package net.frozenblock.thecopperierage.mixin.entity.container_entity;
 import net.frozenblock.thecopperierage.entity.impl.ChestVehicleInterface;
 import net.minecraft.world.entity.vehicle.AbstractChestBoat;
 import net.minecraft.world.level.block.entity.ChestLidController;
+import net.frozenblock.thecopperierage.config.TCAConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
@@ -37,6 +38,7 @@ public class AbstractChestBoatMixin implements ChestVehicleInterface {
 	@Unique
 	@Override
 	public float theCopperierAge$getLidOpenness(float partialTicks) {
+		if (!TCAConfig.get().improvedVehicleChests) return 0.0F;
 		return this.theCopperierAge$lidController.getOpenness(partialTicks);
 	}
 }

@@ -134,6 +134,10 @@
   "tooltip.thecopperierage.waxed_item_icon_overlay": "Whether waxed items have a special overlay for their items. \nDisplays a visual to indicate to players that an item is waxed without having to read tooltip. \n Only present in hud, inventory screens, and other GUIs, not in world or hand.",
   "option.thecopperierage.extra_item_icon_overlays": "Extra Item Icon Overlays",
   "tooltip.thecopperierage.extra_item_icon_overlays": "Whether additional special overlays are used. \nProvides Trapped Chests and Infested blocks special UI overlays similar to the waxed ones. \nDisabled by default.",
+  "option.thecopperierage.improved_furnace_minecarts": "Improved Furnace Minecarts",
+  "tooltip.thecopperierage.improved_furnace_minecarts": "Whether Furnace Minecarts are overhauled. \nProvides Furnace Minecarts a special container GUI that can have fuel items deposited into. \nSlots treated as with standard container minecarts.",
+  "option.thecopperierage.improved_vehicle_chests": "Improved Vehicle Chests",
+  "tooltip.thecopperierage.improved_vehicle_chests": "Whether Chests on Vehicles are visibly and audibly improved. \nChests will now open and close similar to how the blocks do. \nApplies to Minecarts and Boats.",
 
   "pack.thecopperierage.copperier_copper": "Copperier Copper",
   "pack.thecopperierage.green_copper_bulbs": "Green Copper Bulbs",

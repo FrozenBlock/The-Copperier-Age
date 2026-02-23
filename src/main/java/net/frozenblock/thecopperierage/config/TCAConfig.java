@@ -57,6 +57,8 @@ public class TCAConfig {
 	public static volatile boolean BETTER_COPPER_TOOLTIPS = true;
 	public static volatile boolean WAZED_ITEM_ICON_OVERLAY = true;
 	public static volatile boolean EXTRA_ITEM_ICON_OVERLAYS = false;
+	public static volatile boolean IMPROVED_FURNACE_MINECARTS = true;
+	public static volatile boolean IMPROVED_VEHICLE_CHESTS = true;
 
 	@EntrySyncData("copperFireEnabled")
 	public boolean copperFireEnabled = true;
@@ -87,6 +89,13 @@ public class TCAConfig {
 
 	@EntrySyncData("extraItemIconOverlays")
 	public boolean extraItemIconOverlays = false;
+
+	@EntrySyncData("improvedFurnaceMinecarts")
+	public boolean improvedFurnaceMinecarts = true;
+
+	@EntrySyncData("improvedVehicleChests")
+	public boolean improvedVehicleChests = true;
+
 
 	public static TCAConfig get(boolean real) {
 		if (real) return INSTANCE.instance();

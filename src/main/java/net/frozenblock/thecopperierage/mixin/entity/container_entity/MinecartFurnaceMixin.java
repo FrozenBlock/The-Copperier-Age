@@ -19,6 +19,7 @@ package net.frozenblock.thecopperierage.mixin.entity.container_entity;
 
 import java.util.stream.IntStream;
 import net.frozenblock.thecopperierage.entity.inventory.FurnaceMinecartMenu;
+import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
@@ -103,6 +104,7 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
     @Inject(method = "tick", at = @At("HEAD"), require = 0)
     private void theCopperierAge$pullFuelFromInventory(CallbackInfo info) {
         if (this.level().isClientSide()) return;
+        if (!TCAConfig.get().improvedFurnaceMinecarts) return;
 
         final MinecartFurnace furnace = this.theCopperierAge$asFurnace();
         if (!this.theCopperierAge$isFiniteHorizontal(furnace.push)) {
@@ -204,6 +206,7 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
 
     @Inject(method = "interact", at = @At("HEAD"), cancellable = true, require = 0)
     private void theCopperierAge$openInventory(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> info) {
+        if (!TCAConfig.get().improvedFurnaceMinecarts) return;
         if (this.level().isClientSide()) {
             info.setReturnValue(InteractionResult.SUCCESS);
             return;

@@ -17,6 +17,7 @@
 
 package net.frozenblock.thecopperierage.mixin.client.chest_vehicle;
 
+import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.client.renderer.entity.ChestVehicleRenderHelper;
 import net.frozenblock.thecopperierage.client.renderer.entity.state.ChestLidRenderStateInterface;
 import net.frozenblock.thecopperierage.client.renderer.entity.state.ChestVehicleRenderStateAccess;
@@ -53,7 +54,8 @@ public class AbstractBoatModelMixin {
 		final boolean useVanillaChestRender =
 			state instanceof ChestVehicleRenderStateAccess chestVehicleState
 			&& chestVehicleState.theCopperierAge$isChestVehicle()
-			&& state instanceof ChestLidRenderStateInterface;
+			&& state instanceof ChestLidRenderStateInterface
+			&& TCAConfig.get().improvedVehicleChests;
 
 		this.theCopperierAge$chestBottom.visible = !useVanillaChestRender;
 		this.theCopperierAge$chestLid.visible = !useVanillaChestRender;

@@ -21,6 +21,7 @@ import net.frozenblock.thecopperierage.registry.TCAAttachments;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.ChestLidController;
+import net.frozenblock.thecopperierage.config.TCAConfig;
 
 public interface ChestVehicleInterface {
 	float OPEN_CLOSE_SOUND_VOLUME = 0.5F;
@@ -62,6 +63,7 @@ public interface ChestVehicleInterface {
 	}
 
 	default void theCopperierAge$playChestSound(boolean opening) {
+		if (!TCAConfig.get().improvedVehicleChests) return;
 		if (!(this instanceof Entity entity) || entity.level().isClientSide()) return;
 
 		entity.playSound(

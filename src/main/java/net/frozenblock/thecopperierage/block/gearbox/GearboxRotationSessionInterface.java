@@ -22,5 +22,6 @@ import net.minecraft.core.BlockPos;
 public interface GearboxRotationSessionInterface {
 	void theCopperierAge$activateGearboxRotationSession(int currentTick, BlockPos supportPos);
 	float theCopperierAge$getGearboxYawDelta();
+	BlockPos theCopperierAge$getGearboxPosition();
 	boolean theCopperierAge$automaticallyRotatesWithGearbox();
 }

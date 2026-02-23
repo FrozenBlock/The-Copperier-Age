@@ -54,6 +54,7 @@ public abstract class EntityMixin implements GearboxRotationSessionInterface {
 	@Unique
 	private float theCopperierAge$cachedGearboxYawDelta = 0F;
 
+	@Unique
 	@Override
 	public void theCopperierAge$activateGearboxRotationSession(int currentTick, BlockPos supportPos) {
 		this.theCopperierAge$activeGearboxRotation = true;
@@ -63,11 +64,19 @@ public abstract class EntityMixin implements GearboxRotationSessionInterface {
 		this.theCopperierAge$cachedSupportPos.set(supportPos);
 	}
 
+	@Unique
 	@Override
 	public float theCopperierAge$getGearboxYawDelta() {
 		return this.theCopperierAge$cachedGearboxYawDelta;
 	}
 
+	@Unique
+	@Override
+	public BlockPos theCopperierAge$getGearboxPosition() {
+		return this.theCopperierAge$cachedSupportPos.immutable();
+	}
+
+	@Unique
 	@Override
 	public boolean theCopperierAge$automaticallyRotatesWithGearbox() {
 		return !this.isClientAuthoritative();
@@ -126,6 +135,6 @@ public abstract class EntityMixin implements GearboxRotationSessionInterface {
 			this.theCopperierAge$cachedSupportPos.set(onPos);
 		}
 
-		if (this.theCopperierAge$automaticallyRotatesWithGearbox()) GearboxEntityRotationHelper.applyRotation(entity, yawDelta);
+		GearboxEntityRotationHelper.applyRotation(entity, yawDelta, !this.theCopperierAge$automaticallyRotatesWithGearbox());
 	}
 }

@@ -23,9 +23,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 public final class GearboxEntityRotationHelper {
 	private static final float GEARBOX_ACTIVE_YAW_DELTA = 3.5F;
@@ -99,9 +101,20 @@ public final class GearboxEntityRotationHelper {
 		return getYawDeltaFromPower(selectedPower);
 	}
 
-	public static void applyRotation(Entity entity, float yawDelta) {
-		if (yawDelta == 0F) return;
+	public static void applyRotation(Entity entity, float yawDelta, boolean skipRotation) {
+		if (yawDelta == 0F || !(entity instanceof GearboxRotationSessionInterface rotationSession)) return;
 
+		final BlockPos gearboxPos = rotationSession.theCopperierAge$getGearboxPosition();
+		final Vec3 gearboxCenter = gearboxPos.above().getBottomCenter();
+
+		final Vec3 relativePos = entity.position().subtract(gearboxCenter);
+		final Vec3 newRelativePos = relativePos.yRot(-yawDelta * Mth.DEG_TO_RAD);
+		final Vec3 difference = newRelativePos.subtract(relativePos);
+		final boolean wasOnGround = entity.onGround();
+		entity.move(MoverType.SHULKER_BOX, difference);
+		entity.setOnGround(wasOnGround);
+
+		if (skipRotation) return;
 		final float oldYaw = entity.getYRot();
 		entity.yRotO = oldYaw;
 		final float newYaw = Mth.wrapDegrees(oldYaw + yawDelta);
@@ -118,7 +131,7 @@ public final class GearboxEntityRotationHelper {
 	}
 
 	public static void applyLocalRotation(Entity entity, float yawDelta) {
-		if (yawDelta == 0F) return;
+		if (yawDelta == 0F || !(entity instanceof GearboxRotationSessionInterface rotationSession)) return;
 
 		entity.yRotO += yawDelta;
 		entity.setYRot(entity.getYRot() + yawDelta);

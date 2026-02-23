@@ -72,6 +72,8 @@ public class MinecartCouplingUtil {
 		final double distance = cart1.distanceTo(cart2);
 		if (distance >= MAX_COUPLING_DISTANCE) return false;
 
+		if (!MinecartCouplingInteraction.isCouplingValidInWorld(level, cart1, cart2, true)) return false;
+
 		stack.consume(1, player);
 		coupleTo(cart1, cart2);
 		cart1.playSound(SoundEvents.ANVIL_USE);

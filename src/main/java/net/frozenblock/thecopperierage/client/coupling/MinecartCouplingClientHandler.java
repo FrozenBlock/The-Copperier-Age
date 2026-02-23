@@ -17,11 +17,13 @@
 
 package net.frozenblock.thecopperierage.client.coupling;
 
+import java.util.Optional;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.frozenblock.thecopperierage.client.renderer.entity.state.CouplingRenderState;
+import net.frozenblock.thecopperierage.entity.coupling.MinecartCouplingInteraction;
 import net.frozenblock.thecopperierage.entity.impl.CouplingToEntityInterface;
 import net.frozenblock.thecopperierage.networking.packet.TCACoupleMinecartsPacket;
 import net.frozenblock.thecopperierage.registry.TCAItems;
@@ -35,11 +37,9 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
 public final class MinecartCouplingClientHandler {
-	private static Integer selectedCartId;
 	private static AbstractMinecart selectedCart;
 
 	public static void init() {
@@ -48,30 +48,24 @@ public final class MinecartCouplingClientHandler {
 
 	public static void onCartClicked(Player player, InteractionHand hand, AbstractMinecart cart) {
 		if (Minecraft.getInstance().player != player) return;
-		if (player.isSpectator()) {
+		if (!MinecartCouplingInteraction.isCouplingValidInWorld(player.level(), cart, player, false)) {
 			clearSelection();
 			return;
 		}
 
-		if (selectedCartId == null || selectedCartId == cart.getId()) {
-			selectedCartId = cart.getId();
+		if (selectedCart == null || selectedCart == cart) {
 			selectedCart = cart;
 			player.displayClientMessage(Component.translatable("message.thecopperierage.minecart_coupling.first_selected"), true);
 			return;
 		}
 
-		ClientPlayNetworking.send(new TCACoupleMinecartsPacket(hand == InteractionHand.OFF_HAND, selectedCartId, cart.getId()));
+		ClientPlayNetworking.send(new TCACoupleMinecartsPacket(hand == InteractionHand.OFF_HAND, selectedCart.getId(), cart.getId()));
 		clearSelection();
 	}
 
 	private static void tick(Minecraft minecraft) {
-		if (selectedCartId == null || selectedCart == null) {
-			clearSelection();
-			return;
-		}
-
 		final LocalPlayer player = minecraft.player;
-		if (player == null || player.isSpectator() || minecraft.level == null || !(minecraft.level.getEntity(selectedCartId) instanceof AbstractMinecart)) {
+		if (!MinecartCouplingInteraction.isCouplingValidInWorld(minecraft.level, selectedCart, player, false)) {
 			clearSelection();
 			return;
 		}
@@ -108,7 +102,6 @@ public final class MinecartCouplingClientHandler {
 	}
 
 	private static void clearSelection() {
-		selectedCartId = null;
 		selectedCart = null;
 	}
 }

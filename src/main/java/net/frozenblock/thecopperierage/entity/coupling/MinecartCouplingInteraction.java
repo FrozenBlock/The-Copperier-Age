@@ -37,6 +37,8 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class MinecartCouplingInteraction {
+	private static final double MAX_PLAYER_DISTANCE = 8D;
+	private static final double MAX_PLAYER_DISTANCE_SQR = MAX_PLAYER_DISTANCE * MAX_PLAYER_DISTANCE;
 
 	@Nullable
 	public static InteractionResult handleInteractionWithMinecart(Player player, InteractionHand hand, Entity interacted) {
@@ -76,11 +78,12 @@ public class MinecartCouplingInteraction {
 		return true;
 	}
 
-	public static boolean isCouplingValidInWorld(Level level, AbstractMinecart selectedCart, Entity target, boolean checkEntity) {
+	public static boolean isCouplingValidInWorld(Level level, AbstractMinecart selectedCart, Entity target, boolean checkEntityHitResult) {
 		if (target == null || selectedCart == null || level == null || level != selectedCart.level()) return false;
 		if (!target.isAlive() || target.isSpectator() || !selectedCart.isAlive() || selectedCart.isSpectator()) return false;
 		final Vec3 startPos = selectedCart.position().add(0D, 0.1D, 0D);
 		Vec3 targetPos = (!(target instanceof AbstractMinecart)) ? target.getEyePosition(1F) : target.position().add(0D, 0.1D, 0D);
+		if (startPos.distanceTo(targetPos) > MAX_PLAYER_DISTANCE) return false;
 
 		final BlockHitResult hitResult = level.clip(
 			new ClipContext(
@@ -92,9 +95,9 @@ public class MinecartCouplingInteraction {
 			)
 		);
 		if (hitResult.getType() != HitResult.Type.MISS) {
-			if (!checkEntity) return false;
+			if (!checkEntityHitResult) return false;
 			targetPos = hitResult.getLocation();
-		} else if (!checkEntity) {
+		} else if (!checkEntityHitResult) {
 			return true;
 		}
 
@@ -104,7 +107,7 @@ public class MinecartCouplingInteraction {
 			targetPos,
 			selectedCart.getBoundingBox().minmax(target.getBoundingBox()),
 			EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.NO_SPECTATORS),
-			64D
+			MAX_PLAYER_DISTANCE_SQR
 		);
 		return entityResult != null && entityResult.getEntity() == target;
 	}

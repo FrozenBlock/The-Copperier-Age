@@ -34,8 +34,8 @@ public class BlockModelOxidization implements ModelState {
 		this.modelState = modelState;
 	}
 
-	public static BlockModelOxidization create(ModelState modelState) {
-		return new BlockModelOxidization(String.valueOf(Math.random() * 10000D), modelState);
+	public static BlockModelOxidization create(int stage, ModelState modelState) {
+		return new BlockModelOxidization("oxidation_" + stage, modelState);
 	}
 
 	@Override

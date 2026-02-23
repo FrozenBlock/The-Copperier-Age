@@ -60,11 +60,10 @@ public abstract class BlockModelWrapperUnbakedMixin {
 	private boolean theCopperierAge$generatingNewModel = false;
 	@Unique
 	private Material theCopperierAge$material = null;
+	@Unique
+	private int theCopperierAge$oxidationStage;
 
-	@ModifyReturnValue(
-		method = "bake",
-		at = @At("RETURN")
-	)
+	@ModifyReturnValue(method = "bake", at = @At("RETURN"))
 	public ItemModel theCopperierAge$createOxidizingArmors(
 		ItemModel original,
 		@Local(argsOnly = true) ItemModel.BakingContext context,
@@ -92,11 +91,13 @@ public abstract class BlockModelWrapperUnbakedMixin {
 				return original;
 			}
 
+			this.theCopperierAge$oxidationStage = i;
 			this.theCopperierAge$material = new Material(layer0Material.atlasLocation(), TCAConstants.id(texturePath + "_" + suffix));
 			oxidizingModels[i] = new FakeUnbakedItemModel(this.bake(context));
 		}
 
 		this.theCopperierAge$generatingNewModel = false;
+		this.theCopperierAge$oxidationStage = 0;
 		this.theCopperierAge$material = null;
 
 		return TCAModelProvider.createOxidizableDispatch(
@@ -134,7 +135,7 @@ public abstract class BlockModelWrapperUnbakedMixin {
 	public QuadCollection theCopperierAge$useOxidizingModelState(
 		ResolvedModel instance, TextureSlots slots, ModelBaker baker, ModelState modelState, Operation<QuadCollection> original
 	) {
-		if (this.theCopperierAge$generatingNewModel) return original.call(instance, slots, baker, BlockModelOxidization.create(modelState));
+		if (this.theCopperierAge$generatingNewModel) return original.call(instance, slots, baker, BlockModelOxidization.create(this.theCopperierAge$oxidationStage, modelState));
 		return original.call(instance, slots, baker, modelState);
 	}
 

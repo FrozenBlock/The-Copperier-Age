@@ -101,22 +101,36 @@ public final class GearboxEntityRotationHelper {
 		return getYawDeltaFromPower(selectedPower);
 	}
 
-	public static void applyRotation(Entity entity, float yawDelta, boolean updateRot0) {
+	public static void applyRotation(Entity entity, float yawDelta) {
 		if (yawDelta == 0F) return;
 
 		final float oldYaw = entity.getYRot();
-		if (updateRot0) entity.yRotO = oldYaw;
+		entity.yRotO = oldYaw;
 		final float newYaw = Mth.wrapDegrees(oldYaw + yawDelta);
 		entity.setYRot(newYaw);
 
 		if (!(entity instanceof LivingEntity livingEntity) || livingEntity instanceof ArmorStand) return;
 		final float oldBodyYaw = livingEntity.yBodyRot;
-		if (updateRot0) livingEntity.yBodyRotO = oldBodyYaw;
+		livingEntity.yBodyRotO = oldBodyYaw;
 		livingEntity.setYBodyRot(oldBodyYaw + yawDelta);
 
 		final float oldHeadYaw = livingEntity.getYHeadRot();
-		if (updateRot0) livingEntity.yHeadRotO = oldHeadYaw;
+		livingEntity.yHeadRotO = oldHeadYaw;
 		livingEntity.setYHeadRot(oldHeadYaw + yawDelta);
+	}
+
+	public static void applyLocalRotation(Entity entity, float yawDelta) {
+		if (yawDelta == 0F) return;
+
+		entity.yRotO += yawDelta;
+		entity.setYRot(entity.getYRot() + yawDelta);
+
+		if (!(entity instanceof LivingEntity livingEntity) || livingEntity instanceof ArmorStand) return;
+		livingEntity.yBodyRotO += yawDelta;
+		livingEntity.setYBodyRot(livingEntity.yBodyRot + yawDelta);
+
+		livingEntity.yHeadRotO += yawDelta;
+		livingEntity.setYHeadRot(livingEntity.yHeadRot + yawDelta);
 	}
 
 	public static void debug(Entity entity, float yawDelta) {

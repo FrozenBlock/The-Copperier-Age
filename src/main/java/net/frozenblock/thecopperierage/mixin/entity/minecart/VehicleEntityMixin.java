@@ -19,6 +19,7 @@ package net.frozenblock.thecopperierage.mixin.entity.minecart;
 
 import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.VehicleEntity;
 import net.minecraft.world.item.Item;
@@ -26,12 +27,25 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(VehicleEntity.class)
 public class VehicleEntityMixin {
 
+	@Inject(
+		method = "hurtServer",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/entity/vehicle/VehicleEntity;discard()V"
+		)
+	)
+	public void theCopperierAge$destroyMinecartSoundOnDiscard(ServerLevel level, DamageSource source, float damage, CallbackInfoReturnable<Boolean> info) {
+		if (!(VehicleEntity.class.cast(this) instanceof AbstractMinecart minecart)) return;
+		minecart.playSound(TCASounds.ENTITY_MINECART_BREAK);
+	}
+
 	@Inject(method = "destroy(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/item/Item;)V", at = @At("HEAD"))
-	public void theCopperierAge$destroyMinecartSound(ServerLevel serverLevel, Item dropItem, CallbackInfo info) {
+	public void theCopperierAge$destroyMinecartSoundOnDestroy(ServerLevel serverLevel, Item dropItem, CallbackInfo info) {
 		if (!(VehicleEntity.class.cast(this) instanceof AbstractMinecart minecart)) return;
 		minecart.playSound(TCASounds.ENTITY_MINECART_BREAK);
 	}

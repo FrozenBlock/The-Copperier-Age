@@ -20,6 +20,7 @@ package net.frozenblock.thecopperierage.entity.coupling;
 import net.frozenblock.thecopperierage.client.coupling.MinecartCouplingClientHandler;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.frozenblock.thecopperierage.registry.TCASounds;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -73,7 +74,7 @@ public class MinecartCouplingInteraction {
 		if (couplings == 0) return false;
 
 		minecart.playSound(TCASounds.ENTITY_MINECART_UNCOUPLE, 0.5F, (minecart.getRandom().nextFloat() * 0.2F) + 0.9F);
-		player.getInventory().placeItemBackInInventory(new ItemStack(TCAItems.MINECART_COUPLING, couplings));
+		if (level instanceof ServerLevel serverLevel) minecart.spawnAtLocation(serverLevel, new ItemStack(TCAItems.MINECART_COUPLING, couplings));
 		player.getItemInHand(hand).hurtAndBreak(1, player, hand);
 		return true;
 	}

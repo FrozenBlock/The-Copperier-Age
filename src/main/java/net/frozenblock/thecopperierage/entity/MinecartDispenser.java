@@ -21,11 +21,8 @@ import net.frozenblock.thecopperierage.registry.TCAEntityTypes;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.dispenser.BlockSource;
-import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
-import net.minecraft.core.dispenser.EquipmentDispenseItemBehavior;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -36,14 +33,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.server.level.ServerLevel;
 
-public class DispenserMinecart extends AbstractDispenserMinecart {
-	private static final DefaultDispenseItemBehavior DEFAULT_BEHAVIOR = new DefaultDispenseItemBehavior();
+public class MinecartDispenser extends AbstractMinecartDispenser {
 
-	public DispenserMinecart(EntityType<? extends DispenserMinecart> entityType, Level level) {
+	public MinecartDispenser(EntityType<? extends MinecartDispenser> entityType, Level level) {
 		super(entityType, level);
 	}
 
-	public DispenserMinecart(Level level, double x, double y, double z) {
+	public MinecartDispenser(Level level, double x, double y, double z) {
 		this(TCAEntityTypes.DISPENSER_MINECART, level);
 		this.setPos(x, y, z);
 	}
@@ -64,43 +60,21 @@ public class DispenserMinecart extends AbstractDispenserMinecart {
 	}
 
 	@Override
-	public int getDefaultDisplayOffset() {
-		return 6;
-	}
-
-	@Override
 	protected DispenserBlockEntity createActivationBlockEntity(BlockPos blockPos, BlockState state) {
 		return new DispenserBlockEntity(blockPos, state);
 	}
 
 	@Override
 	protected ItemStack trigger(
-		ServerLevel serverLevel,
-		BlockPos blockPos,
+		ServerLevel level,
+		BlockPos pos,
 		BlockState state,
 		DispenserBlockEntity dispenser,
 		BlockSource blockSource,
 		ItemStack stack
 	) {
-		final DispenseItemBehavior behavior = this.getDispenseMethod(serverLevel, stack);
+		final DispenseItemBehavior behavior = ((DispenserBlock) Blocks.DISPENSER).getDispenseMethod(level, stack);
 		if (behavior == DispenseItemBehavior.NOOP) return null;
 		return behavior.dispense(blockSource, stack);
-	}
-
-	private DispenseItemBehavior getDispenseMethod(Level level, ItemStack stack) {
-		if (!stack.isItemEnabled(level.enabledFeatures())) {
-			return DEFAULT_BEHAVIOR;
-		}
-
-		final DispenseItemBehavior behavior = DispenserBlock.DISPENSER_REGISTRY.get(stack.getItem());
-		if (behavior != null) {
-			return behavior;
-		}
-
-		if (stack.has(DataComponents.EQUIPPABLE)) {
-			return EquipmentDispenseItemBehavior.INSTANCE;
-		}
-
-		return DEFAULT_BEHAVIOR;
 	}
 }

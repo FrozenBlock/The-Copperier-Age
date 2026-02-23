@@ -27,13 +27,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class CopperGolemStatueMinecart extends AbstractMinecart {
+public class MinecartCopperGolemStatue extends AbstractMinecart {
 
-	public CopperGolemStatueMinecart(EntityType<CopperGolemStatueMinecart> entityType, Level level) {
+	public MinecartCopperGolemStatue(EntityType<MinecartCopperGolemStatue> entityType, Level level) {
 		super(entityType, level);
 	}
 
-	public CopperGolemStatueMinecart(Level level, double x, double y, double z) {
+	public MinecartCopperGolemStatue(Level level, double x, double y, double z) {
 		this(TCAEntityTypes.COPPER_GOLEM_STATUE_MINECART, level);
 		this.setPos(x, y, z);
 	}

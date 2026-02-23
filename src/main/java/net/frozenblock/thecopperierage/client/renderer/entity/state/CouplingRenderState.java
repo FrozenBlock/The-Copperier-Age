@@ -105,10 +105,10 @@ public class CouplingRenderState {
 				vertex(buffer, pose, x2, lengthStart, z1, minU, minV, lightCoords);
 				vertex(buffer, pose, x2, lengthEnd, z1, minU, maxV, lightCoords);
 
-				vertex(buffer, pose, x1, lengthStart, z2, maxU, maxV, lightCoords);
-				vertex(buffer, pose, x1, lengthEnd, z2, maxU, minV, lightCoords);
-				vertex(buffer, pose, x2, lengthEnd, z1, minU, minV, lightCoords);
-				vertex(buffer, pose, x2, lengthStart, z1, minU, maxV, lightCoords);
+				vertex(buffer, pose, x1, lengthStart, z2, maxU, minV, lightCoords);
+				vertex(buffer, pose, x1, lengthEnd, z2, maxU, maxV, lightCoords);
+				vertex(buffer, pose, x2, lengthEnd, z1, minU, maxV, lightCoords);
+				vertex(buffer, pose, x2, lengthStart, z1, minU, minV, lightCoords);
 			});
 		}
 

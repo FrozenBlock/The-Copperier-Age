@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.mixin.client.oxidizing_auto_models;
+package net.frozenblock.thecopperierage.mixin.client.oxidized_items.auto_models;
 
 import com.google.common.collect.ImmutableMap;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;

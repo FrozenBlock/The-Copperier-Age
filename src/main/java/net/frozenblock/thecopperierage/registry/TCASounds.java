@@ -67,6 +67,12 @@ public final class TCASounds {
 	// ENTITY
 	public static final SoundEvent ENTITY_COPPER_GOLEM_BUTTON_PRESS = register("entity.copper_golem.button_press");
 
+	public static final SoundEvent ENTITY_MINECART_PLACE = register("entity.minecart.place");
+	public static final SoundEvent ENTITY_MINECART_BREAK = register("entity.minecart.break");
+	public static final SoundEvent ENTITY_MINECART_COUPLE = register("entity.minecart.couple");
+	public static final SoundEvent ENTITY_MINECART_UNCOUPLE = register("entity.minecart.uncouple");
+	public static final SoundEvent ENTITY_MINECART_COUPLE_BREAK = register("entity.minecart.couple_break");
+
 	// UI
 	public static final Holder.Reference<SoundEvent> UI_CRATE_CLICK_FAIL = registerForHolder("ui.crate.click_fail");
 

@@ -108,6 +108,12 @@
 
   "subtitles.entity.copper_golem.button_press": "Copper Golem is pressing a button",
 
+  "subtitles.entity.minecart.place": "Minecart placed",
+  "subtitles.entity.minecart.break": "Minecart broken",
+  "subtitles.entity.minecart.couple": "Minecart coupled",
+  "subtitles.entity.minecart.uncouple": "Minecart uncoupled",
+  "subtitles.entity.minecart.couple_break": "Minecart coupling broken",
+
   "option.thecopperierage.component.title": "The Copperier Age Options",
   "option.thecopperierage.false": "§cDisabled",
   "option.thecopperierage.true": "§aEnabled",

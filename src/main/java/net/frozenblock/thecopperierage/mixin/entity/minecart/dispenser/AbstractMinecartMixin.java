@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.mixin.entity.minecart_dispenser;
+package net.frozenblock.thecopperierage.mixin.entity.minecart.dispenser;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import java.util.Optional;

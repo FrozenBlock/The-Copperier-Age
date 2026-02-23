@@ -19,6 +19,7 @@ package net.frozenblock.thecopperierage.entity.coupling;
 
 import net.frozenblock.thecopperierage.client.coupling.MinecartCouplingClientHandler;
 import net.frozenblock.thecopperierage.registry.TCAItems;
+import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -65,10 +66,11 @@ public class MinecartCouplingInteraction {
 		if (level.isClientSide()) return true;
 
 		int couplings = 0;
-		if (MinecartCouplingUtil.uncoupleTo(minecart, false)) couplings += 1;
-		if (MinecartCouplingUtil.uncoupleFrom(minecart, false)) couplings += 1;
+		if (MinecartCouplingUtil.uncoupleTo(minecart, false, false)) couplings += 1;
+		if (MinecartCouplingUtil.uncoupleFrom(minecart, false, false)) couplings += 1;
 		if (couplings == 0) return false;
 
+		minecart.playSound(TCASounds.ENTITY_MINECART_UNCOUPLE);
 		player.getInventory().placeItemBackInInventory(new ItemStack(TCAItems.MINECART_COUPLING, couplings));
 		player.getItemInHand(hand).hurtAndBreak(1, player, hand);
 		return true;

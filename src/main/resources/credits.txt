@@ -21,6 +21,8 @@ Zhen/zntm
  - Oxidizing Copper Bar Textures (Based On Lufurrius's)
  - Green Copper Bulb Textures
  - Green Copper Golem Eye Textures
+ - Minecart Coupling Sounds
+ - Minecart Place & Break Sounds
 
 Voxelotl
  - New Copper Lantern Remodels & Retextures

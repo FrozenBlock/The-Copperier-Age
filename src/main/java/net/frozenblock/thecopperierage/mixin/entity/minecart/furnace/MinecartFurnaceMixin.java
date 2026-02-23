@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.mixin.entity.minecart_furnace;
+package net.frozenblock.thecopperierage.mixin.entity.minecart.furnace;
 
 import java.util.stream.IntStream;
 import net.frozenblock.thecopperierage.entity.inventory.FurnaceMinecartMenu;

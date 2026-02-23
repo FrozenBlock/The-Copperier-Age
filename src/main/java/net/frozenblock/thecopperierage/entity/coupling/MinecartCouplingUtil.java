@@ -20,9 +20,9 @@ package net.frozenblock.thecopperierage.entity.coupling;
 import net.frozenblock.thecopperierage.entity.impl.CouplingToEntityInterface;
 import net.frozenblock.thecopperierage.registry.TCAAttachments;
 import net.frozenblock.thecopperierage.registry.TCAItems;
+import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -76,7 +76,7 @@ public class MinecartCouplingUtil {
 
 		stack.consume(1, player);
 		coupleTo(cart1, cart2);
-		cart1.playSound(SoundEvents.ANVIL_USE);
+		cart1.playSound(TCASounds.ENTITY_MINECART_COUPLE);
 		return true;
 	}
 
@@ -89,13 +89,13 @@ public class MinecartCouplingUtil {
 			.ifPresentOrElse(
 				cart2 -> {
 					if (!tickCoupling(cart.level(), cart, cart2)) {
-						uncoupleTo(cart, true);
+						uncoupleTo(cart, true, true);
 					} else {
 						if (cart instanceof CouplingToEntityInterface coupleInterface) coupleInterface.theCopperierAge$setCoupledTo(cart2);
 					}
 				},
 				() -> {
-					uncoupleTo(cart, !cart.isFirstTick());
+					uncoupleTo(cart, !cart.isFirstTick(), !cart.isFirstTick());
 					if (cart instanceof CouplingToEntityInterface coupleInterface) coupleInterface.theCopperierAge$setCoupledTo(null);
 				});
 
@@ -104,7 +104,7 @@ public class MinecartCouplingUtil {
 			.map(AbstractMinecart.class::cast).ifPresentOrElse(
 				cart2 -> {},
 				() -> {
-					if (coupling.isCoupledFrom()) uncoupleFrom(cart, true);
+					if (coupling.isCoupledFrom()) uncoupleFrom(cart, true, true);
 				});
 	}
 
@@ -356,7 +356,7 @@ public class MinecartCouplingUtil {
 		cart2.setAttached(TCAAttachments.MINECART_COUPLING, getCoupling(cart2).coupleFrom(cart1.getUUID()));
 	}
 
-	public static boolean uncoupleTo(Entity cart, boolean drop) {
+	public static boolean uncoupleTo(Entity cart, boolean drop, boolean playSound) {
 		final CouplingData coupling = cart.getAttachedOrCreate(TCAAttachments.MINECART_COUPLING);
 		cart.setAttached(TCAAttachments.MINECART_COUPLING, coupling.uncoupleTo());
 
@@ -368,13 +368,14 @@ public class MinecartCouplingUtil {
 		);
 
 		if (coupling.isCoupledTo()) {
+			if (playSound) cart.playSound(TCASounds.ENTITY_MINECART_COUPLE_BREAK);
 			if (drop && cart.level() instanceof ServerLevel serverLevel) cart.spawnAtLocation(serverLevel, TCAItems.MINECART_COUPLING.getDefaultInstance());
 			return true;
 		}
 		return false;
 	}
 
-	public static boolean uncoupleFrom(Entity cart, boolean drop) {
+	public static boolean uncoupleFrom(Entity cart, boolean drop, boolean playSound) {
 		final CouplingData coupling = cart.getAttachedOrCreate(TCAAttachments.MINECART_COUPLING);
 		cart.setAttached(TCAAttachments.MINECART_COUPLING, coupling.uncoupleFrom());
 
@@ -386,6 +387,7 @@ public class MinecartCouplingUtil {
 		);
 
 		if (coupling.isCoupledFrom()) {
+			if (playSound) cart.playSound(TCASounds.ENTITY_MINECART_COUPLE_BREAK);
 			if (drop && cart.level() instanceof ServerLevel serverLevel) cart.spawnAtLocation(serverLevel, TCAItems.MINECART_COUPLING.getDefaultInstance());
 			return true;
 		}

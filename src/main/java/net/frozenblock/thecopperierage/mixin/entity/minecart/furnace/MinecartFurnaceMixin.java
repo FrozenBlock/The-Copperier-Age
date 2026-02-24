@@ -18,22 +18,25 @@
 package net.frozenblock.thecopperierage.mixin.entity.minecart.furnace;
 
 import java.util.stream.IntStream;
-import net.frozenblock.thecopperierage.entity.inventory.FurnaceMinecartMenu;
 import net.frozenblock.thecopperierage.config.TCAConfig;
+import net.frozenblock.thecopperierage.entity.inventory.FurnaceMinecartMenu;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
-import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.ContainerEntity;
 import net.minecraft.world.entity.vehicle.MinecartFurnace;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
@@ -42,7 +45,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.server.level.ServerLevel;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -52,7 +54,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(MinecartFurnace.class)
-public abstract class MinecartFurnaceMixin extends AbstractMinecart implements Container, MenuProvider, WorldlyContainer {
+public abstract class MinecartFurnaceMixin extends AbstractMinecart implements ContainerEntity, WorldlyContainer {
     @Unique
     private static final int THECOPPERIERAGE$CONTAINER_SIZE = FurnaceMinecartMenu.SLOT_COUNT;
     @Unique
@@ -101,7 +103,19 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
         super(entityType, level);
     }
 
-    @Inject(method = "tick", at = @At("HEAD"))
+	@Override
+	protected void destroy(ServerLevel level, DamageSource source) {
+		super.destroy(level, source);
+		this.chestVehicleDestroyed(source, level, this);
+	}
+
+	@Override
+	public void remove(Entity.RemovalReason reason) {
+		if (!this.level().isClientSide() && reason.shouldDestroy()) Containers.dropContents(this.level(), this, this);
+		super.remove(reason);
+	}
+
+	@Inject(method = "tick", at = @At("HEAD"))
     private void theCopperierAge$pullFuelFromInventory(CallbackInfo info) {
         if (this.level().isClientSide()) return;
         if (!TCAConfig.IMPROVED_FURNACE_MINECARTS) return;

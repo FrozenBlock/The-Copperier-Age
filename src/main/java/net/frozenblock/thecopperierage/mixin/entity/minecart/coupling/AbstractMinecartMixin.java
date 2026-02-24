@@ -35,7 +35,6 @@ public class AbstractMinecartMixin implements CouplingToEntityInterface {
 	@Nullable
 	private Entity theCopperierAge$coupledTo = null;
 
-
 	@Inject(
 		method = "tick",
 		at = @At(

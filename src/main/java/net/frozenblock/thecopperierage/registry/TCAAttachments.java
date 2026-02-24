@@ -17,6 +17,7 @@
 
 package net.frozenblock.thecopperierage.registry;
 
+import com.mojang.serialization.Codec;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
@@ -30,6 +31,13 @@ public final class TCAAttachments {
 		builder -> {
 			builder.initializer(() -> 0);
 			builder.syncWith(ByteBufCodecs.VAR_INT, AttachmentSyncPredicate.all());
+		}
+	);
+	public static final AttachmentType<Boolean> CHEST_VEHICLE_CAN_BUBBLE = AttachmentRegistry.create(
+		TCAConstants.id("chest_vehicle_can_bubble"),
+		builder -> {
+			builder.persistent(Codec.BOOL);
+			builder.initializer(() -> true);
 		}
 	);
 	public static final AttachmentType<CouplingData> MINECART_COUPLING = AttachmentRegistry.create(

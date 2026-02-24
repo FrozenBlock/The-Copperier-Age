@@ -17,9 +17,11 @@
 
 package net.frozenblock.thecopperierage.mixin.entity.chest_vehicle;
 
+import net.frozenblock.thecopperierage.entity.impl.ChestVehicleBubbleInterface;
 import net.frozenblock.thecopperierage.entity.impl.ChestVehicleInterface;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -27,8 +29,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(AbstractMinecart.class)
 public class AbstractMinecartMixin {
 
-	@Inject(method = "tick", at = @At("HEAD"))
+	@Unique
+	private boolean theCopperierAge$actualFirstTick = true;
+
+	@Inject(
+		method = "tick",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/entity/vehicle/AbstractMinecart;updateInWaterStateAndDoFluidPushing()Z",
+			shift = At.Shift.AFTER
+		)
+	)
 	public void theCopperierAge$tick(CallbackInfo info) {
-		if (AbstractMinecart.class.cast(this) instanceof ChestVehicleInterface chestLidAnimating) chestLidAnimating.theCopperierAge$tickLidController();
+		final AbstractMinecart minecart = AbstractMinecart.class.cast(this);
+		minecart.updateFluidOnEyes();
+		if (minecart instanceof ChestVehicleInterface chestLidAnimating) chestLidAnimating.theCopperierAge$tickLidController();
+		if (!this.theCopperierAge$actualFirstTick && minecart instanceof ChestVehicleBubbleInterface bubbleInterface) bubbleInterface.theCopperierAge$tickBubble();
+		this.theCopperierAge$actualFirstTick = true;
 	}
 }

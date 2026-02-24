@@ -20,6 +20,7 @@
     "entity.chest_vehicle.ChestMenuMixin",
     "entity.chest_vehicle.ContainerEntityMixin",
     "entity.chest_vehicle.MinecartChestMixin",
+    "entity.chest_vehicle.VehicleEntityMixin",
     "entity.copper_golem.CopperGolemAiMixin",
     "entity.copper_golem.CopperGolemMixin",
     "entity.copper_golem.CopperGolemStateMixin",

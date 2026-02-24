@@ -17,19 +17,19 @@
 
 package net.frozenblock.thecopperierage.mixin.entity.chest_vehicle;
 
+import net.frozenblock.thecopperierage.entity.impl.ChestVehicleBubbleInterface;
 import net.frozenblock.thecopperierage.entity.impl.ChestVehicleInterface;
 import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.minecraft.world.entity.vehicle.MinecartChest;
 import net.minecraft.world.level.block.entity.ChestLidController;
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(MinecartChest.class)
-public class MinecartChestMixin implements ChestVehicleInterface {
-
+public class MinecartChestMixin implements ChestVehicleInterface, ChestVehicleBubbleInterface {
 	@Unique
 	private final ChestLidController theCopperierAge$lidController = new ChestLidController();
-
 
 	@Unique
 	@Override
@@ -42,5 +42,12 @@ public class MinecartChestMixin implements ChestVehicleInterface {
 	public float theCopperierAge$getLidOpenness(float partialTicks) {
 		if (!TCAConfig.IMPROVED_VEHICLE_CHESTS) return 0F;
 		return this.theCopperierAge$lidController.getOpenness(partialTicks);
+	}
+
+	@Unique
+	@Override
+	public Vec3 theCopperierAge$bubbleEmitPosition() {
+		final MinecartChest minecart = MinecartChest.class.cast(this);
+		return minecart.position().add(0D, (4.5D / 16D) + 0.75D * (minecart.getDefaultDisplayOffset() / 16D), 0D);
 	}
 }

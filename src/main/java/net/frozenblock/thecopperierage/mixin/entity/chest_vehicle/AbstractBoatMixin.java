@@ -17,6 +17,7 @@
 
 package net.frozenblock.thecopperierage.mixin.entity.chest_vehicle;
 
+import net.frozenblock.thecopperierage.entity.impl.ChestVehicleBubbleInterface;
 import net.frozenblock.thecopperierage.entity.impl.ChestVehicleInterface;
 import net.minecraft.world.entity.vehicle.AbstractBoat;
 import org.spongepowered.asm.mixin.Mixin;
@@ -29,6 +30,8 @@ public class AbstractBoatMixin {
 
 	@Inject(method = "tick", at = @At("HEAD"))
 	public void theCopperierAge$tick(CallbackInfo info) {
-		if (AbstractBoat.class.cast(this) instanceof ChestVehicleInterface chestLidAnimating) chestLidAnimating.theCopperierAge$tickLidController();
+		final AbstractBoat boat = AbstractBoat.class.cast(this);
+		if (boat instanceof ChestVehicleInterface chestLidAnimating) chestLidAnimating.theCopperierAge$tickLidController();
+		if (boat instanceof ChestVehicleBubbleInterface bubbleInterface) bubbleInterface.theCopperierAge$tickBubble();
 	}
 }

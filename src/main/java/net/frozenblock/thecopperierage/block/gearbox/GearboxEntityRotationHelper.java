@@ -132,7 +132,7 @@ public final class GearboxEntityRotationHelper {
 	}
 
 	public static void applyLocalRotation(Entity entity, float yawDelta) {
-		if (yawDelta == 0F || !(entity instanceof GearboxRotationSessionInterface rotationSession)) return;
+		if (yawDelta == 0F) return;
 
 		entity.yRotO += yawDelta;
 		entity.setYRot(entity.getYRot() + yawDelta);

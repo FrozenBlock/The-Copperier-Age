@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 public final class TCAEntityTypeTags {
 	public static final TagKey<EntityType<?>> COPPER_FAN_WEAKER_PUSH = bind("copper_fan_weaker_push");
 	public static final TagKey<EntityType<?>> COPPER_FAN_CANNOT_PUSH = bind("copper_fan_cannot_push");
+	public static final TagKey<EntityType<?>> GEARBOX_CANNOT_ROTATE = bind("gearbox_cannot_rotate");
 	public static final TagKey<EntityType<?>> NON_CHEST_MINECARTS = bind("non_chest_minecarts");
 
 	private TCAEntityTypeTags() {

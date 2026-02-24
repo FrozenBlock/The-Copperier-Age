@@ -20,6 +20,7 @@ package net.frozenblock.thecopperierage.mixin.block.gearbox;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
 import net.frozenblock.thecopperierage.block.gearbox.GearboxEntityRotationHelper;
 import net.frozenblock.thecopperierage.block.gearbox.GearboxRotationSessionInterface;
+import net.frozenblock.thecopperierage.tag.TCAEntityTypeTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -108,6 +109,7 @@ public abstract class EntityMixin implements GearboxRotationSessionInterface {
 	public void theCopperierAge$tickRotationSession(boolean invertVisualRot) {
 		final Entity entity = Entity.class.cast(this);
 		if (!this.theCopperierAge$activeGearboxRotation && entity.tickCount < this.theCopperierAge$nextGearboxProbeTick) return;
+		if (entity.getType().is(TCAEntityTypeTags.GEARBOX_CANNOT_ROTATE)) return;
 
 		float yawDelta = 0F;
 		boolean ranFullScan = false;

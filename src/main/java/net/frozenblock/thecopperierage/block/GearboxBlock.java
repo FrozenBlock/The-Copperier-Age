@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 import net.frozenblock.thecopperierage.block.gearbox.GearboxBlockEvaluator;
 import net.frozenblock.thecopperierage.block.gearbox.GearboxRotationSessionInterface;
 import net.frozenblock.thecopperierage.registry.TCASounds;
+import net.frozenblock.thecopperierage.tag.TCAEntityTypeTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -119,11 +120,11 @@ public class GearboxBlock extends DirectionalBlock {
 	}
 
 	@Override
-	public void stepOn(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Entity entity) {
+	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
 		super.stepOn(level, pos, state, entity);
 		if (state.getValue(FACING) != Direction.UP || state.getValue(POWER) <= 0) return;
-		if (entity instanceof GearboxRotationSessionInterface gearboxRotationSessionInterface) {
-			gearboxRotationSessionInterface.theCopperierAge$activateGearboxRotationSession(entity.tickCount, pos);
+		if (entity instanceof GearboxRotationSessionInterface rotationSession && !entity.getType().is(TCAEntityTypeTags.GEARBOX_CANNOT_ROTATE)) {
+			rotationSession.theCopperierAge$activateGearboxRotationSession(entity.tickCount, pos);
 		}
 	}
 

@@ -17,6 +17,7 @@
 
 package net.frozenblock.thecopperierage.entity.coupling;
 
+import java.util.Optional;
 import net.frozenblock.thecopperierage.entity.impl.CouplingToEntityInterface;
 import net.frozenblock.thecopperierage.registry.TCAAttachments;
 import net.frozenblock.thecopperierage.registry.TCAItems;
@@ -40,7 +41,6 @@ import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import java.util.Optional;
 
 public class MinecartCouplingUtil {
 	private static final int MAX_COUPLING_DISTANCE = 3;
@@ -176,6 +176,7 @@ public class MinecartCouplingUtil {
 			final boolean otherCanAddMotion = current ? secondCanAddMotion : firstCanAddMotion;
 			if (!currentCanAddMotion) continue;
 
+			final AbstractMinecart cart = current ? cart1 : cart2;
 			final Vec3 currentPos = current ? nextCart1Pos : nextCart2Pos;
 			final Vec3 otherPos = current ? nextCart2Pos : nextCart1Pos;
 			final Vec3 link = otherPos.subtract(currentPos);
@@ -188,7 +189,7 @@ public class MinecartCouplingUtil {
 			Vec3 correction;
 			final RailShape shape = current ? firstShape : secondShape;
 			if (shape != null) {
-				final Vec3 railVec = getRailVec(shape);
+				final Vec3 railVec = getRailVec(shape, cart.getPosition(1F).subtract(cart.getPosition(0F)).y <= 0D);
 				correction = followLinkOnRail(link, currentPos, correctionMagnitude, railVec).subtract(currentPos);
 			} else {
 				correction = link.normalize().scale(correctionMagnitude);
@@ -271,7 +272,7 @@ public class MinecartCouplingUtil {
 			Vec3 correction = link.normalize().scale(correctionMagnitude);
 			correction = clamp(correction, Math.min(MAX_HARD_CORRECTION_PER_TICK, getMaxCartSpeed(cart)));
 			cart.move(MoverType.SELF, correction);
-			cart.setDeltaMovement(cart.getDeltaMovement().scale(0.95F));
+			//cart.setDeltaMovement(cart.getDeltaMovement().scale(0.95F));
 
 			firstLoop = false;
 		}
@@ -343,10 +344,12 @@ public class MinecartCouplingUtil {
 		return railState.getValue(railBlock.getShapeProperty());
 	}
 
-	private static Vec3 getRailVec(RailShape shape) {
+	private static Vec3 getRailVec(RailShape shape, boolean descending) {
 		return switch (shape) {
-			case EAST_WEST, ASCENDING_EAST, ASCENDING_WEST -> new Vec3(1D, 0D, 0D);
-			case NORTH_SOUTH, ASCENDING_NORTH, ASCENDING_SOUTH -> new Vec3(0D, 0D, 1D);
+			case EAST_WEST -> new Vec3(1D, 0D, 0D);
+			case ASCENDING_EAST, ASCENDING_WEST -> new Vec3(1D, descending? 1D : -1D, 0D);
+			case NORTH_SOUTH -> new Vec3(0D, 0D, 1D);
+			case ASCENDING_NORTH, ASCENDING_SOUTH -> new Vec3(0D, descending? 1D : -1D, 1D);
 			case NORTH_EAST, SOUTH_WEST -> new Vec3(1D, 0D, 1D).normalize();
 			case NORTH_WEST, SOUTH_EAST -> new Vec3(1D, 0D, -1D).normalize();
 		};

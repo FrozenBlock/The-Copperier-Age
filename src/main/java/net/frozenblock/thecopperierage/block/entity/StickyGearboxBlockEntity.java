@@ -36,6 +36,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.SlabType;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class StickyGearboxBlockEntity extends BlockEntity {
 	private static final int ROTATE_INTERVAL_IN_TICKS = 24;
@@ -168,5 +170,17 @@ public class StickyGearboxBlockEntity extends BlockEntity {
 
 	private static boolean isCounterClockwise(Direction facing, int power) {
 		return (facing == Direction.DOWN) == ((power & 1) == 0);
+	}
+
+	@Override
+	protected void saveAdditional(ValueOutput output) {
+		super.saveAdditional(output);
+		output.putInt("ticks_since_active", this.ticksSinceActive);
+	}
+
+	@Override
+	protected void loadAdditional(ValueInput input) {
+		super.loadAdditional(input);
+		this.ticksSinceActive = input.getIntOr("ticks_since_active", 0);
 	}
 }

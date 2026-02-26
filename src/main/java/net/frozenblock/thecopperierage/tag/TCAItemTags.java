@@ -24,6 +24,7 @@ import net.minecraft.world.item.Item;
 
 public final class TCAItemTags {
 	public static final TagKey<Item> GEARBOXES = bind("gearboxes");
+	public static final TagKey<Item> STICKY_GEARBOXES = bind("sticky_gearboxes");
 	public static final TagKey<Item> COPPER_FANS = bind("copper_fans");
 	public static final TagKey<Item> CHIMES = bind("chimes");
 	public static final TagKey<Item> CRATES = bind("crates");

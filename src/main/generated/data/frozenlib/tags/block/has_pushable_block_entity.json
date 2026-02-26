@@ -1,6 +1,10 @@
 {
   "values": [
     {
+      "id": "#thecopperierage:sticky_gearboxes",
+      "required": false
+    },
+    {
       "id": "#thecopperierage:crates",
       "required": false
     }

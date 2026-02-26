@@ -26,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 public final class TCABlockTags {
 	public static final TagKey<Block> COPPER_FIRE_BASE_BLOCKS = bind("copper_fire_base_blocks");
 	public static final TagKey<Block> GEARBOXES = bind("gearboxes");
+	public static final TagKey<Block> STICKY_GEARBOXES = bind("sticky_gearboxes");
 	public static final TagKey<Block> COPPER_FANS = bind("copper_fans");
 	public static final TagKey<Block> CHIMES = bind("chimes");
 	public static final TagKey<Block> CRATES = bind("crates");

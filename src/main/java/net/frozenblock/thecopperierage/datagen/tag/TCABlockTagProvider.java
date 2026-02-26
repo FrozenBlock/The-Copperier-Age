@@ -61,6 +61,10 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 		final TagAppender<Block, Block> gearboxesTag = this.valueLookupBuilder(TCABlockTags.GEARBOXES);
 		TCABlocks.GEARBOX.forEach(gearboxesTag::add);
 
+		final TagAppender<Block, Block> stickyGearboxesTag = this.valueLookupBuilder(TCABlockTags.STICKY_GEARBOXES);
+		TCABlocks.STICKY_GEARBOX.forEach(stickyGearboxesTag::add);
+		gearboxesTag.addOptionalTag(TCABlockTags.STICKY_GEARBOXES);
+
 		final TagAppender<Block, Block> copperFansTag = this.valueLookupBuilder(TCABlockTags.COPPER_FANS);
 		TCABlocks.COPPER_FAN.forEach(copperFansTag::add);
 
@@ -105,6 +109,7 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 			.addOptional(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("trailiertales", "coffin")));
 
 		this.valueLookupBuilder(FrozenBlockTags.HAS_PUSHABLE_BLOCK_ENTITY)
+			.addOptionalTag(TCABlockTags.STICKY_GEARBOXES)
 			.addOptionalTag(TCABlockTags.CRATES);
 
 		this.builder(FrozenBlockTags.BLOWING_CAN_PASS_THROUGH)

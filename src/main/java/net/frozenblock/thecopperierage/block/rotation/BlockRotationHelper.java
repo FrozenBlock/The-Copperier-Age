@@ -69,6 +69,7 @@ public class BlockRotationHelper {
 		Function<BlockState, BlockState> halfStateMutator = otherState -> otherState.trySetValue(DoorBlock.HALF, doubleBlockHalf.getOtherHalf());
 		final BlockState rotatedState = rotator.apply(state);
 		if (!level.getBlockState(otherPos).is(state.getBlock())) return Optional.empty();
+		if (!rotatedState.canSurvive(level, pos)) return Optional.empty();
 
 		return Optional.of(() -> {
 			level.setBlock(pos, rotatedState, Block.UPDATE_ALL);

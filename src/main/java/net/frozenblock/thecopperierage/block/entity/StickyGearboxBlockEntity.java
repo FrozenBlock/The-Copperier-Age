@@ -117,6 +117,7 @@ public class StickyGearboxBlockEntity extends BlockEntity {
 					BlockStateProperties.FACING,
 					isCounterClockwise ? blockFacing.getCounterClockWise(facingAxis) : blockFacing.getClockWise(facingAxis)
 				);
+				if (!rotState.canSurvive(level, facingPos)) return;
 				WrenchItem.changeIntoState(level, facingPos, rotState, null);
 				return;
 			}
@@ -145,7 +146,7 @@ public class StickyGearboxBlockEntity extends BlockEntity {
 
 		final Rotation rotation = getRotation(facing, power);
 		final BlockState rotatedState = facingState.rotate(rotation);
-		if (rotatedState == facingState) return;
+		if (rotatedState == facingState || !rotatedState.canSurvive(level, facingPos)) return;
 
 		WrenchItem.changeIntoState(level, facingPos, rotatedState, null);
 	}

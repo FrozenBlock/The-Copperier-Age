@@ -1,0 +1,7 @@
+{
+  "parent": "thecopperierage:block/template_gearbox",
+  "textures": {
+    "front": "thecopperierage:block/oxidized_gearbox_top",
+    "side": "thecopperierage:block/oxidized_gearbox_side"
+  }
+}

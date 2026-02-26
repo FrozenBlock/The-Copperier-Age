@@ -50,6 +50,7 @@ public final class TCAItemTagProvider extends FabricTagProvider.ItemTagProvider 
 
 		final TagAppender<Item, Item> gearboxesTag = this.valueLookupBuilder(TCAItemTags.GEARBOXES);
 		TCABlocks.GEARBOX.forEach(block -> gearboxesTag.add(block.asItem()));
+		TCABlocks.STICKY_GEARBOX.forEach(block -> gearboxesTag.add(block.asItem()));
 
 		final TagAppender<Item, Item> copperFansTag = this.valueLookupBuilder(TCAItemTags.COPPER_FANS);
 		TCABlocks.COPPER_FAN.forEach(block -> copperFansTag.add(block.asItem()));

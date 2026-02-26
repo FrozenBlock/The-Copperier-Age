@@ -24,18 +24,20 @@ import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.TCAFeatureFlags;
 import net.frozenblock.thecopperierage.block.ChimeBlock;
 import net.frozenblock.thecopperierage.block.CopperButtonBlock;
-import net.frozenblock.thecopperierage.block.CrateBlock;
 import net.frozenblock.thecopperierage.block.CopperFanBlock;
 import net.frozenblock.thecopperierage.block.CopperFireBlock;
 import net.frozenblock.thecopperierage.block.CopperPressurePlateBlock;
+import net.frozenblock.thecopperierage.block.CrateBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
 import net.frozenblock.thecopperierage.block.RedstonePumpkinBlock;
+import net.frozenblock.thecopperierage.block.StickyGearboxBlock;
 import net.frozenblock.thecopperierage.block.WeatheringChimeBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperButtonBlock;
-import net.frozenblock.thecopperierage.block.WeatheringCrateBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperFanBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperPressurePlateBlock;
+import net.frozenblock.thecopperierage.block.WeatheringCrateBlock;
 import net.frozenblock.thecopperierage.block.WeatheringGearboxBlock;
+import net.frozenblock.thecopperierage.block.WeatheringStickyGearboxBlock;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -111,6 +113,17 @@ public final class TCABlocks {
 		TCABlocks::register,
 		GearboxBlock::new,
 		WeatheringGearboxBlock::new,
+		(weatherState) -> BlockBehaviour.Properties.of()
+			.mapColor(MapColor.STONE)
+			.strength(1.5F)
+			.isRedstoneConductor(Blocks::never)
+	);
+
+	public static final WeatheringCopperBlocks STICKY_GEARBOX = WeatheringCopperBlocks.create(
+		"sticky_gearbox",
+		TCABlocks::register,
+		StickyGearboxBlock::new,
+		WeatheringStickyGearboxBlock::new,
 		(weatherState) -> BlockBehaviour.Properties.of()
 			.mapColor(MapColor.STONE)
 			.strength(1.5F)
@@ -234,6 +247,7 @@ public final class TCABlocks {
 		BlockEntityType.CAMPFIRE.addSupportedBlock(TCABlocks.COPPER_CAMPFIRE);
 
 		OxidizableBlocksRegistry.registerCopperBlockSet(GEARBOX);
+		OxidizableBlocksRegistry.registerCopperBlockSet(STICKY_GEARBOX);
 		OxidizableBlocksRegistry.registerCopperBlockSet(COPPER_FAN);
 		OxidizableBlocksRegistry.registerCopperBlockSet(CHIME);
 		OxidizableBlocksRegistry.registerCopperBlockSet(CRATE);

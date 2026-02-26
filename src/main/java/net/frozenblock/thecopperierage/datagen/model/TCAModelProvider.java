@@ -25,6 +25,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.CopperFanBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
+import net.frozenblock.thecopperierage.block.StickyGearboxBlock;
 import net.frozenblock.thecopperierage.client.renderer.item.properties.select.OxidizedItemsEnabled;
 import net.frozenblock.thecopperierage.client.renderer.item.properties.select.WeatherState;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
@@ -45,6 +46,7 @@ import net.minecraft.client.data.models.model.TexturedModel;
 import net.minecraft.client.renderer.block.model.VariantMutator;
 import static net.minecraft.client.renderer.item.ItemModel.Unbaked;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -112,6 +114,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxedOxidized(), Blocks.OXIDIZED_COPPER);
 
 		TCABlocks.GEARBOX.waxedMapping().forEach((block, waxedBlock) -> createGearbox(generator, block, waxedBlock));
+		TCABlocks.STICKY_GEARBOX.waxedMapping().forEach((block, waxedBlock) -> createGearbox(generator, block, waxedBlock));
 		TCABlocks.COPPER_FAN.waxedMapping().forEach((block, waxedBlock) -> createCopperFan(generator, block, waxedBlock));
 		TCABlocks.CHIME.waxedMapping().forEach((block, waxedBlock) -> createChime(generator, block, waxedBlock));
 		TCABlocks.CRATE.waxedMapping().forEach((block, waxedBlock) -> createCopperCrate(generator, block, waxedBlock));
@@ -148,19 +151,22 @@ public final class TCAModelProvider extends FabricModelProvider {
 	}
 
 	private static void createGearbox(@NotNull BlockModelGenerators generator, @NotNull Block block, @NotNull Block waxedBlock) {
+		final Block nonStickyBlock = block instanceof StickyGearboxBlock
+			? BuiltInRegistries.BLOCK.get(block.builtInRegistryHolder().key().location().withPath(path -> path.replace("sticky_", ""))).get().value()
+			: block;
 		final TextureMapping mapping = new TextureMapping()
-			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"))
-			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(block, "_top"));
+			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(nonStickyBlock, "_side"))
+			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(nonStickyBlock, "_top"));
 		final MultiVariant model = BlockModelGenerators.plainVariant(GEARBOX_MODEL.create(block, mapping, generator.modelOutput));
 
 		final TextureMapping counterMapping = new TextureMapping()
-			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side_counter_clockwise"))
-			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(block, "_top_counter_clockwise"));
+			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(nonStickyBlock, "_side_counter_clockwise"))
+			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(nonStickyBlock, "_top_counter_clockwise"));
 		final MultiVariant counterModel = BlockModelGenerators.plainVariant(GEARBOX_COUNTER_CLOCKWISE_MODEL.create(block, counterMapping, generator.modelOutput));
 
 		final TextureMapping clockwiseMapping = new TextureMapping()
-			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side_clockwise"))
-			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(block, "_top_clockwise"));
+			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(nonStickyBlock, "_side_clockwise"))
+			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(nonStickyBlock, "_top_clockwise"));
 		final MultiVariant clockwiseModel = BlockModelGenerators.plainVariant(GEARBOX_CLOCKWISE_MODEL.create(block, clockwiseMapping, generator.modelOutput));
 
 		generator.itemModelOutput.copy(block.asItem(), waxedBlock.asItem());

@@ -120,6 +120,17 @@ public class StickyGearboxBlockEntity extends BlockEntity {
 				if (!rotState.canSurvive(level, facingPos)) return;
 				WrenchItem.changeIntoState(level, facingPos, rotState, null);
 				return;
+			} else if (facingState.hasProperty(BlockStateProperties.AXIS)) {
+				final Direction.Axis blockAxis = facingState.getValue(BlockStateProperties.AXIS);
+				if (blockAxis == facingAxis) return;
+
+				final BlockState rotState = facingState.setValue(
+					BlockStateProperties.AXIS,
+					blockAxis.getPositive().getClockWise(facingAxis).getAxis()
+				);
+				if (!rotState.canSurvive(level, facingPos)) return;
+				WrenchItem.changeIntoState(level, facingPos, rotState, null);
+				return;
 			}
 
 			final Optional<Runnable> swapLanternHangingState = BlockRotationHelper.swapLanternHangingState(level, facingPos, facingState);

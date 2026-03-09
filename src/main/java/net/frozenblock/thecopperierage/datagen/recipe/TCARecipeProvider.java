@@ -26,12 +26,15 @@ import net.frozenblock.thecopperierage.TCAFeatureFlags;
 import net.frozenblock.thecopperierage.recipe.ItemWaxRecipe;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCAItems;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
@@ -54,6 +57,8 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 			public void buildRecipes() {
 				RecipeExportNamespaceFix.setCurrentGeneratingModId(TCAConstants.MOD_ID);
 
+				final HolderGetter<EntityType<?>> entityTypes = registries.lookupOrThrow(Registries.ENTITY_TYPE);
+
 				SpecialRecipeBuilder.special(ItemWaxRecipe::new).save(this.output, "equipment_wax");
 				this.waxRecipes(TCAFeatureFlags.THE_COPPERIER_AGE_FLAG_SET);
 				CopperHornRecipeProvider.buildRecipes(this, registries, exporter);
@@ -65,6 +70,16 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.pattern(" # ")
 					.pattern(" # ")
 					.unlockedBy(RecipeProvider.getHasName(Items.COPPER_INGOT), this.has(Items.COPPER_INGOT))
+					.save(exporter);
+
+				this.shaped(RecipeCategory.TOOLS, TCAItems.MINECART_COUPLING)
+					.group("minecart_coupling")
+					.define('X', Ingredient.of(Items.IRON_CHAIN))
+					.define('C', Ingredient.of(Items.IRON_INGOT))
+					.pattern("  C")
+					.pattern(" X ")
+					.pattern("C  ")
+					.unlockedBy(RecipeProvider.getHasName(Items.MINECART), this.has(Items.MINECART))
 					.save(exporter);
 
 				this.shaped(RecipeCategory.DECORATIONS, TCABlocks.COPPER_CAMPFIRE)

@@ -29,6 +29,7 @@ import net.frozenblock.thecopperierage.block.CopperFireBlock;
 import net.frozenblock.thecopperierage.block.CopperPressurePlateBlock;
 import net.frozenblock.thecopperierage.block.CrateBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
+import net.frozenblock.thecopperierage.block.RedGritBlock;
 import net.frozenblock.thecopperierage.block.RedstonePumpkinBlock;
 import net.frozenblock.thecopperierage.block.StickyGearboxBlock;
 import net.frozenblock.thecopperierage.block.WeatheringChimeBlock;
@@ -44,6 +45,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ColorRGBA;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -52,6 +54,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.CarvedPumpkinBlock;
+import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.WeatheringCopperBlocks;
@@ -105,6 +108,17 @@ public final class TCABlocks {
 			.lightLevel(blockStatex -> 7)
 			.isValidSpawn(Blocks::always)
 			.pushReaction(PushReaction.DESTROY)
+			.isRedstoneConductor(Blocks::never)
+	);
+
+	public static final RedGritBlock RED_GRIT = register("red_grit",
+		properties -> new RedGritBlock(new ColorRGBA(0xe3001a), properties),
+		BlockBehaviour.Properties.of()
+			.mapColor(MapColor.COLOR_RED)
+			.strength(1F)
+			.sound(SoundType.SAND)
+			.isValidSpawn(Blocks::always)
+			.pushReaction(PushReaction.NORMAL)
 			.isRedstoneConductor(Blocks::never)
 	);
 

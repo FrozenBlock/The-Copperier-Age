@@ -12,6 +12,7 @@
     "block.gearbox.EntityMixin",
     "block.rail.DetectorRailBlockMixin",
     "block.redstone.RedstoneWireBlockMixin",
+    "block.redstone_ore.RedStoneOreBlockMixin",
     "datafix.DataFixersMixin",
     "datafix.v4533Mixin",
     "entity.chest_vehicle.AbstractBoatMixin",

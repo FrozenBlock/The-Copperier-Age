@@ -25,6 +25,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.CopperFanBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
+import net.frozenblock.thecopperierage.block.RedGritBlock;
 import net.frozenblock.thecopperierage.block.StickyGearboxBlock;
 import net.frozenblock.thecopperierage.client.renderer.item.properties.select.OxidizedItemsEnabled;
 import net.frozenblock.thecopperierage.client.renderer.item.properties.select.WeatherState;
@@ -103,6 +104,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 		generator.createPumpkinVariant(TCABlocks.COPPER_JACK_O_LANTERN, TextureMapping.column(Blocks.PUMPKIN));
 		generator.createPumpkinVariant(TCABlocks.REDSTONE_JACK_O_LANTERN, TextureMapping.column(Blocks.PUMPKIN));
 		generator.createCampfires(TCABlocks.COPPER_CAMPFIRE);
+		createRedGrit(generator, TCABlocks.RED_GRIT);
 
 		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.unaffected(), Blocks.COPPER_BLOCK);
 		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed(), Blocks.COPPER_BLOCK);
@@ -148,6 +150,31 @@ public final class TCAModelProvider extends FabricModelProvider {
 				.with(sideModels.with(BlockModelGenerators.Y_ROT_180))
 				.with(sideModels.with(BlockModelGenerators.Y_ROT_270))
 		);
+	}
+
+	private static void createRedGrit(@NotNull BlockModelGenerators generator, @NotNull Block block) {
+		final MultiVariant unlitModel = BlockModelGenerators.plainVariant(
+			TexturedModel.CUBE.createWithSuffix(block, "_unlit", generator.modelOutput)
+		);
+		final MultiVariant litModel = BlockModelGenerators.plainVariant(
+			TexturedModel.CUBE.createWithSuffix(block, "_lit", generator.modelOutput)
+		);
+
+		final PropertyDispatch<MultiVariant> stabilityDispatch = PropertyDispatch.initial(RedGritBlock.STABILITY)
+			.select(0, unlitModel)
+			.select(1, unlitModel)
+			.select(2, unlitModel)
+			.select(3, unlitModel)
+			.select(4, unlitModel)
+			.select(5, unlitModel)
+			.select(6, unlitModel)
+			.select(7, unlitModel)
+			.select(8, unlitModel)
+			.select(9, unlitModel)
+			.select(10, litModel);
+
+		generator.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(stabilityDispatch));
+		generator.registerSimpleItemModel(block, ModelLocationUtils.getModelLocation(block, "_unlit"));
 	}
 
 	private static void createGearbox(@NotNull BlockModelGenerators generator, @NotNull Block block, @NotNull Block waxedBlock) {

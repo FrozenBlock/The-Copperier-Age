@@ -47,7 +47,7 @@ public class WallTorchBlockMixin {
 		SimpleParticleType original,
 		@Local(argsOnly = true) BlockState state
 	) {
-		return TCAConfig.COPPER_PARTICLES && state.is(Blocks.COPPER_WALL_TORCH) ? TCAParticleTypes.COPPER_SMOKE : original;
+		return TCAConfig.COPPER_PARTICLES.get() && state.is(Blocks.COPPER_WALL_TORCH) ? TCAParticleTypes.COPPER_SMOKE : original;
 	}
 
 }

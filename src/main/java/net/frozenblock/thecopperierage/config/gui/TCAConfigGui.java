@@ -17,140 +17,37 @@
 
 package net.frozenblock.thecopperierage.config.gui;
 
-// TODO: Re-enable when modmenu is unobfuscated
-/*import me.shedaniel.clothconfig2.api.ConfigBuilder;
+import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.frozenblock.lib.config.api.instance.Config;
-import net.frozenblock.lib.config.clothconfig.FrozenClothConfig;
-import net.frozenblock.thecopperierage.TCAConstants;
+import static net.frozenblock.thecopperierage.TCAConstants.text;
 import net.frozenblock.thecopperierage.config.TCAConfig;
+import static net.frozenblock.thecopperierage.config.gui.TCAConfigGuiHelper.booleanEntry;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
 
 @Environment(EnvType.CLIENT)
 public final class TCAConfigGui {
 
 	private static void setupEntries(ConfigCategory category, ConfigEntryBuilder builder) {
-		final var config = TCAConfig.get(true);
-		final var modifiedConfig = TCAConfig.getWithSync();
-		final Config<?> configInstance = TCAConfig.INSTANCE;
-		final var defaultConfig = TCAConfig.INSTANCE.defaultInstance();
-
-		var copperFireEnabled = category.addEntry(
-			FrozenClothConfig.syncedEntry(
-				builder.startBooleanToggle(text("copper_fire_enabled"), modifiedConfig.copperFireEnabled)
-					.setDefaultValue(defaultConfig.copperFireEnabled)
-					.setSaveConsumer(newValue -> config.copperFireEnabled = newValue)
-					.setTooltip(tooltip("copper_fire_enabled"))
-					.build(),
-				config.getClass(),
-				"copperFireEnabled",
-				configInstance
-			)
-		);
-
-		var copperFirePoisons = category.addEntry(
-			FrozenClothConfig.syncedEntry(
-				builder.startBooleanToggle(text("copper_fire_poisons"), modifiedConfig.copperFirePoisons)
-					.setDefaultValue(defaultConfig.copperFirePoisons)
-					.setSaveConsumer(newValue -> config.copperFirePoisons = newValue)
-					.setTooltip(tooltip("copper_fire_poisons"))
-					.build(),
-				config.getClass(),
-				"copperFirePoisons",
-				configInstance
-			)
-		);
-
-		var copperButtonsInTrialChambers = category.addEntry(
-			FrozenClothConfig.syncedEntry(
-				builder.startBooleanToggle(text("copper_buttons_in_trial_chambers"), modifiedConfig.copperButtonsInTrialChambers)
-					.setDefaultValue(defaultConfig.copperButtonsInTrialChambers)
-					.setSaveConsumer(newValue -> config.copperButtonsInTrialChambers = newValue)
-					.setTooltip(tooltip("copper_buttons_in_trial_chambers"))
-					.build(),
-				config.getClass(),
-				"copperButtonsInTrialChambers",
-				configInstance
-			)
-		);
-
-		var copperChestsInTrialChambers = category.addEntry(
-			FrozenClothConfig.syncedEntry(
-				builder.startBooleanToggle(text("copper_chests_in_trial_chambers"), modifiedConfig.copperChestsInTrialChambers)
-					.setDefaultValue(defaultConfig.copperChestsInTrialChambers)
-					.setSaveConsumer(newValue -> config.copperChestsInTrialChambers = newValue)
-					.setTooltip(tooltip("copper_chests_in_trial_chambers"))
-					.build(),
-					config.getClass(),
-					"copperChestsInTrialChambers",
-					configInstance
-			)
-		);
-
-		var copperPressurePlatesInTrialChambers = category.addEntry(
-			FrozenClothConfig.syncedEntry(
-				builder.startBooleanToggle(text("copper_pressure_plates_in_trial_chambers"), modifiedConfig.copperPressurePlatesInTrialChambers)
-					.setDefaultValue(defaultConfig.copperPressurePlatesInTrialChambers)
-					.setSaveConsumer(newValue -> config.copperPressurePlatesInTrialChambers = newValue)
-					.setTooltip(tooltip("copper_pressure_plates_in_trial_chambers"))
-					.build(),
-				config.getClass(),
-				"copperPressurePlatesInTrialChambers",
-				configInstance
-			)
-		);
-
-		var oxidizableCopperEquipment = category.addEntry(
-			FrozenClothConfig.syncedEntry(
-				builder.startBooleanToggle(text("oxidizable_copper_equipment"), modifiedConfig.oxidizableCopperEquipment)
-					.setDefaultValue(defaultConfig.oxidizableCopperEquipment)
-					.setSaveConsumer(newValue -> config.oxidizableCopperEquipment = newValue)
-					.setTooltip(tooltip("oxidizable_copper_equipment"))
-					.build(),
-				config.getClass(),
-				"oxidizableCopperEquipment",
-				configInstance
-			)
-		);
-
-		var copperParticles = category.addEntry(
-			FrozenClothConfig.syncedEntry(
-				builder.startBooleanToggle(text("copper_particles"), modifiedConfig.copperParticles)
-					.setDefaultValue(defaultConfig.copperParticles)
-					.setSaveConsumer(newValue -> config.copperParticles = newValue)
-					.setTooltip(tooltip("copper_particles"))
-					.build(),
-				config.getClass(),
-				"copperParticles",
-				configInstance
-			)
-		);
-
+		category.addEntry(booleanEntry(builder, "copper_fire_enabled", TCAConfig.COPPER_FIRE_ENABLED));
+		category.addEntry(booleanEntry(builder, "copper_fire_poisons", TCAConfig.COPPER_FIRE_POISONS));
+		category.addEntry(booleanEntry(builder, "copper_buttons_in_trial_chambers", TCAConfig.COPPER_BUTTONS_IN_TRIAL_CHAMBERS));
+		category.addEntry(booleanEntry(builder, "copper_chests_in_trial_chambers", TCAConfig.COPPER_CHESTS_IN_TRIAL_CHAMBERS));
+		category.addEntry(booleanEntry(builder, "copper_pressure_plates_in_trial_chambers", TCAConfig.COPPER_PRESSURE_PLATES_IN_TRIAL_CHAMBERS));
+		category.addEntry(booleanEntry(builder, "oxidizable_copper_equipment", TCAConfig.OXIDIZABLE_COPPER_EQUIPMENT));
+		category.addEntry(booleanEntry(builder, "copper_particles", TCAConfig.COPPER_PARTICLES));
 	}
 
 	public static Screen buildScreen(Screen parent) {
-		final var configBuilder = ConfigBuilder.create().setParentScreen(parent).setTitle(text("component.title"));
-		configBuilder.setSavingRunnable(TCAConfig.INSTANCE::save);
-		final var config = configBuilder.getOrCreateCategory(text("config"));
-		ConfigEntryBuilder entryBuilder = configBuilder.entryBuilder();
-		setupEntries(config, entryBuilder);
+		final ConfigBuilder configBuilder = ConfigBuilder.create().setParentScreen(parent).setTitle(text("component.title"));
+		configBuilder.setSavingRunnable(TCAConfig.CONFIG::save);
+
+		final ConfigCategory category = configBuilder.getOrCreateCategory(text("config"));
+		final ConfigEntryBuilder entryBuilder = configBuilder.entryBuilder();
+		setupEntries(category, entryBuilder);
+
 		return configBuilder.build();
 	}
-
-	public static Component text(String key) {
-		return Component.translatable("option." + TCAConstants.MOD_ID + "." + key);
-	}
-
-	public static Component tooltip(String key) {
-		return Component.translatable("tooltip." + TCAConstants.MOD_ID + "." + key);
-	}
-
-	public static Component enumNameProvider(String key) {
-		return Component.translatable("enum." + TCAConstants.MOD_ID + "." + key);
-	}
 }
-*/

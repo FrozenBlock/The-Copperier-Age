@@ -145,10 +145,9 @@ public class FrozenLibIntegration extends ModIntegration {
 
 	@Override
 	public void init() {
-		final TCAConfig config = TCAConfig.get();
 		final Identifier trialChambers = BuiltinStructures.TRIAL_CHAMBERS.identifier();
 
-		if (config.copperButtonsInTrialChambers) {
+		if (TCAConfig.COPPER_BUTTONS_IN_TRIAL_CHAMBERS.get()) {
 			StructureProcessorApi.addProcessor(
 				trialChambers,
 				new BlockStateRespectingRuleProcessor(
@@ -159,7 +158,7 @@ public class FrozenLibIntegration extends ModIntegration {
 			);
 		}
 
-		if (config.copperChestsInTrialChambers) {
+		if (TCAConfig.COPPER_CHESTS_IN_TRIAL_CHAMBERS.get()) {
 			StructureProcessorApi.addProcessor(
 				trialChambers,
 				new BlockStateRespectingRuleProcessor(
@@ -170,7 +169,7 @@ public class FrozenLibIntegration extends ModIntegration {
 			);
 		}
 
-		if (config.copperPressurePlatesInTrialChambers) {
+		if (TCAConfig.COPPER_PRESSURE_PLATES_IN_TRIAL_CHAMBERS.get()) {
 			StructureProcessorApi.addProcessor(
 				trialChambers,
 				new BlockStateRespectingRuleProcessor(

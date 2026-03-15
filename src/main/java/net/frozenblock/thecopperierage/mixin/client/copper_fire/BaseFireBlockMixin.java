@@ -44,7 +44,7 @@ public class BaseFireBlockMixin {
 		SimpleParticleType original,
 		@Local(argsOnly = true) BlockState state
 	) {
-		if (!TCAConfig.COPPER_PARTICLES || !state.is(TCABlocks.COPPER_FIRE)) return original;
+		if (!TCAConfig.COPPER_PARTICLES.get() || !state.is(TCABlocks.COPPER_FIRE)) return original;
 		return TCAParticleTypes.LARGE_COPPER_SMOKE;
 	}
 

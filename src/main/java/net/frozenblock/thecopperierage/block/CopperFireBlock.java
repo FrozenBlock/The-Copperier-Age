@@ -85,7 +85,7 @@ public class CopperFireBlock extends BaseFireBlock {
     }
 
 	public static void poisonEntity(Level level, Entity entity) {
-		if (level.isClientSide() || !(entity instanceof LivingEntity livingEntity) || !TCAConfig.get().copperFirePoisons) return;
+		if (level.isClientSide() || !(entity instanceof LivingEntity livingEntity) || !TCAConfig.COPPER_FIRE_POISONS.get()) return;
 		livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 119));
 	}
 

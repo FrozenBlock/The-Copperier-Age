@@ -37,8 +37,8 @@ public record OxidizedItemsEnabled() implements SelectItemModelProperty<Boolean>
 	);
 
 	@Override
-	public Boolean get(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int i, ItemDisplayContext context) {
-		return TCAConfig.OXIDIZABLE_COPPER_EQUIPMENT;
+	public Boolean get(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity owner, int seed, ItemDisplayContext context) {
+		return TCAConfig.OXIDIZABLE_COPPER_EQUIPMENT.get();
 	}
 
 	@Override

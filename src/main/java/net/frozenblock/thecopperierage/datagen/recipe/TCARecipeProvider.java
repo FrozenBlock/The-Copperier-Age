@@ -113,7 +113,7 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.define('#', Items.GRAVEL)
 					.pattern("^#^")
 					.pattern("#^#")
-					.pattern("^#^").pattern("^#^")
+					.pattern("^#^")
 					.unlockedBy("has_redstone", this.has(Items.REDSTONE))
 					.save(this.output);
 

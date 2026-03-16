@@ -25,7 +25,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.CopperFanBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
-import net.frozenblock.thecopperierage.block.RedGritBlock;
+import net.frozenblock.thecopperierage.block.RedstoneGritBlock;
 import net.frozenblock.thecopperierage.block.StickyGearboxBlock;
 import net.frozenblock.thecopperierage.client.renderer.item.properties.select.OxidizedItemsEnabled;
 import net.frozenblock.thecopperierage.client.renderer.item.properties.select.WeatherState;
@@ -153,10 +153,18 @@ public final class TCAModelProvider extends FabricModelProvider {
 	}
 
 	private static void createRedstoneGrit(BlockModelGenerators generator, Block block) {
-		final MultiVariant unlitModel = BlockModelGenerators.plainVariant(TexturedModel.CUBE.createWithSuffix(block, "_unlit", generator.modelOutput));
-		final MultiVariant litModel = BlockModelGenerators.plainVariant(TexturedModel.CUBE.createWithSuffix(block, "_lit", generator.modelOutput));
+		final MultiVariant unlitModel = BlockModelGenerators.plainVariant(
+			TexturedModel.CUBE
+				.updateTexture(textureMapping -> textureMapping.put(TextureSlot.ALL, TextureMapping.getBlockTexture(block, "_unlit")))
+				.createWithSuffix(block, "_unlit", generator.modelOutput)
+		);
+		final MultiVariant litModel = BlockModelGenerators.plainVariant(
+			TexturedModel.CUBE
+				.updateTexture(textureMapping -> textureMapping.put(TextureSlot.ALL, TextureMapping.getBlockTexture(block, "_lit")))
+				.createWithSuffix(block, "_lit", generator.modelOutput)
+		);
 
-		final PropertyDispatch<MultiVariant> stabilityDispatch = PropertyDispatch.initial(RedGritBlock.STABILITY)
+		final PropertyDispatch<MultiVariant> stabilityDispatch = PropertyDispatch.initial(RedstoneGritBlock.STABILITY)
 			.select(0, unlitModel)
 			.select(1, unlitModel)
 			.select(2, unlitModel)

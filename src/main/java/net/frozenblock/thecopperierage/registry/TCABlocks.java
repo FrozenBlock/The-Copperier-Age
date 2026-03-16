@@ -29,7 +29,7 @@ import net.frozenblock.thecopperierage.block.CopperFireBlock;
 import net.frozenblock.thecopperierage.block.CopperPressurePlateBlock;
 import net.frozenblock.thecopperierage.block.CrateBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
-import net.frozenblock.thecopperierage.block.RedGritBlock;
+import net.frozenblock.thecopperierage.block.RedstoneGritBlock;
 import net.frozenblock.thecopperierage.block.RedstonePumpkinBlock;
 import net.frozenblock.thecopperierage.block.StickyGearboxBlock;
 import net.frozenblock.thecopperierage.block.WeatheringChimeBlock;
@@ -110,8 +110,8 @@ public final class TCABlocks {
 			.isRedstoneConductor(Blocks::never)
 	);
 
-	public static final RedGritBlock REDSTONE_GRIT = register("redstone_grit",
-		properties -> new RedGritBlock(new ColorRGBA(0xe3001a), properties),
+	public static final RedstoneGritBlock REDSTONE_GRIT = register("redstone_grit",
+		properties -> new RedstoneGritBlock(new ColorRGBA(0xe3001a), properties),
 		BlockBehaviour.Properties.of()
 			.mapColor(MapColor.COLOR_RED)
 			.strength(1F)

@@ -31,26 +31,25 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ColoredFallingBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
-public class RedGritBlock extends ColoredFallingBlock {
-    public static final IntegerProperty STABILITY = IntegerProperty.create("stability", 0, 10);
-    public static final MapCodec<RedGritBlock> CODEC = RecordCodecBuilder.mapCodec((instance) -> {
-        return instance.group(ColorRGBA.CODEC.fieldOf("falling_dust_color").forGetter((redGritBlock) -> {
-            return redGritBlock.dustColor;
-        }), propertiesCodec()).apply(instance, RedGritBlock::new);
-    });
+public class RedstoneGritBlock extends ColoredFallingBlock {
+	private static final int MAX_STABILITY = 10;
+    public static final IntegerProperty STABILITY = IntegerProperty.create("stability", 0, MAX_STABILITY);
+    public static final MapCodec<RedstoneGritBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		ColorRGBA.CODEC.fieldOf("falling_dust_color").forGetter(redstoneGritBlock -> redstoneGritBlock.dustColor),
+		propertiesCodec()
+	).apply(instance, RedstoneGritBlock::new));
 
     @Override
-    public MapCodec<RedGritBlock> codec() {
+    public MapCodec<RedstoneGritBlock> codec() {
         return CODEC;
     }
 
-    public RedGritBlock(ColorRGBA colorRGBA, BlockBehaviour.Properties properties) {
-        super(colorRGBA, properties);
+    public RedstoneGritBlock(ColorRGBA color, Properties properties) {
+        super(color, properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(STABILITY, 0));
     }
 
@@ -73,13 +72,11 @@ public class RedGritBlock extends ColoredFallingBlock {
     @Override
     public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
         if (!oldState.is(this) || movedByPiston) {
-            if (state.getValue(STABILITY) == 10) {
+            if (state.getValue(STABILITY) == MAX_STABILITY) {
                 level.setBlock(pos, state.setValue(STABILITY, 0), Block.UPDATE_ALL);
                 return;
             }
-            if (movedByPiston && level instanceof ServerLevel serverLevel) {
-                spawnActivationParticles(serverLevel, pos);
-            }
+            if (movedByPiston && level instanceof ServerLevel serverLevel) spawnActivationParticles(serverLevel, pos);
             super.onPlace(state, level, pos, oldState, movedByPiston);
         }
     }
@@ -91,16 +88,19 @@ public class RedGritBlock extends ColoredFallingBlock {
 			level.setBlock(pos, state.setValue(STABILITY, 0), Block.UPDATE_CLIENTS);
 			spawnActivationParticles(level, pos);
             super.tick(state.setValue(STABILITY, 0), level, pos, random);
-        } else {
-            if (stability < 10) {
-                level.setBlock(pos, state.setValue(STABILITY, stability + 1), stability + 1 == 10 ? Block.UPDATE_ALL : Block.UPDATE_CLIENTS);
-                if (stability + 1 == 10) {
-                    spawnActivationParticles(level, pos);
-                } else {
-                    level.scheduleTick(pos, this, 2);
-                }
-            }
+			return;
         }
+
+		if (stability >= MAX_STABILITY) return;
+
+		final int newStability = stability + 1;
+		final boolean isActivated = newStability == MAX_STABILITY;
+		level.setBlock(pos, state.setValue(STABILITY, newStability), isActivated ? Block.UPDATE_ALL : Block.UPDATE_CLIENTS);
+		if (isActivated) {
+			spawnActivationParticles(level, pos);
+		} else {
+			level.scheduleTick(pos, this, 2);
+		}
     }
 
     @Override
@@ -110,17 +110,12 @@ public class RedGritBlock extends ColoredFallingBlock {
 
     @Override
     protected int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
-        return state.getValue(STABILITY) == 10 ? 15 : 0;
-    }
-
-    @Override
-    public int getDustColor(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
-        return this.dustColor.rgba();
+        return state.getValue(STABILITY) == MAX_STABILITY ? 15 : 0;
     }
 
     private void spawnActivationParticles(ServerLevel level, BlockPos pos) {
-        int color = this.dustColor.rgba();
-        DustParticleOptions particle = new DustParticleOptions(color, 1.0F);
+        final int color = this.dustColor.rgba();
+        final DustParticleOptions particle = new DustParticleOptions(color, 1F);
         level.sendParticles(
             particle,
             pos.getX() + 0.5D,

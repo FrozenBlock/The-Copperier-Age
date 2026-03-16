@@ -108,6 +108,15 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.unlockedBy("has_redstone", this.has(Items.REDSTONE))
 					.save(this.output);
 
+				this.shaped(RecipeCategory.REDSTONE, TCABlocks.REDSTONE_GRIT)
+					.define('^', Items.REDSTONE)
+					.define('#', Items.GRAVEL)
+					.pattern("^#^")
+					.pattern("#^#")
+					.pattern("^#^").pattern("^#^")
+					.unlockedBy("has_redstone", this.has(Items.REDSTONE))
+					.save(this.output);
+
 				this.shaped(RecipeCategory.BUILDING_BLOCKS, TCABlocks.COPPER_BUTTON.unaffected())
 					.define('#', Ingredient.of(Items.COPPER_NUGGET))
 					.pattern("##")

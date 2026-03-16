@@ -124,7 +124,7 @@ public final class TCACreativeInventorySorting {
 		addAfterInNaturalBlocks(Blocks.JACK_O_LANTERN, TCABlocks.COPPER_JACK_O_LANTERN);
 		addAfterInNaturalBlocks(TCABlocks.COPPER_JACK_O_LANTERN, TCABlocks.REDSTONE_JACK_O_LANTERN);
 		addAfterInRedstoneBlocks(Blocks.REDSTONE_TORCH, TCABlocks.REDSTONE_JACK_O_LANTERN);
-		addAfterInRedstoneBlocks(Blocks.REDSTONE_BLOCK, TCABlocks.RED_GRIT);
+		addAfterInRedstoneBlocks(Blocks.REDSTONE_BLOCK, TCABlocks.REDSTONE_GRIT);
 
 		// MINECARTS
 		addAfterInToolsAndUtilities(Items.CHEST_MINECART, TCAItems.CRATE_MINECART);

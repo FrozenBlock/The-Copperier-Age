@@ -54,7 +54,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.CarvedPumpkinBlock;
-import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.WeatheringCopperBlocks;
@@ -111,7 +110,7 @@ public final class TCABlocks {
 			.isRedstoneConductor(Blocks::never)
 	);
 
-	public static final RedGritBlock RED_GRIT = register("red_grit",
+	public static final RedGritBlock REDSTONE_GRIT = register("redstone_grit",
 		properties -> new RedGritBlock(new ColorRGBA(0xe3001a), properties),
 		BlockBehaviour.Properties.of()
 			.mapColor(MapColor.COLOR_RED)

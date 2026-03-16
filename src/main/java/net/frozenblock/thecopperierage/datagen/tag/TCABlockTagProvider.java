@@ -95,6 +95,9 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 			.addOptionalTag(TCABlockTags.COPPER_BUTTONS)
 			.addOptionalTag(TCABlockTags.COPPER_PRESSURE_PLATES);
 
+		this.valueLookupBuilder(BlockTags.MINEABLE_WITH_SHOVEL)
+			.add(TCABlocks.REDSTONE_GRIT);
+
 		this.valueLookupBuilder(TCABlockTags.CANNOT_ROTATE)
 			.add(Blocks.VAULT)
 			.add(Blocks.PISTON_HEAD, Blocks.MOVING_PISTON)

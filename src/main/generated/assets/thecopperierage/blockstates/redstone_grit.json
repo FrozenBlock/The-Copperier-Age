@@ -1,0 +1,37 @@
+{
+  "variants": {
+    "stability=0": {
+      "model": "thecopperierage:block/redstone_grit_unlit"
+    },
+    "stability=1": {
+      "model": "thecopperierage:block/redstone_grit_unlit"
+    },
+    "stability=10": {
+      "model": "thecopperierage:block/redstone_grit_lit"
+    },
+    "stability=2": {
+      "model": "thecopperierage:block/redstone_grit_unlit"
+    },
+    "stability=3": {
+      "model": "thecopperierage:block/redstone_grit_unlit"
+    },
+    "stability=4": {
+      "model": "thecopperierage:block/redstone_grit_unlit"
+    },
+    "stability=5": {
+      "model": "thecopperierage:block/redstone_grit_unlit"
+    },
+    "stability=6": {
+      "model": "thecopperierage:block/redstone_grit_unlit"
+    },
+    "stability=7": {
+      "model": "thecopperierage:block/redstone_grit_unlit"
+    },
+    "stability=8": {
+      "model": "thecopperierage:block/redstone_grit_unlit"
+    },
+    "stability=9": {
+      "model": "thecopperierage:block/redstone_grit_unlit"
+    }
+  }
+}

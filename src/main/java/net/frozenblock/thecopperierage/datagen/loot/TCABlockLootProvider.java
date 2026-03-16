@@ -54,6 +54,7 @@ public final class TCABlockLootProvider extends FabricBlockLootTableProvider {
 
 		this.dropSelf(TCABlocks.COPPER_JACK_O_LANTERN);
 		this.dropSelf(TCABlocks.REDSTONE_JACK_O_LANTERN);
+		this.dropSelf(TCABlocks.REDSTONE_GRIT);
 	}
 
 	public void crateDrop(Block block) {

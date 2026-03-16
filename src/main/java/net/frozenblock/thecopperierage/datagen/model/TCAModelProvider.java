@@ -104,7 +104,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 		generator.createPumpkinVariant(TCABlocks.COPPER_JACK_O_LANTERN, TextureMapping.column(Blocks.PUMPKIN));
 		generator.createPumpkinVariant(TCABlocks.REDSTONE_JACK_O_LANTERN, TextureMapping.column(Blocks.PUMPKIN));
 		generator.createCampfires(TCABlocks.COPPER_CAMPFIRE);
-		createRedGrit(generator, TCABlocks.RED_GRIT);
+		createRedstoneGrit(generator, TCABlocks.REDSTONE_GRIT);
 
 		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.unaffected(), Blocks.COPPER_BLOCK);
 		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed(), Blocks.COPPER_BLOCK);
@@ -152,13 +152,9 @@ public final class TCAModelProvider extends FabricModelProvider {
 		);
 	}
 
-	private static void createRedGrit(@NotNull BlockModelGenerators generator, @NotNull Block block) {
-		final MultiVariant unlitModel = BlockModelGenerators.plainVariant(
-			TexturedModel.CUBE.createWithSuffix(block, "_unlit", generator.modelOutput)
-		);
-		final MultiVariant litModel = BlockModelGenerators.plainVariant(
-			TexturedModel.CUBE.createWithSuffix(block, "_lit", generator.modelOutput)
-		);
+	private static void createRedstoneGrit(BlockModelGenerators generator, Block block) {
+		final MultiVariant unlitModel = BlockModelGenerators.plainVariant(TexturedModel.CUBE.createWithSuffix(block, "_unlit", generator.modelOutput));
+		final MultiVariant litModel = BlockModelGenerators.plainVariant(TexturedModel.CUBE.createWithSuffix(block, "_lit", generator.modelOutput));
 
 		final PropertyDispatch<MultiVariant> stabilityDispatch = PropertyDispatch.initial(RedGritBlock.STABILITY)
 			.select(0, unlitModel)

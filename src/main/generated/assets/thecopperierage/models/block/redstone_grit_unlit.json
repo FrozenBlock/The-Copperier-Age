@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "thecopperierage:block/red_grit_lit"
+    "all": "thecopperierage:block/redstone_grit"
   }
 }

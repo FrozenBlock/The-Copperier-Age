@@ -20,6 +20,7 @@ package net.frozenblock.thecopperierage.block.entity;
 import java.util.Optional;
 import net.frozenblock.thecopperierage.block.StickyGearboxBlock;
 import net.frozenblock.thecopperierage.block.rotation.BlockRotationHelper;
+import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.item.WrenchItem;
 import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
 import net.minecraft.core.BlockPos;
@@ -40,7 +41,6 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class StickyGearboxBlockEntity extends BlockEntity {
-	private static final int ROTATE_INTERVAL_IN_TICKS = 24;
 	private int ticksSinceActive;
 
 	public StickyGearboxBlockEntity(BlockPos pos, BlockState state) {
@@ -55,8 +55,8 @@ public class StickyGearboxBlockEntity extends BlockEntity {
 		}
 
 		stickyGearbox.ticksSinceActive += 1;
-		if (stickyGearbox.ticksSinceActive % ROTATE_INTERVAL_IN_TICKS != 0) return;
-		final boolean isDoubleActivation = (stickyGearbox.ticksSinceActive % (ROTATE_INTERVAL_IN_TICKS * 2)) != 0;
+		if (stickyGearbox.ticksSinceActive % TCAConfig.STICKY_GEARBOX_ROTATION_INTERVAL != 0) return;
+		final boolean isDoubleActivation = (stickyGearbox.ticksSinceActive % (TCAConfig.STICKY_GEARBOX_ROTATION_INTERVAL * 2)) != 0;
 		final Direction facing = state.getValue(StickyGearboxBlock.FACING);
 		final Direction.Axis facingAxis = facing.getAxis();
 		final BlockPos facingPos = pos.relative(facing);

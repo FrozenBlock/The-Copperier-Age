@@ -131,6 +131,19 @@ public final class TCAConfigGui {
 			)
 		);
 
+		var stickyGearboxRotationInterval = category.addEntry(
+			FrozenClothConfig.syncedEntry(
+				entryBuilder.startIntSlider(text("sticky_gearbox_rotation_interval"), modifiedConfig.stickyGearboxRotationInterval, 0, 500)
+					.setDefaultValue(defaultConfig.stickyGearboxRotationInterval)
+					.setSaveConsumer(newValue -> config.stickyGearboxRotationInterval = newValue)
+					.setTooltip(tooltip("sticky_gearbox_rotation_interval"))
+					.build(),
+				config.getClass(),
+				"stickyGearboxRotationInterval",
+				configInstance
+			)
+		);
+
 		var oxidizableCopperEquipment = category.addEntry(
 			FrozenClothConfig.syncedEntry(
 				entryBuilder.startBooleanToggle(text("oxidizable_copper_equipment"), modifiedConfig.oxidizableCopperEquipment)

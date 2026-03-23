@@ -46,6 +46,7 @@ public class TCAConfig {
 				OXIDIZABLE_COPPER_EQUIPMENT = config.oxidizableCopperEquipment;
 				COPPER_GOLEMS_PRESS_BUTTONS = config.copperGolemsPressButtons;
 				GEARBOX_ENTITY_ROTATION = config.gearboxEntityRotation;
+				STICKY_GEARBOX_ROTATION_INTERVAL = config.stickyGearboxRotationInterval;
 				COPPER_PARTICLES = config.copperParticles;
 				BETTER_COPPER_TOOLTIPS = config.betterCopperTooltips;
 				WAXED_ITEM_ICON_OVERLAY = config.waxedItemIconOverlay;
@@ -57,6 +58,7 @@ public class TCAConfig {
 	public static volatile boolean OXIDIZABLE_COPPER_EQUIPMENT = true;
 	public static volatile boolean COPPER_GOLEMS_PRESS_BUTTONS = true;
 	public static volatile float GEARBOX_ENTITY_ROTATION = 3.5F;
+	public static volatile int STICKY_GEARBOX_ROTATION_INTERVAL = 24;
 	public static volatile boolean COPPER_PARTICLES = true;
 	public static volatile boolean BETTER_COPPER_TOOLTIPS = true;
 	public static volatile boolean WAXED_ITEM_ICON_OVERLAY = true;
@@ -82,6 +84,9 @@ public class TCAConfig {
 
 	@EntrySyncData("gearboxEntityRotation")
 	public float gearboxEntityRotation = 3.5F;
+
+	@EntrySyncData("stickyGearboxRotationInterval")
+	public int stickyGearboxRotationInterval = 24;
 
 	@EntrySyncData("oxidizableCopperEquipment")
 	public boolean oxidizableCopperEquipment = true;

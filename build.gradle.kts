@@ -48,6 +48,7 @@ val frozenlib_version: String by project
 val wilderwild_version: String by project
 
 val modmenu_version: String by project
+val text_placeholder_api_version: String by project
 val cloth_config_version: String by project
 val copperpipes_version: String by project
 
@@ -202,10 +203,11 @@ dependencies {
     modCompileOnlyApi("maven.modrinth:simple-copper-pipes:${copperpipes_version}")
 
     // Mod Menu
-    modCompileOnly("com.terraformersmc:modmenu:$modmenu_version")
+    modImplementation("com.terraformersmc:modmenu:$modmenu_version")
+    modImplementation("maven.modrinth:placeholder-api:$text_placeholder_api_version")
 
     // Cloth Config
-    modCompileOnly("me.shedaniel.cloth:cloth-config-fabric:$cloth_config_version") {
+    modImplementation("me.shedaniel.cloth:cloth-config-fabric:$cloth_config_version") {
         exclude(group = "net.fabricmc.fabric-api")
         exclude(group = "com.terraformersmc")
     }

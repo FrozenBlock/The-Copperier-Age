@@ -18,6 +18,7 @@
 package net.frozenblock.thecopperierage.block.gearbox;
 
 import net.frozenblock.thecopperierage.block.GearboxBlock;
+import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -30,14 +31,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 public final class GearboxEntityRotationHelper {
-	private static final float GEARBOX_ACTIVE_YAW_DELTA = 3.5F;
 
 	private GearboxEntityRotationHelper() {
 	}
 
 	public static float getYawDeltaFromPower(int power) {
 		if (power <= 0) return 0F;
-		return (power & 1) == 0 ? GEARBOX_ACTIVE_YAW_DELTA : -GEARBOX_ACTIVE_YAW_DELTA;
+		return (power & 1) == 0 ? TCAConfig.GEARBOX_ENTITY_ROTATION : -TCAConfig.GEARBOX_ENTITY_ROTATION;
 	}
 
 	public static boolean isStandingOnBlock(Entity entity, BlockPos pos) {

@@ -118,6 +118,19 @@ public final class TCAConfigGui {
 			)
 		);
 
+		var gearboxEntityRotation = category.addEntry(
+			FrozenClothConfig.syncedEntry(
+				entryBuilder.startIntSlider(text("gearbox_entity_rotation"), (int) (modifiedConfig.gearboxEntityRotation * 100), 0, 10000)
+					.setDefaultValue((int) (defaultConfig.gearboxEntityRotation * 100))
+					.setSaveConsumer(newValue -> config.gearboxEntityRotation = newValue / 100F)
+					.setTooltip(tooltip("gearbox_entity_rotation"))
+					.build(),
+				config.getClass(),
+				"gearboxEntityRotation",
+				configInstance
+			)
+		);
+
 		var oxidizableCopperEquipment = category.addEntry(
 			FrozenClothConfig.syncedEntry(
 				entryBuilder.startBooleanToggle(text("oxidizable_copper_equipment"), modifiedConfig.oxidizableCopperEquipment)

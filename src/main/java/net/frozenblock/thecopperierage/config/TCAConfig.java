@@ -45,24 +45,22 @@ public class TCAConfig {
 				var config = this.config();
 				OXIDIZABLE_COPPER_EQUIPMENT = config.oxidizableCopperEquipment;
 				COPPER_GOLEMS_PRESS_BUTTONS = config.copperGolemsPressButtons;
+				GEARBOX_ENTITY_ROTATION = config.gearboxEntityRotation;
 				COPPER_PARTICLES = config.copperParticles;
 				BETTER_COPPER_TOOLTIPS = config.betterCopperTooltips;
 				WAXED_ITEM_ICON_OVERLAY = config.waxedItemIconOverlay;
 				EXTRA_ITEM_ICON_OVERLAYS = config.extraItemIconOverlays;
-				IMPROVED_FURNACE_MINECARTS = config.improvedFurnaceMinecarts;
-				IMPROVED_VEHICLE_CHESTS = config.improvedVehicleChests;
 			}
 		}
 	);
 
 	public static volatile boolean OXIDIZABLE_COPPER_EQUIPMENT = true;
 	public static volatile boolean COPPER_GOLEMS_PRESS_BUTTONS = true;
+	public static volatile float GEARBOX_ENTITY_ROTATION = 3.5F;
 	public static volatile boolean COPPER_PARTICLES = true;
 	public static volatile boolean BETTER_COPPER_TOOLTIPS = true;
 	public static volatile boolean WAXED_ITEM_ICON_OVERLAY = true;
 	public static volatile boolean EXTRA_ITEM_ICON_OVERLAYS = false;
-	public static volatile boolean IMPROVED_FURNACE_MINECARTS = true;
-	public static volatile boolean IMPROVED_VEHICLE_CHESTS = true;
 
 	@EntrySyncData("copperFireEnabled")
 	public boolean copperFireEnabled = true;
@@ -82,6 +80,9 @@ public class TCAConfig {
 	@EntrySyncData("copperGolemsPressButtons")
 	public boolean copperGolemsPressButtons = true;
 
+	@EntrySyncData("gearboxEntityRotation")
+	public float gearboxEntityRotation = 3.5F;
+
 	@EntrySyncData("oxidizableCopperEquipment")
 	public boolean oxidizableCopperEquipment = true;
 
@@ -96,12 +97,6 @@ public class TCAConfig {
 
 	@EntrySyncData("extraItemIconOverlays")
 	public boolean extraItemIconOverlays = false;
-
-	@EntrySyncData("improvedFurnaceMinecarts")
-	public boolean improvedFurnaceMinecarts = true;
-
-	@EntrySyncData("improvedVehicleChests")
-	public boolean improvedVehicleChests = true;
 
 	public static TCAConfig get(boolean real) {
 		if (real) return INSTANCE.instance();

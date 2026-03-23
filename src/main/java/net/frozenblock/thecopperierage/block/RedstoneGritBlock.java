@@ -19,6 +19,7 @@ package net.frozenblock.thecopperierage.block;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.frozenblock.thecopperierage.registry.TCABlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -36,8 +37,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 public class RedstoneGritBlock extends ColoredFallingBlock {
-	private static final int MAX_STABILITY = 10;
-    public static final IntegerProperty STABILITY = IntegerProperty.create("stability", 0, MAX_STABILITY);
+	public static final int MAX_STABILITY = 10;
+    public static final IntegerProperty STABILITY = TCABlockStateProperties.STABILITY;
     public static final MapCodec<RedstoneGritBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		ColorRGBA.CODEC.fieldOf("falling_dust_color").forGetter(redstoneGritBlock -> redstoneGritBlock.dustColor),
 		propertiesCodec()
@@ -103,7 +104,13 @@ public class RedstoneGritBlock extends ColoredFallingBlock {
 		}
     }
 
-    @Override
+	@Override
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+		super.animateTick(state, level, pos, random);
+		if (isStable(state)) spawnClientParticles(level, pos);
+	}
+
+	@Override
     protected boolean isSignalSource(BlockState state) {
         return true;
     }
@@ -112,6 +119,10 @@ public class RedstoneGritBlock extends ColoredFallingBlock {
     protected int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         return state.getValue(STABILITY) == MAX_STABILITY ? 15 : 0;
     }
+
+	public static boolean isStable(BlockState state) {
+		return state.getValue(STABILITY) == MAX_STABILITY;
+	}
 
     private void spawnActivationParticles(ServerLevel level, BlockPos pos) {
         final int color = this.dustColor.rgba();
@@ -128,4 +139,18 @@ public class RedstoneGritBlock extends ColoredFallingBlock {
             0.0D
         );
     }
+
+	private static void spawnClientParticles(Level level, BlockPos pos) {
+		final RandomSource random = level.random;
+		for (Direction direction : Direction.values()) {
+			final BlockPos offsetPos = pos.relative(direction);
+			if (level.getBlockState(offsetPos).isSolidRender()) continue;
+
+			final Direction.Axis axis = direction.getAxis();
+			final double x = axis == Direction.Axis.X ? 0.5D + 0.5625D * direction.getStepX() : random.nextFloat();
+			final double y = axis == Direction.Axis.Y ? 0.5D + 0.5625D * direction.getStepY() : random.nextFloat();
+			final double z = axis == Direction.Axis.Z ? 0.5D + 0.5625D * direction.getStepZ() : random.nextFloat();
+			level.addParticle(DustParticleOptions.REDSTONE, pos.getX() + x, pos.getY() + y, pos.getZ() + z, 0D, 0D, 0D);
+		}
+	}
 }

@@ -17,9 +17,12 @@
 
 package net.frozenblock.thecopperierage.registry;
 
+import net.frozenblock.thecopperierage.block.RedstoneGritBlock;
 import net.frozenblock.thecopperierage.block.state.properties.ChimeAttachType;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 public final class TCABlockStateProperties {
 	public static final EnumProperty<ChimeAttachType> CHIME_ATTACHMENT = EnumProperty.create("attachment", ChimeAttachType.class);
+	public static final IntegerProperty STABILITY = IntegerProperty.create("stability", 0, RedstoneGritBlock.MAX_STABILITY);
 }

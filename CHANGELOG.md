@@ -18,6 +18,10 @@ Put the changelog BELOW the dashes. ANYTHING ABOVE IS IGNORED.
   - Added a config option to control how many degrees-per-tick an entity will be rotated at.
 - Adjusted the velocity a Copper Fan sucks from behind, now being more evenly distributed.
   - This change was made in order to make Copper Fans easier to use, as their previous behavior was only noticeable while an entity was very close to the block.
+- Added Redstone Grit.
+  - Redstone Grit is unpowered when placed, but will become powered after 20 ticks.
+    - This resets every time the block is moved.
+  - Falls like Sand and Gravel blocks.
 - Copper Golems can now occasionally press Copper Buttons.
   - Randomly occurs when idle.
   - Attempts directly after depositing items into a Chest.

@@ -133,7 +133,7 @@ public final class TCAConfigGui {
 
 		var stickyGearboxRotationInterval = category.addEntry(
 			FrozenClothConfig.syncedEntry(
-				entryBuilder.startIntSlider(text("sticky_gearbox_rotation_interval"), modifiedConfig.stickyGearboxRotationInterval, 0, 500)
+				entryBuilder.startIntSlider(text("sticky_gearbox_rotation_interval"), modifiedConfig.stickyGearboxRotationInterval, 1, 500)
 					.setDefaultValue(defaultConfig.stickyGearboxRotationInterval)
 					.setSaveConsumer(newValue -> config.stickyGearboxRotationInterval = newValue)
 					.setTooltip(tooltip("sticky_gearbox_rotation_interval"))

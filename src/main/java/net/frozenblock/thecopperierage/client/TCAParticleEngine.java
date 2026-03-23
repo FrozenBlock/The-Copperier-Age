@@ -20,7 +20,6 @@ package net.frozenblock.thecopperierage.client;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
-import net.frozenblock.thecopperierage.particle.ChestVehicleBubbleSeedParticle;
 import net.frozenblock.thecopperierage.particle.CopperCampfireSmokeParticle;
 import net.frozenblock.thecopperierage.particle.CopperSmokeParticle;
 import net.frozenblock.thecopperierage.particle.LargeCopperSmokeParticle;
@@ -38,6 +37,5 @@ public final class TCAParticleEngine {
 		particleRegistry.register(TCAParticleTypes.COPPER_CAMPFIRE_COSY_SMOKE, CopperCampfireSmokeParticle.CosyProvider::new);
 		particleRegistry.register(TCAParticleTypes.COPPER_CAMPFIRE_SIGNAL_SMOKE, CopperCampfireSmokeParticle.SignalProvider::new);
 		particleRegistry.register(TCAParticleTypes.COPPER_CAMPFIRE_SIGNAL_SMOKE, CopperCampfireSmokeParticle.SignalProvider::new);
-		particleRegistry.register(TCAParticleTypes.CHEST_VEHICLE_BUBBLE_SPAWNER, ChestVehicleBubbleSeedParticle.Provider::new);
 	}
 }

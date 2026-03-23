@@ -6,6 +6,7 @@ Lufurrius
  - Initial Gearbox Textures
  - Copper Pressure Plate Concept
  - Copper Bar Retexture
+ - Redstone Grit Concept, Implementation, & Textures
 
 Zhen/zntm
  - Wrench Concept, Textures, & Sounds
@@ -21,8 +22,6 @@ Zhen/zntm
  - Oxidizing Copper Bar Textures (Based On Lufurrius's)
  - Green Copper Bulb Textures
  - Green Copper Golem Eye Textures
- - Minecart Coupling Sounds
- - Minecart Place & Break Sounds
 
 Voxelotl
  - New Copper Lantern Remodels & Retextures

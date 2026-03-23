@@ -21,7 +21,6 @@ import com.mojang.serialization.MapCodec;
 import java.util.function.Function;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.frozenblock.thecopperierage.TCAConstants;
-import net.frozenblock.thecopperierage.particle.options.ChestVehicleBubbleSeedParticleOptions;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -38,12 +37,6 @@ public final class TCAParticleTypes {
 	public static final SimpleParticleType COPPER_LAVA = register("copper_lava");
 	public static final SimpleParticleType COPPER_CAMPFIRE_COSY_SMOKE = register("copper_campfire_cosy_smoke");
 	public static final SimpleParticleType COPPER_CAMPFIRE_SIGNAL_SMOKE = register("copper_campfire_signal_smoke");
-	public static final ParticleType<ChestVehicleBubbleSeedParticleOptions> CHEST_VEHICLE_BUBBLE_SPAWNER = register(
-		"chest_vehicle_bubbles",
-		false,
-		type -> ChestVehicleBubbleSeedParticleOptions.CODEC,
-		type -> ChestVehicleBubbleSeedParticleOptions.STREAM_CODEC
-	);
 
 	private TCAParticleTypes() {
 		throw new UnsupportedOperationException("TCAParticleTypes only static declarations.");

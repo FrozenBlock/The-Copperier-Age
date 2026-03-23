@@ -11,19 +11,6 @@
   "subtitles.item.copper_horn.call": "Copper Horn plays",
 
   "item.thecopperierage.wrench": "Wrench",
-  "item.thecopperierage.minecart_coupling": "Minecart Coupling",
-  "item.thecopperierage.crate_minecart": "Minecart with Crate",
-  "entity.thecopperierage.crate_minecart": "Minecart with Crate",
-  "item.thecopperierage.copper_golem_statue_minecart": "Minecart with Copper Golem Statue",
-  "entity.thecopperierage.copper_golem_statue_minecart": "Minecart with Copper Golem Statue",
-  "item.thecopperierage.dispenser_minecart": "Minecart with Dispenser",
-  "entity.thecopperierage.dispenser_minecart": "Minecart with Dispenser",
-  "item.thecopperierage.dropper_minecart": "Minecart with Dropper",
-  "entity.thecopperierage.dropper_minecart": "Minecart with Dropper",
-  "item.thecopperierage.jukebox_minecart": "Minecart with Jukebox",
-  "entity.thecopperierage.jukebox_minecart": "Minecart with Jukebox",
-  "subtitles.item.wrench.use": "Wrench used",
-  "message.thecopperierage.minecart_coupling.first_selected": "Interact with another minecart to couple",
 
   "block.thecopperierage.chime": "Chime",
   "block.thecopperierage.exposed_chime": "Exposed Chime",
@@ -109,12 +96,6 @@
 
   "subtitles.entity.copper_golem.button_press": "Copper Golem is pressing a button",
 
-  "subtitles.entity.minecart.place": "Minecart placed",
-  "subtitles.entity.minecart.break": "Minecart broken",
-  "subtitles.entity.minecart.couple": "Minecart coupled",
-  "subtitles.entity.minecart.uncouple": "Minecart uncoupled",
-  "subtitles.entity.minecart.couple_break": "Minecart coupling broken",
-
   "option.thecopperierage.component.title": "The Copperier Age Options",
   "option.thecopperierage.false": "§cDisabled",
   "option.thecopperierage.true": "§aEnabled",
@@ -143,10 +124,6 @@
   "tooltip.thecopperierage.waxed_item_icon_overlay": "Whether waxed items have a special overlay for their items. \nDisplays a visual to indicate to players that an item is waxed without having to read tooltip. \n Only present in hud, inventory screens, and other GUIs, not in world or hand.",
   "option.thecopperierage.extra_item_icon_overlays": "Extra Item Icon Overlays",
   "tooltip.thecopperierage.extra_item_icon_overlays": "Whether additional special overlays are used. \nProvides Trapped Chests and Infested blocks special UI overlays similar to the waxed ones. \nDisabled by default.",
-  "option.thecopperierage.improved_furnace_minecarts": "Improved Furnace Minecarts",
-  "tooltip.thecopperierage.improved_furnace_minecarts": "Whether Furnace Minecarts are overhauled. \nProvides Furnace Minecarts a special container GUI that can have fuel items deposited into. \nSlots treated as with standard container minecarts.",
-  "option.thecopperierage.improved_vehicle_chests": "Improved Vehicle Chests",
-  "tooltip.thecopperierage.improved_vehicle_chests": "Whether Chests on Vehicles are visibly and audibly improved. \nChests will now open and close similar to how the blocks do. \nApplies to Minecarts and Boats.",
 
   "pack.thecopperierage.copperier_copper": "Copperier Copper",
   "pack.thecopperierage.green_copper_bulbs": "Green Copper Bulbs",

@@ -19,17 +19,13 @@ package net.frozenblock.thecopperierage.client;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.client.model.ChimeModel;
 import net.frozenblock.thecopperierage.client.renderer.blockentity.ChimeRenderer;
 import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
-import net.frozenblock.thecopperierage.registry.TCAEntityTypes;
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.client.renderer.entity.MinecartRenderer;
 
 @Environment(EnvType.CLIENT)
 public final class TCAModelLayers {
@@ -37,11 +33,6 @@ public final class TCAModelLayers {
 
 	public static void init() {
 		BlockEntityRenderers.register(TCABlockEntityTypes.CHIME, ChimeRenderer::new);
-		EntityRendererRegistry.register(TCAEntityTypes.CRATE_MINECART, context -> new MinecartRenderer(context, ModelLayers.CHEST_MINECART));
-		EntityRendererRegistry.register(TCAEntityTypes.COPPER_GOLEM_STATUE_MINECART, context -> new MinecartRenderer(context, ModelLayers.MINECART));
-		EntityRendererRegistry.register(TCAEntityTypes.DISPENSER_MINECART, context -> new MinecartRenderer(context, ModelLayers.MINECART));
-		EntityRendererRegistry.register(TCAEntityTypes.DROPPER_MINECART, context -> new MinecartRenderer(context, ModelLayers.MINECART));
-		EntityRendererRegistry.register(TCAEntityTypes.JUKEBOX_MINECART, context -> new MinecartRenderer(context, ModelLayers.MINECART));
 		EntityModelLayerRegistry.registerModelLayer(CHIME, ChimeModel::createLayerDefinition);
 	}
 }

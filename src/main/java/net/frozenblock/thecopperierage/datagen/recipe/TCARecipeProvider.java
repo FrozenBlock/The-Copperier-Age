@@ -72,16 +72,6 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.unlockedBy(RecipeProvider.getHasName(Items.COPPER_INGOT), this.has(Items.COPPER_INGOT))
 					.save(exporter);
 
-				this.shaped(RecipeCategory.TOOLS, TCAItems.MINECART_COUPLING)
-					.group("minecart_coupling")
-					.define('X', Ingredient.of(Items.IRON_CHAIN))
-					.define('C', Ingredient.of(Items.IRON_INGOT))
-					.pattern("  C")
-					.pattern(" X ")
-					.pattern("C  ")
-					.unlockedBy(RecipeProvider.getHasName(Items.MINECART), this.has(Items.MINECART))
-					.save(exporter);
-
 				this.shaped(RecipeCategory.DECORATIONS, TCABlocks.COPPER_CAMPFIRE)
 					.define('L', ItemTags.LOGS)
 					.define('S', Items.STICK)
@@ -165,36 +155,6 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 				createCrateRecipe(this, exporter, TCABlocks.CRATE.waxedExposed(), Blocks.WAXED_EXPOSED_COPPER, Blocks.WAXED_EXPOSED_CUT_COPPER_SLAB);
 				createCrateRecipe(this, exporter, TCABlocks.CRATE.waxedWeathered(), Blocks.WAXED_WEATHERED_COPPER, Blocks.WAXED_WEATHERED_CUT_COPPER_SLAB);
 				createCrateRecipe(this, exporter, TCABlocks.CRATE.waxedOxidized(), Blocks.WAXED_OXIDIZED_COPPER, Blocks.WAXED_OXIDIZED_CUT_COPPER_SLAB);
-
-				this.shapeless(RecipeCategory.TRANSPORTATION, TCAItems.CRATE_MINECART)
-					.requires(Items.MINECART)
-					.requires(TCABlocks.CRATE.unaffected())
-					.unlockedBy(RecipeProvider.getHasName(Items.MINECART), this.has(Items.MINECART))
-					.save(this.output);
-
-				this.shapeless(RecipeCategory.TRANSPORTATION, TCAItems.COPPER_GOLEM_STATUE_MINECART)
-					.requires(Items.MINECART)
-					.requires(Items.COPPER_GOLEM_STATUE)
-					.unlockedBy(RecipeProvider.getHasName(TCAItems.COPPER_GOLEM_STATUE_MINECART), this.has(TCAItems.COPPER_GOLEM_STATUE_MINECART))
-					.save(this.output);
-
-				this.shapeless(RecipeCategory.TRANSPORTATION, TCAItems.DISPENSER_MINECART)
-					.requires(Items.MINECART)
-					.requires(Items.DISPENSER)
-					.unlockedBy(RecipeProvider.getHasName(Items.MINECART), this.has(Items.MINECART))
-					.save(this.output);
-
-				this.shapeless(RecipeCategory.TRANSPORTATION, TCAItems.DROPPER_MINECART)
-					.requires(Items.MINECART)
-					.requires(Items.DROPPER)
-					.unlockedBy(RecipeProvider.getHasName(Items.MINECART), this.has(Items.MINECART))
-					.save(this.output);
-
-				this.shapeless(RecipeCategory.TRANSPORTATION, TCAItems.JUKEBOX_MINECART)
-					.requires(Items.MINECART)
-					.requires(Items.JUKEBOX)
-					.unlockedBy(RecipeProvider.getHasName(Items.MINECART), this.has(Items.MINECART))
-					.save(this.output);
 
 				RecipeExportNamespaceFix.clearCurrentGeneratingModId();
 			}

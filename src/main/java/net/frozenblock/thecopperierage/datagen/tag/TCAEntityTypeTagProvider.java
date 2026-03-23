@@ -20,7 +20,6 @@ package net.frozenblock.thecopperierage.datagen.tag;
 import java.util.concurrent.CompletableFuture;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.frozenblock.thecopperierage.registry.TCAEntityTypes;
 import net.frozenblock.thecopperierage.tag.TCAEntityTypeTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -100,19 +99,6 @@ public final class TCAEntityTypeTagProvider extends FabricTagProvider.EntityType
 		this.builder(TCAEntityTypeTags.GEARBOX_CANNOT_ROTATE)
 			.addOptionalTag(getTag("netheriernether:blazes"))
 			.addOptional(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath("trailiertales", "apparition")));
-
-		this.valueLookupBuilder(TCAEntityTypeTags.NON_CHEST_MINECARTS)
-			.add(EntityType.MINECART)
-			.add(EntityType.HOPPER_MINECART)
-			.add(EntityType.TNT_MINECART)
-			.add(EntityType.FURNACE_MINECART)
-			.add(EntityType.COMMAND_BLOCK_MINECART)
-			.add(EntityType.SPAWNER_MINECART)
-			.add(TCAEntityTypes.COPPER_GOLEM_STATUE_MINECART)
-			.add(TCAEntityTypes.CRATE_MINECART)
-			.add(TCAEntityTypes.DISPENSER_MINECART)
-			.add(TCAEntityTypes.DROPPER_MINECART)
-			.add(TCAEntityTypes.JUKEBOX_MINECART);
 	}
 
 	@NotNull

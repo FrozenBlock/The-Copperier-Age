@@ -18,9 +18,7 @@
 package net.frozenblock.thecopperierage.networking;
 
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.frozenblock.thecopperierage.networking.packet.TCAChimeInfluencePacket;
-import net.frozenblock.thecopperierage.networking.packet.TCACoupleMinecartsPacket;
 import net.frozenblock.thecopperierage.networking.packet.TCACopperFanBlowPacket;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 
@@ -30,9 +28,5 @@ public final class TCANetworking {
 		PayloadTypeRegistry<RegistryFriendlyByteBuf> registry = PayloadTypeRegistry.playS2C();
 		registry.register(TCACopperFanBlowPacket.PACKET_TYPE, TCACopperFanBlowPacket.CODEC);
 		registry.register(TCAChimeInfluencePacket.PACKET_TYPE, TCAChimeInfluencePacket.CODEC);
-
-		PayloadTypeRegistry<RegistryFriendlyByteBuf> c2sRegistry = PayloadTypeRegistry.playC2S();
-		c2sRegistry.register(TCACoupleMinecartsPacket.PACKET_TYPE, TCACoupleMinecartsPacket.CODEC);
-		ServerPlayNetworking.registerGlobalReceiver(TCACoupleMinecartsPacket.PACKET_TYPE, TCACoupleMinecartsPacket::handle);
 	}
 }

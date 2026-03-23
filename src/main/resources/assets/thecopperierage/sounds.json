@@ -297,44 +297,6 @@
     ],
     "subtitle": "subtitles.entity.copper_golem.button_press"
   },
-  "entity.minecart.place": {
-    "sounds": [
-      "thecopperierage:entity/minecart/place1",
-      "thecopperierage:entity/minecart/place2"
-    ],
-    "subtitle": "subtitles.entity.minecart.place"
-  },
-  "entity.minecart.break": {
-    "sounds": [
-      "thecopperierage:entity/minecart/break1",
-      "thecopperierage:entity/minecart/break2"
-    ],
-    "subtitle": "subtitles.entity.minecart.break"
-  },
-  "entity.minecart.couple": {
-    "sounds": [
-      "thecopperierage:entity/minecart/link1",
-      "thecopperierage:entity/minecart/link2",
-      "thecopperierage:entity/minecart/link3"
-    ],
-    "subtitle": "subtitles.entity.minecart.couple"
-  },
-  "entity.minecart.uncouple": {
-    "sounds": [
-      "thecopperierage:entity/minecart/unlink1",
-      "thecopperierage:entity/minecart/unlink2",
-      "thecopperierage:entity/minecart/unlink3"
-    ],
-    "subtitle": "subtitles.entity.minecart.uncouple"
-  },
-  "entity.minecart.couple_break": {
-    "sounds": [
-      "thecopperierage:entity/minecart/unlink1",
-      "thecopperierage:entity/minecart/unlink2",
-      "thecopperierage:entity/minecart/unlink3"
-    ],
-    "subtitle": "subtitles.entity.minecart.couple_break"
-  },
   "ui.crate.click_fail": {
     "sounds": [
       "minecraft:random/wood_click",

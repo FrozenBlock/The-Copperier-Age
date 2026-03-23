@@ -24,8 +24,6 @@ import net.frozenblock.lib.menu.api.SplashTextAPI;
 import net.frozenblock.thecopperierage.client.TCABlockRenderLayers;
 import net.frozenblock.thecopperierage.client.TCAModelLayers;
 import net.frozenblock.thecopperierage.client.TCAParticleEngine;
-import net.frozenblock.thecopperierage.client.coupling.MinecartCouplingClientHandler;
-import net.frozenblock.thecopperierage.client.sound.JukeboxMinecartSoundHandler;
 import net.frozenblock.thecopperierage.networking.TCAClientNetworking;
 import net.frozenblock.thecopperierage.registry.TCAMenuScreens;
 
@@ -40,8 +38,6 @@ public final class TheCopperierAgeClient implements ClientModInitializer {
 		TCABlockRenderLayers.init();
 		TCAModelLayers.init();
 		TCAMenuScreens.init();
-		MinecartCouplingClientHandler.init();
-		JukeboxMinecartSoundHandler.init();
 		TCAClientNetworking.registerPacketReceivers();
 	}
 

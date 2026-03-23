@@ -17,6 +17,7 @@
 
 package net.frozenblock.thecopperierage.mixin.entity.copper_golem;
 
+import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.entity.impl.CopperGolemPressButtonInterface;
 import net.frozenblock.thecopperierage.entity.impl.TCACopperGolemStates;
 import net.frozenblock.thecopperierage.registry.TCAMemoryModuleTypes;
@@ -71,8 +72,6 @@ public abstract class CopperGolemMixin extends AbstractGolem implements CopperGo
 	@Unique
 	private final AnimationState theCopperierAge$pressingButtonAnimationState = new AnimationState();
 	@Unique
-	private CopperGolemState theCopperierAge$previousState;
-	@Unique
 	private boolean theCopperierAge$previouslyHoldingItem;
 
 	@Inject(method = "setupAnimationStates", at = @At("HEAD"))
@@ -99,19 +98,10 @@ public abstract class CopperGolemMixin extends AbstractGolem implements CopperGo
 
 	@Inject(method = "tick", at = @At("TAIL"))
 	private void theCopperierAge$triggerNearbyButtonSearchAfterDeposit(CallbackInfo info) {
-		final CopperGolemState currentState = this.getState();
 		final boolean currentlyHoldingItem = !this.getMainHandItem().isEmpty() || !this.getOffhandItem().isEmpty();
-		if (!this.level().isClientSide() && this.theCopperierAge$previousState != currentState) {
-			final String stateName = currentState.getSerializedName();
-			// TODO: figure out wtf the intent here is
-			final boolean isSuccessfulDrop = stateName.contains("drop_item") && !stateName.contains("drop_no_item");
-			if (isSuccessfulDrop) this.theCopperierAge$forceNearbyButtonSearch();
-		}
-		if (!this.level().isClientSide() && this.theCopperierAge$previouslyHoldingItem && !currentlyHoldingItem) {
+		if (TCAConfig.COPPER_GOLEMS_PRESS_BUTTONS && !this.level().isClientSide() && this.theCopperierAge$previouslyHoldingItem && !currentlyHoldingItem) {
 			this.theCopperierAge$forceNearbyButtonSearch();
 		}
-
-		this.theCopperierAge$previousState = currentState;
 		this.theCopperierAge$previouslyHoldingItem = currentlyHoldingItem;
 	}
 

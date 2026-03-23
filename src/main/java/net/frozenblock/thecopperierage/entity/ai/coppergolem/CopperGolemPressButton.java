@@ -26,6 +26,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.entity.impl.TCACopperGolemStates;
 import net.frozenblock.thecopperierage.registry.TCAMemoryModuleTypes;
 import net.frozenblock.thecopperierage.registry.TCAPoiTypes;
@@ -114,7 +115,7 @@ public class CopperGolemPressButton extends Behavior<CopperGolem> {
 
 	@Override
 	protected boolean checkExtraStartConditions(final ServerLevel level, final CopperGolem body) {
-		return !body.isLeashed() && this.canStartButtonPressing(body);
+		return TCAConfig.COPPER_GOLEMS_PRESS_BUTTONS && !body.isLeashed() && this.canStartButtonPressing(body);
 	}
 
 	@Override

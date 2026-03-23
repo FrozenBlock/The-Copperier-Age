@@ -105,6 +105,19 @@ public final class TCAConfigGui {
 			)
 		);
 
+		var copperGolemsPressButtons = category.addEntry(
+			FrozenClothConfig.syncedEntry(
+				entryBuilder.startBooleanToggle(text("copper_golems_press_buttons"), modifiedConfig.copperGolemsPressButtons)
+					.setDefaultValue(defaultConfig.copperGolemsPressButtons)
+					.setSaveConsumer(newValue -> config.copperGolemsPressButtons = newValue)
+					.setTooltip(tooltip("copper_golems_press_buttons"))
+					.build(),
+				config.getClass(),
+				"copperGolemsPressButtons",
+				configInstance
+			)
+		);
+
 		var oxidizableCopperEquipment = category.addEntry(
 			FrozenClothConfig.syncedEntry(
 				entryBuilder.startBooleanToggle(text("oxidizable_copper_equipment"), modifiedConfig.oxidizableCopperEquipment)

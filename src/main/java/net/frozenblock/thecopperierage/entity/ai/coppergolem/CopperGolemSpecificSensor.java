@@ -41,7 +41,7 @@ public class CopperGolemSpecificSensor extends Sensor<CopperGolem> {
 	}
 
 	@Override
-	protected void doTick(final ServerLevel level, final CopperGolem body) {
+	protected void doTick(ServerLevel level, CopperGolem body) {
 		final Brain<?> brain = body.getBrain();
 		final ArrayList<CopperGolem> copperGolems = Lists.newArrayList();
 		for (LivingEntity livingEntity : brain.getMemory(MemoryModuleType.NEAREST_LIVING_ENTITIES).orElse(ImmutableList.of())) {

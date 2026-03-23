@@ -131,6 +131,8 @@
   "tooltip.thecopperierage.copper_chests_in_trial_chambers": "Whether Chests will be replaced with Copper Chests in Trial Chambers.",
   "option.thecopperierage.copper_pressure_plates_in_trial_chambers": "Copper Pressure Plates In Trial Chambers",
   "tooltip.thecopperierage.copper_pressure_plates_in_trial_chambers": "Whether Oak Pressure Plates will be replaced with Copper Pressure Plates in Trial Chambers.",
+  "option.thecopperierage.copper_golems_press_buttons": "Copper Golems Press Copper Buttons",
+  "tooltip.thecopperierage.copper_golems_press_buttons": "Whether Copper Golems will occasionally press Copper Buttons.",
   "option.thecopperierage.oxidizable_copper_equipment": "Oxidizing Copper Equipment",
   "tooltip.thecopperierage.oxidizable_copper_equipment": "Whether Copper equipment will oxidize as it runs out of durability.\nThe more oxidized the equipment becomes, the closer its stats will be to Iron equipment.\nThis includes both tools and armor.",
   "option.thecopperierage.copper_particles": "Copper Particles",

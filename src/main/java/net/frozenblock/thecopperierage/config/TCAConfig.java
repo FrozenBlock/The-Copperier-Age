@@ -44,9 +44,10 @@ public class TCAConfig {
 			public void onSync(TCAConfig syncInstance) {
 				var config = this.config();
 				OXIDIZABLE_COPPER_EQUIPMENT = config.oxidizableCopperEquipment;
+				COPPER_GOLEMS_PRESS_BUTTONS = config.copperGolemsPressButtons;
 				COPPER_PARTICLES = config.copperParticles;
 				BETTER_COPPER_TOOLTIPS = config.betterCopperTooltips;
-				WAZED_ITEM_ICON_OVERLAY = config.waxedItemIconOverlay;
+				WAXED_ITEM_ICON_OVERLAY = config.waxedItemIconOverlay;
 				EXTRA_ITEM_ICON_OVERLAYS = config.extraItemIconOverlays;
 				IMPROVED_FURNACE_MINECARTS = config.improvedFurnaceMinecarts;
 				IMPROVED_VEHICLE_CHESTS = config.improvedVehicleChests;
@@ -55,9 +56,10 @@ public class TCAConfig {
 	);
 
 	public static volatile boolean OXIDIZABLE_COPPER_EQUIPMENT = true;
+	public static volatile boolean COPPER_GOLEMS_PRESS_BUTTONS = true;
 	public static volatile boolean COPPER_PARTICLES = true;
 	public static volatile boolean BETTER_COPPER_TOOLTIPS = true;
-	public static volatile boolean WAZED_ITEM_ICON_OVERLAY = true;
+	public static volatile boolean WAXED_ITEM_ICON_OVERLAY = true;
 	public static volatile boolean EXTRA_ITEM_ICON_OVERLAYS = false;
 	public static volatile boolean IMPROVED_FURNACE_MINECARTS = true;
 	public static volatile boolean IMPROVED_VEHICLE_CHESTS = true;
@@ -76,6 +78,9 @@ public class TCAConfig {
 
 	@EntrySyncData("copperPressurePlatesInTrialChambers")
 	public boolean copperPressurePlatesInTrialChambers = true;
+
+	@EntrySyncData("copperGolemsPressButtons")
+	public boolean copperGolemsPressButtons = true;
 
 	@EntrySyncData("oxidizableCopperEquipment")
 	public boolean oxidizableCopperEquipment = true;

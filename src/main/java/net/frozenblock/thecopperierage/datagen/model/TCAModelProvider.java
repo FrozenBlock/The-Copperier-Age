@@ -175,23 +175,23 @@ public final class TCAModelProvider extends FabricModelProvider {
 		generator.registerSimpleItemModel(block, ModelLocationUtils.getModelLocation(block, "_unlit"));
 	}
 
-	private static void createGearbox(@NotNull BlockModelGenerators generator, @NotNull Block block, @NotNull Block waxedBlock) {
+	private static void createGearbox(BlockModelGenerators generator, Block block, Block waxedBlock) {
 		final Block nonStickyBlock = block instanceof StickyGearboxBlock
 			? BuiltInRegistries.BLOCK.get(block.builtInRegistryHolder().key().location().withPath(path -> path.replace("sticky_", ""))).get().value()
 			: block;
 		final TextureMapping mapping = new TextureMapping()
 			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(nonStickyBlock, "_side"))
-			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(nonStickyBlock, "_top"));
+			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(block, "_top"));
 		final MultiVariant model = BlockModelGenerators.plainVariant(GEARBOX_MODEL.create(block, mapping, generator.modelOutput));
 
 		final TextureMapping counterMapping = new TextureMapping()
 			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(nonStickyBlock, "_side_counter_clockwise"))
-			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(nonStickyBlock, "_top_counter_clockwise"));
+			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(block, "_top_counter_clockwise"));
 		final MultiVariant counterModel = BlockModelGenerators.plainVariant(GEARBOX_COUNTER_CLOCKWISE_MODEL.create(block, counterMapping, generator.modelOutput));
 
 		final TextureMapping clockwiseMapping = new TextureMapping()
 			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(nonStickyBlock, "_side_clockwise"))
-			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(nonStickyBlock, "_top_clockwise"));
+			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(block, "_top_clockwise"));
 		final MultiVariant clockwiseModel = BlockModelGenerators.plainVariant(GEARBOX_CLOCKWISE_MODEL.create(block, clockwiseMapping, generator.modelOutput));
 
 		generator.itemModelOutput.copy(block.asItem(), waxedBlock.asItem());

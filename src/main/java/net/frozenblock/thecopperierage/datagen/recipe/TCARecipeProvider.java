@@ -126,6 +126,16 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.waxedWeathered(), Blocks.WAXED_WEATHERED_COPPER);
 				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.waxedOxidized(), Blocks.WAXED_OXIDIZED_COPPER);
 
+				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.unaffected(), TCABlocks.GEARBOX.unaffected());
+				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.exposed(), TCABlocks.GEARBOX.exposed());
+				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.weathered(), TCABlocks.GEARBOX.weathered());
+				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.oxidized(), TCABlocks.GEARBOX.oxidized());
+
+				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.waxed(), TCABlocks.GEARBOX.waxed());
+				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.waxedExposed(), TCABlocks.GEARBOX.waxedExposed());
+				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.waxedWeathered(), TCABlocks.GEARBOX.waxedWeathered());
+				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.waxedOxidized(), TCABlocks.GEARBOX.waxedOxidized());
+
 				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.unaffected(), Blocks.COPPER_BLOCK);
 				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.exposed(), Blocks.EXPOSED_COPPER);
 				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.weathered(), Blocks.WEATHERED_COPPER);
@@ -179,6 +189,16 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 			.pattern("#-#")
 			.pattern("#R#")
 			.unlockedBy(RecipeProvider.getHasName(copperBlock), recipeProvider.has(copperBlock))
+			.save(exporter);
+	}
+
+	private static void createStickyGearboxRecipe(RecipeProvider recipeProvider, RecipeOutput exporter, Block stickyGearboxBlock, Block gearboxBlock) {
+		recipeProvider.shaped(RecipeCategory.REDSTONE, stickyGearboxBlock, 1)
+			.define('G', Ingredient.of(gearboxBlock))
+			.define('S', Ingredient.of(Items.SLIME_BALL))
+			.pattern("S")
+			.pattern("G")
+			.unlockedBy(RecipeProvider.getHasName(Items.SLIME_BALL), recipeProvider.has(Items.SLIME_BALL))
 			.save(exporter);
 	}
 

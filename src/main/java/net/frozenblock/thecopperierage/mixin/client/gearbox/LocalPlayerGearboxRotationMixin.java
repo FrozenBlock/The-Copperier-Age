@@ -27,12 +27,18 @@ import net.minecraft.client.gui.components.DebugScreenOverlay;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(Minecraft.class)
 public abstract class LocalPlayerGearboxRotationMixin {
-	
+
+	@Shadow
+	protected abstract boolean isLevelRunningNormally();
+
+	@Shadow
+	private volatile boolean pause;
 	@Unique
 	private static final float theCopperierAge$NANOS_TO_SECONDS = 1.0E-9F;
 
@@ -48,7 +54,7 @@ public abstract class LocalPlayerGearboxRotationMixin {
 		boolean advanceGameTime
 	) {
 		final Minecraft minecraft = Minecraft.class.cast(this);
-		if (!advanceGameTime) return;
+		if (!advanceGameTime || this.pause || !this.isLevelRunningNormally()) return;
 
 		final LocalPlayer player = minecraft.player;
 		final Entity entity = player != null ? Optional.ofNullable(player.getControlledVehicle()).orElse(player) : null;

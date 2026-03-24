@@ -17,7 +17,6 @@
 
 package net.frozenblock.thecopperierage.registry;
 
-import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.frozenblock.lib.item.api.FrozenCreativeTabs;
 import net.frozenblock.thecopperierage.tag.TCAInstrumentTags;
 import net.minecraft.resources.ResourceKey;
@@ -31,18 +30,8 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 
 public final class TCACreativeInventorySorting {
-	private static boolean hasRun = false;
 
-	// TODO: we have to do this now which is really stupid. is there a better way?
 	public static void init() {
-		CommonLifecycleEvents.TAGS_LOADED.register((registryAccess, client) -> {
-			if (hasRun) return;
-			run();
-			hasRun = true;
-		});
-	}
-
-	public static void run() {
 		// GEARBOX
 		insertAfterInBuildingBlocks(Items.REPEATER, TCABlocks.GEARBOX.waxed());
 		insertAfterInBuildingBlocks(TCABlocks.GEARBOX.waxed(), TCABlocks.STICKY_GEARBOX.waxed());

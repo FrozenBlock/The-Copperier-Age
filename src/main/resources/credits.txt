@@ -6,6 +6,7 @@ Lufurrius
  - Initial Gearbox Textures
  - Copper Pressure Plate Concept
  - Copper Bar Retexture
+ - Redstone Grit Concept, Implementation, & Textures
 
 Zhen/zntm
  - Wrench Concept, Textures, & Sounds

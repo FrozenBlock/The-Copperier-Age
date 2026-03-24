@@ -35,5 +35,6 @@ public final class TCAParticleEngine {
 		particleRegistry.register(TCAParticleTypes.COPPER_LAVA, LavaParticle.Provider::new);
 		particleRegistry.register(TCAParticleTypes.COPPER_CAMPFIRE_COSY_SMOKE, CopperCampfireSmokeParticle.CosyProvider::new);
 		particleRegistry.register(TCAParticleTypes.COPPER_CAMPFIRE_SIGNAL_SMOKE, CopperCampfireSmokeParticle.SignalProvider::new);
+		particleRegistry.register(TCAParticleTypes.COPPER_CAMPFIRE_SIGNAL_SMOKE, CopperCampfireSmokeParticle.SignalProvider::new);
 	}
 }

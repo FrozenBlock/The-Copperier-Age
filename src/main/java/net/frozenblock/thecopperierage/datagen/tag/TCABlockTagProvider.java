@@ -58,19 +58,26 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 		this.valueLookupBuilder(BlockTags.FIRE)
 			.add(TCABlocks.COPPER_FIRE);
 
-		TagAppender<Block, Block> gearboxesTag = this.valueLookupBuilder(TCABlockTags.GEARBOXES);
+		final TagAppender<Block, Block> gearboxesTag = this.valueLookupBuilder(TCABlockTags.GEARBOXES);
 		TCABlocks.GEARBOX.forEach(gearboxesTag::add);
 
-		TagAppender<Block, Block> copperFansTag = this.valueLookupBuilder(TCABlockTags.COPPER_FANS);
+		final TagAppender<Block, Block> stickyGearboxesTag = this.valueLookupBuilder(TCABlockTags.STICKY_GEARBOXES);
+		TCABlocks.STICKY_GEARBOX.forEach(stickyGearboxesTag::add);
+		gearboxesTag.addOptionalTag(TCABlockTags.STICKY_GEARBOXES);
+
+		final TagAppender<Block, Block> copperFansTag = this.valueLookupBuilder(TCABlockTags.COPPER_FANS);
 		TCABlocks.COPPER_FAN.forEach(copperFansTag::add);
 
-		TagAppender<Block, Block> chimesTag = this.valueLookupBuilder(TCABlockTags.CHIMES);
+		final TagAppender<Block, Block> chimesTag = this.valueLookupBuilder(TCABlockTags.CHIMES);
 		TCABlocks.CHIME.forEach(chimesTag::add);
 
-		TagAppender<Block, Block> copperButtonsTag = this.valueLookupBuilder(TCABlockTags.COPPER_BUTTONS);
+		final TagAppender<Block, Block> cratesTag = this.valueLookupBuilder(TCABlockTags.CRATES);
+		TCABlocks.CRATE.forEach(cratesTag::add);
+
+		final TagAppender<Block, Block> copperButtonsTag = this.valueLookupBuilder(TCABlockTags.COPPER_BUTTONS);
 		TCABlocks.COPPER_BUTTON.forEach(copperButtonsTag::add);
 
-		TagAppender<Block, Block> copperPressurePlatesTag = this.valueLookupBuilder(TCABlockTags.COPPER_PRESSURE_PLATES);
+		final TagAppender<Block, Block> copperPressurePlatesTag = this.valueLookupBuilder(TCABlockTags.COPPER_PRESSURE_PLATES);
 		TCABlocks.WEIGHTED_PRESSURE_PLATE.forEach(copperPressurePlatesTag::add);
 
 		this.valueLookupBuilder(BlockTags.MINEABLE_WITH_AXE)
@@ -84,10 +91,14 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 			.addOptionalTag(TCABlockTags.GEARBOXES)
 			.addOptionalTag(TCABlockTags.COPPER_FANS)
 			.addOptionalTag(TCABlockTags.CHIMES)
+			.addOptionalTag(TCABlockTags.CRATES)
 			.addOptionalTag(TCABlockTags.COPPER_BUTTONS)
 			.addOptionalTag(TCABlockTags.COPPER_PRESSURE_PLATES);
 
-		this.valueLookupBuilder(TCABlockTags.WRENCH_CANNOT_ROTATE)
+		this.valueLookupBuilder(BlockTags.MINEABLE_WITH_SHOVEL)
+			.add(TCABlocks.REDSTONE_GRIT);
+
+		this.valueLookupBuilder(TCABlockTags.CANNOT_ROTATE)
 			.add(Blocks.VAULT)
 			.add(Blocks.PISTON_HEAD, Blocks.MOVING_PISTON)
 			.add(Blocks.END_PORTAL_FRAME, Blocks.NETHER_PORTAL)
@@ -97,8 +108,12 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 			.addOptionalTag(BlockTags.BEDS)
 			.addOptionalTag(BlockTags.MAINTAINS_FARMLAND);
 
-		this.builder(TCABlockTags.WRENCH_CANNOT_ROTATE)
+		this.builder(TCABlockTags.CANNOT_ROTATE)
 			.addOptional(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("trailiertales", "coffin")));
+
+		this.valueLookupBuilder(FrozenBlockTags.HAS_PUSHABLE_BLOCK_ENTITY)
+			.addOptionalTag(TCABlockTags.STICKY_GEARBOXES)
+			.addOptionalTag(TCABlockTags.CRATES);
 
 		this.builder(FrozenBlockTags.BLOWING_CAN_PASS_THROUGH)
 			.addOptionalTag(TCABlockTags.COPPER_FANS)
@@ -107,7 +122,7 @@ public final class TCABlockTagProvider extends FabricTagProvider.BlockTagProvide
 		this.builder(FrozenBlockTags.STRUCTURE_PLACE_SCHEDULES_TICK)
 			.addOptionalTag(TCABlockTags.COPPER_FANS);
 
-		TagAppender<Block, Block> copperFireBaseBlocksTag = this.valueLookupBuilder(TCABlockTags.COPPER_FIRE_BASE_BLOCKS);
+		final TagAppender<Block, Block> copperFireBaseBlocksTag = this.valueLookupBuilder(TCABlockTags.COPPER_FIRE_BASE_BLOCKS);
 		registries.lookupOrThrow(Registries.BLOCK)
 			.listElements()
 			.forEach(block -> {

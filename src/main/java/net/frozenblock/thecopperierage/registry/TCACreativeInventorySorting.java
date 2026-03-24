@@ -34,27 +34,36 @@ public final class TCACreativeInventorySorting {
 	public static void init() {
 		// GEARBOX
 		addBeforeInRedstoneBlocks(Items.REPEATER, TCABlocks.GEARBOX.waxed());
+		addBeforeInRedstoneBlocks(TCABlocks.GEARBOX.waxed(), TCABlocks.STICKY_GEARBOX.waxed());
 
 		addAfterInBuildingBlocks(Items.COPPER_BULB, TCABlocks.GEARBOX.unaffected());
+		addAfterInBuildingBlocks(TCABlocks.GEARBOX.unaffected(), TCABlocks.STICKY_GEARBOX.unaffected());
 		addAfterInBuildingBlocks(Items.WAXED_COPPER_BULB, TCABlocks.GEARBOX.waxed());
+		addAfterInBuildingBlocks(TCABlocks.GEARBOX.waxed(), TCABlocks.STICKY_GEARBOX.waxed());
 		addAfterInBuildingBlocks(Items.EXPOSED_COPPER_BULB, TCABlocks.GEARBOX.exposed());
+		addAfterInBuildingBlocks(TCABlocks.GEARBOX.exposed(), TCABlocks.STICKY_GEARBOX.exposed());
 		addAfterInBuildingBlocks(Items.WAXED_EXPOSED_COPPER_BULB, TCABlocks.GEARBOX.waxedExposed());
+		addAfterInBuildingBlocks(TCABlocks.GEARBOX.waxedExposed(), TCABlocks.STICKY_GEARBOX.waxedExposed());
 		addAfterInBuildingBlocks(Items.WEATHERED_COPPER_BULB, TCABlocks.GEARBOX.weathered());
+		addAfterInBuildingBlocks(TCABlocks.GEARBOX.weathered(), TCABlocks.STICKY_GEARBOX.weathered());
 		addAfterInBuildingBlocks(Items.WAXED_WEATHERED_COPPER_BULB, TCABlocks.GEARBOX.waxedWeathered());
+		addAfterInBuildingBlocks(TCABlocks.GEARBOX.waxedWeathered(), TCABlocks.STICKY_GEARBOX.waxedWeathered());
 		addAfterInBuildingBlocks(Items.OXIDIZED_COPPER_BULB, TCABlocks.GEARBOX.oxidized());
+		addAfterInBuildingBlocks(TCABlocks.GEARBOX.oxidized(), TCABlocks.STICKY_GEARBOX.oxidized());
 		addAfterInBuildingBlocks(Items.WAXED_OXIDIZED_COPPER_BULB, TCABlocks.GEARBOX.waxedOxidized());
+		addAfterInBuildingBlocks(TCABlocks.GEARBOX.waxedOxidized(), TCABlocks.STICKY_GEARBOX.waxedOxidized());
 
 		// FAN
 		addBeforeInRedstoneBlocks(Items.RAIL, TCABlocks.COPPER_FAN.waxed());
 
-		addAfterInBuildingBlocks(TCABlocks.GEARBOX.unaffected(), TCABlocks.COPPER_FAN.unaffected());
-		addAfterInBuildingBlocks(TCABlocks.GEARBOX.waxed(), TCABlocks.COPPER_FAN.waxed());
-		addAfterInBuildingBlocks(TCABlocks.GEARBOX.exposed(), TCABlocks.COPPER_FAN.exposed());
-		addAfterInBuildingBlocks(TCABlocks.GEARBOX.waxedExposed(), TCABlocks.COPPER_FAN.waxedExposed());
-		addAfterInBuildingBlocks(TCABlocks.GEARBOX.weathered(), TCABlocks.COPPER_FAN.weathered());
-		addAfterInBuildingBlocks(TCABlocks.GEARBOX.waxedWeathered(), TCABlocks.COPPER_FAN.waxedWeathered());
-		addAfterInBuildingBlocks(TCABlocks.GEARBOX.oxidized(), TCABlocks.COPPER_FAN.oxidized());
-		addAfterInBuildingBlocks(TCABlocks.GEARBOX.waxedOxidized(), TCABlocks.COPPER_FAN.waxedOxidized());
+		addAfterInBuildingBlocks(TCABlocks.STICKY_GEARBOX.unaffected(), TCABlocks.COPPER_FAN.unaffected());
+		addAfterInBuildingBlocks(TCABlocks.STICKY_GEARBOX.waxed(), TCABlocks.COPPER_FAN.waxed());
+		addAfterInBuildingBlocks(TCABlocks.STICKY_GEARBOX.exposed(), TCABlocks.COPPER_FAN.exposed());
+		addAfterInBuildingBlocks(TCABlocks.STICKY_GEARBOX.waxedExposed(), TCABlocks.COPPER_FAN.waxedExposed());
+		addAfterInBuildingBlocks(TCABlocks.STICKY_GEARBOX.weathered(), TCABlocks.COPPER_FAN.weathered());
+		addAfterInBuildingBlocks(TCABlocks.STICKY_GEARBOX.waxedWeathered(), TCABlocks.COPPER_FAN.waxedWeathered());
+		addAfterInBuildingBlocks(TCABlocks.STICKY_GEARBOX.oxidized(), TCABlocks.COPPER_FAN.oxidized());
+		addAfterInBuildingBlocks(TCABlocks.STICKY_GEARBOX.waxedOxidized(), TCABlocks.COPPER_FAN.waxedOxidized());
 
 		// CHIME
 		addAfterInFunctionalBlocks(Items.WAXED_OXIDIZED_LIGHTNING_ROD, TCABlocks.CHIME.unaffected());
@@ -74,6 +83,18 @@ public final class TCACreativeInventorySorting {
 		addAfterInBuildingBlocks(TCABlocks.COPPER_FAN.waxedWeathered(), TCABlocks.CHIME.waxedWeathered());
 		addAfterInBuildingBlocks(TCABlocks.COPPER_FAN.oxidized(), TCABlocks.CHIME.oxidized());
 		addAfterInBuildingBlocks(TCABlocks.COPPER_FAN.waxedOxidized(), TCABlocks.CHIME.waxedOxidized());
+
+		// COPPER CRATE
+		addAfterInFunctionalBlocks(Items.BARREL, TCABlocks.CRATE.unaffected());
+		addAfterInFunctionalBlocks(TCABlocks.CRATE.unaffected(), TCABlocks.CRATE.exposed());
+		addAfterInFunctionalBlocks(TCABlocks.CRATE.exposed(), TCABlocks.CRATE.weathered());
+		addAfterInFunctionalBlocks(TCABlocks.CRATE.weathered(), TCABlocks.CRATE.oxidized());
+		addAfterInFunctionalBlocks(TCABlocks.CRATE.oxidized(), TCABlocks.CRATE.waxed());
+		addAfterInFunctionalBlocks(TCABlocks.CRATE.waxed(), TCABlocks.CRATE.waxedExposed());
+		addAfterInFunctionalBlocks(TCABlocks.CRATE.waxedExposed(), TCABlocks.CRATE.waxedWeathered());
+		addAfterInFunctionalBlocks(TCABlocks.CRATE.waxedWeathered(), TCABlocks.CRATE.waxedOxidized());
+
+		addAfterInRedstoneBlocks(Items.BARREL, TCABlocks.CRATE.waxed());
 
 		// BUTTON
 		addAfterInRedstoneBlocks(Items.STONE_BUTTON, TCABlocks.COPPER_BUTTON.waxed());
@@ -111,6 +132,7 @@ public final class TCACreativeInventorySorting {
 		addAfterInNaturalBlocks(Blocks.JACK_O_LANTERN, TCABlocks.COPPER_JACK_O_LANTERN);
 		addAfterInNaturalBlocks(TCABlocks.COPPER_JACK_O_LANTERN, TCABlocks.REDSTONE_JACK_O_LANTERN);
 		addAfterInRedstoneBlocks(Blocks.REDSTONE_TORCH, TCABlocks.REDSTONE_JACK_O_LANTERN);
+		addAfterInRedstoneBlocks(Blocks.REDSTONE_BLOCK, TCABlocks.REDSTONE_GRIT);
 	}
 
 	private static void addBeforeInBuildingBlocks(ItemLike comparedItem, ItemLike item) {

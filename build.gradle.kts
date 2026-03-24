@@ -46,9 +46,16 @@ val archives_base_name: String by project
 
 val fabric_api_version: String by project
 val frozenlib_version: String by project
+val wilderwild_version: String by project
+val copperpipes_version: String by project
 
 val modmenu_version: String by project
+val text_placeholder_api_version: String by project
 val cloth_config_version: String by project
+
+val lithium_version: String by project
+val run_lithium: String by project
+val shouldRunLithium = run_lithium == "true"
 
 val sodium_version: String by project
 val run_sodium: String by project
@@ -196,14 +203,27 @@ dependencies {
     } else
         modApi("maven.modrinth:frozenlib:$frozenlib_version")
 
+    // Wilder Wild
+    modCompileOnly("maven.modrinth:wilder-wild:$wilderwild_version")
+
+    // Simple Copper Pipes
+    modCompileOnlyApi("maven.modrinth:simple-copper-pipes:${copperpipes_version}")
+
     // Mod Menu
-    modCompileOnly("com.terraformersmc:modmenu:$modmenu_version")
+    modImplementation("com.terraformersmc:modmenu:$modmenu_version")
+    modImplementation("maven.modrinth:placeholder-api:$text_placeholder_api_version")
 
     // Cloth Config
-    modCompileOnly("me.shedaniel.cloth:cloth-config-fabric:$cloth_config_version") {
+    modImplementation("me.shedaniel.cloth:cloth-config-fabric:$cloth_config_version") {
         exclude(group = "net.fabricmc.fabric-api")
         exclude(group = "com.terraformersmc")
     }
+
+    // Lithium
+    if (shouldRunLithium)
+        modImplementation("maven.modrinth:lithium:${lithium_version}")
+    else
+        modCompileOnly("maven.modrinth:lithium:${lithium_version}")
 
     // Sodium
     if (shouldRunSodium)

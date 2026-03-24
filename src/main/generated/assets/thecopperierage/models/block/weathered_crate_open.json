@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "thecopperierage:block/weathered_crate_bottom",
+    "side": "thecopperierage:block/weathered_crate_side",
+    "top": "thecopperierage:block/weathered_crate_top_open"
+  }
+}

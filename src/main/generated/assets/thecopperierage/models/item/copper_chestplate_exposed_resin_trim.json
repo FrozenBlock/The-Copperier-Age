@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "thecopperierage:item/copper_chestplate_exposed",
-    "layer1": "minecraft:trims/items/chestplate_trim_resin"
-  }
-}

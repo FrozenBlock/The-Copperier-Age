@@ -17,20 +17,31 @@
 
 package net.frozenblock.thecopperierage.registry;
 
+import net.frozenblock.thecopperierage.TCAConstants;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Instrument;
 import net.minecraft.world.item.Instruments;
 
 public final class TCAInstruments {
+	public static final ResourceKey<Instrument> SAX_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("sax_copper_horn"));
+	public static final ResourceKey<Instrument> TUBA_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("tuba_copper_horn"));
+	public static final ResourceKey<Instrument> RECORDER_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("recorder_copper_horn"));
+	public static final ResourceKey<Instrument> FLUTE_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("flute_copper_horn"));
+	public static final ResourceKey<Instrument> OBOE_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("oboe_copper_horn"));
+	public static final ResourceKey<Instrument> CLARINET_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("clarinet_copper_horn"));
+	public static final ResourceKey<Instrument> TRUMPET_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("trumpet_copper_horn"));
+	public static final ResourceKey<Instrument> TROMBONE_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("trombone_copper_horn"));
 
 	public static void bootstrap(BootstrapContext<Instrument> registry) {
-		Instruments.register(registry, TCAItems.RECORDER_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_RECORDER, 32767, 64F);
-		Instruments.register(registry, TCAItems.FLUTE_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_FLUTE, 32767, 64F);
-		Instruments.register(registry, TCAItems.OBOE_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_OBOE, 32767, 64F);
-		Instruments.register(registry, TCAItems.CLARINET_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_CLARINET, 32767, 64F);
-		Instruments.register(registry, TCAItems.SAX_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_SAX, 32767, 64F);
-		Instruments.register(registry, TCAItems.TRUMPET_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_TRUMPET, 32767, 64F);
-		Instruments.register(registry, TCAItems.TROMBONE_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_TROMBONE, 32767, 64F);
-		Instruments.register(registry, TCAItems.TUBA_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_TUBA, 32767, 64F);
+		Instruments.register(registry, RECORDER_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_RECORDER, 32767, 64F);
+		Instruments.register(registry, FLUTE_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_FLUTE, 32767, 64F);
+		Instruments.register(registry, OBOE_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_OBOE, 32767, 64F);
+		Instruments.register(registry, CLARINET_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_CLARINET, 32767, 64F);
+		Instruments.register(registry, SAX_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_SAX, 32767, 64F);
+		Instruments.register(registry, TRUMPET_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_TRUMPET, 32767, 64F);
+		Instruments.register(registry, TROMBONE_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_TROMBONE, 32767, 64F);
+		Instruments.register(registry, TUBA_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_TUBA, 32767, 64F);
 	}
 }

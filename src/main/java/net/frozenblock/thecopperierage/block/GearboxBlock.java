@@ -22,12 +22,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import net.frozenblock.thecopperierage.block.gearbox.GearboxBlockEvaluator;
+import net.frozenblock.thecopperierage.block.gearbox.GearboxRotationSessionInterface;
 import net.frozenblock.thecopperierage.registry.TCASounds;
+import net.frozenblock.thecopperierage.tag.TCAEntityTypeTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -97,7 +100,7 @@ public class GearboxBlock extends DirectionalBlock {
 	}
 
 	@Override
-	protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState replacingState, boolean bl) {
+	protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState replacingState, boolean movedByPistons) {
 		if (level.isClientSide() || state.is(replacingState.getBlock())) return;
 		level.scheduleTick(pos, this, 1);
 	}
@@ -116,8 +119,17 @@ public class GearboxBlock extends DirectionalBlock {
 	}
 
 	@Override
-	protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean bl) {
-		if (!bl) this.updateNeighboringBlocks(level, pos, state);
+	protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
+		if (!movedByPiston) this.updateNeighboringBlocks(level, pos, state);
+	}
+
+	@Override
+	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
+		super.stepOn(level, pos, state, entity);
+		if (state.getValue(FACING) != Direction.UP || state.getValue(POWER) <= 0) return;
+		if (entity instanceof GearboxRotationSessionInterface rotationSession && !entity.getType().is(TCAEntityTypeTags.GEARBOX_CANNOT_ROTATE)) {
+			rotationSession.theCopperierAge$activateGearboxRotationSession(entity.tickCount, pos);
+		}
 	}
 
 	public List<Direction> getInputDirections(Direction facing) {

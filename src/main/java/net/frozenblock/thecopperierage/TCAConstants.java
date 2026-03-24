@@ -20,6 +20,7 @@ package net.frozenblock.thecopperierage;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.network.chat.MutableComponent;
 import org.slf4j.Logger;
 
 public final class TCAConstants {
@@ -82,5 +83,9 @@ public final class TCAConstants {
 	 */
 	public static Component tooltip(String key) {
 		return Component.translatable("tooltip." + MOD_ID + "." + key);
+	}
+
+	public static MutableComponent itemComponent(String key) {
+		return Component.translatable("item." + MOD_ID + "." + key);
 	}
 }

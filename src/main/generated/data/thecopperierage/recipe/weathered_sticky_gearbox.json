@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "G": "thecopperierage:weathered_gearbox",
+    "S": "minecraft:slime_ball"
+  },
+  "pattern": [
+    "S",
+    "G"
+  ],
+  "result": {
+    "count": 1,
+    "id": "thecopperierage:weathered_sticky_gearbox"
+  }
+}

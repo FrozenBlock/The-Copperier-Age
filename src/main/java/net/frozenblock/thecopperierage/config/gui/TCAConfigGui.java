@@ -103,6 +103,45 @@ public final class TCAConfigGui {
 			)
 		);
 
+		var copperGolemsPressButtons = category.addEntry(
+			FrozenClothConfig.syncedEntry(
+				builder.startBooleanToggle(text("copper_golems_press_buttons"), modifiedConfig.copperGolemsPressButtons)
+					.setDefaultValue(defaultConfig.copperGolemsPressButtons)
+					.setSaveConsumer(newValue -> config.copperGolemsPressButtons = newValue)
+					.setTooltip(tooltip("copper_golems_press_buttons"))
+					.build(),
+				config.getClass(),
+				"copperGolemsPressButtons",
+				configInstance
+			)
+		);
+
+		var gearboxEntityRotation = category.addEntry(
+			FrozenClothConfig.syncedEntry(
+				builder.startIntSlider(text("gearbox_entity_rotation"), (int) (modifiedConfig.gearboxEntityRotation * 100), 0, 10000)
+					.setDefaultValue((int) (defaultConfig.gearboxEntityRotation * 100))
+					.setSaveConsumer(newValue -> config.gearboxEntityRotation = newValue / 100F)
+					.setTooltip(tooltip("gearbox_entity_rotation"))
+					.build(),
+				config.getClass(),
+				"gearboxEntityRotation",
+				configInstance
+			)
+		);
+
+		var stickyGearboxRotationInterval = category.addEntry(
+			FrozenClothConfig.syncedEntry(
+				builder.startIntSlider(text("sticky_gearbox_rotation_interval"), modifiedConfig.stickyGearboxRotationInterval, 1, 500)
+					.setDefaultValue(defaultConfig.stickyGearboxRotationInterval)
+					.setSaveConsumer(newValue -> config.stickyGearboxRotationInterval = newValue)
+					.setTooltip(tooltip("sticky_gearbox_rotation_interval"))
+					.build(),
+				config.getClass(),
+				"stickyGearboxRotationInterval",
+				configInstance
+			)
+		);
+
 		var oxidizableCopperEquipment = category.addEntry(
 			FrozenClothConfig.syncedEntry(
 				builder.startBooleanToggle(text("oxidizable_copper_equipment"), modifiedConfig.oxidizableCopperEquipment)
@@ -125,6 +164,45 @@ public final class TCAConfigGui {
 					.build(),
 				config.getClass(),
 				"copperParticles",
+				configInstance
+			)
+		);
+
+		var betterCopperTooltips = category.addEntry(
+			FrozenClothConfig.syncedEntry(
+				builder.startBooleanToggle(text("better_copper_tooltips"), modifiedConfig.waxedItemIconOverlay)
+					.setDefaultValue(defaultConfig.betterCopperTooltips)
+					.setSaveConsumer(newValue -> config.betterCopperTooltips = newValue)
+					.setTooltip(tooltip("better_copper_tooltips"))
+					.build(),
+				config.getClass(),
+				"betterCopperTooltips",
+				configInstance
+			)
+		);
+
+		var waxedItemIconOverlay = category.addEntry(
+			FrozenClothConfig.syncedEntry(
+				builder.startBooleanToggle(text("waxed_item_icon_overlay"), modifiedConfig.waxedItemIconOverlay)
+					.setDefaultValue(defaultConfig.waxedItemIconOverlay)
+					.setSaveConsumer(newValue -> config.waxedItemIconOverlay = newValue)
+					.setTooltip(tooltip("waxed_item_icon_overlay"))
+					.build(),
+				config.getClass(),
+				"waxedItemIconOverlay",
+				configInstance
+			)
+		);
+
+		var extraItemIconOverlays = category.addEntry(
+			FrozenClothConfig.syncedEntry(
+				builder.startBooleanToggle(text("extra_item_icon_overlays"), modifiedConfig.extraItemIconOverlays)
+					.setDefaultValue(defaultConfig.extraItemIconOverlays)
+					.setSaveConsumer(newValue -> config.extraItemIconOverlays = newValue)
+					.setTooltip(tooltip("extra_item_icon_overlays"))
+					.build(),
+				config.getClass(),
+				"extraItemIconOverlays",
 				configInstance
 			)
 		);

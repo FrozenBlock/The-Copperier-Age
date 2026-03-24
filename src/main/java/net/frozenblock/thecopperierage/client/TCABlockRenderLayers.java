@@ -32,6 +32,7 @@ public final class TCABlockRenderLayers {
 		BlockRenderLayerMap.putBlock(TCABlocks.COPPER_JACK_O_LANTERN, ChunkSectionLayer.CUTOUT);
 		BlockRenderLayerMap.putBlock(TCABlocks.REDSTONE_JACK_O_LANTERN, ChunkSectionLayer.CUTOUT);
 		TCABlocks.GEARBOX.forEach(block -> BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT));
+		TCABlocks.STICKY_GEARBOX.forEach(block -> BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT));
 		TCABlocks.COPPER_FAN.forEach(block -> BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT));
 	}
 

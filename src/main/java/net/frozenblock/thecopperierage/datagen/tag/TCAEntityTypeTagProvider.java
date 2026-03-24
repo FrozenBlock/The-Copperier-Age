@@ -75,6 +75,28 @@ public final class TCAEntityTypeTagProvider extends FabricTagsProvider.EntityTyp
 			.add(EntityType.WIND_CHARGE);
 
 		this.builder(TCAEntityTypeTags.COPPER_FAN_CANNOT_PUSH)
+			.addOptional(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath("trailiertales", "apparition"))); ;
+
+		this.valueLookupBuilder(TCAEntityTypeTags.GEARBOX_CANNOT_ROTATE)
+			.add(EntityType.WITHER)
+			.add(EntityType.ENDER_DRAGON)
+			.add(EntityType.EYE_OF_ENDER)
+			.add(EntityType.BLOCK_DISPLAY)
+			.add(EntityType.BREEZE)
+			.add(EntityType.BLAZE)
+			.add(EntityType.GIANT)
+			.add(EntityType.ELDER_GUARDIAN)
+			.add(EntityType.IRON_GOLEM)
+			.add(EntityType.VEX)
+			.add(EntityType.SHULKER)
+			.add(EntityType.RAVAGER)
+			.add(EntityType.GHAST)
+			.add(EntityType.HAPPY_GHAST)
+			.add(EntityType.ALLAY)
+			.add(EntityType.BAT);
+
+		this.builder(TCAEntityTypeTags.GEARBOX_CANNOT_ROTATE)
+			.addOptionalTag(getTag("netheriernether:blazes"))
 			.addOptional(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath("trailiertales", "apparition")));
 	}
 

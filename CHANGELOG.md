@@ -1,4 +1,44 @@
 Please clear changelog after each release.
 Put the changelog BELOW the dashes. ANYTHING ABOVE IS IGNORED.
 -----------------
-- Port to 26.1-snapshot-1
+- Removed the item for Copper Fire, as it was never meant to be registered.
+- Fixed Weighted Pressure Plates not having map colors.
+- Fixed Chimes not having map colors.
+- Added Crates.
+  - Crates can hold 36 stacks of items.
+  - However, Crates can only hold a single item type.
+  - If an invalid item is inserted into a Crate (i.g., Hoppers,) it will be ejected through the Crate's top face.
+    - If a container is present at the Crate's front face, the item will be deposited there instead.
+- Added Sticky Gearboxes.
+  - Sticky Gearboxes rotate blocks every 24 ticks.
+    - This delay is doubled if the block to be rotated does not contain 4 rotation values, but only 2.
+      - For example, Slabs will only rotate every 48 ticks while a Level will rotate every 24 ticks.
+    - Added a config option to control the delay.
+- Gearboxes now rotate entities that stand on them.
+  - Added a config option to control how many degrees-per-tick an entity will be rotated at.
+- Adjusted the velocity a Copper Fan sucks from behind, now being more evenly distributed.
+  - This change was made in order to make Copper Fans easier to use, as their previous behavior was only noticeable while an entity was very close to the block.
+- Added Redstone Grit.
+  - Redstone Grit is unpowered when placed, but will become powered after 20 ticks.
+    - This resets every time the block is moved.
+  - Falls like Sand and Gravel blocks.
+- Copper Golems can now occasionally press Copper Buttons.
+  - Randomly occurs when idle.
+  - Attempts directly after depositing items into a Chest.
+  - Added a config option to toggle this behavior.
+- Added waxing recipes that were missing.
+- Added waxing recipes for Copper Tools/Equipment.
+  - Both the stats and visuals of the item will remain the same once waxed.
+  - Waxed Tools/Equipment cannot be unwaxed.
+- The Copperier Age's models for oxidizing models are now generated on runtime.
+  - This change was made in order to improve compatibility with other mods and resource packs.
+  - Modders can now add `search terms` for The Copperier Age's automatic oxidizing model generation.
+    - This method can be found in `OxidizableItemHelper`.
+- Added Improved Copper Tooltips.
+  - Oxidisation and Waxed statuses moved to Lore instead of item name prefixes.
+  - Added a config option to toggle the new tooltips and renaming.
+- Added the Waxed Item Slot Overlay.
+  - Renders a small icon on top of Waxed items for accessibility.
+  - Added a config option to toggle the Waxed Item Slot Overlay.
+- Added additional Item Slot Overlays for Infested and Trapped blocks.
+  - Added a config option to toggle these Item Slot Overlays, which is disabled by default.

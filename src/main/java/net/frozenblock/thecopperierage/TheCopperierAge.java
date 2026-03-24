@@ -26,9 +26,15 @@ import net.frozenblock.thecopperierage.networking.TCANetworking;
 import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCACreativeInventorySorting;
+import net.frozenblock.thecopperierage.registry.TCADataComponents;
 import net.frozenblock.thecopperierage.registry.TCAItems;
+import net.frozenblock.thecopperierage.registry.TCAMemoryModuleTypes;
+import net.frozenblock.thecopperierage.registry.TCAMenuTypes;
 import net.frozenblock.thecopperierage.registry.TCAParticleTypes;
+import net.frozenblock.thecopperierage.registry.TCAPoiTypes;
+import net.frozenblock.thecopperierage.registry.TCARecipeTypes;
 import net.frozenblock.thecopperierage.registry.TCAResources;
+import net.frozenblock.thecopperierage.registry.TCASensorTypes;
 import net.frozenblock.thecopperierage.registry.TCASounds;
 
 public final class TheCopperierAge extends FrozenModInitializer {
@@ -42,13 +48,19 @@ public final class TheCopperierAge extends FrozenModInitializer {
 		TCAFeatureFlags.init();
 		FeatureFlagApi.rebuild();
 
-		TCABlocks.registerBlocks();
+		TCABlocks.init();
 		TCABlockEntityTypes.init();
-		TCAItems.registerItems();
-		OxidizableItemHelper.init();
+		TCAItems.init();
+		TCADataComponents.init();
+		TCARecipeTypes.init();
+		OxidizableItemHelper.bootstrap();
+		TCAMemoryModuleTypes.init();
+		TCASensorTypes.init();
+		TCAPoiTypes.init();
 		TCASounds.init();
 		TCACreativeInventorySorting.init();
 		TCAParticleTypes.registerParticles();
+		TCAMenuTypes.init();
 		TCABlocks.registerBlockProperties();
 		TCAModIntegrations.init();
 		TCANetworking.init();

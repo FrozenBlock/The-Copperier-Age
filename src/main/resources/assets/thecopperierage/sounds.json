@@ -287,5 +287,24 @@
       "thecopperierage:item/wrench/wrench5"
     ],
     "subtitle": "subtitles.item.wrench.use"
+  },
+  "entity.copper_golem.button_press": {
+    "sounds": [
+      {
+        "attenuation_distance": 12,
+        "name": "thecopperierage:mob/coppergolem/button_press"
+      }
+    ],
+    "subtitle": "subtitles.entity.copper_golem.button_press"
+  },
+  "ui.crate.click_fail": {
+    "sounds": [
+      "minecraft:random/wood_click",
+      {
+        "name": "random/wood_click",
+        "pitch": 1,
+        "volume": 0.5
+      }
+    ]
   }
 }

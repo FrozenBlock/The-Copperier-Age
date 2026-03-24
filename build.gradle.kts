@@ -18,7 +18,7 @@ buildscript {
 }
 
 plugins {
-    id("net.fabricmc.fabric-loom") version("1.14-SNAPSHOT")
+    id("net.fabricmc.fabric-loom") version("1.15-SNAPSHOT")
     id("org.quiltmc.gradle.licenser") version("+")
     id("org.ajoberstar.grgit") version("+")
     id("com.modrinth.minotaur") version("+")
@@ -46,11 +46,12 @@ val fabric_api_version: String by project
 val frozenlib_version: String by project
 
 val modmenu_version: String by project
+val text_placeholder_api_version: String by project
 val cloth_config_version: String by project
 
-val sodium_version: String by project
-val run_sodium: String by project
-val shouldRunSodium = run_sodium == "true"
+val lithium_version: String by project
+val run_lithium: String by project
+val shouldRunLithium = run_lithium == "true"
 
 base {
     archivesName = archives_base_name
@@ -75,12 +76,6 @@ loom {
         enableDependencyInterfaceInjection.set(true)
     }
 }
-
-checkstyle {
-    configFile = rootProject.file("checkstyle.xml")
-    toolVersion = "10.20.2"
-}
-
 
 sourceSets {
     main {
@@ -112,6 +107,11 @@ loom {
             ideConfigGenerated(true)
         }
     }
+}
+
+checkstyle {
+    configFile = rootProject.file("checkstyle.xml")
+    toolVersion = "10.20.2"
 }
 
 val includeImplementation by configurations.creating
@@ -174,6 +174,7 @@ dependencies {
 
     // Mod Menu
     compileOnly("com.terraformersmc:modmenu:$modmenu_version")
+    compileOnly("maven.modrinth:placeholder-api:$text_placeholder_api_version")
 
     // Cloth Config
     compileOnly("me.shedaniel.cloth:cloth-config-fabric:$cloth_config_version") {
@@ -181,11 +182,11 @@ dependencies {
         exclude(group = "com.terraformersmc")
     }
 
-    // Sodium
-    //if (shouldRunSodium)
-    //    implementation("maven.modrinth:sodium:${sodium_version}")
-    //else
-    //    compileOnly("maven.modrinth:sodium:${sodium_version}")
+    // Lithium
+    if (shouldRunLithium)
+        implementation("maven.modrinth:lithium:${lithium_version}")
+    else
+        compileOnly("maven.modrinth:lithium:${lithium_version}")
 
     "datagenImplementation"(sourceSets.main.get().output)
 }
@@ -230,7 +231,6 @@ tasks {
             include("**/*.java")
         }
     }
-
 
     register("javadocJar", Jar::class) {
         dependsOn(javadoc)

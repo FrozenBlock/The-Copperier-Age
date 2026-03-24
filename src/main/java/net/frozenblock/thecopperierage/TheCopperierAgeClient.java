@@ -24,6 +24,7 @@ import net.frozenblock.lib.menu.api.SplashTextAPI;
 import net.frozenblock.thecopperierage.client.TCAModelLayers;
 import net.frozenblock.thecopperierage.client.TCAParticleEngine;
 import net.frozenblock.thecopperierage.networking.TCAClientNetworking;
+import net.frozenblock.thecopperierage.registry.TCAMenuScreens;
 
 @Environment(EnvType.CLIENT)
 public final class TheCopperierAgeClient implements ClientModInitializer {
@@ -34,6 +35,7 @@ public final class TheCopperierAgeClient implements ClientModInitializer {
 
 		TCAParticleEngine.init();
 		TCAModelLayers.init();
+		TCAMenuScreens.init();
 		TCAClientNetworking.registerPacketReceivers();
 	}
 

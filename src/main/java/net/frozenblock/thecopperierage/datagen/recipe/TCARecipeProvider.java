@@ -22,13 +22,19 @@ import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.frozenblock.lib.recipe.api.RecipeExportNamespaceFix;
 import net.frozenblock.thecopperierage.TCAConstants;
+import net.frozenblock.thecopperierage.TCAFeatureFlags;
+import net.frozenblock.thecopperierage.recipe.ItemWaxRecipe;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCAItems;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
@@ -48,6 +54,10 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 			public void buildRecipes() {
 				RecipeExportNamespaceFix.setCurrentGeneratingModId(TCAConstants.MOD_ID);
 
+				final HolderGetter<EntityType<?>> entityTypes = registries.lookupOrThrow(Registries.ENTITY_TYPE);
+
+				SpecialRecipeBuilder.special(ItemWaxRecipe::new).save(this.output, "equipment_wax");
+				this.waxRecipes(TCAFeatureFlags.THE_COPPERIER_AGE_FLAG_SET);
 				CopperHornRecipeProvider.buildRecipes(this, registries, exporter);
 
 				this.shaped(RecipeCategory.TOOLS, TCAItems.WRENCH)
@@ -85,6 +95,15 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.unlockedBy("has_redstone", this.has(Items.REDSTONE))
 					.save(this.output);
 
+				this.shaped(RecipeCategory.REDSTONE, TCABlocks.REDSTONE_GRIT, 4)
+					.define('^', Items.REDSTONE)
+					.define('#', Items.GRAVEL)
+					.pattern("^#^")
+					.pattern("#^#")
+					.pattern("^#^")
+					.unlockedBy("has_redstone", this.has(Items.REDSTONE))
+					.save(this.output);
+
 				this.shaped(RecipeCategory.BUILDING_BLOCKS, TCABlocks.COPPER_BUTTON.unaffected())
 					.define('#', Ingredient.of(Items.COPPER_NUGGET))
 					.pattern("##")
@@ -103,6 +122,16 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.waxedExposed(), Blocks.WAXED_EXPOSED_COPPER);
 				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.waxedWeathered(), Blocks.WAXED_WEATHERED_COPPER);
 				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.waxedOxidized(), Blocks.WAXED_OXIDIZED_COPPER);
+
+				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.unaffected(), TCABlocks.GEARBOX.unaffected());
+				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.exposed(), TCABlocks.GEARBOX.exposed());
+				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.weathered(), TCABlocks.GEARBOX.weathered());
+				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.oxidized(), TCABlocks.GEARBOX.oxidized());
+
+				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.waxed(), TCABlocks.GEARBOX.waxed());
+				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.waxedExposed(), TCABlocks.GEARBOX.waxedExposed());
+				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.waxedWeathered(), TCABlocks.GEARBOX.waxedWeathered());
+				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.waxedOxidized(), TCABlocks.GEARBOX.waxedOxidized());
 
 				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.unaffected(), Blocks.COPPER_BLOCK);
 				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.exposed(), Blocks.EXPOSED_COPPER);
@@ -123,6 +152,16 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.pattern("VVV")
 					.unlockedBy(RecipeProvider.getHasName(Items.AMETHYST_SHARD), this.has(Items.AMETHYST_SHARD))
 					.save(exporter);
+
+				createCrateRecipe(this, exporter, TCABlocks.CRATE.unaffected(), Blocks.COPPER_BLOCK, Blocks.CUT_COPPER_SLAB);
+				createCrateRecipe(this, exporter, TCABlocks.CRATE.exposed(), Blocks.EXPOSED_COPPER, Blocks.EXPOSED_CUT_COPPER_SLAB);
+				createCrateRecipe(this, exporter, TCABlocks.CRATE.weathered(), Blocks.WEATHERED_COPPER, Blocks.WEATHERED_CUT_COPPER_SLAB);
+				createCrateRecipe(this, exporter, TCABlocks.CRATE.oxidized(), Blocks.OXIDIZED_COPPER, Blocks.OXIDIZED_CUT_COPPER_SLAB);
+
+				createCrateRecipe(this, exporter, TCABlocks.CRATE.waxed(), Blocks.WAXED_COPPER_BLOCK, Blocks.WAXED_CUT_COPPER_SLAB);
+				createCrateRecipe(this, exporter, TCABlocks.CRATE.waxedExposed(), Blocks.WAXED_EXPOSED_COPPER, Blocks.WAXED_EXPOSED_CUT_COPPER_SLAB);
+				createCrateRecipe(this, exporter, TCABlocks.CRATE.waxedWeathered(), Blocks.WAXED_WEATHERED_COPPER, Blocks.WAXED_WEATHERED_CUT_COPPER_SLAB);
+				createCrateRecipe(this, exporter, TCABlocks.CRATE.waxedOxidized(), Blocks.WAXED_OXIDIZED_COPPER, Blocks.WAXED_OXIDIZED_CUT_COPPER_SLAB);
 
 				RecipeExportNamespaceFix.clearCurrentGeneratingModId();
 			}
@@ -150,6 +189,16 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 			.save(exporter);
 	}
 
+	private static void createStickyGearboxRecipe(RecipeProvider recipeProvider, RecipeOutput exporter, Block stickyGearboxBlock, Block gearboxBlock) {
+		recipeProvider.shaped(RecipeCategory.REDSTONE, stickyGearboxBlock, 1)
+			.define('G', Ingredient.of(gearboxBlock))
+			.define('S', Ingredient.of(Items.SLIME_BALL))
+			.pattern("S")
+			.pattern("G")
+			.unlockedBy(RecipeProvider.getHasName(Items.SLIME_BALL), recipeProvider.has(Items.SLIME_BALL))
+			.save(exporter);
+	}
+
 	private static void createCopperFanRecipe(RecipeProvider recipeProvider, RecipeOutput exporter, Block fanBlock, Block copperBlock) {
 		recipeProvider.shaped(RecipeCategory.REDSTONE, fanBlock, 4)
 			.define('X', Ingredient.of(copperBlock))
@@ -160,6 +209,17 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 			.pattern("X/X")
 			.pattern("XRX")
 			.unlockedBy(RecipeProvider.getHasName(copperBlock), recipeProvider.has(copperBlock))
+			.save(exporter);
+	}
+
+	private static void createCrateRecipe(RecipeProvider provider, RecipeOutput exporter, Block crateBlock, Block copperBlock, Block copperSlabBlock) {
+		provider.shaped(RecipeCategory.REDSTONE, crateBlock, 4)
+			.define('#', Ingredient.of(copperBlock))
+			.define('-', Ingredient.of(copperSlabBlock))
+			.pattern("#-#")
+			.pattern("# #")
+			.pattern("###")
+			.unlockedBy(RecipeProvider.getHasName(copperBlock), provider.has(copperBlock))
 			.save(exporter);
 	}
 

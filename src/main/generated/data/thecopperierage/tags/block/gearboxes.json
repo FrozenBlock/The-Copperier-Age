@@ -7,6 +7,10 @@
     "thecopperierage:waxed_gearbox",
     "thecopperierage:waxed_exposed_gearbox",
     "thecopperierage:waxed_weathered_gearbox",
-    "thecopperierage:waxed_oxidized_gearbox"
+    "thecopperierage:waxed_oxidized_gearbox",
+    {
+      "id": "#thecopperierage:sticky_gearboxes",
+      "required": false
+    }
   ]
 }

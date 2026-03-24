@@ -21,6 +21,8 @@ import java.util.Collection;
 import java.util.Set;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.entity.ChimeBlockEntity;
+import net.frozenblock.thecopperierage.block.entity.CrateBlockEntity;
+import net.frozenblock.thecopperierage.block.entity.StickyGearboxBlockEntity;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.Util;
@@ -34,6 +36,16 @@ public final class TCABlockEntityTypes {
 		"chime",
 		ChimeBlockEntity::new,
 		TCABlocks.CHIME.asList()
+	);
+	public static final BlockEntityType<CrateBlockEntity> CRATE = register(
+		"crate",
+		CrateBlockEntity::new,
+		TCABlocks.CRATE.asList()
+	);
+	public static final BlockEntityType<StickyGearboxBlockEntity> STICKY_GEARBOX = register(
+		"sticky_gearbox",
+		StickyGearboxBlockEntity::new,
+		TCABlocks.STICKY_GEARBOX.asList()
 	);
 
 	public static void init() {

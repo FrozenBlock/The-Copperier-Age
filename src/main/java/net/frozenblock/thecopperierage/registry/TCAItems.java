@@ -24,7 +24,6 @@ import net.frozenblock.thecopperierage.item.WrenchItem;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.Instrument;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.InstrumentComponent;
@@ -37,28 +36,18 @@ public final class TCAItems {
 			.durability(128)
 	);
 
-	// INSTRUMENT
-	public static final ResourceKey<Instrument> SAX_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("sax_copper_horn"));
-	public static final ResourceKey<Instrument> TUBA_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("tuba_copper_horn"));
-	public static final ResourceKey<Instrument> RECORDER_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("recorder_copper_horn"));
-	public static final ResourceKey<Instrument> FLUTE_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("flute_copper_horn"));
-	public static final ResourceKey<Instrument> OBOE_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("oboe_copper_horn"));
-	public static final ResourceKey<Instrument> CLARINET_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("clarinet_copper_horn"));
-	public static final ResourceKey<Instrument> TRUMPET_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("trumpet_copper_horn"));
-	public static final ResourceKey<Instrument> TROMBONE_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("trombone_copper_horn"));
-
 	public static final CopperHornItem COPPER_HORN = register("copper_horn",
 		CopperHornItem::new,
 		new Item.Properties()
 			.stacksTo(1)
-			.delayedComponent(DataComponents.INSTRUMENT, context -> new InstrumentComponent(context.getOrThrow(SAX_COPPER_HORN)))
+			.delayedComponent(DataComponents.INSTRUMENT, context -> new InstrumentComponent(context.getOrThrow(TCAInstruments.SAX_COPPER_HORN)))
 	);
 
 	private TCAItems() {
 		throw new UnsupportedOperationException("WWItems contains only static declarations.");
 	}
 
-	public static void registerItems() {
+	public static void init() {
 	}
 
 	private static <T extends Item> T register(String name, Function<Item.Properties, Item> function, Item.Properties properties) {

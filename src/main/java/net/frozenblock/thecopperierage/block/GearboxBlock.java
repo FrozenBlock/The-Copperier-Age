@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 FrozenBlock
+ * Copyright 2025-2026 FrozenBlock
  * This file is part of The Copperier Age.
  *
  * This program is free software; you can modify it under
@@ -22,12 +22,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import net.frozenblock.thecopperierage.block.gearbox.GearboxBlockEvaluator;
+import net.frozenblock.thecopperierage.block.gearbox.GearboxRotationSessionInterface;
 import net.frozenblock.thecopperierage.registry.TCASounds;
+import net.frozenblock.thecopperierage.tag.TCAEntityTypeTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -114,6 +117,15 @@ public class GearboxBlock extends DirectionalBlock {
 	) {
 		if (level.isClientSide() || level.getBlockTicks().hasScheduledTick(pos, this)) return;
 		level.scheduleTick(pos, this, 1);
+	}
+
+	@Override
+	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
+		super.stepOn(level, pos, state, entity);
+		if (state.getValue(FACING) != Direction.UP || state.getValue(POWER) <= 0) return;
+		if (entity instanceof GearboxRotationSessionInterface rotationSession && !entity.getType().is(TCAEntityTypeTags.GEARBOX_CANNOT_ROTATE)) {
+			rotationSession.theCopperierAge$activateGearboxRotationSession(entity.tickCount, pos);
+		}
 	}
 
 	@Override

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": "minecraft:gravel",
+    "^": "minecraft:redstone"
+  },
+  "pattern": [
+    "^#^",
+    "#^#",
+    "^#^"
+  ],
+  "result": {
+    "count": 4,
+    "id": "thecopperierage:redstone_grit"
+  }
+}

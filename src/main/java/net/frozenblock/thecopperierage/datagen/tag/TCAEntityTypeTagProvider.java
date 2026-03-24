@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 FrozenBlock
+ * Copyright 2025-2026 FrozenBlock
  * This file is part of The Copperier Age.
  *
  * This program is free software; you can modify it under
@@ -76,6 +76,28 @@ public final class TCAEntityTypeTagProvider extends FabricTagProvider.EntityType
 			.add(EntityType.WIND_CHARGE);
 
 		this.builder(TCAEntityTypeTags.COPPER_FAN_CANNOT_PUSH)
+			.addOptional(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath("trailiertales", "apparition")));
+
+		this.valueLookupBuilder(TCAEntityTypeTags.GEARBOX_CANNOT_ROTATE)
+			.add(EntityType.WITHER)
+			.add(EntityType.ENDER_DRAGON)
+			.add(EntityType.EYE_OF_ENDER)
+			.add(EntityType.BLOCK_DISPLAY)
+			.add(EntityType.BREEZE)
+			.add(EntityType.BLAZE)
+			.add(EntityType.GIANT)
+			.add(EntityType.ELDER_GUARDIAN)
+			.add(EntityType.IRON_GOLEM)
+			.add(EntityType.VEX)
+			.add(EntityType.SHULKER)
+			.add(EntityType.RAVAGER)
+			.add(EntityType.GHAST)
+			.add(EntityType.HAPPY_GHAST)
+			.add(EntityType.ALLAY)
+			.add(EntityType.BAT);
+
+		this.builder(TCAEntityTypeTags.GEARBOX_CANNOT_ROTATE)
+			.addOptionalTag(getTag("netheriernether:blazes"))
 			.addOptional(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath("trailiertales", "apparition")));
 	}
 

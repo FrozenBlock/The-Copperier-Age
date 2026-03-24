@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 FrozenBlock
+ * Copyright 2025-2026 FrozenBlock
  * This file is part of The Copperier Age.
  *
  * This program is free software; you can modify it under
@@ -21,6 +21,8 @@ import java.util.Collection;
 import java.util.Set;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.entity.ChimeBlockEntity;
+import net.frozenblock.thecopperierage.block.entity.CrateBlockEntity;
+import net.frozenblock.thecopperierage.block.entity.StickyGearboxBlockEntity;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.datafix.fixes.References;
@@ -31,11 +33,20 @@ import org.jetbrains.annotations.NotNull;
 import net.minecraft.Util;
 
 public final class TCABlockEntityTypes {
-
 	public static final BlockEntityType<ChimeBlockEntity> CHIME = register(
 		"chime",
 		ChimeBlockEntity::new,
 		TCABlocks.CHIME.asList()
+	);
+	public static final BlockEntityType<CrateBlockEntity> CRATE = register(
+		"crate",
+		CrateBlockEntity::new,
+		TCABlocks.CRATE.asList()
+	);
+	public static final BlockEntityType<StickyGearboxBlockEntity> STICKY_GEARBOX = register(
+		"sticky_gearbox",
+		StickyGearboxBlockEntity::new,
+		TCABlocks.STICKY_GEARBOX.asList()
 	);
 
 	public static void init() {

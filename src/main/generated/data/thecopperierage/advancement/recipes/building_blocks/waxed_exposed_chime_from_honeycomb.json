@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_exposed_chime": {
+      "conditions": {
+        "items": [
+          {
+            "items": "thecopperierage:exposed_chime"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "thecopperierage:waxed_exposed_chime_from_honeycomb"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_exposed_chime"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "thecopperierage:waxed_exposed_chime_from_honeycomb"
+    ]
+  }
+}

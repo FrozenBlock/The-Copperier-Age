@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 FrozenBlock
+ * Copyright 2025-2026 FrozenBlock
  * This file is part of The Copperier Age.
  *
  * This program is free software; you can modify it under
@@ -25,6 +25,7 @@ import net.frozenblock.thecopperierage.client.TCABlockRenderLayers;
 import net.frozenblock.thecopperierage.client.TCAModelLayers;
 import net.frozenblock.thecopperierage.client.TCAParticleEngine;
 import net.frozenblock.thecopperierage.networking.TCAClientNetworking;
+import net.frozenblock.thecopperierage.registry.TCAMenuScreens;
 
 @Environment(EnvType.CLIENT)
 public final class TheCopperierAgeClient implements ClientModInitializer {
@@ -36,6 +37,7 @@ public final class TheCopperierAgeClient implements ClientModInitializer {
 		TCAParticleEngine.init();
 		TCABlockRenderLayers.init();
 		TCAModelLayers.init();
+		TCAMenuScreens.init();
 		TCAClientNetworking.registerPacketReceivers();
 	}
 

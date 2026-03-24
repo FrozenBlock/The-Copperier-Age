@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 FrozenBlock
+ * Copyright 2025-2026 FrozenBlock
  * This file is part of The Copperier Age.
  *
  * This program is free software; you can modify it under
@@ -21,6 +21,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.client.renderer.item.properties.select.OxidizedItemsEnabled;
+import net.frozenblock.thecopperierage.client.renderer.item.properties.select.WeatherState;
 import net.minecraft.client.renderer.item.properties.select.SelectItemModelProperties;
 import net.minecraft.client.renderer.item.properties.select.SelectItemModelProperty;
 import net.minecraft.resources.ResourceLocation;
@@ -43,6 +44,7 @@ public class SelectItemModelPropertiesMixin {
 	@Inject(method = "bootstrap", at = @At("TAIL"))
 	private static void theCopperierAge$bootstrap(CallbackInfo info) {
 		ID_MAPPER.put(TCAConstants.id("oxidized_items_enabled"), OxidizedItemsEnabled.TYPE);
+		ID_MAPPER.put(TCAConstants.id("weather_state"), WeatherState.TYPE);
 	}
 
 }

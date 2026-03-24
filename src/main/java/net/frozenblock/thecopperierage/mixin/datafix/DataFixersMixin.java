@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 FrozenBlock
+ * Copyright 2025-2026 FrozenBlock
  * This file is part of The Copperier Age.
  *
  * This program is free software; you can modify it under
@@ -47,6 +47,7 @@ public class DataFixersMixin {
 	)
 	private static Schema theCopperierAge$addFixers4533(Schema schema, DataFixerBuilder builder) {
 		builder.addFixer(new AddNewChoices(schema, "Added Chime (The Copperier Age)", References.BLOCK_ENTITY));
+		builder.addFixer(new AddNewChoices(schema, "Added Crate (The Copperier Age)", References.BLOCK_ENTITY));
 		return schema;
 	}
 

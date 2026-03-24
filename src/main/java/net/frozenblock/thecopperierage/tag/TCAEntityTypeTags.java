@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 FrozenBlock
+ * Copyright 2025-2026 FrozenBlock
  * This file is part of The Copperier Age.
  *
  * This program is free software; you can modify it under
@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 public final class TCAEntityTypeTags {
 	public static final TagKey<EntityType<?>> COPPER_FAN_WEAKER_PUSH = bind("copper_fan_weaker_push");
 	public static final TagKey<EntityType<?>> COPPER_FAN_CANNOT_PUSH = bind("copper_fan_cannot_push");
+	public static final TagKey<EntityType<?>> GEARBOX_CANNOT_ROTATE = bind("gearbox_cannot_rotate");
 
 	private TCAEntityTypeTags() {
 		throw new UnsupportedOperationException("TCAEntityTypeTags contains only static declarations.");

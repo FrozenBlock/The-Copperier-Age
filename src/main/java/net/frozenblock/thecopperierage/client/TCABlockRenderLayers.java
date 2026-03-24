@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 FrozenBlock
+ * Copyright 2025-2026 FrozenBlock
  * This file is part of The Copperier Age.
  *
  * This program is free software; you can modify it under
@@ -32,6 +32,7 @@ public final class TCABlockRenderLayers {
 		BlockRenderLayerMap.putBlock(TCABlocks.COPPER_JACK_O_LANTERN, ChunkSectionLayer.CUTOUT);
 		BlockRenderLayerMap.putBlock(TCABlocks.REDSTONE_JACK_O_LANTERN, ChunkSectionLayer.CUTOUT);
 		TCABlocks.GEARBOX.forEach(block -> BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT));
+		TCABlocks.STICKY_GEARBOX.forEach(block -> BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT));
 		TCABlocks.COPPER_FAN.forEach(block -> BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT));
 	}
 

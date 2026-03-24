@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 FrozenBlock
+ * Copyright 2025-2026 FrozenBlock
  * This file is part of The Copperier Age.
  *
  * This program is free software; you can modify it under
@@ -134,10 +134,11 @@ public class FrozenLibIntegration extends ModIntegration {
 		final Direction direction = state.getValue(CopperFanBlock.FACING);
 		Vec3 movement = Vec3.atLowerCornerOf(direction.getUnitVec3i());
 		double strength = fanDistance - Math.min(windTarget.distanceTo(windOrigin), fanDistance);
-		double intensity = strength / fanDistance;
+		double fixedStrength = reverse ? ((fanDistance + strength + strength) / 3D) : strength;
+		double intensity = fixedStrength / fanDistance;
 		return new WindDisturbance.DisturbanceResult(
 			Mth.clamp(intensity * 1.5D, 0D, 1D) * windIntensityScale,
-			strength * 1.5D * windIntensityScale,
+			fixedStrength * 1.5D * windIntensityScale,
 			movement.scale(intensity * CopperFanBlock.WIND_INTENSITY).scale(20D * windIntensityScale)
 		);
 	}

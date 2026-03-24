@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 FrozenBlock
+ * Copyright 2025-2026 FrozenBlock
  * This file is part of The Copperier Age.
  *
  * This program is free software; you can modify it under
@@ -22,11 +22,18 @@ import net.frozenblock.lib.integration.api.ModIntegration;
 import net.frozenblock.lib.integration.api.ModIntegrationSupplier;
 import net.frozenblock.lib.integration.api.ModIntegrations;
 import net.frozenblock.thecopperierage.TCAConstants;
+import net.frozenblock.thecopperierage.mod_compat.wilderwild.AbstractWWIntegration;
+import net.frozenblock.thecopperierage.mod_compat.wilderwild.NoOpWWIntegration;
+import net.frozenblock.thecopperierage.mod_compat.wilderwild.WWIntegration;
 import org.jetbrains.annotations.NotNull;
 
 public final class TCAModIntegrations {
 	public static final ModIntegration FROZENLIB_INTEGRATION = registerAndGet(FrozenLibIntegration::new, "frozenlib");
-
+	public static final ModIntegrationSupplier<AbstractWWIntegration> WILDER_WILD_INTEGRATION = register(
+		() -> new WWIntegration(),
+		NoOpWWIntegration::new,
+		"wilderwild"
+	);
 	private TCAModIntegrations() {
 		throw new UnsupportedOperationException("TCAModIntegrations contains only static declarations.");
 	}

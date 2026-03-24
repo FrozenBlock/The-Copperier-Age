@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 FrozenBlock
+ * Copyright 2025-2026 FrozenBlock
  * This file is part of The Copperier Age.
  *
  * This program is free software; you can modify it under
@@ -35,6 +35,7 @@ public final class TCAParticleEngine {
 		particleRegistry.register(TCAParticleTypes.LARGE_COPPER_SMOKE, LargeCopperSmokeParticle.Provider::new);
 		particleRegistry.register(TCAParticleTypes.COPPER_LAVA, LavaParticle.Provider::new);
 		particleRegistry.register(TCAParticleTypes.COPPER_CAMPFIRE_COSY_SMOKE, CopperCampfireSmokeParticle.CosyProvider::new);
+		particleRegistry.register(TCAParticleTypes.COPPER_CAMPFIRE_SIGNAL_SMOKE, CopperCampfireSmokeParticle.SignalProvider::new);
 		particleRegistry.register(TCAParticleTypes.COPPER_CAMPFIRE_SIGNAL_SMOKE, CopperCampfireSmokeParticle.SignalProvider::new);
 	}
 }

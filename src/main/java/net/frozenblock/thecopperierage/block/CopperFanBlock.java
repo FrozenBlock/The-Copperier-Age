@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 FrozenBlock
+ * Copyright 2025-2026 FrozenBlock
  * This file is part of The Copperier Age.
  *
  * This program is free software; you can modify it under
@@ -362,7 +362,8 @@ public class CopperFanBlock extends DirectionalBlock {
 
 			final double pushScale = !entity.getType().is(TCAEntityTypeTags.COPPER_FAN_WEAKER_PUSH) ? 1D : 0.5D;
 			final double intensity = (fanDistance - Math.min(entity.position().distanceTo(fanStartPos), fanDistance)) / fanDistance;
-			final double overallIntensity = intensity * pushIntensity * pushScale;
+			final double fixedIntensity = reverse ? ((2D + intensity) / 3D) : intensity;
+			final double overallIntensity = fixedIntensity * pushIntensity * pushScale;
 			final Vec3 fanMovement = movement.scale(overallIntensity);
 			queuedMovementInterface.theCopperierAge$queueCopperFanMovement(fanMovement);
 			entity.hasImpulse = true;

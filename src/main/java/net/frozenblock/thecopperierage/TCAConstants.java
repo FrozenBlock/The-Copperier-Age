@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 FrozenBlock
+ * Copyright 2025-2026 FrozenBlock
  * This file is part of The Copperier Age.
  *
  * This program is free software; you can modify it under
@@ -19,6 +19,7 @@ package net.frozenblock.thecopperierage;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -90,5 +91,9 @@ public final class TCAConstants {
 	@Contract(value = "_ -> new", pure = true)
 	public static @NotNull Component tooltip(String key) {
 		return Component.translatable("tooltip." + MOD_ID + "." + key);
+	}
+
+	public static MutableComponent itemComponent(String key) {
+		return Component.translatable("item." + MOD_ID + "." + key);
 	}
 }

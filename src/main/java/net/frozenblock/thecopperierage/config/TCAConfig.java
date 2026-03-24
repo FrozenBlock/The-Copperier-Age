@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 FrozenBlock
+ * Copyright 2025-2026 FrozenBlock
  * This file is part of The Copperier Age.
  *
  * This program is free software; you can modify it under
@@ -44,13 +44,25 @@ public class TCAConfig {
 			public void onSync(TCAConfig syncInstance) {
 				var config = this.config();
 				OXIDIZABLE_COPPER_EQUIPMENT = config.oxidizableCopperEquipment;
+				COPPER_GOLEMS_PRESS_BUTTONS = config.copperGolemsPressButtons;
+				GEARBOX_ENTITY_ROTATION = config.gearboxEntityRotation;
+				STICKY_GEARBOX_ROTATION_INTERVAL = config.stickyGearboxRotationInterval;
 				COPPER_PARTICLES = config.copperParticles;
+				BETTER_COPPER_TOOLTIPS = config.betterCopperTooltips;
+				WAXED_ITEM_ICON_OVERLAY = config.waxedItemIconOverlay;
+				EXTRA_ITEM_ICON_OVERLAYS = config.extraItemIconOverlays;
 			}
 		}
 	);
 
 	public static volatile boolean OXIDIZABLE_COPPER_EQUIPMENT = true;
+	public static volatile boolean COPPER_GOLEMS_PRESS_BUTTONS = true;
+	public static volatile float GEARBOX_ENTITY_ROTATION = 3.5F;
+	public static volatile int STICKY_GEARBOX_ROTATION_INTERVAL = 24;
 	public static volatile boolean COPPER_PARTICLES = true;
+	public static volatile boolean BETTER_COPPER_TOOLTIPS = true;
+	public static volatile boolean WAXED_ITEM_ICON_OVERLAY = true;
+	public static volatile boolean EXTRA_ITEM_ICON_OVERLAYS = false;
 
 	@EntrySyncData("copperFireEnabled")
 	public boolean copperFireEnabled = true;
@@ -67,11 +79,29 @@ public class TCAConfig {
 	@EntrySyncData("copperPressurePlatesInTrialChambers")
 	public boolean copperPressurePlatesInTrialChambers = true;
 
+	@EntrySyncData("copperGolemsPressButtons")
+	public boolean copperGolemsPressButtons = true;
+
+	@EntrySyncData("gearboxEntityRotation")
+	public float gearboxEntityRotation = 3.5F;
+
+	@EntrySyncData("stickyGearboxRotationInterval")
+	public int stickyGearboxRotationInterval = 24;
+
 	@EntrySyncData("oxidizableCopperEquipment")
 	public boolean oxidizableCopperEquipment = true;
 
 	@EntrySyncData(value = "copperParticles", behavior = SyncBehavior.UNSYNCABLE)
 	public boolean copperParticles = true;
+
+	@EntrySyncData("betterCopperTooltips")
+	public boolean betterCopperTooltips = true;
+
+	@EntrySyncData("waxedItemIconOverlay")
+	public boolean waxedItemIconOverlay = true;
+
+	@EntrySyncData("extraItemIconOverlays")
+	public boolean extraItemIconOverlays = false;
 
 	public static TCAConfig get(boolean real) {
 		if (real) return INSTANCE.instance();

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 FrozenBlock
+ * Copyright 2025-2026 FrozenBlock
  * This file is part of The Copperier Age.
  *
  * This program is free software; you can modify it under
@@ -27,21 +27,29 @@ import net.frozenblock.thecopperierage.block.CopperButtonBlock;
 import net.frozenblock.thecopperierage.block.CopperFanBlock;
 import net.frozenblock.thecopperierage.block.CopperFireBlock;
 import net.frozenblock.thecopperierage.block.CopperPressurePlateBlock;
+import net.frozenblock.thecopperierage.block.CrateBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
+import net.frozenblock.thecopperierage.block.RedstoneGritBlock;
 import net.frozenblock.thecopperierage.block.RedstonePumpkinBlock;
+import net.frozenblock.thecopperierage.block.StickyGearboxBlock;
 import net.frozenblock.thecopperierage.block.WeatheringChimeBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperButtonBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperFanBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperPressurePlateBlock;
+import net.frozenblock.thecopperierage.block.WeatheringCrateBlock;
 import net.frozenblock.thecopperierage.block.WeatheringGearboxBlock;
+import net.frozenblock.thecopperierage.block.WeatheringStickyGearboxBlock;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ColorRGBA;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
@@ -58,8 +66,7 @@ import org.apache.commons.lang3.function.TriFunction;
 import org.jetbrains.annotations.NotNull;
 
 public final class TCABlocks {
-
-	public static final CopperFireBlock COPPER_FIRE = register("copper_fire",
+	public static final CopperFireBlock COPPER_FIRE = registerWithoutItem("copper_fire",
 		CopperFireBlock::new,
 		BlockBehaviour.Properties.of()
 			.mapColor(MapColor.COLOR_LIGHT_GREEN)
@@ -103,11 +110,33 @@ public final class TCABlocks {
 			.isRedstoneConductor(Blocks::never)
 	);
 
+	public static final RedstoneGritBlock REDSTONE_GRIT = register("redstone_grit",
+		properties -> new RedstoneGritBlock(new ColorRGBA(0xe3001a), properties),
+		BlockBehaviour.Properties.of()
+			.mapColor(MapColor.COLOR_RED)
+			.strength(1F)
+			.sound(SoundType.SAND)
+			.isValidSpawn(Blocks::always)
+			.pushReaction(PushReaction.NORMAL)
+			.isRedstoneConductor(Blocks::never)
+	);
+
 	public static final WeatheringCopperBlocks GEARBOX = WeatheringCopperBlocks.create(
 		"gearbox",
 		TCABlocks::register,
 		GearboxBlock::new,
 		WeatheringGearboxBlock::new,
+		(weatherState) -> BlockBehaviour.Properties.of()
+			.mapColor(MapColor.STONE)
+			.strength(1.5F)
+			.isRedstoneConductor(Blocks::never)
+	);
+
+	public static final WeatheringCopperBlocks STICKY_GEARBOX = WeatheringCopperBlocks.create(
+		"sticky_gearbox",
+		TCABlocks::register,
+		StickyGearboxBlock::new,
+		WeatheringStickyGearboxBlock::new,
 		(weatherState) -> BlockBehaviour.Properties.of()
 			.mapColor(MapColor.STONE)
 			.strength(1.5F)
@@ -133,10 +162,23 @@ public final class TCABlocks {
 		ChimeBlock::new,
 		WeatheringChimeBlock::new,
 		(weatherState) -> BlockBehaviour.Properties.of()
+			.mapColor(MapColor.METAL)
 			.requiresCorrectToolForDrops()
 			.strength(5F, 6F)
 			.sound(TCASounds.CHIME)
 			.noOcclusion()
+	);
+
+	public static final WeatheringCopperBlocks CRATE = createWeatheringCopperSet(
+		"crate",
+		TCABlocks::registerWithContainerComponentItem,
+		CrateBlock::new,
+		WeatheringCrateBlock::new,
+		weatherState -> BlockBehaviour.Properties.of()
+			.mapColor(getMapColorForWeatherState(weatherState))
+			.requiresCorrectToolForDrops()
+			.strength(3F, 6F)
+			.sound(SoundType.COPPER)
 	);
 
 	public static final WeatheringCopperBlocks COPPER_BUTTON = createWeatheringCopperSet(
@@ -157,7 +199,7 @@ public final class TCABlocks {
 		CopperPressurePlateBlock::new,
 		WeatheringCopperPressurePlateBlock::new,
 		(weatherState) -> BlockBehaviour.Properties.of()
-			.mapColor(MapColor.NONE)
+			.mapColor(getMapColorForWeatherState(weatherState))
 			.strength(0.5F)
 			.noCollision()
 			.pushReaction(PushReaction.DESTROY)
@@ -167,7 +209,7 @@ public final class TCABlocks {
 		throw new UnsupportedOperationException("TCABlocks contains only static declarations.");
 	}
 
-	public static void registerBlocks() {
+	public static void init() {
 		TCAConstants.logWithModId("Registering Blocks for", TCAConstants.UNSTABLE_LOGGING);
 	}
 
@@ -180,6 +222,12 @@ public final class TCABlocks {
 	private static <T extends Block> T register(String path, Function<BlockBehaviour.Properties, T> block, BlockBehaviour.Properties properties) {
 		T registered = registerWithoutItem(path, block, properties);
 		Items.registerBlock(registered);
+		return registered;
+	}
+
+	private static <T extends Block> T registerWithContainerComponentItem(String path, Function<BlockBehaviour.Properties, T> block, BlockBehaviour.Properties properties) {
+		T registered = registerWithoutItem(path, block, properties);
+		Items.registerBlock(registered, new Item.Properties().component(DataComponents.CONTAINER, ItemContainerContents.EMPTY));
 		return registered;
 	}
 
@@ -212,13 +260,23 @@ public final class TCABlocks {
 		BlockEntityType.CAMPFIRE.addSupportedBlock(TCABlocks.COPPER_CAMPFIRE);
 
 		OxidizableBlocksRegistry.registerCopperBlockSet(GEARBOX);
+		OxidizableBlocksRegistry.registerCopperBlockSet(STICKY_GEARBOX);
 		OxidizableBlocksRegistry.registerCopperBlockSet(COPPER_FAN);
 		OxidizableBlocksRegistry.registerCopperBlockSet(CHIME);
+		OxidizableBlocksRegistry.registerCopperBlockSet(CRATE);
 		OxidizableBlocksRegistry.registerCopperBlockSet(COPPER_BUTTON);
 		OxidizableBlocksRegistry.registerCopperBlockSet(WEIGHTED_PRESSURE_PLATE);
 	}
 
 	private static void registerDispenses() {
+	}
+
+	public static MapColor getMapColorForWeatherState(WeatheringCopper.WeatherState weatherState) {
+		if (weatherState == WeatheringCopper.WeatherState.UNAFFECTED) return MapColor.COLOR_ORANGE;
+		if (weatherState == WeatheringCopper.WeatherState.EXPOSED) return MapColor.TERRACOTTA_LIGHT_GRAY;
+		if (weatherState == WeatheringCopper.WeatherState.WEATHERED) return MapColor.WARPED_STEM;
+		if (weatherState == WeatheringCopper.WeatherState.OXIDIZED) return MapColor.WARPED_NYLIUM;
+		return MapColor.NONE;
 	}
 
 	public static <W extends Block> @NotNull WeatheringCopperBlocks createWeatheringCopperSet(

@@ -102,7 +102,7 @@ public final class GearboxEntityRotationHelper {
 	}
 
 	public static void applyRotation(Entity entity, float yawDelta, boolean invertVisualRot, boolean skipRotation) {
-		if (yawDelta == 0F || !(entity instanceof GearboxRotationSessionInterface rotationSession)) return;
+		if (yawDelta == 0F || !(entity instanceof GearboxRotationSessionInterface rotationSession) || !entity.level().tickRateManager().runsNormally()) return;
 
 		final BlockPos gearboxPos = rotationSession.theCopperierAge$getGearboxPosition();
 		final Vec3 gearboxCenter = gearboxPos.above().getBottomCenter();

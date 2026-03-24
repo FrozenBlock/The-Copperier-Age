@@ -117,7 +117,7 @@ public class CrateBlock extends BaseEntityBlock {
 	public static SlotResult verifyStackForPlacement(ItemStack stack, Container container) {
 		if (stack == null || stack.isEmpty()) return SlotResult.FAILURE_EMPTY_ITEM;
 		if (!stack.getComponents().getOrDefault(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY).isEmpty()) return SlotResult.FAILURE_CONTAINER_ITEM;
-		if (stack.getComponents().getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).nonEmptyStream().findAny().isPresent()) return SlotResult.FAILURE_CONTAINER_ITEM;
+		if (stack.getComponents().getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).allItemsCopyStream().findAny().isPresent()) return SlotResult.FAILURE_CONTAINER_ITEM;
 
 		final Item item = stack.getItem();
 		if (container.hasAnyMatching(containerStack -> !containerStack.isEmpty() && !containerStack.is(item))) return SlotResult.FAILURE_MISMATCHING_ITEM;

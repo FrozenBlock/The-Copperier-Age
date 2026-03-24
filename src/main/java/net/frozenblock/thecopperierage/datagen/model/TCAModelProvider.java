@@ -43,17 +43,11 @@ import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
-import net.minecraft.client.renderer.block.dispatch.VariantMutator;
-import net.minecraft.client.renderer.item.ClientItem;
-import static net.minecraft.client.renderer.item.ItemModel.Unbaked;
-import net.minecraft.client.renderer.item.SelectItemModel;
-import net.minecraft.client.renderer.item.properties.numeric.UseCycle;
-import net.minecraft.client.renderer.item.properties.select.TrimMaterialProperty;
-import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.client.data.models.model.TexturedModel;
+import net.minecraft.client.renderer.block.dispatch.VariantMutator;
+import static net.minecraft.client.renderer.item.ItemModel.Unbaked;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.Identifier;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -322,15 +316,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 		generator.generateBooleanDispatch(item, ItemModelUtils.isUsingItem(), tooting, model);
 	}
 
-	private static Identifier getItemModelWithTCANamespace(Item item, String suffix) {
-		return TCAConstants.id(ModelLocationUtils.getModelLocation(item, suffix).getPath());
-	}
-
-	private static Material getItemTextureWithTCANamespace(Item item, String suffix) {
-		return new Material(TCAConstants.id(TextureMapping.getItemTexture(item, suffix).sprite().getPath()));
-	}
-
-	private static Unbaked createOxidizableDispatch(Unbaked unaffected, Unbaked exposed, Unbaked weathered, Unbaked oxidized) {
+	public static Unbaked createOxidizableDispatch(Unbaked unaffected, Unbaked exposed, Unbaked weathered, Unbaked oxidized) {
 		return ItemModelUtils.select(
 			new OxidizedItemsEnabled(),
 			unaffected,

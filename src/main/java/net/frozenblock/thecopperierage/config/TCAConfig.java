@@ -37,7 +37,7 @@ public class TCAConfig {
 	public static final ConfigEntry<Integer> STICKY_GEARBOX_ROTATION_INTERVAL = CONFIG.entry("stickyGearboxRotationInterval", EntryType.INT, 24);
 	public static final ConfigEntry<Boolean> OXIDIZABLE_COPPER_EQUIPMENT = CONFIG.entry("oxidizableCopperEquipment", EntryType.BOOL, true);
 	public static final ConfigEntry<Boolean> COPPER_PARTICLES = CONFIG.unsyncableEntry("copperParticles", EntryType.BOOL, true);
-	public static final ConfigEntry<Boolean> BETTER_COPPER_TOOLTIPS = CONFIG.unsyncableEntry("betterCopperTooltips", EntryType.BOOL, true);
+	public static final ConfigEntry<Boolean> BETTER_COPPER_TOOLTIPS = CONFIG.unsyncableEntryBuilder("betterCopperTooltips", EntryType.BOOL, true).requireRestart().build();
 	public static final ConfigEntry<Boolean> WAXED_ITEM_ICON_OVERLAY = CONFIG.unsyncableEntry("waxedItemIconOverlay", EntryType.BOOL, true);
 	public static final ConfigEntry<Boolean> EXTRA_ITEM_ICON_OVERLAYS = CONFIG.unsyncableEntry("extraItemIconOverlays", EntryType.BOOL, false);
 }

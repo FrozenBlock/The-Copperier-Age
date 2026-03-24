@@ -53,7 +53,7 @@ public final class TheCopperierAge extends FrozenModInitializer {
 		TCAItems.init();
 		TCADataComponents.init();
 		TCARecipeTypes.init();
-		OxidizableItemHelper.bootstrap();
+		OxidizableItemHelper.init();
 		TCAMemoryModuleTypes.init();
 		TCASensorTypes.init();
 		TCAPoiTypes.init();

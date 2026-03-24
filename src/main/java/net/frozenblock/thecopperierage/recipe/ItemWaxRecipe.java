@@ -17,24 +17,29 @@
 
 package net.frozenblock.thecopperierage.recipe;
 
+import com.mojang.serialization.MapCodec;
 import java.util.List;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
 import net.frozenblock.thecopperierage.registry.TCADataComponents;
 import net.frozenblock.thecopperierage.registry.TCARecipeTypes;
 import net.frozenblock.thecopperierage.tag.TCAItemTags;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
 public class ItemWaxRecipe extends CustomRecipe {
+	public static final ItemWaxRecipe INSTANCE = new ItemWaxRecipe();
+	public static final MapCodec<ItemWaxRecipe> MAP_CODEC = MapCodec.unit(INSTANCE);
+	public static final StreamCodec<RegistryFriendlyByteBuf, ItemWaxRecipe> STREAM_CODEC = StreamCodec.unit(INSTANCE);
+	public static final RecipeSerializer<ItemWaxRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
 
-	public ItemWaxRecipe(CraftingBookCategory category) {
-		super(category);
+	public ItemWaxRecipe() {
+		super();
 	}
 
 	@Override
@@ -46,7 +51,7 @@ public class ItemWaxRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingInput input, HolderLookup.Provider provider) {
+	public ItemStack assemble(CraftingInput input) {
 		final ItemStack stackToWax = findWaxableItem(input).copyWithCount(1);
 		stackToWax.set(TCADataComponents.WAXED, OxidizableItemHelper.getWeatherState(stackToWax));
 		return stackToWax;

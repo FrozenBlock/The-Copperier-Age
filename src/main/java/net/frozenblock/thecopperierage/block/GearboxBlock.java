@@ -127,7 +127,7 @@ public class GearboxBlock extends DirectionalBlock {
 	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
 		super.stepOn(level, pos, state, entity);
 		if (state.getValue(FACING) != Direction.UP || state.getValue(POWER) <= 0) return;
-		if (entity instanceof GearboxRotationSessionInterface rotationSession && !entity.getType().is(TCAEntityTypeTags.GEARBOX_CANNOT_ROTATE)) {
+		if (entity instanceof GearboxRotationSessionInterface rotationSession && !entity.is(TCAEntityTypeTags.GEARBOX_CANNOT_ROTATE)) {
 			rotationSession.theCopperierAge$activateGearboxRotationSession(entity.tickCount, pos);
 		}
 	}

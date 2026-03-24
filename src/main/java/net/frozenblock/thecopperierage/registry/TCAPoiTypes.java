@@ -17,7 +17,7 @@
 
 package net.frozenblock.thecopperierage.registry;
 
-import net.fabricmc.fabric.api.object.builder.v1.world.poi.PointOfInterestHelper;
+import net.fabricmc.fabric.api.object.builder.v1.world.poi.PoiHelper;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -26,7 +26,7 @@ import net.minecraft.world.level.block.Block;
 
 public final class TCAPoiTypes {
 	public static final ResourceKey<PoiType> COPPER_BUTTON_KEY = ResourceKey.create(Registries.POINT_OF_INTEREST_TYPE, TCAConstants.id("copper_button"));
-	public static final PoiType COPPER_BUTTON = PointOfInterestHelper.register(
+	public static final PoiType COPPER_BUTTON = PoiHelper.register(
 		TCAConstants.id("copper_button"),
 		1,
 		1,

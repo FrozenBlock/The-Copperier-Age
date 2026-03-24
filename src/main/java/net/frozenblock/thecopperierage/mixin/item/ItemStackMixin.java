@@ -93,7 +93,7 @@ public class ItemStackMixin {
 		}
 		if (OxidizableItemHelper.hasWaxedComponent(stack)) consumer.accept(OxidizableItemHelper.WAXED_TOOLTIP);
 
-		if (!TCAConfig.BETTER_COPPER_TOOLTIPS) return;
+		if (!TCAConfig.BETTER_COPPER_TOOLTIPS.get()) return;
 		if (!(stack.getItem() instanceof ItemOxidizationCacheInterface oxidizationCache)) return;
 
 		final WeatheringCopper.WeatherState weatherState = oxidizationCache.theCopperierAge$weatherState();

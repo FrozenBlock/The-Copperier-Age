@@ -109,7 +109,7 @@ public abstract class EntityMixin implements GearboxRotationSessionInterface {
 	public void theCopperierAge$tickRotationSession(boolean invertVisualRot) {
 		final Entity entity = Entity.class.cast(this);
 		if (!this.theCopperierAge$activeGearboxRotation && entity.tickCount < this.theCopperierAge$nextGearboxProbeTick) return;
-		if (entity.getType().is(TCAEntityTypeTags.GEARBOX_CANNOT_ROTATE)) return;
+		if (entity.is(TCAEntityTypeTags.GEARBOX_CANNOT_ROTATE)) return;
 
 		float yawDelta = 0F;
 		boolean ranFullScan = false;

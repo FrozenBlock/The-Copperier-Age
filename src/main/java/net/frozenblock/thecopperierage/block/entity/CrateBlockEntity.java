@@ -183,7 +183,7 @@ public class CrateBlockEntity extends RandomizableContainerBlockEntity implement
 	}
 
 	private boolean dispense(Level level, BlockPos pos, BlockState state, Optional<ItemStack> selectedStack, boolean dispenseWholeStack) {
-		final int slot = selectedStack.isPresent() ? 0 : this.chooseNonEmptySlot(level.random);
+		final int slot = selectedStack.isPresent() ? 0 : this.chooseNonEmptySlot(level.getRandom());
 		if (slot < 0) return false;
 
 		final ItemStack stack = selectedStack.orElse(this.getItem(slot));
@@ -202,7 +202,7 @@ public class CrateBlockEntity extends RandomizableContainerBlockEntity implement
 		//level.levelEvent(LevelEvent.PARTICLES_SHOOT_SMOKE, pos, facing.get3DDataValue());
 		DefaultDispenseItemBehavior.spawnItem(level, dispenseStack, 2, facing, dispensePos);
 		// TODO: sound
-		level.playSound(null, pos, SoundEvents.DISPENSER_DISPENSE, SoundSource.BLOCKS, 0.2F, (level.random.nextFloat() * 0.25F) + 0.8F);
+		level.playSound(null, pos, SoundEvents.DISPENSER_DISPENSE, SoundSource.BLOCKS, 0.2F, (level.getRandom().nextFloat() * 0.25F) + 0.8F);
 
 		return stack;
 	}
@@ -264,7 +264,7 @@ public class CrateBlockEntity extends RandomizableContainerBlockEntity implement
 		final double x = this.worldPosition.getX() + 0.5D + directionOffset.getX() / 2D;
 		final double y = this.worldPosition.getY() + 0.5D + directionOffset.getY() / 2D;
 		final double z = this.worldPosition.getZ() + 0.5D + directionOffset.getZ() / 2D;
-		this.level.playSound(null, x, y, z, sound, SoundSource.BLOCKS, 0.5F, this.level.random.nextFloat() * 0.1F + 0.9F);
+		this.level.playSound(null, x, y, z, sound, SoundSource.BLOCKS, 0.5F, this.level.getRandom().nextFloat() * 0.1F + 0.9F);
 	}
 
 	@Override

@@ -21,14 +21,13 @@ import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.recipe.ItemWaxRecipe;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
 public final class TCARecipeTypes {
 	public static final RecipeSerializer<ItemWaxRecipe> ITEM_WAX_RECIPE = Registry.register(
 		BuiltInRegistries.RECIPE_SERIALIZER,
 		TCAConstants.id("crafting_item_wax"),
-		new CustomRecipe.Serializer<>(ItemWaxRecipe::new)
+		ItemWaxRecipe.SERIALIZER
 	);
 
 	public static void init() {

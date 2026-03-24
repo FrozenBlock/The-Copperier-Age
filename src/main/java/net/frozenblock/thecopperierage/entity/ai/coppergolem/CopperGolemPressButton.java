@@ -115,7 +115,7 @@ public class CopperGolemPressButton extends Behavior<CopperGolem> {
 
 	@Override
 	protected boolean checkExtraStartConditions(final ServerLevel level, final CopperGolem body) {
-		return TCAConfig.COPPER_GOLEMS_PRESS_BUTTONS && !body.isLeashed() && this.canStartButtonPressing(body);
+		return TCAConfig.COPPER_GOLEMS_PRESS_BUTTONS.get() && !body.isLeashed() && this.canStartButtonPressing(body);
 	}
 
 	@Override

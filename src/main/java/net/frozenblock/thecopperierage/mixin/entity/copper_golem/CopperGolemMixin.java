@@ -99,7 +99,7 @@ public abstract class CopperGolemMixin extends AbstractGolem implements CopperGo
 	@Inject(method = "tick", at = @At("TAIL"))
 	private void theCopperierAge$triggerNearbyButtonSearchAfterDeposit(CallbackInfo info) {
 		final boolean currentlyHoldingItem = !this.getMainHandItem().isEmpty() || !this.getOffhandItem().isEmpty();
-		if (TCAConfig.COPPER_GOLEMS_PRESS_BUTTONS && !this.level().isClientSide() && this.theCopperierAge$previouslyHoldingItem && !currentlyHoldingItem) {
+		if (TCAConfig.COPPER_GOLEMS_PRESS_BUTTONS.get() && !this.level().isClientSide() && this.theCopperierAge$previouslyHoldingItem && !currentlyHoldingItem) {
 			this.theCopperierAge$forceNearbyButtonSearch();
 		}
 		this.theCopperierAge$previouslyHoldingItem = currentlyHoldingItem;

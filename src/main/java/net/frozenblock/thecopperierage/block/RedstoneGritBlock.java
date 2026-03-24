@@ -141,7 +141,7 @@ public class RedstoneGritBlock extends ColoredFallingBlock {
     }
 
 	private static void spawnClientParticles(Level level, BlockPos pos) {
-		final RandomSource random = level.random;
+		final RandomSource random = level.getRandom();
 		for (Direction direction : Direction.values()) {
 			final BlockPos offsetPos = pos.relative(direction);
 			if (level.getBlockState(offsetPos).isSolidRender()) continue;

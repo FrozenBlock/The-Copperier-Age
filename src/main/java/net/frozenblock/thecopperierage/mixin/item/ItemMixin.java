@@ -44,20 +44,12 @@ public class ItemMixin implements ItemOxidizationCacheInterface {
 	@Nullable
 	private Item theCopperierAge$baseItem = null;
 
-	@Inject(method = "getName()Lnet/minecraft/network/chat/Component;", at = @At("HEAD"), cancellable = true)
-	public void theCopperierAge$getNonWeatheringNonWaxedName(CallbackInfoReturnable<Component> info) {
-		if (!TCAConfig.BETTER_COPPER_TOOLTIPS) return;
-		final Item baseItem = this.theCopperierAge$baseItem();
-		if (baseItem == null) return;
-		info.setReturnValue(baseItem.getName());
-	}
-
-	@Inject(method = "getName(Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/network/chat/Component;", at = @At("HEAD"))
+	@Inject(method = "getName", at = @At("HEAD"))
 	public void theCopperierAge$getNonWeatheringNonWaxedName(
 		CallbackInfoReturnable<Component> info,
 		@Local(argsOnly = true) LocalRef<ItemStack> stack
 	) {
-		if (!TCAConfig.BETTER_COPPER_TOOLTIPS) return;
+		if (!TCAConfig.BETTER_COPPER_TOOLTIPS.get()) return;
 		final Item baseItem = this.theCopperierAge$baseItem();
 		if (baseItem == null) return;
 		// I'm using transmuteCopy here in case there's a weird case where the ITEM_NAME component is different from the default.

@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.mixin.client.waxed_items;
+package net.frozenblock.thecopperierage.mixin.client.slot_overlay;
 
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import it.unimi.dsi.fastutil.objects.Reference2ByteMap;
@@ -25,7 +25,7 @@ import net.fabricmc.api.Environment;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
@@ -43,8 +43,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Environment(EnvType.CLIENT)
-@Mixin(GuiGraphics.class)
-public abstract class GuiGraphicsMixin {
+@Mixin(GuiGraphicsExtractor.class)
+public abstract class GuiGraphicsExtractorMixin {
 
 	@Shadow
 	public abstract void blitSprite(RenderPipeline renderPipeline, Identifier resourceLocation, int i, int j, int k, int l);
@@ -69,20 +69,20 @@ public abstract class GuiGraphicsMixin {
 	}
 
 	@Inject(
-		method = "renderItem(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/item/ItemStack;III)V",
+		method = "item(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/item/ItemStack;III)V",
 		at = @At(
 			value = "INVOKE",
-			target = "Lnet/minecraft/client/gui/render/state/GuiRenderState;submitItem(Lnet/minecraft/client/gui/render/state/GuiItemRenderState;)V",
+			target = "Lnet/minecraft/client/renderer/state/gui/GuiRenderState;addItem(Lnet/minecraft/client/renderer/state/gui/GuiItemRenderState;)V",
 			shift = At.Shift.AFTER
 		)
 	)
 	private void theCopperierAge$blitWaxedOverlay(LivingEntity owner, Level level, ItemStack stack, int x, int y, int seed, CallbackInfo info) {
-		if (!TCAConfig.WAXED_ITEM_ICON_OVERLAY) return;
+		if (!TCAConfig.WAXED_ITEM_ICON_OVERLAY.get()) return;
 		final Item item = stack.getItem();
 		if (OxidizableItemHelper.isWaxed(stack)) {
 			this.blitSprite(RenderPipelines.GUI_TEXTURED, THECOPPERIERAGE$WAXED_OVERLAY, x - 3, y - 3, 24, 24);
 		}
-		if (TCAConfig.EXTRA_ITEM_ICON_OVERLAYS) {
+		if (TCAConfig.EXTRA_ITEM_ICON_OVERLAYS.get()) {
 			final byte overlayFlags = theCopperierAge$getOverlayFlags(item);
 			if ((overlayFlags & THECOPPERIERAGE$OVERLAY_FLAG_INFESTED) != 0) {
 				this.blitSprite(RenderPipelines.GUI_TEXTURED, THECOPPERIERAGE$INFESTED_OVERLAY, x - 3, y - 3, 24, 24);

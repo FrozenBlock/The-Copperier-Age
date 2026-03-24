@@ -1,7 +1,7 @@
 classTweaker v1 official
 
 # Items
-accessible method net/minecraft/world/item/InstrumentItem getInstrument (Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/core/HolderLookup$Provider;)Ljava/util/Optional;
+accessible method net/minecraft/world/item/InstrumentItem getInstrument (Lnet/minecraft/world/item/ItemStack;)Ljava/util/Optional;
 accessible class net/minecraft/world/item/CreativeModeTab$TabVisibility
 accessible method net/minecraft/world/item/BundleItem playInsertFailSound (Lnet/minecraft/world/entity/Entity;)V
 
@@ -25,12 +25,14 @@ accessible class net/minecraft/world/level/block/entity/BlockEntityType$BlockEnt
 accessible field net/minecraft/world/entity/animal/equine/AbstractHorse inventory Lnet/minecraft/world/SimpleContainer;
 accessible method net/minecraft/world/entity/projectile/arrow/AbstractArrow isInGround ()Z
 accessible method net/minecraft/world/entity/animal/golem/CopperGolemState id ()I
-accessible method net/minecraft/world/entity/Entity updateFluidOnEyes ()V
-accessible field net/minecraft/world/entity/Entity firstTick Z
 
 # Menus
 accessible method net/minecraft/world/inventory/ChestMenu addChestGrid (Lnet/minecraft/world/Container;II)V
 extendable method net/minecraft/world/inventory/ChestMenu addChestGrid (Lnet/minecraft/world/Container;II)V
+
+# Item Models
+accessible field net/minecraft/client/resources/model/sprite/TextureSlots resolvedValues Ljava/util/Map;
+accessible method net/minecraft/client/resources/model/sprite/TextureSlots <init> (Ljava/util/Map;)V
 
 # Data Generation
 accessible method net/minecraft/data/DataGenerator$PackGenerator <init> (Lnet/minecraft/data/DataGenerator;ZLjava/lang/String;Lnet/minecraft/data/PackOutput;)V
@@ -44,10 +46,6 @@ accessible field net/minecraft/client/data/models/BlockModelGenerators ROTATIONS
 accessible method net/minecraft/client/data/models/model/ModelTemplates createItem (Ljava/lang/String;[Lnet/minecraft/client/data/models/model/TextureSlot;)Lnet/minecraft/client/data/models/model/ModelTemplate;
 accessible method net/minecraft/data/recipes/ShapedRecipeBuilder <init> (Lnet/minecraft/core/HolderGetter;Lnet/minecraft/data/recipes/RecipeCategory;Lnet/minecraft/world/item/ItemStackTemplate;)V
 accessible field net/minecraft/data/recipes/RecipeProvider items Lnet/minecraft/core/HolderGetter;
-
-# Models
-accessible field net/minecraft/client/renderer/block/model/TextureSlots resolvedValues Ljava/util/Map;
-accessible method net/minecraft/client/renderer/block/model/TextureSlots <init> (Ljava/util/Map;)V
 
 # Particles
 accessible method net/minecraft/client/particle/CampfireSmokeParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDZLnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V

@@ -80,16 +80,16 @@ public final class OxidizableItemHelper {
 		TCAConstants.itemComponent("weathering.state.unknown").withStyle(ChatFormatting.GRAY)
 	};
 
-	public static void bootstrap() {
-		addOxidizableAttributesItem(Items.COPPER_SWORD, Items.IRON_SWORD);
-		addOxidizableAttributesItem(Items.COPPER_SHOVEL, Items.IRON_SHOVEL);
-		addOxidizableAttributesItem(Items.COPPER_PICKAXE, Items.IRON_PICKAXE);
-		addOxidizableAttributesItem(Items.COPPER_AXE, Items.IRON_AXE);
-		addOxidizableAttributesItem(Items.COPPER_HOE, Items.IRON_HOE);
-		addOxidizableAttributesItem(Items.COPPER_SPEAR, Items.IRON_SPEAR);
-		addOxidizableKineticWeaponItem(Items.COPPER_SPEAR, Items.IRON_SPEAR);
-
+	public static void init() {
 		CommonLifecycleEvents.TAGS_LOADED.register((registries, client) -> {
+			addOxidizableAttributesItem(Items.COPPER_SWORD, Items.IRON_SWORD);
+			addOxidizableAttributesItem(Items.COPPER_SHOVEL, Items.IRON_SHOVEL);
+			addOxidizableAttributesItem(Items.COPPER_PICKAXE, Items.IRON_PICKAXE);
+			addOxidizableAttributesItem(Items.COPPER_AXE, Items.IRON_AXE);
+			addOxidizableAttributesItem(Items.COPPER_HOE, Items.IRON_HOE);
+			addOxidizableAttributesItem(Items.COPPER_SPEAR, Items.IRON_SPEAR);
+			addOxidizableKineticWeaponItem(Items.COPPER_SPEAR, Items.IRON_SPEAR);
+
 			registries.lookupOrThrow(Registries.ITEM)
 				.stream()
 				.toList()

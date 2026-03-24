@@ -35,7 +35,7 @@
     "client.oxidized_armor.EquipmentLayerRendererMixin",
     "client.oxidized_items.SelectItemModelPropertiesMixin",
     "client.oxidized_items.auto_models.BlockModelWrapperUnbakedMixin",
-    "client.waxed_items.GuiGraphicsMixin",
+    "client.slot_overlay.GuiGraphicsExtractorMixin",
     "datagen.client.VariantMutatorMixin"
   ],
   "injectors": {

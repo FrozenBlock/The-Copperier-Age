@@ -21,6 +21,7 @@ import com.mojang.serialization.MapCodec;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.item.ItemModel;
+import org.joml.Matrix4fc;
 
 @Environment(EnvType.CLIENT)
 public record FakeUnbakedItemModel(ItemModel wrapped) implements ItemModel.Unbaked {
@@ -31,7 +32,7 @@ public record FakeUnbakedItemModel(ItemModel wrapped) implements ItemModel.Unbak
 	}
 
 	@Override
-	public ItemModel bake(ItemModel.BakingContext bakingContext) {
+	public ItemModel bake(ItemModel.BakingContext context, Matrix4fc transformation) {
 		return this.wrapped;
 	}
 

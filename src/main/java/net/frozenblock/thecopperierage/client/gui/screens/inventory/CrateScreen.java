@@ -25,7 +25,7 @@ import net.frozenblock.thecopperierage.block.CrateBlock;
 import net.frozenblock.thecopperierage.block.entity.inventory.CrateSlot;
 import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.ContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -36,7 +36,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ChestMenu;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
@@ -61,7 +61,7 @@ public class CrateScreen extends ContainerScreen {
 	}
 
 	@Override
-	protected void renderSlot(GuiGraphics guiGraphics, Slot slot, int x, int y) {
+	protected void extractSlot(GuiGraphicsExtractor graphics, Slot slot, int mouseX, int mouseY) {
 		renderBlockedSlot: {
 			if (!(slot instanceof CrateSlot crateSlot)) break renderBlockedSlot;
 
@@ -77,20 +77,20 @@ public class CrateScreen extends ContainerScreen {
 				: CrateBlock.verifyStackForPlacement(selectedStack, this.menu.getContainer());
 			if (slotResult.isSuccess() || slotResult.isEmptyItem()) break renderBlockedSlot;
 
-			this.renderBlockedSlot(guiGraphics, crateSlot);
+			this.extractBlockedSlot(graphics, crateSlot);
 			return;
 		}
 
-		super.renderSlot(guiGraphics, slot, x, y);
+		super.extractSlot(graphics, slot, mouseX, mouseY);
 	}
 
-	private void renderBlockedSlot(GuiGraphics guiGraphics, CrateSlot slot) {
-		guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, BLOCKED_SLOT_SPRITE, slot.x - 1, slot.y - 1, 18, 18);
+	private void extractBlockedSlot(GuiGraphicsExtractor graphics, CrateSlot slot) {
+		graphics.blitSprite(RenderPipelines.GUI_TEXTURED, BLOCKED_SLOT_SPRITE, slot.x - 1, slot.y - 1, 18, 18);
 	}
 
 	@Override
-	public void render(GuiGraphics guiGraphics, int x, int y, float partialTicks) {
-		super.render(guiGraphics, x, y, partialTicks);
+	public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		super.extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
 
 		renderTooltip: {
 			if (!(this.hoveredSlot instanceof CrateSlot) || this.player.isSpectator()) break renderTooltip;
@@ -100,12 +100,12 @@ public class CrateScreen extends ContainerScreen {
 			if (slotResult.isSuccess()) break renderTooltip;
 
 			final Optional<Component> tooltip = slotResult.getTooltip();
-			tooltip.ifPresent(component -> guiGraphics.setTooltipForNextFrame(this.font, component, x, y));
+			tooltip.ifPresent(component -> guiGraphics.setTooltipForNextFrame(this.font, component, mouseX, mouseY));
 		}
 	}
 
 	@Override
-	protected void slotClicked(Slot slot, int x, int y, ClickType type) {
+	protected void slotClicked(Slot slot, int slotId, int buttonNum, ContainerInput containerInput) {
 		playBlockedSlotSound: {
 			if (!(slot instanceof CrateSlot) || slot.hasItem()) break playBlockedSlotSound;
 
@@ -116,11 +116,10 @@ public class CrateScreen extends ContainerScreen {
 			playBlockedSlotClickSound(Minecraft.getInstance().getSoundManager());
 		}
 
-		super.slotClicked(slot, x, y, type);
+		super.slotClicked(slot, slotId, buttonNum, containerInput);
 	}
 
 	public static void playBlockedSlotClickSound(SoundManager soundManager) {
 		soundManager.play(SimpleSoundInstance.forUI(TCASounds.UI_CRATE_CLICK_FAIL, 1F));
 	}
-
 }

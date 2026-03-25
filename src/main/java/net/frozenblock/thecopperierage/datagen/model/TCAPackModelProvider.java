@@ -26,6 +26,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.minecraft.client.data.models.BlockModelGenerators;
+import static net.minecraft.client.data.models.BlockModelGenerators.*;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
@@ -36,9 +37,6 @@ import net.minecraft.client.data.models.model.TexturedModel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import static net.minecraft.client.data.models.BlockModelGenerators.condition;
-import static net.minecraft.client.data.models.BlockModelGenerators.plainVariant;
-import static net.minecraft.client.data.models.BlockModelGenerators.Y_ROT_90;
 
 @Environment(EnvType.CLIENT)
 public final class TCAPackModelProvider extends FabricModelProvider {

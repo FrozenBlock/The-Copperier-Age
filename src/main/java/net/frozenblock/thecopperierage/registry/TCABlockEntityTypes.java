@@ -18,6 +18,7 @@
 package net.frozenblock.thecopperierage.registry;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.entity.ChimeBlockEntity;
@@ -37,15 +38,15 @@ public final class TCABlockEntityTypes {
 		ChimeBlockEntity::new,
 		TCABlocks.CHIME.asList()
 	);
-	public static final BlockEntityType<CrateBlockEntity> CRATE = register(
-		"crate",
-		CrateBlockEntity::new,
-		TCABlocks.CRATE.asList()
-	);
 	public static final BlockEntityType<StickyGearboxBlockEntity> STICKY_GEARBOX = register(
 		"sticky_gearbox",
 		StickyGearboxBlockEntity::new,
 		TCABlocks.STICKY_GEARBOX.asList()
+	);
+	public static final BlockEntityType<CrateBlockEntity> CRATE = register(
+		"crate",
+		CrateBlockEntity::new,
+		List.of(TCABlocks.CRATE)
 	);
 
 	public static void init() {

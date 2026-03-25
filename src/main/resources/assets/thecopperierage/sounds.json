@@ -206,6 +206,40 @@
     ],
     "subtitle": "subtitles.block.chime.disturb"
   },
+  "block.crate.close": {
+    "sounds": [
+      "thecopperierage:block/crate/close"
+    ],
+    "subtitle": "subtitles.block.crate.close"
+  },
+  "block.crate.open": {
+    "sounds": [
+      {
+        "name": "thecopperierage:block/crate/open1",
+        "volume": 1.3,
+        "pitch": 1.05
+      },
+      {
+        "name": "thecopperierage:block/crate/open2",
+        "volume": 1.3,
+        "pitch": 1.05
+      },
+      {
+        "name": "thecopperierage:block/crate/open3",
+        "volume": 1.3,
+        "pitch": 1.05
+      }
+    ],
+    "subtitle": "subtitles.block.crate.open"
+  },
+  "block.crate.eject": {
+    "sounds": [
+      "thecopperierage:block/crate/eject1",
+      "thecopperierage:block/crate/eject2",
+      "thecopperierage:block/crate/eject3"
+    ],
+    "subtitle": "subtitles.block.crate.eject"
+  },
   "item.copper_horn.recorder": {
     "sounds": [
       {

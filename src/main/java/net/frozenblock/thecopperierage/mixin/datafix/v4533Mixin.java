@@ -38,6 +38,7 @@ public class v4533Mixin {
 		@Local Map<String, Supplier<TypeTemplate>> map
 	) {
 		schema.registerSimple(map, TCAConstants.string("chime"));
+		schema.registerSimple(map, TCAConstants.string("sticky_gearbox"));
 		schema.registerSimple(map, TCAConstants.string("crate"));
 	}
 }

@@ -19,8 +19,8 @@ package net.frozenblock.thecopperierage;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 
 public final class TCAConstants {

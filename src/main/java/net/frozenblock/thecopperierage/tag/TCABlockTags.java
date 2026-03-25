@@ -28,7 +28,6 @@ public final class TCABlockTags {
 	public static final TagKey<Block> STICKY_GEARBOXES = bind("sticky_gearboxes");
 	public static final TagKey<Block> COPPER_FANS = bind("copper_fans");
 	public static final TagKey<Block> CHIMES = bind("chimes");
-	public static final TagKey<Block> CRATES = bind("crates");
 	public static final TagKey<Block> COPPER_BUTTONS = bind("copper_buttons");
 	public static final TagKey<Block> COPPER_PRESSURE_PLATES = bind("copper_pressure_plates");
 	public static final TagKey<Block> CANNOT_ROTATE = bind("cannot_rotate");

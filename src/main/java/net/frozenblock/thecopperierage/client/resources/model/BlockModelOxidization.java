@@ -18,12 +18,12 @@
 package net.frozenblock.thecopperierage.client.resources.model;
 
 import com.mojang.math.Transformation;
+import java.util.Objects;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.core.Direction;
 import org.joml.Matrix4fc;
-import java.util.Objects;
 
 @Environment(EnvType.CLIENT)
 public class BlockModelOxidization implements ModelState {

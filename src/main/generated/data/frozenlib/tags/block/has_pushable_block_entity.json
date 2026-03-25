@@ -4,9 +4,6 @@
       "id": "#thecopperierage:sticky_gearboxes",
       "required": false
     },
-    {
-      "id": "#thecopperierage:crates",
-      "required": false
-    }
+    "thecopperierage:crate"
   ]
 }

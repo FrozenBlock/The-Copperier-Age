@@ -37,10 +37,10 @@ import net.frozenblock.thecopperierage.tag.TCAItemTags;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.resources.Identifier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -236,6 +236,7 @@ public final class OxidizableItemHelper {
 	}
 
 	public static void onDamageUpdated(ItemStack stack, int damageValue) {
+		if (!TCAConfig.OXIDIZING_AFFECTS_STATS) return;
 		final Item item = stack.getItem();
 		final WeatheringCopper.WeatherState weatherState = getWeatherState(stack, OptionalInt.of(damageValue));
 		updateMiningSpeed(stack, item, weatherState);

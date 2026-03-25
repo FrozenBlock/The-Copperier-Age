@@ -142,6 +142,32 @@ public final class TCAConfigGui {
 			)
 		);
 
+		var crateHasMenu = category.addEntry(
+			FrozenClothConfig.syncedEntry(
+				builder.startBooleanToggle(text("crate_has_menu"), modifiedConfig.crateHasMenu)
+					.setDefaultValue(defaultConfig.crateHasMenu)
+					.setSaveConsumer(newValue -> config.crateHasMenu = newValue)
+					.setTooltip(tooltip("crate_has_menu"))
+					.build(),
+				config.getClass(),
+				"crateHasMenu",
+				configInstance
+			)
+		);
+
+		var cratesDropWithItems = category.addEntry(
+			FrozenClothConfig.syncedEntry(
+				builder.startBooleanToggle(text("crates_drop_with_items"), modifiedConfig.cratesDropWithItems)
+					.setDefaultValue(defaultConfig.cratesDropWithItems)
+					.setSaveConsumer(newValue -> config.cratesDropWithItems = newValue)
+					.setTooltip(tooltip("crates_drop_with_items"))
+					.build(),
+				config.getClass(),
+				"cratesDropWithItems",
+				configInstance
+			)
+		);
+
 		var oxidizableCopperEquipment = category.addEntry(
 			FrozenClothConfig.syncedEntry(
 				builder.startBooleanToggle(text("oxidizable_copper_equipment"), modifiedConfig.oxidizableCopperEquipment)
@@ -151,6 +177,19 @@ public final class TCAConfigGui {
 					.build(),
 				config.getClass(),
 				"oxidizableCopperEquipment",
+				configInstance
+			)
+		);
+
+		var oxidizingAffectsStats = category.addEntry(
+			FrozenClothConfig.syncedEntry(
+				builder.startBooleanToggle(text("oxidizing_affects_stats"), modifiedConfig.oxidizingAffectsStats)
+					.setDefaultValue(defaultConfig.oxidizingAffectsStats)
+					.setSaveConsumer(newValue -> config.oxidizingAffectsStats = newValue)
+					.setTooltip(tooltip("oxidizing_affects_stats"))
+					.build(),
+				config.getClass(),
+				"oxidizingAffectsStats",
 				configInstance
 			)
 		);

@@ -95,10 +95,15 @@ public class CrateBlockEntity extends RandomizableContainerBlockEntity implement
 	public CrateBlockEntity(BlockPos pos, BlockState state) {
 		super(TCABlockEntityTypes.CRATE, pos, state);
 	}
-	
+
+	@Override
+	public boolean canOpen(Player player) {
+		return super.canOpen(player) && TCAConfig.get().crateHasMenu;
+	}
+
 	@Override
 	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
-		if (!TCAConfig.get().cratesDropWithItems) return;
+		if (TCAConfig.get().cratesDropWithItems) return;
 		super.preRemoveSideEffects(pos, state);
 	}
 

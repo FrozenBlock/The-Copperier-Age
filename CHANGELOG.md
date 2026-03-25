@@ -4,7 +4,7 @@ Put the changelog BELOW the dashes. ANYTHING ABOVE IS IGNORED.
 - Removed the item for Copper Fire, as it was never meant to be registered.
 - Fixed Weighted Pressure Plates not having map colors.
 - Fixed Chimes not having map colors.
-- Added Crates.
+- Added The Crate.
   - Crates can hold 36 stacks of items.
   - However, Crates can only hold a single item type.
   - If an invalid item is inserted into a Crate (i.g., Hoppers,) it will be ejected through the Crate's top face.
@@ -26,6 +26,8 @@ Put the changelog BELOW the dashes. ANYTHING ABOVE IS IGNORED.
   - Randomly occurs when idle.
   - Attempts directly after depositing items into a Chest.
   - Added a config option to toggle this behavior.
+- Added a statistic for opening Crates.
+- Added a statistic for ringing Chimes.
 - Added waxing recipes that were missing.
 - Added waxing recipes for Copper Tools/Equipment.
   - Both the stats and visuals of the item will remain the same once waxed.

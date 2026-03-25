@@ -36,7 +36,6 @@ import net.frozenblock.thecopperierage.block.WeatheringChimeBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperButtonBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperFanBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperPressurePlateBlock;
-import net.frozenblock.thecopperierage.block.WeatheringCrateBlock;
 import net.frozenblock.thecopperierage.block.WeatheringGearboxBlock;
 import net.frozenblock.thecopperierage.block.WeatheringStickyGearboxBlock;
 import net.minecraft.core.Registry;
@@ -169,16 +168,15 @@ public final class TCABlocks {
 			.noOcclusion()
 	);
 
-	public static final WeatheringCopperBlocks CRATE = createWeatheringCopperSet(
+	public static final CrateBlock CRATE = registerWithContainerComponentItem(
 		"crate",
-		TCABlocks::registerWithContainerComponentItem,
 		CrateBlock::new,
-		WeatheringCrateBlock::new,
-		weatherState -> BlockBehaviour.Properties.of()
-			.mapColor(getMapColorForWeatherState(weatherState))
-			.requiresCorrectToolForDrops()
-			.strength(3F, 6F)
-			.sound(SoundType.COPPER)
+		BlockBehaviour.Properties.of()
+			.mapColor(MapColor.WOOD)
+			.instrument(NoteBlockInstrument.BASS)
+			.strength(2.5F)
+			.sound(SoundType.WOOD)
+			.ignitedByLava()
 	);
 
 	public static final WeatheringCopperBlocks COPPER_BUTTON = createWeatheringCopperSet(
@@ -263,7 +261,6 @@ public final class TCABlocks {
 		OxidizableBlocksRegistry.registerCopperBlockSet(STICKY_GEARBOX);
 		OxidizableBlocksRegistry.registerCopperBlockSet(COPPER_FAN);
 		OxidizableBlocksRegistry.registerCopperBlockSet(CHIME);
-		OxidizableBlocksRegistry.registerCopperBlockSet(CRATE);
 		OxidizableBlocksRegistry.registerCopperBlockSet(COPPER_BUTTON);
 		OxidizableBlocksRegistry.registerCopperBlockSet(WEIGHTED_PRESSURE_PLATE);
 	}

@@ -27,7 +27,7 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.frozenblock.thecopperierage.block.CrateBlock;
 import net.frozenblock.thecopperierage.block.entity.inventory.CrateMenu;
 import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
-import net.frozenblock.thecopperierage.tag.TCABlockTags;
+import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -37,9 +37,9 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.ContainerUser;
@@ -68,13 +68,13 @@ public class CrateBlockEntity extends RandomizableContainerBlockEntity implement
 	private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
 		@Override
 		protected void onOpen(Level level, BlockPos pos, BlockState state) {
-			if (state.getBlock() instanceof CrateBlock copperCrate) CrateBlockEntity.this.playSound(state, copperCrate.getOpenSound());
+			CrateBlockEntity.this.playSound(state, TCASounds.BLOCK_CRATE_OPEN);
 			CrateBlockEntity.this.updateBlockState(state, true);
 		}
 
 		@Override
 		protected void onClose(Level level, BlockPos pos, BlockState state) {
-			if (state.getBlock() instanceof CrateBlock copperCrate) CrateBlockEntity.this.playSound(state, copperCrate.getCloseSound());
+			CrateBlockEntity.this.playSound(state, TCASounds.BLOCK_CRATE_CLOSE);
 			CrateBlockEntity.this.updateBlockState(state, false);
 		}
 
@@ -86,7 +86,7 @@ public class CrateBlockEntity extends RandomizableContainerBlockEntity implement
 		public boolean isOwnContainer(Player player) {
 			if (!(player.containerMenu instanceof ChestMenu chestMenu)) return false;
 
-			final net.minecraft.world.Container container = chestMenu.getContainer();
+			final Container container = chestMenu.getContainer();
 			return container == CrateBlockEntity.this;
 		}
 	};
@@ -163,7 +163,7 @@ public class CrateBlockEntity extends RandomizableContainerBlockEntity implement
 		final Direction facing = state.getValue(CrateBlock.FACING);
 		final BlockPos facingPos = pos.relative(facing);
 		final BlockState outputState = level.getBlockState(facingPos);
-		if (outputState.is(TCABlockTags.CRATES)) return false;
+		if (outputState.is(state.getBlock())) return false;
 
 		final Storage<ItemVariant> outputInventory = ItemStorage.SIDED.find(level, facingPos, outputState, level.getBlockEntity(facingPos), facing.getOpposite());
 		if (outputInventory == null) return false;
@@ -202,7 +202,7 @@ public class CrateBlockEntity extends RandomizableContainerBlockEntity implement
 		//level.levelEvent(LevelEvent.PARTICLES_SHOOT_SMOKE, pos, facing.get3DDataValue());
 		DefaultDispenseItemBehavior.spawnItem(level, dispenseStack, 2, facing, dispensePos);
 		// TODO: sound
-		level.playSound(null, pos, SoundEvents.DISPENSER_DISPENSE, SoundSource.BLOCKS, 0.2F, (level.random.nextFloat() * 0.25F) + 0.8F);
+		level.playSound(null, pos, TCASounds.BLOCK_CRATE_EJECT, SoundSource.BLOCKS, 0.2F, (level.random.nextFloat() * 0.25F) + 0.8F);
 
 		return stack;
 	}

@@ -119,7 +119,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 		TCABlocks.STICKY_GEARBOX.waxedMapping().forEach((block, waxedBlock) -> createGearbox(generator, block, waxedBlock));
 		TCABlocks.COPPER_FAN.waxedMapping().forEach((block, waxedBlock) -> createCopperFan(generator, block, waxedBlock));
 		TCABlocks.CHIME.waxedMapping().forEach((block, waxedBlock) -> createChime(generator, block, waxedBlock));
-		TCABlocks.CRATE.waxedMapping().forEach((block, waxedBlock) -> createCopperCrate(generator, block, waxedBlock));
+		createCrate(generator, TCABlocks.CRATE);
 
 		createCopperButton(generator, TCABlocks.COPPER_BUTTON.unaffected(), TCABlocks.COPPER_BUTTON.waxed(), Blocks.COPPER_BLOCK);
 		createCopperButton(generator, TCABlocks.COPPER_BUTTON.exposed(), TCABlocks.COPPER_BUTTON.waxedExposed(), Blocks.EXPOSED_COPPER);
@@ -265,7 +265,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 		generator.registerSimpleFlatItemModel(block);
 	}
 
-	private static void createCopperCrate(BlockModelGenerators generator, Block block, Block waxed) {
+	private static void createCrate(BlockModelGenerators generator, Block block) {
 		final ResourceLocation topOpenTexture = TextureMapping.getBlockTexture(block, "_top_open");
 		final MultiVariant model = BlockModelGenerators.plainVariant(TexturedModel.CUBE_TOP_BOTTOM.create(block, generator.modelOutput));
 		final MultiVariant openModel = BlockModelGenerators.plainVariant(
@@ -276,8 +276,6 @@ public final class TCAModelProvider extends FabricModelProvider {
 		);
 
 		dispatchCopperCrate(generator, block, model, openModel);
-		dispatchCopperCrate(generator, waxed, model, openModel);
-		generator.itemModelOutput.copy(block.asItem(), waxed.asItem());
 	}
 
 	private static void dispatchCopperCrate(BlockModelGenerators generator, Block block, MultiVariant model, MultiVariant openModel) {

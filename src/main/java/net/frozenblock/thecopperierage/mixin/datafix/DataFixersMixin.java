@@ -47,6 +47,7 @@ public class DataFixersMixin {
 	)
 	private static Schema theCopperierAge$addFixers4533(Schema schema, DataFixerBuilder builder) {
 		builder.addFixer(new AddNewChoices(schema, "Added Chime (The Copperier Age)", References.BLOCK_ENTITY));
+		builder.addFixer(new AddNewChoices(schema, "Added Sticky Gearbox (The Copperier Age)", References.BLOCK_ENTITY));
 		builder.addFixer(new AddNewChoices(schema, "Added Crate (The Copperier Age)", References.BLOCK_ENTITY));
 		return schema;
 	}

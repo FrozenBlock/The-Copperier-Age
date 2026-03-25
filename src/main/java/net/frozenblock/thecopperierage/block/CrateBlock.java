@@ -18,23 +18,20 @@
 package net.frozenblock.thecopperierage.block;
 
 import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.List;
 import java.util.Optional;
 import net.frozenblock.thecopperierage.block.entity.CrateBlockEntity;
+import net.frozenblock.thecopperierage.config.TCAConfig;
+import net.frozenblock.thecopperierage.registry.TCAStats;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -51,7 +48,6 @@ import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -61,57 +57,22 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 public class CrateBlock extends BaseEntityBlock {
-	public static final MapCodec<CrateBlock> CODEC = RecordCodecBuilder.mapCodec(
-		instance -> instance.group(
-			WeatheringCopper.WeatherState.CODEC.fieldOf("weathering_state").forGetter(CrateBlock::getWeatherState),
-			propertiesCodec()
-		).apply(instance, CrateBlock::new)
-	);
+	public static final MapCodec<CrateBlock> CODEC = simpleCodec(CrateBlock::new);
 	public static final ResourceLocation CONTENTS = ResourceLocation.withDefaultNamespace("contents");
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
 	public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
-	private final WeatheringCopper.WeatherState weatherState;
-	private final SoundEvent openSound;
-	private final SoundEvent closeSound;
 
 	@Override
 	public MapCodec<CrateBlock> codec() {
 		return CODEC;
 	}
 
-	public CrateBlock(WeatheringCopper.WeatherState weatherState, Properties properties) {
+	public CrateBlock(Properties properties) {
 		super(properties);
-		this.weatherState = weatherState;
-		this.openSound = getOpenSound(weatherState);
-		this.closeSound = getCloseSound(weatherState);
 		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(OPEN, false));
-	}
-
-	// TODO: sounds
-	@Contract(pure = true)
-	private static SoundEvent getOpenSound(WeatheringCopper.WeatherState weatherState) {
-		return SoundEvents.BARREL_OPEN;
-	}
-
-	@Contract(pure = true)
-	private static SoundEvent getCloseSound(WeatheringCopper.WeatherState weatherState) {
-		return SoundEvents.BARREL_CLOSE;
-	}
-
-	public SoundEvent getOpenSound() {
-		return this.openSound;
-	}
-
-	public SoundEvent getCloseSound() {
-		return this.closeSound;
-	}
-
-	public WeatheringCopper.WeatherState getWeatherState() {
-		return this.weatherState;
 	}
 
 	public static SlotResult verifyStackForPlacement(ItemStack stack, Container container) {
@@ -124,26 +85,15 @@ public class CrateBlock extends BaseEntityBlock {
 		return SlotResult.SUCCESS;
 	}
 
-	// TODO: custom stat
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-		if (level instanceof ServerLevel serverLevel && level.getBlockEntity(pos) instanceof CrateBlockEntity copperCrate) {
-			player.openMenu(copperCrate);
-			player.awardStat(Stats.OPEN_BARREL);
+		if (level instanceof ServerLevel serverLevel && level.getBlockEntity(pos) instanceof CrateBlockEntity crate) {
+			player.openMenu(crate);
+			player.awardStat(TCAStats.OPEN_CRATE);
 			PiglinAi.angerNearbyPiglins(serverLevel, player, true);
 		}
 
 		return InteractionResult.SUCCESS;
-	}
-
-	@Override
-	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-		if (level instanceof ServerLevel serverLevel && level.getBlockEntity(pos) instanceof CrateBlockEntity copperCrate) {
-			player.openMenu(copperCrate);
-			player.awardStat(Stats.OPEN_BARREL);
-			PiglinAi.angerNearbyPiglins(serverLevel, player, true);
-		}
-		return InteractionResult.TRY_WITH_EMPTY_HAND;
 	}
 
 	@Override
@@ -153,7 +103,7 @@ public class CrateBlock extends BaseEntityBlock {
 
 	@Override
 	protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		if (level.getBlockEntity(pos) instanceof CrateBlockEntity copperCrate) copperCrate.recheckOpen();
+		if (level.getBlockEntity(pos) instanceof CrateBlockEntity crate) crate.recheckOpen();
 	}
 
 	@Nullable
@@ -165,8 +115,7 @@ public class CrateBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	protected MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
-		// TODO: config
-		if (!true) return null;
+		if (!TCAConfig.get().crateHasMenu) return null;
 		return super.getMenuProvider(state, level, pos);
 	}
 
@@ -198,8 +147,7 @@ public class CrateBlock extends BaseEntityBlock {
 	@Override
 	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
 		saveItemsToDrop:{
-			// TODO: config
-			if (true) break saveItemsToDrop;
+			if (!TCAConfig.get().cratesDropWithItems) break saveItemsToDrop;
 			if (!(level.getBlockEntity(pos) instanceof CrateBlockEntity crate)) break saveItemsToDrop;
 
 			if (level.isClientSide() || !player.preventsBlockDrops() || crate.isEmpty()) {

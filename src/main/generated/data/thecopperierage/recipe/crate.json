@@ -2,16 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "#": "minecraft:copper_block",
-    "-": "minecraft:cut_copper_slab"
+    "#": "#minecraft:planks",
+    "I": "minecraft:iron_ingot"
   },
   "pattern": [
-    "#-#",
+    "I#I",
     "# #",
-    "###"
+    "I#I"
   ],
   "result": {
-    "count": 4,
+    "count": 1,
     "id": "thecopperierage:crate"
   }
 }

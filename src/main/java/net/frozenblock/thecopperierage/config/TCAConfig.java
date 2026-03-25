@@ -88,6 +88,12 @@ public class TCAConfig {
 	@EntrySyncData("stickyGearboxRotationInterval")
 	public int stickyGearboxRotationInterval = 24;
 
+	@EntrySyncData("crateHasMenu")
+	public boolean crateHasMenu = true;
+
+	@EntrySyncData("cratesDropWithItems")
+	public boolean cratesDropWithItems = false;
+
 	@EntrySyncData("oxidizableCopperEquipment")
 	public boolean oxidizableCopperEquipment = true;
 

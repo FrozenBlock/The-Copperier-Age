@@ -44,6 +44,7 @@ public class TCAConfig {
 			public void onSync(TCAConfig syncInstance) {
 				var config = this.config();
 				OXIDIZABLE_COPPER_EQUIPMENT = config.oxidizableCopperEquipment;
+				OXIDIZING_AFFECTS_STATS = config.oxidizingAffectsStats;
 				COPPER_GOLEMS_PRESS_BUTTONS = config.copperGolemsPressButtons;
 				GEARBOX_ENTITY_ROTATION = config.gearboxEntityRotation;
 				STICKY_GEARBOX_ROTATION_INTERVAL = config.stickyGearboxRotationInterval;
@@ -56,6 +57,7 @@ public class TCAConfig {
 	);
 
 	public static volatile boolean OXIDIZABLE_COPPER_EQUIPMENT = true;
+	public static volatile boolean OXIDIZING_AFFECTS_STATS = true;
 	public static volatile boolean COPPER_GOLEMS_PRESS_BUTTONS = true;
 	public static volatile float GEARBOX_ENTITY_ROTATION = 3.5F;
 	public static volatile int STICKY_GEARBOX_ROTATION_INTERVAL = 24;
@@ -96,6 +98,9 @@ public class TCAConfig {
 
 	@EntrySyncData("oxidizableCopperEquipment")
 	public boolean oxidizableCopperEquipment = true;
+
+	@EntrySyncData("oxidizingAffectsStats")
+	public boolean oxidizingAffectsStats = true;
 
 	@EntrySyncData(value = "copperParticles", behavior = SyncBehavior.UNSYNCABLE)
 	public boolean copperParticles = true;

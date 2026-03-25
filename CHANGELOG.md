@@ -43,6 +43,7 @@ Put the changelog BELOW the dashes. ANYTHING ABOVE IS IGNORED.
   - This change was made in order to improve compatibility with other mods and resource packs.
   - Modders can now add `search terms` for The Copperier Age's automatic oxidizing model generation.
     - This method can be found in `OxidizableItemHelper`.
+- Added a config options to toggle whether the stats of Copper Tools/Equipment should change as they oxidize.
 - Added Improved Copper Tooltips.
   - Oxidisation and Waxed statuses moved to Lore instead of item name prefixes.
   - Added a config option to toggle the new tooltips and renaming.

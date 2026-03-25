@@ -86,16 +86,9 @@ public final class TCACreativeInventorySorting {
 		insertAfterInBuildingBlocks(TCABlocks.COPPER_FAN.waxedOxidized(), TCABlocks.CHIME.waxedOxidized());
 
 		// COPPER CRATE
-		insertAfterInBuildingBlocks(Items.BARREL, TCABlocks.CRATE.unaffected());
-		insertAfterInBuildingBlocks(TCABlocks.CRATE.unaffected(), TCABlocks.CRATE.exposed());
-		insertAfterInBuildingBlocks(TCABlocks.CRATE.exposed(), TCABlocks.CRATE.weathered());
-		insertAfterInBuildingBlocks(TCABlocks.CRATE.weathered(), TCABlocks.CRATE.oxidized());
-		insertAfterInBuildingBlocks(TCABlocks.CRATE.oxidized(), TCABlocks.CRATE.waxed());
-		insertAfterInBuildingBlocks(TCABlocks.CRATE.waxed(), TCABlocks.CRATE.waxedExposed());
-		insertAfterInBuildingBlocks(TCABlocks.CRATE.waxedExposed(), TCABlocks.CRATE.waxedWeathered());
-		insertAfterInBuildingBlocks(TCABlocks.CRATE.waxedWeathered(), TCABlocks.CRATE.waxedOxidized());
+		insertAfterInBuildingBlocks(Items.BARREL, TCABlocks.CRATE);
 
-		insertAfterInBuildingBlocks(Items.BARREL, TCABlocks.CRATE.waxed());
+		insertAfterInRedstoneBlocks(Items.BARREL, TCABlocks.CRATE);
 
 		// BUTTON
 		insertAfterInRedstoneBlocks(Items.STONE_BUTTON, TCABlocks.COPPER_BUTTON.waxed());

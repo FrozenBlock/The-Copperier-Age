@@ -35,6 +35,7 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
@@ -55,6 +56,7 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 				RecipeExportNamespaceFix.setCurrentGeneratingModId(TCAConstants.MOD_ID);
 
 				final HolderGetter<EntityType<?>> entityTypes = registries.lookupOrThrow(Registries.ENTITY_TYPE);
+				final HolderGetter<Item> items = registries.lookupOrThrow(Registries.ITEM);
 
 				SpecialRecipeBuilder.special(ItemWaxRecipe::new).save(this.output, "equipment_wax");
 				this.waxRecipes(TCAFeatureFlags.THE_COPPERIER_AGE_FLAG_SET);
@@ -153,15 +155,14 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.unlockedBy(RecipeProvider.getHasName(Items.AMETHYST_SHARD), this.has(Items.AMETHYST_SHARD))
 					.save(exporter);
 
-				createCrateRecipe(this, exporter, TCABlocks.CRATE.unaffected(), Blocks.COPPER_BLOCK, Blocks.CUT_COPPER_SLAB);
-				createCrateRecipe(this, exporter, TCABlocks.CRATE.exposed(), Blocks.EXPOSED_COPPER, Blocks.EXPOSED_CUT_COPPER_SLAB);
-				createCrateRecipe(this, exporter, TCABlocks.CRATE.weathered(), Blocks.WEATHERED_COPPER, Blocks.WEATHERED_CUT_COPPER_SLAB);
-				createCrateRecipe(this, exporter, TCABlocks.CRATE.oxidized(), Blocks.OXIDIZED_COPPER, Blocks.OXIDIZED_CUT_COPPER_SLAB);
-
-				createCrateRecipe(this, exporter, TCABlocks.CRATE.waxed(), Blocks.WAXED_COPPER_BLOCK, Blocks.WAXED_CUT_COPPER_SLAB);
-				createCrateRecipe(this, exporter, TCABlocks.CRATE.waxedExposed(), Blocks.WAXED_EXPOSED_COPPER, Blocks.WAXED_EXPOSED_CUT_COPPER_SLAB);
-				createCrateRecipe(this, exporter, TCABlocks.CRATE.waxedWeathered(), Blocks.WAXED_WEATHERED_COPPER, Blocks.WAXED_WEATHERED_CUT_COPPER_SLAB);
-				createCrateRecipe(this, exporter, TCABlocks.CRATE.waxedOxidized(), Blocks.WAXED_OXIDIZED_COPPER, Blocks.WAXED_OXIDIZED_CUT_COPPER_SLAB);
+				this.shaped(RecipeCategory.REDSTONE, TCABlocks.CRATE, 1)
+					.define('#', Ingredient.of(items.getOrThrow(ItemTags.PLANKS)))
+					.define('I', Ingredient.of(Items.IRON_INGOT))
+					.pattern("I#I")
+					.pattern("# #")
+					.pattern("I#I")
+					.unlockedBy(RecipeProvider.getHasName(Items.IRON_INGOT), this.has(Items.IRON_INGOT))
+					.save(exporter);
 
 				RecipeExportNamespaceFix.clearCurrentGeneratingModId();
 			}
@@ -209,17 +210,6 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 			.pattern("X/X")
 			.pattern("XRX")
 			.unlockedBy(RecipeProvider.getHasName(copperBlock), recipeProvider.has(copperBlock))
-			.save(exporter);
-	}
-
-	private static void createCrateRecipe(RecipeProvider provider, RecipeOutput exporter, Block crateBlock, Block copperBlock, Block copperSlabBlock) {
-		provider.shaped(RecipeCategory.REDSTONE, crateBlock, 4)
-			.define('#', Ingredient.of(copperBlock))
-			.define('-', Ingredient.of(copperSlabBlock))
-			.pattern("#-#")
-			.pattern("# #")
-			.pattern("###")
-			.unlockedBy(RecipeProvider.getHasName(copperBlock), provider.has(copperBlock))
 			.save(exporter);
 	}
 

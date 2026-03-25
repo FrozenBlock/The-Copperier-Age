@@ -71,9 +71,6 @@ public final class TCABlockTagProvider extends FabricTagsProvider.BlockTagsProvi
 		final TagAppender<Block, Block> chimesTag = this.valueLookupBuilder(TCABlockTags.CHIMES);
 		TCABlocks.CHIME.forEach(chimesTag::add);
 
-		final TagAppender<Block, Block> cratesTag = this.valueLookupBuilder(TCABlockTags.CRATES);
-		TCABlocks.CRATE.forEach(cratesTag::add);
-
 		final TagAppender<Block, Block> copperButtonsTag = this.valueLookupBuilder(TCABlockTags.COPPER_BUTTONS);
 		TCABlocks.COPPER_BUTTON.forEach(copperButtonsTag::add);
 
@@ -82,7 +79,8 @@ public final class TCABlockTagProvider extends FabricTagsProvider.BlockTagsProvi
 
 		this.valueLookupBuilder(BlockTags.MINEABLE_WITH_AXE)
 			.add(TCABlocks.COPPER_CAMPFIRE)
-			.add(TCABlocks.COPPER_JACK_O_LANTERN, TCABlocks.REDSTONE_JACK_O_LANTERN);
+			.add(TCABlocks.COPPER_JACK_O_LANTERN, TCABlocks.REDSTONE_JACK_O_LANTERN)
+			.add(TCABlocks.CRATE);
 
 		this.valueLookupBuilder(BlockTags.SWORD_EFFICIENT)
 			.add(TCABlocks.COPPER_JACK_O_LANTERN, TCABlocks.REDSTONE_JACK_O_LANTERN);
@@ -91,7 +89,6 @@ public final class TCABlockTagProvider extends FabricTagsProvider.BlockTagsProvi
 			.addOptionalTag(TCABlockTags.GEARBOXES)
 			.addOptionalTag(TCABlockTags.COPPER_FANS)
 			.addOptionalTag(TCABlockTags.CHIMES)
-			.addOptionalTag(TCABlockTags.CRATES)
 			.addOptionalTag(TCABlockTags.COPPER_BUTTONS)
 			.addOptionalTag(TCABlockTags.COPPER_PRESSURE_PLATES);
 
@@ -113,7 +110,7 @@ public final class TCABlockTagProvider extends FabricTagsProvider.BlockTagsProvi
 
 		this.valueLookupBuilder(FrozenBlockTags.HAS_PUSHABLE_BLOCK_ENTITY)
 			.addOptionalTag(TCABlockTags.STICKY_GEARBOXES)
-			.addOptionalTag(TCABlockTags.CRATES);
+			.add(TCABlocks.CRATE);
 
 		this.builder(FrozenBlockTags.BLOWING_CAN_PASS_THROUGH)
 			.addOptionalTag(TCABlockTags.COPPER_FANS)

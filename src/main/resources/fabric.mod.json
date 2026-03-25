@@ -29,6 +29,7 @@
       "net.frozenblock.thecopperierage.TheCopperierAgeClient"
     ],
     "modmenu": [
+      "net.frozenblock.thecopperierage.config.gui.ModMenuIntegration"
     ],
     "fabric-datagen": [
       "net.frozenblock.thecopperierage.datagen.TCADataGenerator"

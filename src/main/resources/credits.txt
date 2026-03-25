@@ -43,3 +43,15 @@ Kokoroto
 
 lucy.twinkie
  - Polish translation
+
+Crate Sounds:
+https://freesound.org/people/guterton.wav/sounds/238542/
+https://freesound.org/people/kyles/sounds/637509/
+https://freesound.org/people/cemagar/sounds/120329/
+https://freesound.org/people/jackthemurray/sounds/433587/
+https://freesound.org/people/starakaj/sounds/150370/
+https://freesound.org/people/FOSSarts/sounds/740327/
+https://freesound.org/people/ryanconway/sounds/260745/
+https://freesound.org/people/lizanejordaan/sounds/325929/
+https://freesound.org/people/Garuda1982/sounds/565853/
+https://freesound.org/people/Benjamin152/sounds/445150/

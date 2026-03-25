@@ -25,6 +25,7 @@ import net.frozenblock.thecopperierage.block.state.properties.ChimeAttachType;
 import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
 import net.frozenblock.thecopperierage.registry.TCABlockStateProperties;
 import net.frozenblock.thecopperierage.registry.TCASounds;
+import net.frozenblock.thecopperierage.registry.TCAStats;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -193,9 +194,11 @@ public class ChimeBlock extends BaseEntityBlock {
 		final Vec3 differenceWithoutY = new Vec3(difference.x(), 0D, difference.z());
 		final double strength = (barCenter.y() - hitResult.getLocation().y()) * 1.25F;
 
-		return chime.addEntityInfluence(level, pos, state, player, differenceWithoutY.normalize().scale(strength), 0.98D, true, false)
-			? InteractionResult.SUCCESS
-			: InteractionResult.CONSUME;
+		if (chime.addEntityInfluence(level, pos, state, player, differenceWithoutY.normalize().scale(strength), 0.98D, true, false)) {
+			player.awardStat(TCAStats.CHIME_RING);
+			return InteractionResult.SUCCESS;
+		}
+		return InteractionResult.CONSUME;
 	}
 
 	@Override

@@ -50,9 +50,12 @@ public final class TCAConfigGui {
 				TCAConfig.GEARBOX_ENTITY_ROTATION
 			)
 		);
+		category.addEntry(booleanEntry(builder, "crate_has_menu", TCAConfig.CRATE_HAS_MENU));
+		category.addEntry(booleanEntry(builder, "crates_drop_with_items", TCAConfig.CRATES_DROP_WITH_ITEMS));
 		category.addEntry(intSliderEntry(builder, "sticky_gearbox_rotation_interval", TCAConfig.STICKY_GEARBOX_ROTATION_INTERVAL, 1, 500));
 		category.addEntry(booleanEntry(builder, "copper_golems_press_buttons", TCAConfig.COPPER_GOLEMS_PRESS_BUTTONS));
 		category.addEntry(booleanEntry(builder, "oxidizable_copper_equipment", TCAConfig.OXIDIZABLE_COPPER_EQUIPMENT));
+		category.addEntry(booleanEntry(builder, "oxidizing_affects_stats", TCAConfig.OXIDIZING_AFFECTS_STATS));
 		category.addEntry(booleanEntry(builder, "copper_particles", TCAConfig.COPPER_PARTICLES));
 		category.addEntry(booleanEntry(builder, "better_copper_tooltips", TCAConfig.BETTER_COPPER_TOOLTIPS));
 		category.addEntry(booleanEntry(builder, "waxed_item_icon_overlay", TCAConfig.WAXED_ITEM_ICON_OVERLAY));

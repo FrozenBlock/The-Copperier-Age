@@ -36,6 +36,7 @@ import net.frozenblock.thecopperierage.registry.TCARecipeTypes;
 import net.frozenblock.thecopperierage.registry.TCAResources;
 import net.frozenblock.thecopperierage.registry.TCASensorTypes;
 import net.frozenblock.thecopperierage.registry.TCASounds;
+import net.frozenblock.thecopperierage.registry.TCAStats;
 
 public final class TheCopperierAge extends FrozenModInitializer {
 
@@ -58,6 +59,7 @@ public final class TheCopperierAge extends FrozenModInitializer {
 		TCASensorTypes.init();
 		TCAPoiTypes.init();
 		TCASounds.init();
+		TCAStats.init();
 		TCACreativeInventorySorting.init();
 		TCAParticleTypes.registerParticles();
 		TCAMenuTypes.init();

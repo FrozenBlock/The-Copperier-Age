@@ -46,12 +46,7 @@ val fabric_api_version: String by project
 val frozenlib_version: String by project
 
 val modmenu_version: String by project
-val text_placeholder_api_version: String by project
 val cloth_config_version: String by project
-
-val lithium_version: String by project
-val run_lithium: String by project
-val shouldRunLithium = run_lithium == "true"
 
 base {
     archivesName = archives_base_name
@@ -173,20 +168,13 @@ dependencies {
     api("maven.modrinth:frozenlib:$frozenlib_version")
 
     // Mod Menu
-    compileOnly("com.terraformersmc:modmenu:$modmenu_version")
-    compileOnly("maven.modrinth:placeholder-api:$text_placeholder_api_version")
+    implementation("maven.modrinth:modmenu:$modmenu_version")
 
     // Cloth Config
-    compileOnly("me.shedaniel.cloth:cloth-config-fabric:$cloth_config_version") {
+    implementation("me.shedaniel.cloth:cloth-config-fabric:$cloth_config_version") {
         exclude(group = "net.fabricmc.fabric-api")
         exclude(group = "com.terraformersmc")
     }
-
-    // Lithium
-    if (shouldRunLithium)
-        implementation("maven.modrinth:lithium:${lithium_version}")
-    else
-        compileOnly("maven.modrinth:lithium:${lithium_version}")
 
     "datagenImplementation"(sourceSets.main.get().output)
 }

@@ -236,6 +236,7 @@ public final class OxidizableItemHelper {
 	}
 
 	public static void onDamageUpdated(ItemStack stack, int damageValue) {
+		if (!TCAConfig.OXIDIZING_AFFECTS_STATS.get()) return;
 		final Item item = stack.getItem();
 		final WeatheringCopper.WeatherState weatherState = getWeatherState(stack, OptionalInt.of(damageValue));
 		updateMiningSpeed(stack, item, weatherState);

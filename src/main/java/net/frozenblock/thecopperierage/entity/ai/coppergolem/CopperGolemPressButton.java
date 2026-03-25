@@ -96,9 +96,7 @@ public class CopperGolemPressButton extends Behavior<CopperGolem> {
 				TCAMemoryModuleTypes.BUTTON_PRESS_COOLDOWN_TICKS, MemoryStatus.VALUE_ABSENT,
 				TCAMemoryModuleTypes.NEARBY_BUTTON_SEARCH_TICKS, MemoryStatus.REGISTERED,
 				TCAMemoryModuleTypes.NEARBY_COPPER_GOLEMS, MemoryStatus.REGISTERED,
-				MemoryModuleType.IS_PANICKING, MemoryStatus.VALUE_ABSENT,
-				MemoryModuleType.WALK_TARGET, MemoryStatus.REGISTERED,
-				MemoryModuleType.TRANSPORT_ITEMS_COOLDOWN_TICKS, MemoryStatus.REGISTERED
+				MemoryModuleType.IS_PANICKING, MemoryStatus.VALUE_ABSENT
 			)
 		);
 		this.speedModifier = speedModifier;

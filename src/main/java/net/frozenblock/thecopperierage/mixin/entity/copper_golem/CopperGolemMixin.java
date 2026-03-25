@@ -17,10 +17,14 @@
 
 package net.frozenblock.thecopperierage.mixin.entity.copper_golem;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import java.util.ArrayList;
+import java.util.List;
 import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.entity.impl.CopperGolemPressButtonInterface;
 import net.frozenblock.thecopperierage.entity.impl.TCACopperGolemStates;
 import net.frozenblock.thecopperierage.registry.TCAMemoryModuleTypes;
+import net.frozenblock.thecopperierage.registry.TCASensorTypes;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
@@ -73,6 +77,20 @@ public abstract class CopperGolemMixin extends AbstractGolem implements CopperGo
 	private final AnimationState theCopperierAge$pressingButtonAnimationState = new AnimationState();
 	@Unique
 	private boolean theCopperierAge$previouslyHoldingItem;
+
+	@ModifyExpressionValue(
+		method = "<clinit>",
+		at = @At(
+			value = "INVOKE",
+			target = "Ljava/util/List;of(Ljava/lang/Object;Ljava/lang/Object;)Ljava/util/List;"
+		)
+	)
+	private static List theCopperierAge$addCopperGolemSpecificSensor(List original) {
+		final ArrayList newSensors = new ArrayList<>();
+		newSensors.addAll(original);
+		newSensors.add(TCASensorTypes.COPPER_GOLEM_SPECIFIC_SENSOR);
+		return List.copyOf(newSensors);
+	}
 
 	@Inject(method = "setupAnimationStates", at = @At("HEAD"))
 	private void theCopperierAge$setupPressingButtonAnimationState(CallbackInfo info) {

@@ -23,49 +23,14 @@ import com.mojang.datafixers.util.Pair;
 import java.util.ArrayList;
 import net.frozenblock.thecopperierage.entity.ai.coppergolem.CopperGolemPressButton;
 import net.frozenblock.thecopperierage.registry.TCAMemoryModuleTypes;
-import net.frozenblock.thecopperierage.registry.TCASensorTypes;
 import net.frozenblock.thecopperierage.tag.TCABlockTags;
 import net.minecraft.world.entity.ai.behavior.CountDownCooldownTicks;
-import net.minecraft.world.entity.ai.memory.MemoryModuleType;
-import net.minecraft.world.entity.ai.sensing.Sensor;
-import net.minecraft.world.entity.ai.sensing.SensorType;
-import net.minecraft.world.entity.animal.golem.CopperGolem;
 import net.minecraft.world.entity.animal.golem.CopperGolemAi;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = CopperGolemAi.class, priority = 997)
 public class CopperGolemAiMixin {
-
-	@Shadow
-	@Final
-	@Mutable
-	private static ImmutableList<MemoryModuleType<?>> MEMORY_TYPES;
-
-	@Shadow
-	@Final
-	@Mutable
-	private static ImmutableList<SensorType<? extends Sensor<? super CopperGolem>>> SENSOR_TYPES;
-
-	@Inject(method = "<clinit>", at = @At("TAIL"))
-	private static void theCopperierAge$appendMemoryAndSensorTypes(CallbackInfo info) {
-		final ArrayList<MemoryModuleType<?>> memoryTypes = new ArrayList<>(MEMORY_TYPES);
-		memoryTypes.add(TCAMemoryModuleTypes.UNREACHABLE_BUTTON_PRESS_BLOCK_POSITIONS);
-		memoryTypes.add(TCAMemoryModuleTypes.BUTTON_PRESS_COOLDOWN_TICKS);
-		memoryTypes.add(TCAMemoryModuleTypes.NEARBY_BUTTON_SEARCH_TICKS);
-		memoryTypes.add(TCAMemoryModuleTypes.TARGETED_BUTTON);
-		memoryTypes.add(TCAMemoryModuleTypes.NEARBY_COPPER_GOLEMS);
-		MEMORY_TYPES = ImmutableList.copyOf(memoryTypes);
-
-		final ArrayList<SensorType<? extends Sensor<? super CopperGolem>>> sensorTypes = new ArrayList<>(SENSOR_TYPES);
-		sensorTypes.add(TCASensorTypes.COPPER_GOLEM_SPECIFIC_SENSOR);
-		SENSOR_TYPES = ImmutableList.copyOf(sensorTypes);
-	}
 
 	@ModifyExpressionValue(
 		method = "initCoreActivity",

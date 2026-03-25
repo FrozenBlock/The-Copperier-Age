@@ -35,8 +35,11 @@ public class CopperGolemSpecificSensor extends Sensor<CopperGolem> {
 	@Override
 	public Set<MemoryModuleType<?>> requires() {
 		return ImmutableSet.of(
+			TCAMemoryModuleTypes.UNREACHABLE_BUTTON_PRESS_BLOCK_POSITIONS,
+			TCAMemoryModuleTypes.NEARBY_BUTTON_SEARCH_TICKS,
 			TCAMemoryModuleTypes.NEARBY_COPPER_GOLEMS,
-			MemoryModuleType.NEAREST_LIVING_ENTITIES
+			MemoryModuleType.NEAREST_LIVING_ENTITIES,
+			MemoryModuleType.WALK_TARGET
 		);
 	}
 

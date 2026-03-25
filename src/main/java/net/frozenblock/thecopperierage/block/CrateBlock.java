@@ -21,6 +21,7 @@ import com.mojang.serialization.MapCodec;
 import java.util.List;
 import java.util.Optional;
 import net.frozenblock.thecopperierage.block.entity.CrateBlockEntity;
+import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.registry.TCAStats;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -114,8 +115,7 @@ public class CrateBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	protected MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
-		// TODO: config
-		if (!true) return null;
+		if (!TCAConfig.get().crateHasMenu) return null;
 		return super.getMenuProvider(state, level, pos);
 	}
 
@@ -147,8 +147,7 @@ public class CrateBlock extends BaseEntityBlock {
 	@Override
 	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
 		saveItemsToDrop:{
-			// TODO: config
-			if (true) break saveItemsToDrop;
+			if (!TCAConfig.get().cratesDropWithItems) break saveItemsToDrop;
 			if (!(level.getBlockEntity(pos) instanceof CrateBlockEntity crate)) break saveItemsToDrop;
 
 			if (level.isClientSide() || !player.preventsBlockDrops() || crate.isEmpty()) {

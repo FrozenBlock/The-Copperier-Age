@@ -26,6 +26,7 @@ import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.frozenblock.thecopperierage.block.CrateBlock;
 import net.frozenblock.thecopperierage.block.entity.inventory.CrateMenu;
+import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
 import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.minecraft.core.BlockPos;
@@ -94,11 +95,10 @@ public class CrateBlockEntity extends RandomizableContainerBlockEntity implement
 	public CrateBlockEntity(BlockPos pos, BlockState state) {
 		super(TCABlockEntityTypes.CRATE, pos, state);
 	}
-
-	// TODO: Config
+	
 	@Override
 	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
-		if (!true) return;
+		if (!TCAConfig.get().cratesDropWithItems) return;
 		super.preRemoveSideEffects(pos, state);
 	}
 
@@ -199,9 +199,7 @@ public class CrateBlockEntity extends RandomizableContainerBlockEntity implement
 		final Direction facing = state.getValue(CrateBlock.FACING);
 		final Vec3 dispensePos = pos.getCenter().relative(facing, 0.7D);
 		final ItemStack dispenseStack = dispenseWholeStack ? stack.copyAndClear() : stack.split(1);
-		//level.levelEvent(LevelEvent.PARTICLES_SHOOT_SMOKE, pos, facing.get3DDataValue());
 		DefaultDispenseItemBehavior.spawnItem(level, dispenseStack, 2, facing, dispensePos);
-		// TODO: sound
 		level.playSound(null, pos, TCASounds.BLOCK_CRATE_EJECT, SoundSource.BLOCKS, 0.2F, (level.random.nextFloat() * 0.25F) + 0.8F);
 
 		return stack;

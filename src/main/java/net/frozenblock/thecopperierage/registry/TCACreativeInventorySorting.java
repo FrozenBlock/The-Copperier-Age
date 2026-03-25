@@ -65,7 +65,6 @@ public final class TCACreativeInventorySorting {
 		insertAfterInBuildingBlocks(TCABlocks.STICKY_GEARBOX.oxidized(), TCABlocks.COPPER_FAN.oxidized());
 		insertAfterInBuildingBlocks(TCABlocks.STICKY_GEARBOX.waxedOxidized(), TCABlocks.COPPER_FAN.waxedOxidized());
 
-
 		// CHIME
 		insertAfterInFunctionalBlocks(Items.WAXED_OXIDIZED_LIGHTNING_ROD, TCABlocks.CHIME.unaffected());
 		insertAfterInFunctionalBlocks(TCABlocks.CHIME.unaffected(), TCABlocks.CHIME.exposed());

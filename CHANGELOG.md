@@ -5,11 +5,17 @@ Put the changelog BELOW the dashes. ANYTHING ABOVE IS IGNORED.
 - Fixed Weighted Pressure Plates not having map colors.
 - Fixed Chimes not having map colors.
 - Added The Crate.
+  - Can be crafted with four Iron Ingots and four Planks.
   - Crates can hold 36 stacks of items.
   - However, Crates can only hold a single item type.
   - If an invalid item is inserted into a Crate (i.g., Hoppers,) it will be ejected through the Crate's top face.
     - If a container is present at the Crate's front face, the item will be deposited there instead.
+  - Added a config option to toggle whether Players can open Crates.
+    - This is enabled by default.
+  - Added a config option to allow Crates to retain their items upon breaking.
+    - This is disabled by default.
 - Added Sticky Gearboxes.
+  - Can be crafted with any Gearbox and a Slimeball.
   - Sticky Gearboxes rotate blocks every 24 ticks.
     - This delay is doubled if the block to be rotated does not contain 4 rotation values, but only 2.
       - For example, Slabs will only rotate every 48 ticks while a Level will rotate every 24 ticks.
@@ -19,6 +25,7 @@ Put the changelog BELOW the dashes. ANYTHING ABOVE IS IGNORED.
 - Adjusted the velocity a Copper Fan sucks from behind, now being more evenly distributed.
   - This change was made in order to make Copper Fans easier to use, as their previous behavior was only noticeable while an entity was very close to the block.
 - Added Redstone Grit.
+  - Can be crafted with five Redstone Dust and four Gravel.
   - Redstone Grit is unpowered when placed, but will become powered after 20 ticks.
     - This resets every time the block is moved.
   - Falls like Sand and Gravel blocks.

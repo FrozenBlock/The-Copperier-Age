@@ -112,5 +112,20 @@
     "subtitles.entity.copper_golem.button_press": "铜傀儡：按按钮",
     "option.thecopperierage.copper_golems_press_buttons": "铜傀儡按铜按钮",
     "tooltip.thecopperierage.copper_golems_press_buttons": "铜傀儡是否会偶尔按下铜按钮。",
-    "tooltip.thecopperierage.gearbox_entity_rotation": "控制实体在齿轮箱上每刻的偏航角旋转角度。\n该数值需除以100（例如350即为3.5度）。"
+    "tooltip.thecopperierage.gearbox_entity_rotation": "控制实体在齿轮箱上每刻的偏航角旋转角度。\n该数值需除以100（例如350即为3.5度）。",
+    "option.thecopperierage.gearbox_entity_rotation": "齿轮箱实体旋转",
+    "option.thecopperierage.sticky_gearbox_rotation_interval": "黏性齿轮箱旋转间隔",
+    "tooltip.thecopperierage.sticky_gearbox_rotation_interval": "控制黏性齿轮箱旋转一个方块所需的刻数。",
+    "option.thecopperierage.crate_has_menu": "可打开的板条箱",
+    "tooltip.thecopperierage.crate_has_menu": "玩家是否能打开板条箱。",
+    "tooltip.thecopperierage.crates_drop_with_items": "板条箱在被破坏后是否会保留其中的物品。",
+    "option.thecopperierage.crates_drop_with_items": "装有物品的板条箱掉落",
+    "option.thecopperierage.oxidizing_affects_stats": "氧化影响属性",
+    "tooltip.thecopperierage.oxidizing_affects_stats": "铜质装备的属性是否应随氧化程度而变化。\n装备氧化得越严重，其属性就越接近铁质装备。\n这包括工具和盔甲。",
+    "tooltip.thecopperierage.better_copper_tooltips": "铜质物品是否采用新的提示框样式。\n涂蜡和氧化状态将通过描述信息进行说明。\n铜质物品名称中会移除相关前缀。",
+    "option.thecopperierage.better_copper_tooltips": "铜物品提示框",
+    "option.thecopperierage.waxed_item_icon_overlay": "涂蜡图标叠加层",
+    "tooltip.thecopperierage.waxed_item_icon_overlay": "涂蜡的物品是否在物品上方带有特殊叠加层。\n通过视觉效果向玩家显示该物品已涂蜡，无需阅读提示框。\n仅在HUD、物品栏界面及其他GUI界面中显示，不在世界或手中显示。",
+    "option.thecopperierage.extra_item_icon_overlays": "额外物品图标叠加层",
+    "tooltip.thecopperierage.extra_item_icon_overlays": "是否使用额外的特殊叠加层。\n为陷阱箱和虫蚀方块提供类似于涂蜡的特殊UI叠加层。\n默认处于禁用状态。"
 }

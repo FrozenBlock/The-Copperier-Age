@@ -20,6 +20,7 @@ package net.frozenblock.thecopperierage;
 import net.fabricmc.loader.api.ModContainer;
 import net.frozenblock.lib.entrypoint.api.FrozenModInitializer;
 import net.frozenblock.lib.feature_flag.api.FeatureFlagApi;
+import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
 import net.frozenblock.thecopperierage.mod_compat.TCAModIntegrations;
 import net.frozenblock.thecopperierage.networking.TCANetworking;
@@ -67,6 +68,8 @@ public final class TheCopperierAge extends FrozenModInitializer {
 		TCAModIntegrations.init();
 		TCANetworking.init();
 		TCAResources.init(container);
+
+		TCAConfig.CONFIG.load(true);
 	}
 
 }

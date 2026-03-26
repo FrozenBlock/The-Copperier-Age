@@ -42,6 +42,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.ItemStackWithSlot;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.ContainerUser;
 import net.minecraft.world.entity.player.Inventory;
@@ -61,11 +62,13 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class CrateBlockEntity extends RandomizableContainerBlockEntity implements WorldlyContainer {
+	public static final String TAG_INVALID_ITEMS = "InvalidItems";
 	public static int ROW_COUNT = 4;
 	public static final int CONTAINER_SIZE = ROW_COUNT * 9;
 	private static final int[] SLOTS = IntStream.range(0, CONTAINER_SIZE).toArray();
 	private static final Component DEFAULT_NAME = Component.translatable("container.thecopperierage.crate");
 	private NonNullList<ItemStack> items = NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY);
+	private NonNullList<ItemStack> invalidItems = NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY);
 	private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
 		@Override
 		protected void onOpen(Level level, BlockPos pos, BlockState state) {
@@ -96,6 +99,16 @@ public class CrateBlockEntity extends RandomizableContainerBlockEntity implement
 		super(TCABlockEntityTypes.CRATE, pos, state);
 	}
 
+	public void serverTick(Level level, BlockPos pos, BlockState state) {
+		if (level.isClientSide()) return;
+		if (this.invalidItems.isEmpty()) return;
+
+		for (ItemStack stack : this.invalidItems) {
+			this.moveOut(level, pos, state, stack);
+			this.dispense(level, pos, state, Optional.of(stack), true);
+		}
+	}
+
 	@Override
 	public boolean canOpen(Player player) {
 		return super.canOpen(player) && TCAConfig.get().crateHasMenu;
@@ -111,13 +124,37 @@ public class CrateBlockEntity extends RandomizableContainerBlockEntity implement
 	protected void saveAdditional(ValueOutput output) {
 		super.saveAdditional(output);
 		if (!this.trySaveLootTable(output)) ContainerHelper.saveAllItems(output, this.items);
+		saveInvalidItems(output, this.invalidItems);
 	}
 
 	@Override
 	protected void loadAdditional(ValueInput input) {
 		super.loadAdditional(input);
 		this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
+		this.invalidItems = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
 		if (!this.tryLoadLootTable(input)) ContainerHelper.loadAllItems(input, this.items);
+		loadInvalidItems(input, this.invalidItems);
+	}
+
+	public static void saveInvalidItems(ValueOutput valueOutput, NonNullList<ItemStack> nonNullList) {
+		saveInvalidItems(valueOutput, nonNullList, true);
+	}
+
+	public static void saveInvalidItems(ValueOutput output, NonNullList<ItemStack> items, boolean keepItemsTag) {
+		ValueOutput.TypedOutputList<ItemStackWithSlot> typedOutputList = output.list(TAG_INVALID_ITEMS, ItemStackWithSlot.CODEC);
+
+		for (int i = 0; i < items.size(); i++) {
+			final ItemStack item = items.get(i);
+			if (!item.isEmpty()) typedOutputList.add(new ItemStackWithSlot(i, item));
+		}
+
+		if (typedOutputList.isEmpty() && !keepItemsTag) output.discard(TAG_INVALID_ITEMS);
+	}
+
+	public static void loadInvalidItems(ValueInput input, NonNullList<ItemStack> items) {
+		for (ItemStackWithSlot stack : input.listOrEmpty(TAG_INVALID_ITEMS, ItemStackWithSlot.CODEC)) {
+			if (stack.isValidInContainer(items.size())) items.set(stack.slot(), stack.stack());
+		}
 	}
 
 	@Override
@@ -151,11 +188,9 @@ public class CrateBlockEntity extends RandomizableContainerBlockEntity implement
 	public void setItem(int slot, ItemStack stack) {
 		this.unpackLootTable(null);
 		if (!CrateBlock.verifyStackForPlacement(stack, this).isSuccess()) {
-			final Level level = this.getLevel();
-			final BlockPos pos = this.getBlockPos();
-			final BlockState state = this.getBlockState();
-			this.moveOut(level, pos, state, stack);
-			this.dispense(level, pos, state, Optional.of(stack), true);
+			this.invalidItems.set(slot, stack);
+			stack.limitSize(this.getMaxStackSize(stack));
+			this.setChanged();
 			return;
 		}
 

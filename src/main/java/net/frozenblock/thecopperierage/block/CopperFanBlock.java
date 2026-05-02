@@ -21,19 +21,18 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.frozenblock.lib.particle.options.WindParticleOptions;
 import net.frozenblock.lib.wind.api.BlowingHelper;
 import net.frozenblock.lib.wind.api.WindDisturbance;
 import net.frozenblock.lib.wind.api.WindDisturbanceLogic;
 import net.frozenblock.lib.wind.api.WindManager;
-import net.frozenblock.lib.wind.client.impl.ClientWindManager;
 import net.frozenblock.thecopperierage.entity.impl.CopperFanQueuedMovementInterface;
-import net.frozenblock.thecopperierage.mod_compat.FrozenLibIntegration;
 import net.frozenblock.thecopperierage.networking.packet.TCACopperFanBlowPacket;
 import net.frozenblock.thecopperierage.registry.TCASounds;
+import net.frozenblock.thecopperierage.registry.TCAWindDisturbances;
 import net.frozenblock.thecopperierage.tag.TCAEntityTypeTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -63,7 +62,6 @@ import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 public class CopperFanBlock extends DirectionalBlock {
@@ -73,7 +71,8 @@ public class CopperFanBlock extends DirectionalBlock {
 	public static final double WIND_INTENSITY = 0.5D;
 	public static final double WIND_INTENSITY_SUCK_SCALE = 0.8D;
 	public static final double WIND_INTENSITY_SUCK = WIND_INTENSITY * WIND_INTENSITY_SUCK_SCALE;
-	private static final WindDisturbanceLogic<? extends CopperFanBlock> DUMMY_WIND_LOGIC = new WindDisturbanceLogic<>((source, level1, windOrigin, affectedArea, windTarget) -> WindDisturbance.DUMMY_RESULT);
+	private static final Predicate<Entity> EFFECT_PREDICATE = EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.NO_SPECTATORS);
+	private static final WindDisturbanceLogic<? extends CopperFanBlock> DUMMY_WIND_LOGIC = new WindDisturbanceLogic<>((source, level, origin, area, target) -> WindDisturbance.DUMMY_RESULT);
 	public static final MapCodec<CopperFanBlock> CODEC = RecordCodecBuilder.mapCodec(
 		instance -> instance.group(
 			WeatheringCopper.WeatherState.CODEC.fieldOf("weathering_state").forGetter(copperFanBlock -> copperFanBlock.weatherState),
@@ -102,7 +101,6 @@ public class CopperFanBlock extends DirectionalBlock {
 		);
     }
 
-	@Contract(pure = true)
 	private static int getPushForWeatherState(WeatheringCopper.WeatherState weatherState) {
 		return switch (weatherState) {
 			case UNAFFECTED -> 8;
@@ -112,12 +110,10 @@ public class CopperFanBlock extends DirectionalBlock {
 		};
 	}
 
-	@Contract(pure = true)
 	private static int getSuckForWeatherState(WeatheringCopper.WeatherState weatherState) {
 		return Math.max(0, getPushForWeatherState(weatherState) - 2);
 	}
 
-	@Contract(pure = true)
 	private static double getCosmeticStrengthForWeatherState(WeatheringCopper.WeatherState weatherState) {
 		return switch (weatherState) {
 			case UNAFFECTED -> 1D;
@@ -127,7 +123,6 @@ public class CopperFanBlock extends DirectionalBlock {
 		};
 	}
 
-	@Contract(pure = true)
 	private static int getWindParticleLifetimeForWeatherState(WeatheringCopper.WeatherState weatherState) {
 		return switch (weatherState) {
 			case UNAFFECTED -> 12;
@@ -154,8 +149,8 @@ public class CopperFanBlock extends DirectionalBlock {
 	}
 
 	@Override
-	protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState replacingState, boolean bl) {
-		if (level.isClientSide() || state.is(replacingState.getBlock())) return;
+	protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+		if (level.isClientSide() || state.is(oldState.getBlock())) return;
 		level.scheduleTick(pos, this, 1);
 	}
 
@@ -176,15 +171,15 @@ public class CopperFanBlock extends DirectionalBlock {
 	protected BlockState updateShape(
 		BlockState state,
 		LevelReader level,
-		ScheduledTickAccess scheduledTickAccess,
+		ScheduledTickAccess ticks,
 		BlockPos pos,
 		Direction direction,
 		BlockPos neighborPos,
 		BlockState neighborState,
 		RandomSource random
 	) {
-		scheduledTickAccess.scheduleTick(pos, this, 1);
-		return super.updateShape(state, level, scheduledTickAccess, pos, direction, neighborPos, neighborState, random);
+		ticks.scheduleTick(pos, this, 1);
+		return super.updateShape(state, level, ticks, pos, direction, neighborPos, neighborState, random);
 	}
 
 	@Override
@@ -224,7 +219,6 @@ public class CopperFanBlock extends DirectionalBlock {
 		this.handleBlowing(level, pos, facing.getOpposite(), true);
 	}
 
-	@Contract("_, _ -> new")
 	private static AABB aabb(BlockPos startPos, BlockPos endPos) {
 		return new AABB(
 			Math.min(startPos.getX(), endPos.getX()),
@@ -266,29 +260,63 @@ public class CopperFanBlock extends DirectionalBlock {
 			.orElse(mutable.immutable());
 		final AABB blowingArea = aabb(pos, posWithCutoff);
 
-		final List<Entity> entities = level.getEntities(
-			EntityTypeTest.forClass(Entity.class),
-			blowingArea,
-			EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.NO_SPECTATORS)
-		);
-		final Vec3 fanStartPos = Vec3.atCenterOf(pos);
-
-		final WindDisturbance<CopperFanBlock> windDisturbance = new WindDisturbance<CopperFanBlock>(
-			Optional.of(this),
-			fanStartPos,
-			blowingArea.inflate(0.5D).move(direction.step().mul(0.5F)),
-			WindDisturbanceLogic.getWindDisturbanceLogic(
-				!reverse ? FrozenLibIntegration.COPPER_FAN_WIND_DISTURBANCE : FrozenLibIntegration.COPPER_FAN_WIND_DISTURBANCE_REVERSE
-			).orElse(DUMMY_WIND_LOGIC)
-		);
-
 		if (level instanceof ServerLevel serverLevel) {
-			final WindManager windManager = WindManager.getOrCreateWindManager(serverLevel);
-			windManager.addWindDisturbance(windDisturbance);
-		} else if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-			addWindDisturbanceToClient(windDisturbance);
-			final RandomSource random = level.getRandom();
+			final Vec3 fanStartPos = Vec3.atCenterOf(pos);
 
+			final WindManager windManager = WindManager.getOrCreateWindManager(serverLevel);
+			windManager.addWindDisturbanceAndSync(
+				new WindDisturbance<CopperFanBlock>(
+					Optional.of(this),
+					fanStartPos,
+					blowingArea.inflate(0.5D).move(direction.step().mul(0.5F)),
+					WindDisturbanceLogic.getWindDisturbanceLogic(
+						!reverse ? TCAWindDisturbances.COPPER_FAN_WIND_DISTURBANCE : TCAWindDisturbances.COPPER_FAN_WIND_DISTURBANCE_REVERSE
+					).orElse(DUMMY_WIND_LOGIC)
+				),
+				serverLevel
+			);
+
+			final double fanDistance = fanDistanceInBlocks + 1D;
+			final double pushIntensity = !reverse ? PUSH_INTENSITY : PUSH_INTENSITY_SUCK;
+			final Vec3 movement = Vec3.atLowerCornerOf((!reverse ? direction : oppositeDirection).getUnitVec3i());
+
+			final List<Entity> entities = level.getEntities(EntityTypeTest.forClass(Entity.class), blowingArea, EFFECT_PREDICATE);
+			for (Entity entity : entities) {
+				if (!(entity instanceof CopperFanQueuedMovementInterface queuedMovementInterface)) continue;
+				if (entity.is(TCAEntityTypeTags.COPPER_FAN_CANNOT_PUSH)) continue;
+
+				final AABB boundingBox = entity.getBoundingBox();
+				if (!blowingArea.intersects(boundingBox)) continue;
+
+				if (entity instanceof Player player) {
+					if (player.getAbilities().flying) continue;
+					if (direction == Direction.UP) {
+						final Vec3 lastImpactPos = player.currentImpulseImpactPos;
+						final Vec3 playerPos = player.position();
+						player.setIgnoreFallDamageFromCurrentImpulse(
+							true,
+							new Vec3(
+								playerPos.x(),
+								lastImpactPos != null ? Math.min(lastImpactPos.y(), playerPos.y()) : playerPos.y(),
+								playerPos.z()
+							)
+						);
+					}
+				} else if (entity instanceof AbstractArrow abstractArrow) {
+					if (abstractArrow.isInGround()) continue;
+				}
+
+				final double pushScale = !entity.is(TCAEntityTypeTags.COPPER_FAN_WEAKER_PUSH) ? 1D : 0.5D;
+				final double intensity = (fanDistance - Math.min(entity.position().distanceTo(fanStartPos), fanDistance)) / fanDistance;
+				final double fixedIntensity = reverse ? ((2D + intensity) / 3D) : intensity;
+				final double overallIntensity = fixedIntensity * pushIntensity * pushScale;
+				final Vec3 fanMovement = movement.scale(overallIntensity);
+				queuedMovementInterface.theCopperierAge$queueCopperFanMovement(fanMovement);
+				entity.needsSync = true;
+				entity.hurtMarked = true;
+			}
+		} else if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+			final RandomSource random = level.getRandom();
 			if (random.nextFloat() <= (!reverse ? 0.35F : 0.2F) && random.nextDouble() <= this.cosmeticStrength) {
 				final double sizeOfBlowingArea = Math.min(blowingArea.getSize() / 9D, 1D);
 				if (random.nextDouble() < sizeOfBlowingArea * random.nextDouble() * random.nextDouble()) {
@@ -326,43 +354,6 @@ public class CopperFanBlock extends DirectionalBlock {
 					);
 				}
 			}
-		}
-
-		final double fanDistance = fanDistanceInBlocks + 1D;
-		final double pushIntensity = !reverse ? PUSH_INTENSITY : PUSH_INTENSITY_SUCK;
-		final Vec3 movement = Vec3.atLowerCornerOf((!reverse ? direction : oppositeDirection).getUnitVec3i());
-		for (Entity entity : entities) {
-			if (!(entity instanceof CopperFanQueuedMovementInterface queuedMovementInterface)) continue;
-			if (entity.is(TCAEntityTypeTags.COPPER_FAN_CANNOT_PUSH)) continue;
-
-			AABB boundingBox = entity.getBoundingBox();
-			if (!blowingArea.intersects(boundingBox)) continue;
-
-			if (entity instanceof Player player) {
-				if (player.getAbilities().flying) continue;
-				if (direction == Direction.UP) {
-					final Vec3 lastImpactPos = player.currentImpulseImpactPos;
-					final Vec3 playerPos = player.position();
-					player.setIgnoreFallDamageFromCurrentImpulse(
-						true,
-						new Vec3(
-							playerPos.x(),
-							lastImpactPos != null ? Math.min(lastImpactPos.y(), playerPos.y()) : playerPos.y(),
-							playerPos.z()
-						)
-					);
-				}
-			} else if (entity instanceof AbstractArrow abstractArrow) {
-				if (abstractArrow.isInGround()) continue;
-			}
-
-			final double pushScale = !entity.is(TCAEntityTypeTags.COPPER_FAN_WEAKER_PUSH) ? 1D : 0.5D;
-			final double intensity = (fanDistance - Math.min(entity.position().distanceTo(fanStartPos), fanDistance)) / fanDistance;
-			final double fixedIntensity = reverse ? ((2D + intensity) / 3D) : intensity;
-			final double overallIntensity = fixedIntensity * pushIntensity * pushScale;
-			final Vec3 fanMovement = movement.scale(overallIntensity);
-			queuedMovementInterface.theCopperierAge$queueCopperFanMovement(fanMovement);
-			entity.needsSync = true;
 		}
 	}
 
@@ -451,10 +442,4 @@ public class CopperFanBlock extends DirectionalBlock {
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(FACING, POWERED);
 	}
-
-	@Environment(EnvType.CLIENT)
-	private static void addWindDisturbanceToClient(WindDisturbance windDisturbance) {
-		ClientWindManager.addWindDisturbance(windDisturbance);
-	}
-
 }

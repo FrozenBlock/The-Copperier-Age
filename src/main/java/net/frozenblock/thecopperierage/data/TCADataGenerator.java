@@ -15,22 +15,22 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.datagen;
+package net.frozenblock.thecopperierage.data;
 
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.frozenblock.lib.feature_flag.api.FeatureFlagApi;
 import net.frozenblock.thecopperierage.TCAConstants;
-import net.frozenblock.thecopperierage.datagen.loot.TCABlockLootProvider;
-import net.frozenblock.thecopperierage.datagen.model.TCAModelProvider;
-import net.frozenblock.thecopperierage.datagen.model.TCAPackModelProvider;
-import net.frozenblock.thecopperierage.datagen.recipe.TCARecipeProvider;
-import net.frozenblock.thecopperierage.datagen.tag.TCABlockTagProvider;
-import net.frozenblock.thecopperierage.datagen.tag.TCAEntityTypeTagProvider;
-import net.frozenblock.thecopperierage.datagen.tag.TCAInstrumentTagProvider;
-import net.frozenblock.thecopperierage.datagen.tag.TCAItemTagProvider;
+import net.frozenblock.thecopperierage.data.loot.TCABlockLootProvider;
+import net.frozenblock.thecopperierage.data.model.TCAModelProvider;
+import net.frozenblock.thecopperierage.data.model.TCAPackModelProvider;
+import net.frozenblock.thecopperierage.data.recipe.TCARecipeProvider;
+import net.frozenblock.thecopperierage.data.tag.TCABlockTagsProvider;
+import net.frozenblock.thecopperierage.data.tag.TCAEntityTypeTagsProvider;
+import net.frozenblock.thecopperierage.data.tag.TCAInstrumentTagsProvider;
+import net.frozenblock.thecopperierage.data.tag.TCAItemTagsProvider;
 import net.frozenblock.thecopperierage.registry.TCAInstruments;
-import net.frozenblock.thecopperierage.structure.TCATrialChambersTemplatePools;
+import net.frozenblock.thecopperierage.data.worldgen.structure.TCATrialChambersTemplatePools;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 
@@ -52,10 +52,10 @@ public final class TCADataGenerator implements DataGeneratorEntrypoint {
 		pack.addProvider(TCARegistryProvider::new);
 
 		pack.addProvider(TCABlockLootProvider::new);
-		pack.addProvider(TCABlockTagProvider::new);
-		pack.addProvider(TCAItemTagProvider::new);
-		pack.addProvider(TCAInstrumentTagProvider::new);
-		pack.addProvider(TCAEntityTypeTagProvider::new);
+		pack.addProvider(TCABlockTagsProvider::new);
+		pack.addProvider(TCAItemTagsProvider::new);
+		pack.addProvider(TCAInstrumentTagsProvider::new);
+		pack.addProvider(TCAEntityTypeTagsProvider::new);
 		pack.addProvider(TCARecipeProvider::new);
 	}
 

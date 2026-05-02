@@ -27,11 +27,7 @@ public final class TCAEntityTypeTags {
 	public static final TagKey<EntityType<?>> COPPER_FAN_CANNOT_PUSH = bind("copper_fan_cannot_push");
 	public static final TagKey<EntityType<?>> GEARBOX_CANNOT_ROTATE = bind("gearbox_cannot_rotate");
 
-	private TCAEntityTypeTags() {
-		throw new UnsupportedOperationException("TCAEntityTypeTags contains only static declarations.");
-	}
-
-	private static TagKey<EntityType<?>> bind(String path) {
-		return TagKey.create(Registries.ENTITY_TYPE, TCAConstants.id(path));
+	private static TagKey<EntityType<?>> bind(String name) {
+		return TagKey.create(Registries.ENTITY_TYPE, TCAConstants.id(name));
 	}
 }

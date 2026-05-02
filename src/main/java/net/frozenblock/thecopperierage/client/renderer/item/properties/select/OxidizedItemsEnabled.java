@@ -31,9 +31,10 @@ import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
 public record OxidizedItemsEnabled() implements SelectItemModelProperty<Boolean> {
-	public static final Codec<Boolean> VALUE_CODEC = Codec.BOOL;
+	public static final OxidizedItemsEnabled INSTANCE = new OxidizedItemsEnabled();
+	private static final Codec<Boolean> VALUE_CODEC = Codec.BOOL;
 	public static final SelectItemModelProperty.Type<OxidizedItemsEnabled, Boolean> TYPE = SelectItemModelProperty.Type.create(
-		MapCodec.unit(new OxidizedItemsEnabled()), VALUE_CODEC
+		MapCodec.unit(INSTANCE), VALUE_CODEC
 	);
 
 	@Override

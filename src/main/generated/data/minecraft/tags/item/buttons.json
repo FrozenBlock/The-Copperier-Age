@@ -1,8 +1,5 @@
 {
   "values": [
-    {
-      "id": "#thecopperierage:copper_buttons",
-      "required": false
-    }
+    "#thecopperierage:copper_buttons"
   ]
 }

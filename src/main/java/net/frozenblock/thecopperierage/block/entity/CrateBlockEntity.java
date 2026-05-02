@@ -51,7 +51,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BarrelBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
@@ -136,8 +135,8 @@ public class CrateBlockEntity extends RandomizableContainerBlockEntity implement
 		loadInvalidItems(input, this.invalidItems);
 	}
 
-	public static void saveInvalidItems(ValueOutput valueOutput, NonNullList<ItemStack> nonNullList) {
-		saveInvalidItems(valueOutput, nonNullList, true);
+	public static void saveInvalidItems(ValueOutput output, NonNullList<ItemStack> nonNullList) {
+		saveInvalidItems(output, nonNullList, true);
 	}
 
 	public static void saveInvalidItems(ValueOutput output, NonNullList<ItemStack> items, boolean keepItemsTag) {
@@ -158,14 +157,14 @@ public class CrateBlockEntity extends RandomizableContainerBlockEntity implement
 	}
 
 	@Override
-	protected void collectImplicitComponents(DataComponentMap.Builder builder) {
-		super.collectImplicitComponents(builder);
+	protected void collectImplicitComponents(DataComponentMap.Builder components) {
+		super.collectImplicitComponents(components);
 
 		final List<ItemStack> items = this.getItems();
 		if (!items.isEmpty() && items.stream().anyMatch(stack -> !stack.isEmpty())) {
-			builder.set(DataComponents.MAX_STACK_SIZE, 1);
+			components.set(DataComponents.MAX_STACK_SIZE, 1);
 		} else {
-			builder.set(DataComponents.MAX_STACK_SIZE, this.getBlockState().getBlock().asItem().getDefaultMaxStackSize());
+			components.set(DataComponents.MAX_STACK_SIZE, this.getBlockState().getBlock().asItem().getDefaultMaxStackSize());
 		}
 	}
 
@@ -297,7 +296,7 @@ public class CrateBlockEntity extends RandomizableContainerBlockEntity implement
 	}
 
 	void playSound(BlockState state, SoundEvent sound) {
-		final Vec3i directionOffset = (state.getValue(BarrelBlock.FACING)).getUnitVec3i();
+		final Vec3i directionOffset = (state.getValue(CrateBlock.FACING)).getUnitVec3i();
 		final double x = this.worldPosition.getX() + 0.5D + directionOffset.getX() / 2D;
 		final double y = this.worldPosition.getY() + 0.5D + directionOffset.getY() / 2D;
 		final double z = this.worldPosition.getZ() + 0.5D + directionOffset.getZ() / 2D;

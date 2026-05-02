@@ -32,9 +32,9 @@ import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
 public record WeatherState() implements SelectItemModelProperty<WeatheringCopper.WeatherState> {
-	private static final WeatherState INSTANCE = new WeatherState();
+	public static final WeatherState INSTANCE = new WeatherState();
 	public static final SelectItemModelProperty.Type<WeatherState, WeatheringCopper.WeatherState> TYPE = SelectItemModelProperty.Type.create(
-		MapCodec.unit(new WeatherState()), WeatheringCopper.WeatherState.CODEC
+		MapCodec.unit(INSTANCE), WeatheringCopper.WeatherState.CODEC
 	);
 
 	@Override

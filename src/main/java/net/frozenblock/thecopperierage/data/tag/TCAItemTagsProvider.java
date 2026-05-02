@@ -15,62 +15,37 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.datagen.tag;
+package net.frozenblock.thecopperierage.data.tag;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
-import net.frozenblock.thecopperierage.references.TCABlockItemIds;
 import net.frozenblock.thecopperierage.references.TCAItemIds;
 import net.frozenblock.thecopperierage.tag.TCAItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.tags.BlockItemTagAppender;
-import net.minecraft.references.BlockItemId;
+import net.minecraft.data.tags.BlockItemTagsProvider;
 import net.minecraft.references.ItemIds;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.BlockItemTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.ColorCollection;
 import net.minecraft.world.level.block.WeatheringCopper;
-import net.minecraft.world.level.block.WeatheringCopperCollection;
 
-public final class TCAItemTagProvider extends FabricTagsProvider.ItemTagsProvider {
+public final class TCAItemTagsProvider extends FabricTagsProvider.ItemTagsProvider {
 
-	public TCAItemTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+	public TCAItemTagsProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
 		super(output, registries);
 	}
 
 	@Override
-	protected void addTags(HolderLookup.Provider arg) {
-		// TODO 26.2 blockitemtag provider? might need fabric change
-		this.builder(BlockItemTags.BUTTONS.item())
-			.addOptionalTag(TCAItemTags.COPPER_BUTTONS);
-
-		this.builder(TCAItemTags.GEARBOXES)
-			.addAll(toIds(TCABlockItemIds.GEARBOX))
-			.addTag(TCAItemTags.STICKY_GEARBOXES);
-
-		this.builder(TCAItemTags.STICKY_GEARBOXES)
-			.addAll(toIds(TCABlockItemIds.STICKY_GEARBOX));
-
-		this.builder(TCAItemTags.COPPER_FANS)
-			.addAll(toIds(TCABlockItemIds.COPPER_FAN));
-
-		this.builder(TCAItemTags.CHIMES)
-			.addAll(toIds(TCABlockItemIds.CHIME));
-
-		this.builder(TCAItemTags.COPPER_BUTTONS)
-			.addAll(toIds(TCABlockItemIds.COPPER_BUTTON));
-
-		this.builder(TCAItemTags.COPPER_PRESSURE_PLATES)
-			.addAll(toIds(TCABlockItemIds.WEIGHTED_PRESSURE_PLATE));
+	protected void addTags(HolderLookup.Provider registries) {
+		new TCABlockItemTagsProvider(tagId -> BlockItemTagsProvider.wrapForItems(this.tag(tagId.item()))).run();
 
 		this.builder(ItemTags.BREAKS_DECORATED_POTS)
 			.add(TCAItemIds.WRENCH);
@@ -100,7 +75,7 @@ public final class TCAItemTagProvider extends FabricTagsProvider.ItemTagsProvide
 		final BlockItemTagAppender<Item> weatheredTag = this.builder(TCAItemTags.WEATHERING_WEATHERED);
 		final BlockItemTagAppender<Item> oxidizedTag = this.builder(TCAItemTags.WEATHERING_OXIDIZED);
 		final BlockItemTagAppender<Item> waxedTag = this.builder(TCAItemTags.WEATHERING_WAXED);
-		arg.lookupOrThrow(Registries.BLOCK)
+		registries.lookupOrThrow(Registries.BLOCK)
 			.listElements()
 			.forEach(block -> {
 				final Item item = block.value().asItem();
@@ -118,19 +93,11 @@ public final class TCAItemTagProvider extends FabricTagsProvider.ItemTagsProvide
 			});
 	}
 
-	private TagKey<Item> getTag(String id) {
-		return TagKey.create(this.registryKey, Identifier.parse(id));
+	private TagKey<Item> getTag(String name) {
+		return TagKey.create(this.registryKey, Identifier.parse(name));
 	}
 
 	private ResourceKey<Item> getKey(String namespace, String path) {
 		return ResourceKey.create(this.registryKey, Identifier.fromNamespaceAndPath(namespace, path));
-	}
-
-	private static ColorCollection<ResourceKey<Item>> toIds(final ColorCollection<BlockItemId> ids) {
-		return ids.map(BlockItemId::item);
-	}
-
-	private static WeatheringCopperCollection<ResourceKey<Item>> toIds(final WeatheringCopperCollection<BlockItemId> ids) {
-		return ids.map(BlockItemId::item);
 	}
 }

@@ -34,7 +34,6 @@ public final class TCAItems {
 	public static final Item COPPER_JACK_O_LANTERN = Items.registerBlock(TCABlockItemIds.COPPER_JACK_O_LANTERN, TCABlocks.COPPER_JACK_O_LANTERN);
 	public static final Item REDSTONE_JACK_O_LANTERN = Items.registerBlock(TCABlockItemIds.REDSTONE_JACK_O_LANTERN, TCABlocks.REDSTONE_JACK_O_LANTERN);
 	public static final Item REDSTONE_GRIT = Items.registerBlock(TCABlockItemIds.REDSTONE_GRIT, TCABlocks.REDSTONE_GRIT);
-
 	public static final WeatheringCopperCollection<Item> GEARBOX = WeatheringCopperCollection.registerItems(
 		TCABlockItemIds.GEARBOX, TCABlocks.GEARBOX, Items::registerBlock
 	);
@@ -47,11 +46,9 @@ public final class TCAItems {
 	public static final WeatheringCopperCollection<Item> CHIME = WeatheringCopperCollection.registerItems(
 		TCABlockItemIds.CHIME, TCABlocks.CHIME, Items::registerBlock
 	);
-
 	public static final Item CRATE = Items.registerBlock(TCABlockItemIds.CRATE, TCABlocks.CRATE,
 		new Item.Properties().component(DataComponents.CONTAINER, ItemContainerContents.EMPTY)
 	);
-
 	public static final WeatheringCopperCollection<Item> COPPER_BUTTON = WeatheringCopperCollection.registerItems(
 		TCABlockItemIds.COPPER_BUTTON, TCABlocks.COPPER_BUTTON, Items::registerBlock
 	);
@@ -62,11 +59,8 @@ public final class TCAItems {
 	// ITEMS
 	public static final Item WRENCH = Items.registerItem(TCAItemIds.WRENCH,
 		WrenchItem::new,
-		new Item.Properties()
-			.stacksTo(1)
-			.durability(128)
+		new Item.Properties().stacksTo(1).durability(128)
 	);
-
 	public static final Item COPPER_HORN = Items.registerItem(TCAItemIds.COPPER_HORN,
 		CopperHornItem::new,
 		new Item.Properties()
@@ -74,10 +68,5 @@ public final class TCAItems {
 			.delayedComponent(DataComponents.INSTRUMENT, context -> new InstrumentComponent(context.getOrThrow(TCAInstruments.SAX_COPPER_HORN)))
 	);
 
-	private TCAItems() {
-		throw new UnsupportedOperationException("TCAItems contains only static declarations.");
-	}
-
-	public static void init() {
-	}
+	public static void init() {}
 }

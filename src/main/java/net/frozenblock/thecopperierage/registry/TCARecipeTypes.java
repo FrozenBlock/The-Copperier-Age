@@ -30,6 +30,5 @@ public final class TCARecipeTypes {
 		ItemWaxRecipe.SERIALIZER
 	);
 
-	public static void init() {
-	}
+	public static void init() {}
 }

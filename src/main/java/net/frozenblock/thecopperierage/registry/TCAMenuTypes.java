@@ -29,15 +29,13 @@ import net.minecraft.world.inventory.MenuType;
 public final class TCAMenuTypes {
 	public static final MenuType<CrateMenu> CRATE = register("crate", CrateMenu::create);
 
-	public static void init() {
-		TCAConstants.logWithModId("Registering MenuTypes for", TCAConstants.UNSTABLE_LOGGING);
+	public static void init() {}
+
+	private static <T extends AbstractContainerMenu> MenuType<T> register(String name, MenuType.MenuSupplier<T> constructor) {
+		return Registry.register(BuiltInRegistries.MENU, TCAConstants.id(name), new MenuType<>(constructor, FeatureFlags.VANILLA_SET));
 	}
 
-	private static <T extends AbstractContainerMenu> MenuType<T> register(String id, MenuType.MenuSupplier<T> supplier) {
-		return Registry.register(BuiltInRegistries.MENU, TCAConstants.id(id), new MenuType<>(supplier, FeatureFlags.VANILLA_SET));
-	}
-
-	private static <T extends AbstractContainerMenu> MenuType<T> register(String id, MenuType.MenuSupplier<T> supplier, FeatureFlag... flags) {
-		return Registry.register(BuiltInRegistries.MENU, TCAConstants.id(id), new MenuType<>(supplier, FeatureFlags.REGISTRY.subset(flags)));
+	private static <T extends AbstractContainerMenu> MenuType<T> register(String name, MenuType.MenuSupplier<T> constructor, FeatureFlag... flags) {
+		return Registry.register(BuiltInRegistries.MENU, TCAConstants.id(name), new MenuType<>(constructor, FeatureFlags.REGISTRY.subset(flags)));
 	}
 }

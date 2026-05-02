@@ -26,18 +26,11 @@ import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 
 public final class TCASensorTypes {
-
-	private TCASensorTypes() {
-		throw new UnsupportedOperationException("TCASensorTypes contains only static declarations.");
-	}
-
-	public static void init() {
-	}
-
 	public static final SensorType<CopperGolemSpecificSensor> COPPER_GOLEM_SPECIFIC_SENSOR = register("copper_golem_specific_sensor", CopperGolemSpecificSensor::new);
 
-	private static <U extends Sensor<?>> SensorType<U> register(String path, Supplier<U> sensorSupplier) {
-		return Registry.register(BuiltInRegistries.SENSOR_TYPE, TCAConstants.id(path), new SensorType<>(sensorSupplier));
-	}
+	public static void init() {}
 
+	private static <U extends Sensor<?>> SensorType<U> register(String name, Supplier<U> factory) {
+		return Registry.register(BuiltInRegistries.SENSOR_TYPE, TCAConstants.id(name), new SensorType<>(factory));
+	}
 }

@@ -26,6 +26,7 @@ import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
 import net.frozenblock.thecopperierage.registry.TCAStats;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -80,8 +81,10 @@ public class CrateBlock extends BaseEntityBlock {
 
 	public static SlotResult verifyStackForPlacement(ItemStack stack, Container container) {
 		if (stack == null || stack.isEmpty()) return SlotResult.FAILURE_EMPTY_ITEM;
-		if (!stack.getComponents().getOrDefault(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY).isEmpty()) return SlotResult.FAILURE_CONTAINER_ITEM;
-		if (stack.getComponents().getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).allItemsCopyStream().findAny().isPresent()) return SlotResult.FAILURE_CONTAINER_ITEM;
+
+		final DataComponentMap components = stack.getComponents();
+		if (!components.getOrDefault(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY).isEmpty()) return SlotResult.FAILURE_CONTAINER_ITEM;
+		if (components.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).allItemsCopyStream().findAny().isPresent()) return SlotResult.FAILURE_CONTAINER_ITEM;
 
 		final Item item = stack.getItem();
 		if (container.hasAnyMatching(containerStack -> !containerStack.isEmpty() && !containerStack.is(item))) return SlotResult.FAILURE_MISMATCHING_ITEM;
@@ -100,7 +103,7 @@ public class CrateBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean pushedByPiston) {
+	protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
 		Containers.updateNeighboursAfterDestroy(state, level, pos);
 	}
 
@@ -181,14 +184,14 @@ public class CrateBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	protected List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-		if (builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY) instanceof CrateBlockEntity crate) {
-			builder = builder.withDynamicDrop(CONTENTS, consumer -> {
+	protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
+		if (params.getOptionalParameter(LootContextParams.BLOCK_ENTITY) instanceof CrateBlockEntity crate) {
+			params = params.withDynamicDrop(CONTENTS, consumer -> {
 				for (int i = 0; i < crate.getContainerSize(); i++) consumer.accept(crate.getItem(i));
 			});
 		}
 
-		return super.getDrops(state, builder);
+		return super.getDrops(state, params);
 	}
 
 	@Override

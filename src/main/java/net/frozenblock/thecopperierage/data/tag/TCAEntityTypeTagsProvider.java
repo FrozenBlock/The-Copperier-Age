@@ -15,11 +15,12 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.datagen.tag;
+package net.frozenblock.thecopperierage.data.tag;
 
 import java.util.concurrent.CompletableFuture;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
+import net.frozenblock.lib.tag.api.FrozenLibEntityTypeTags;
 import net.frozenblock.thecopperierage.tag.TCAEntityTypeTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -29,9 +30,9 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityTypeIds;
 
-public final class TCAEntityTypeTagProvider extends FabricTagsProvider.EntityTypeTagsProvider {
+public final class TCAEntityTypeTagsProvider extends FabricTagsProvider.EntityTypeTagsProvider {
 
-	public TCAEntityTypeTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+	public TCAEntityTypeTagsProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
 		super(output, registries);
 	}
 
@@ -54,9 +55,7 @@ public final class TCAEntityTypeTagProvider extends FabricTagsProvider.EntityTyp
 			.add(EntityTypeIds.GUARDIAN)
 			.add(EntityTypeIds.CREAKING)
 			.add(EntityTypeIds.GHAST)
-			.add(EntityTypeIds.HAPPY_GHAST);
-
-		this.builder(TCAEntityTypeTags.COPPER_FAN_WEAKER_PUSH)
+			.add(EntityTypeIds.HAPPY_GHAST)
 			.addOptional(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath("wilderwild", "ostrich")));
 
 		this.builder(TCAEntityTypeTags.COPPER_FAN_CANNOT_PUSH)
@@ -76,7 +75,7 @@ public final class TCAEntityTypeTagProvider extends FabricTagsProvider.EntityTyp
 			.add(EntityTypeIds.WIND_CHARGE);
 
 		this.builder(TCAEntityTypeTags.COPPER_FAN_CANNOT_PUSH)
-			.addOptional(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath("trailiertales", "apparition"))); ;
+			.addOptionalTag(FrozenLibEntityTypeTags.GHOST_LIKE);
 
 		this.builder(TCAEntityTypeTags.GEARBOX_CANNOT_ROTATE)
 			.add(EntityTypeIds.WITHER)
@@ -97,12 +96,12 @@ public final class TCAEntityTypeTagProvider extends FabricTagsProvider.EntityTyp
 			.add(EntityTypeIds.BAT);
 
 		this.builder(TCAEntityTypeTags.GEARBOX_CANNOT_ROTATE)
-			.addOptionalTag(getTag("netheriernether:blazes"))
-			.addOptional(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath("trailiertales", "apparition")));
+			.addOptionalTag(FrozenLibEntityTypeTags.BLAZES)
+			.addOptionalTag(FrozenLibEntityTypeTags.GHOST_LIKE);
 	}
 
-	private TagKey<EntityType<?>> getTag(String id) {
-		return TagKey.create(this.registryKey, Identifier.parse(id));
+	private TagKey<EntityType<?>> getTag(String name) {
+		return TagKey.create(this.registryKey, Identifier.parse(name));
 	}
 
 	private ResourceKey<EntityType<?>> getKey(String namespace, String path) {

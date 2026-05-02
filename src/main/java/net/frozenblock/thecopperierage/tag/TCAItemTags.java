@@ -23,12 +23,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
 public final class TCAItemTags {
-	public static final TagKey<Item> GEARBOXES = bind("gearboxes");
-	public static final TagKey<Item> STICKY_GEARBOXES = bind("sticky_gearboxes");
-	public static final TagKey<Item> COPPER_FANS = bind("copper_fans");
-	public static final TagKey<Item> CHIMES = bind("chimes");
-	public static final TagKey<Item> COPPER_BUTTONS = bind("copper_buttons");
-	public static final TagKey<Item> COPPER_PRESSURE_PLATES = bind("copper_pressure_plates");
 	public static final TagKey<Item> OXIDIZABLE_EQUIPMENT = bind("oxidizable_equipment");
 	public static final TagKey<Item> OXIDIZING_DOES_NOT_SCALE_ATTACK_SPEED = bind("oxidizing_does_not_scale_attack_speed");
 	public static final TagKey<Item> WEATHERING_UNAFFECTED = bind("weathering_unaffected");
@@ -37,11 +31,7 @@ public final class TCAItemTags {
 	public static final TagKey<Item> WEATHERING_OXIDIZED = bind("weathering_oxidized");
 	public static final TagKey<Item> WEATHERING_WAXED = bind("weathering_waxed");
 
-	private TCAItemTags() {
-		throw new UnsupportedOperationException("TCAItemTags contains only static declarations.");
-	}
-
-	private static TagKey<Item> bind(String path) {
-		return TagKey.create(Registries.ITEM, TCAConstants.id(path));
+	private static TagKey<Item> bind(String name) {
+		return TagKey.create(Registries.ITEM, TCAConstants.id(name));
 	}
 }

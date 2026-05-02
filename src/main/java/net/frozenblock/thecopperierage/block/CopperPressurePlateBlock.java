@@ -38,7 +38,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import org.jetbrains.annotations.Contract;
 
 public class CopperPressurePlateBlock extends BasePressurePlateBlock {
 	public static final MapCodec<CopperPressurePlateBlock> CODEC = RecordCodecBuilder.mapCodec(
@@ -113,7 +112,6 @@ public class CopperPressurePlateBlock extends BasePressurePlateBlock {
 		return state.setValue(POWER, signal);
 	}
 
-	@Contract(pure = true)
 	private static int getSlotsPerPower(WeatheringCopper.WeatherState weatherState) {
 		return switch (weatherState) {
 			case UNAFFECTED -> 1;

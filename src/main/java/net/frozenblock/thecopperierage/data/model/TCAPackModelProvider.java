@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.datagen.model;
+package net.frozenblock.thecopperierage.data.model;
 
 import java.util.Optional;
 import java.util.function.Function;

@@ -79,7 +79,7 @@ public final class TCABlocks {
 			.mapColor(MapColor.COLOR_ORANGE)
 			.strength(1F)
 			.sound(SoundType.WOOD)
-			.lightLevel(blockStatex -> 15)
+			.lightLevel(state -> 15)
 			.isValidSpawn(Blocks::always)
 			.pushReaction(PushReaction.DESTROY)
 	);
@@ -90,7 +90,7 @@ public final class TCABlocks {
 			.mapColor(MapColor.COLOR_ORANGE)
 			.strength(1F)
 			.sound(SoundType.WOOD)
-			.lightLevel(blockStatex -> 7)
+			.lightLevel(state -> 7)
 			.isValidSpawn(Blocks::always)
 			.pushReaction(PushReaction.DESTROY)
 			.isRedstoneConductor(Blocks::never)
@@ -112,7 +112,7 @@ public final class TCABlocks {
 		Blocks::register,
 		(weatherState, properties) -> new GearboxBlock(properties),
 		WeatheringGearboxBlock::new,
-		(weatherState) -> BlockBehaviour.Properties.of()
+		weatherState -> BlockBehaviour.Properties.of()
 			.mapColor(MapColor.STONE)
 			.strength(1.5F)
 			.isRedstoneConductor(Blocks::never)
@@ -123,7 +123,7 @@ public final class TCABlocks {
 		Blocks::register,
 		(weatherState, properties) -> new StickyGearboxBlock(properties),
 		WeatheringStickyGearboxBlock::new,
-		(weatherState) -> BlockBehaviour.Properties.of()
+		weatherState -> BlockBehaviour.Properties.of()
 			.mapColor(MapColor.STONE)
 			.strength(1.5F)
 			.isRedstoneConductor(Blocks::never)
@@ -134,7 +134,7 @@ public final class TCABlocks {
 		Blocks::register,
 		CopperFanBlock::new,
 		WeatheringCopperFanBlock::new,
-		(weatherState) -> BlockBehaviour.Properties.of()
+		weatherState -> BlockBehaviour.Properties.of()
 			.mapColor(MapColor.STONE)
 			.strength(1.5F)
 			.isValidSpawn(Blocks::never)
@@ -147,7 +147,7 @@ public final class TCABlocks {
 		Blocks::register,
 		(weatherState, properties) -> new ChimeBlock(properties),
 		WeatheringChimeBlock::new,
-		(weatherState) -> BlockBehaviour.Properties.of()
+		weatherState -> BlockBehaviour.Properties.of()
 			.mapColor(MapColor.METAL)
 			.requiresCorrectToolForDrops()
 			.strength(5F, 6F)
@@ -170,7 +170,7 @@ public final class TCABlocks {
 		Blocks::register,
 		CopperButtonBlock::new,
 		WeatheringCopperButtonBlock::new,
-		(weatherState) -> BlockBehaviour.Properties.of()
+		weatherState -> BlockBehaviour.Properties.of()
 			.mapColor(MapColor.NONE)
 			.strength(0.5F)
 			.noCollision()
@@ -182,24 +182,18 @@ public final class TCABlocks {
 		Blocks::register,
 		CopperPressurePlateBlock::new,
 		WeatheringCopperPressurePlateBlock::new,
-		(weatherState) -> BlockBehaviour.Properties.of()
+		weatherState -> BlockBehaviour.Properties.of()
 			.mapColor(getMapColorForWeatherState(weatherState))
 			.strength(0.5F)
 			.noCollision()
 			.pushReaction(PushReaction.DESTROY)
 	);
 
-	private TCABlocks() {
-		throw new UnsupportedOperationException("TCABlocks contains only static declarations.");
-	}
-
 	public static void init() {
 		TCAConstants.logWithModId("Registering Blocks for", TCAConstants.UNSTABLE_LOGGING);
 	}
 
 	public static void registerBlockProperties() {
-		registerDispenses();
-
 		BlockEntityTypes.CAMPFIRE.addValidBlock(TCABlocks.COPPER_CAMPFIRE);
 
 		OxidizableBlocksRegistry.registerWeatheringCopperBlocks(GEARBOX);
@@ -208,9 +202,6 @@ public final class TCABlocks {
 		OxidizableBlocksRegistry.registerWeatheringCopperBlocks(CHIME);
 		OxidizableBlocksRegistry.registerWeatheringCopperBlocks(COPPER_BUTTON);
 		OxidizableBlocksRegistry.registerWeatheringCopperBlocks(WEIGHTED_PRESSURE_PLATE);
-	}
-
-	private static void registerDispenses() {
 	}
 
 	public static MapColor getMapColorForWeatherState(WeatheringCopper.WeatherState weatherState) {

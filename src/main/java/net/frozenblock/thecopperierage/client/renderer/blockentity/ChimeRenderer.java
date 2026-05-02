@@ -100,7 +100,9 @@ public class ChimeRenderer<T extends ChimeBlockEntity> implements BlockEntityRen
 		final BlockState state = chime.getBlockState();
 		renderState.extractTexture(state);
 
-		renderState.animationProgress = (chime.age + partialTick + chime.animationOffset + Mth.lerp(partialTick, chime.prevAccumulatedStrength, chime.accumulatedStrength)) * 0.15F;
+		final float animationBase = chime.age + partialTick + chime.animationOffset;
+		final float animationStrength = Mth.lerp(partialTick, chime.prevAccumulatedStrength, chime.accumulatedStrength);
+		renderState.animationProgress = (animationBase + animationStrength) * 0.15F;
 
 		final Direction facing = state.getValue(ChimeBlock.FACING);
 		renderState.hanging = state.getValue(ChimeBlock.ATTACHMENT) == ChimeAttachType.CEILING;

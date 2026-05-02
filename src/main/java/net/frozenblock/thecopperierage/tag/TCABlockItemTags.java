@@ -18,15 +18,19 @@
 package net.frozenblock.thecopperierage.tag;
 
 import net.frozenblock.thecopperierage.TCAConstants;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.resources.Identifier;
+import net.minecraft.tags.BlockItemTagId;
 
-public final class TCABlockTags {
-	public static final TagKey<Block> COPPER_FIRE_BASE_BLOCKS = bind("copper_fire_base_blocks");
-	public static final TagKey<Block> CANNOT_ROTATE = bind("cannot_rotate");
+public final class TCABlockItemTags {
+	public static final BlockItemTagId GEARBOXES = bind("gearboxes");
+	public static final BlockItemTagId STICKY_GEARBOXES = bind("sticky_gearboxes");
+	public static final BlockItemTagId COPPER_FANS = bind("copper_fans");
+	public static final BlockItemTagId CHIMES = bind("chimes");
+	public static final BlockItemTagId COPPER_BUTTONS = bind("copper_buttons");
+	public static final BlockItemTagId COPPER_PRESSURE_PLATES = bind("copper_pressure_plates");
 
-	private static TagKey<Block> bind(String name) {
-		return TagKey.create(Registries.BLOCK, TCAConstants.id(name));
+	private static BlockItemTagId bind(String name) {
+		final Identifier id = TCAConstants.id(name);
+		return BlockItemTagId.create(id, id);
 	}
 }

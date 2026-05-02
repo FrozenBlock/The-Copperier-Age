@@ -22,7 +22,7 @@ import net.frozenblock.lib.entrypoint.api.FrozenModInitializer;
 import net.frozenblock.lib.feature_flag.api.FeatureFlagApi;
 import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
-import net.frozenblock.thecopperierage.mod_compat.TCAModIntegrations;
+import net.frozenblock.thecopperierage.levelgen.structure.modification.TCAStructureModifications;
 import net.frozenblock.thecopperierage.networking.TCANetworking;
 import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
@@ -36,8 +36,10 @@ import net.frozenblock.thecopperierage.registry.TCAPoiTypes;
 import net.frozenblock.thecopperierage.registry.TCARecipeTypes;
 import net.frozenblock.thecopperierage.registry.TCAResources;
 import net.frozenblock.thecopperierage.registry.TCASensorTypes;
+import net.frozenblock.thecopperierage.registry.TCASoundPredicates;
 import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.frozenblock.thecopperierage.registry.TCAStats;
+import net.frozenblock.thecopperierage.registry.TCAWindDisturbances;
 
 public final class TheCopperierAge extends FrozenModInitializer {
 
@@ -62,10 +64,12 @@ public final class TheCopperierAge extends FrozenModInitializer {
 		TCASounds.init();
 		TCAStats.init();
 		TCACreativeInventorySorting.init();
-		TCAParticleTypes.registerParticles();
+		TCAParticleTypes.init();
 		TCAMenuTypes.init();
 		TCABlocks.registerBlockProperties();
-		TCAModIntegrations.init();
+		TCASoundPredicates.init();
+		TCAWindDisturbances.init();
+		TCAStructureModifications.init();
 		TCANetworking.init();
 		TCAResources.init(container);
 

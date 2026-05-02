@@ -29,6 +29,5 @@ public final class TCAFeatureFlags {
 
 	public static final FeatureFlag FEATURE_FLAG = FrozenBools.IS_DATAGEN ? THE_COPPERIER_AGE : FeatureFlags.VANILLA;
 
-	public static void init() {
-	}
+	public static void init() {}
 }

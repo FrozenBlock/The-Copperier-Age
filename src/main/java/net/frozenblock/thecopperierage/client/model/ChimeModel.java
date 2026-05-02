@@ -95,8 +95,8 @@ public class ChimeModel extends Model<ChimeRenderState> {
 	}
 
 	public static LayerDefinition createLayerDefinition() {
-		final MeshDefinition meshdefinition = new MeshDefinition();
-		final PartDefinition root = meshdefinition.getRoot();
+		final MeshDefinition mesh = new MeshDefinition();
+		final PartDefinition root = mesh.getRoot();
 
 		final PartDefinition support = root.addOrReplaceChild("support", CubeListBuilder.create(), PartPose.offset(0F, 8F, 0F));
 		support.addOrReplaceChild(
@@ -207,7 +207,7 @@ public class ChimeModel extends Model<ChimeRenderState> {
 			PartPose.offset(0F, 1F, 0F)
 		);
 
-		return LayerDefinition.create(meshdefinition, 48, 48);
+		return LayerDefinition.create(mesh, 48, 48);
 	}
 
 	@Override

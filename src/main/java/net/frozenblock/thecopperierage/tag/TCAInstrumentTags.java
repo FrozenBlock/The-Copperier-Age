@@ -25,11 +25,7 @@ import net.minecraft.world.item.Instrument;
 public final class TCAInstrumentTags {
 	public static final TagKey<Instrument> COPPER_HORNS = bind("copper_horns");
 
-	private TCAInstrumentTags() {
-		throw new UnsupportedOperationException("TCAInstrumentTags contains only static declarations.");
-	}
-
-	private static TagKey<Instrument> bind(String path) {
-		return TagKey.create(Registries.INSTRUMENT, TCAConstants.id(path));
+	private static TagKey<Instrument> bind(String name) {
+		return TagKey.create(Registries.INSTRUMENT, TCAConstants.id(name));
 	}
 }

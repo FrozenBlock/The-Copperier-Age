@@ -32,9 +32,6 @@ import net.minecraft.world.phys.Vec3;
 
 public final class GearboxEntityRotationHelper {
 
-	private GearboxEntityRotationHelper() {
-	}
-
 	public static float getYawDeltaFromPower(int power) {
 		if (power <= 0) return 0F;
 		return (power & 1) == 0 ? TCAConfig.GEARBOX_ENTITY_ROTATION.get() : -TCAConfig.GEARBOX_ENTITY_ROTATION.get();

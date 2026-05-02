@@ -38,6 +38,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 public class RedstoneGritBlock extends ColoredFallingBlock {
 	public static final int MAX_STABILITY = 10;
+	private static final int DESTABALIZING_TICK_DELAY = 2;
     public static final IntegerProperty STABILITY = TCABlockStateProperties.STABILITY;
     public static final MapCodec<RedstoneGritBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		ColorRGBA.CODEC.fieldOf("falling_dust_color").forGetter(redstoneGritBlock -> redstoneGritBlock.dustColor),
@@ -52,12 +53,6 @@ public class RedstoneGritBlock extends ColoredFallingBlock {
     public RedstoneGritBlock(ColorRGBA color, Properties properties) {
         super(color, properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(STABILITY, 0));
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder);
-        builder.add(STABILITY);
     }
 
     @Override
@@ -84,7 +79,7 @@ public class RedstoneGritBlock extends ColoredFallingBlock {
 
     @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        int stability = state.getValue(STABILITY);
+        final int stability = state.getValue(STABILITY);
         if (isFree(level.getBlockState(pos.below()))) {
 			level.setBlock(pos, state.setValue(STABILITY, 0), Block.UPDATE_CLIENTS);
 			spawnActivationParticles(level, pos);
@@ -100,7 +95,7 @@ public class RedstoneGritBlock extends ColoredFallingBlock {
 		if (isActivated) {
 			spawnActivationParticles(level, pos);
 		} else {
-			level.scheduleTick(pos, this, 2);
+			level.scheduleTick(pos, this, DESTABALIZING_TICK_DELAY);
 		}
     }
 
@@ -122,6 +117,12 @@ public class RedstoneGritBlock extends ColoredFallingBlock {
 
 	public static boolean isStable(BlockState state) {
 		return state.getValue(STABILITY) == MAX_STABILITY;
+	}
+
+	@Override
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
+		builder.add(STABILITY);
 	}
 
     private void spawnActivationParticles(ServerLevel level, BlockPos pos) {

@@ -17,11 +17,11 @@
     "minecraft:allay",
     "minecraft:bat",
     {
-      "id": "#netheriernether:blazes",
+      "id": "#frozenlib:blazes",
       "required": false
     },
     {
-      "id": "trailiertales:apparition",
+      "id": "#frozenlib:ghost_like",
       "required": false
     }
   ]

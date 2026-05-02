@@ -33,6 +33,5 @@ public final class TCAPoiTypes {
 		TCABlocks.COPPER_BUTTON.asList().toArray(new Block[] {})
 	);
 
-	public static void init() {
-	}
+	public static void init() {}
 }

@@ -92,12 +92,12 @@ public class ChimeBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext collisionContext) {
+	protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
 		return getVoxelShape(state, ChimeShapeType.OUTLINE);
 	}
 
 	@Override
-	protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext collisionContext) {
+	protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
 		return getVoxelShape(state, ChimeShapeType.COLLISION);
 	}
 
@@ -147,7 +147,7 @@ public class ChimeBlock extends BaseEntityBlock {
 	protected BlockState updateShape(
 		BlockState state,
 		LevelReader level,
-		ScheduledTickAccess scheduledTickAccess,
+		ScheduledTickAccess ticks,
 		BlockPos pos,
 		Direction direction,
 		BlockPos neighborPos,
@@ -156,7 +156,7 @@ public class ChimeBlock extends BaseEntityBlock {
 	) {
 		final Direction connectedDirection = getConnectedDirection(state);
 		if (connectedDirection.getOpposite() == direction && !state.canSurvive(level, pos)) return Blocks.AIR.defaultBlockState();
-		return super.updateShape(state, level, scheduledTickAccess, pos, direction, neighborPos, neighborState, random);
+		return super.updateShape(state, level, ticks, pos, direction, neighborPos, neighborState, random);
 	}
 
 	@Override
@@ -180,8 +180,8 @@ public class ChimeBlock extends BaseEntityBlock {
 
 	@Nullable
 	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-		return createTickerHelper(blockEntityType, TCABlockEntityTypes.CHIME, ChimeBlockEntity::tick);
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+		return createTickerHelper(type, TCABlockEntityTypes.CHIME, ChimeBlockEntity::tick);
 	}
 
 	@Override
@@ -212,7 +212,7 @@ public class ChimeBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	protected void onExplosionHit(BlockState state, ServerLevel level, BlockPos pos, Explosion explosion, BiConsumer<ItemStack, BlockPos> biConsumer) {
+	protected void onExplosionHit(BlockState state, ServerLevel level, BlockPos pos, Explosion explosion, BiConsumer<ItemStack, BlockPos> onHit) {
 		if (level.getBlockEntity(pos) instanceof ChimeBlockEntity chime) {
 			float radius = explosion.radius();
 			Vec3 difference = pos.getCenter().subtract(explosion.center());
@@ -220,7 +220,7 @@ public class ChimeBlock extends BaseEntityBlock {
 			chime.addInfluence(level, pos, state, difference.normalize().scale(closeness), 0.9875D, true, true);
 		}
 
-		super.onExplosionHit(state, level, pos, explosion, biConsumer);
+		super.onExplosionHit(state, level, pos, explosion, onHit);
 	}
 
 	@Override

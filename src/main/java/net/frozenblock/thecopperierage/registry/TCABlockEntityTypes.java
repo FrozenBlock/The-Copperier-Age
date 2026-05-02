@@ -20,7 +20,6 @@ package net.frozenblock.thecopperierage.registry;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.entity.ChimeBlockEntity;
 import net.frozenblock.thecopperierage.block.entity.CrateBlockEntity;
 import net.frozenblock.thecopperierage.block.entity.StickyGearboxBlockEntity;
@@ -49,11 +48,13 @@ public final class TCABlockEntityTypes {
 		List.of(TCABlocks.CRATE)
 	);
 
-	public static void init() {
-		TCAConstants.logWithModId("Registering BlockEntities for", TCAConstants.UNSTABLE_LOGGING);
-	}
+	public static void init() {}
 
-	private static <T extends BlockEntity> BlockEntityType<T> register(ResourceKey<BlockEntityType<?>> id, BlockEntityType.BlockEntitySupplier<T> builder, Collection<Block> blocks) {
+	private static <T extends BlockEntity> BlockEntityType<T> register(
+		ResourceKey<BlockEntityType<?>> id,
+		BlockEntityType.BlockEntitySupplier<T> builder,
+		Collection<Block> blocks
+	) {
 		return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, id, new BlockEntityType<>(builder, Set.copyOf(blocks)));
 	}
 

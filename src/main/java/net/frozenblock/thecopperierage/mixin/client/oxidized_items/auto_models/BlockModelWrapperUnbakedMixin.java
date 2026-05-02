@@ -30,7 +30,7 @@ import net.fabricmc.api.Environment;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.client.renderer.item.FakeUnbakedItemModel;
 import net.frozenblock.thecopperierage.client.resources.model.BlockModelOxidization;
-import net.frozenblock.thecopperierage.datagen.model.TCAModelProvider;
+import net.frozenblock.thecopperierage.data.model.TCAModelProvider;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
 import net.minecraft.client.renderer.block.dispatch.ModelState;
 import net.minecraft.client.renderer.item.CuboidItemModelWrapper;

@@ -19,7 +19,7 @@ package net.frozenblock.thecopperierage.item;
 
 import java.util.Optional;
 import net.frozenblock.lib.sound.impl.networking.FrozenLibSoundPackets;
-import net.frozenblock.thecopperierage.mod_compat.FrozenLibIntegration;
+import net.frozenblock.thecopperierage.registry.TCASoundPredicates;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvent;
@@ -56,7 +56,7 @@ public class CopperHornItem extends InstrumentItem {
 				SoundSource.RECORDS,
 				range,
 				soundPitch,
-				FrozenLibIntegration.INSTRUMENT_SOUND_PREDICATE,
+				TCASoundPredicates.INSTRUMENT_SOUND_PREDICATE,
 				true
 			);
 		}

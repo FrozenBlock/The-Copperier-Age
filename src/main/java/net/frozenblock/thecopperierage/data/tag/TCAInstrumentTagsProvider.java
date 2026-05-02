@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.datagen.tag;
+package net.frozenblock.thecopperierage.data.tag;
 
 import java.util.concurrent.CompletableFuture;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
@@ -26,9 +26,9 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.Instrument;
 
-public final class TCAInstrumentTagProvider extends FabricTagsProvider<Instrument> {
+public final class TCAInstrumentTagsProvider extends FabricTagsProvider<Instrument> {
 
-	public TCAInstrumentTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+	public TCAInstrumentTagsProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
 		super(output, Registries.INSTRUMENT, registries);
 	}
 

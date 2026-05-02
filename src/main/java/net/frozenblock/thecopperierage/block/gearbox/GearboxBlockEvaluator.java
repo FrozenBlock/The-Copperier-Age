@@ -30,8 +30,7 @@ import net.minecraft.world.level.redstone.Orientation;
 
 public class GearboxBlockEvaluator {
 
-	public GearboxBlockEvaluator() {
-	}
+	public GearboxBlockEvaluator() {}
 
 	public void updatePowerStrength(Level level, BlockPos pos, BlockState state) {
 		final int newPower = this.calculateTargetStrength(level, pos, state);

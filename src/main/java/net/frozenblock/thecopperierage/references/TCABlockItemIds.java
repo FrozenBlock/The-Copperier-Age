@@ -27,26 +27,16 @@ public final class TCABlockItemIds {
     public static final BlockItemId COPPER_JACK_O_LANTERN = create("copper_jack_o_lantern");
     public static final BlockItemId REDSTONE_JACK_O_LANTERN = create("redstone_jack_o_lantern");
     public static final BlockItemId REDSTONE_GRIT = create("redstone_grit");
-
 	public static final WeatheringCopperCollection<BlockItemId> GEARBOX = createSimpleCopper("gearbox");
 	public static final WeatheringCopperCollection<BlockItemId> STICKY_GEARBOX = createSimpleCopper("sticky_gearbox");
-
     public static final WeatheringCopperCollection<BlockItemId> COPPER_FAN = createSimpleCopper("copper_fan");
-
     public static final WeatheringCopperCollection<BlockItemId> CHIME = createSimpleCopper("chime");
-
     public static final BlockItemId CRATE = create("crate");
-
     public static final WeatheringCopperCollection<BlockItemId> COPPER_BUTTON = createSimpleCopper("copper_button");
-
     public static final WeatheringCopperCollection<BlockItemId> WEIGHTED_PRESSURE_PLATE = createSimpleCopper("weighted_pressure_plate");
 
-    private TCABlockItemIds() {
-        throw new UnsupportedOperationException("TCABlockItemIds contains only static declarations.");
-    }
-
     private static BlockItemId create(String name) {
-        Identifier id = TCAConstants.id(name);
+        final Identifier id = TCAConstants.id(name);
         return BlockItemId.create(id, id);
     }
 

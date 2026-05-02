@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.datagen.model;
+package net.frozenblock.thecopperierage.data.model;
 
 import java.util.Optional;
 import net.fabricmc.api.EnvType;
@@ -316,12 +316,12 @@ public final class TCAModelProvider extends FabricModelProvider {
 
 	public static Unbaked createOxidizableDispatch(Unbaked unaffected, Unbaked exposed, Unbaked weathered, Unbaked oxidized) {
 		return ItemModelUtils.select(
-			new OxidizedItemsEnabled(),
+			OxidizedItemsEnabled.INSTANCE,
 			unaffected,
 			ItemModelUtils.when(
 				true,
 				ItemModelUtils.select(
-					new WeatherState(),
+					WeatherState.INSTANCE,
 					unaffected,
 					ItemModelUtils.when(WeatheringCopper.WeatherState.EXPOSED, exposed),
 					ItemModelUtils.when(WeatheringCopper.WeatherState.WEATHERED, weathered),

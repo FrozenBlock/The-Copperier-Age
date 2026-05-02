@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.datagen.tag;
+package net.frozenblock.thecopperierage.data.tag;
 
 import java.util.concurrent.CompletableFuture;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
@@ -24,63 +24,38 @@ import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 import net.frozenblock.lib.tag.api.FrozenLibBlockTags;
 import net.frozenblock.thecopperierage.references.TCABlockIds;
 import net.frozenblock.thecopperierage.references.TCABlockItemIds;
+import net.frozenblock.thecopperierage.tag.TCABlockItemTags;
 import net.frozenblock.thecopperierage.tag.TCABlockTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.tags.BlockItemTagsProvider;
 import net.minecraft.data.tags.TagAppender;
 import net.minecraft.references.BlockIds;
-import net.minecraft.references.BlockItemId;
 import net.minecraft.references.BlockItemIds;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.ColorCollection;
-import net.minecraft.world.level.block.WeatheringCopperCollection;
 
-public final class TCABlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
+public final class TCABlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
 
-	public TCABlockTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+	public TCABlockTagsProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
 		super(output, registries);
 	}
 
 	@Override
 	protected void addTags(HolderLookup.Provider registries) {
-		this.builder(BlockTags.COPPER);
-
-		this.builder(BlockTags.LANTERNS);
-
-		this.builder(BlockTags.BUTTONS)
-			.addOptionalTag(TCABlockTags.COPPER_BUTTONS);
+		new TCABlockItemTagsProvider(tagId -> BlockItemTagsProvider.wrapForBlocks(this.tag(tagId.block()))).run();
 
 		this.builder(BlockTags.PRESSURE_PLATES)
-			.addOptionalTag(TCABlockTags.COPPER_PRESSURE_PLATES);
+			.addOptionalTag(TCABlockItemTags.COPPER_PRESSURE_PLATES.block());
 
 		this.builder(BlockTags.CAMPFIRES)
 			.add(TCABlockItemIds.COPPER_CAMPFIRE);
 
 		this.builder(BlockTags.FIRE)
 			.add(TCABlockIds.COPPER_FIRE);
-
-		this.builder(TCABlockTags.GEARBOXES)
-			.addAll(toIds(TCABlockItemIds.GEARBOX))
-			.addTag(TCABlockTags.STICKY_GEARBOXES);
-
-		this.builder(TCABlockTags.STICKY_GEARBOXES)
-			.addAll(toIds(TCABlockItemIds.STICKY_GEARBOX));
-
-		this.builder(TCABlockTags.COPPER_FANS)
-			.addAll(toIds(TCABlockItemIds.COPPER_FAN));
-
-		this.builder(TCABlockTags.CHIMES)
-			.addAll(toIds(TCABlockItemIds.CHIME));
-
-		this.builder(TCABlockTags.COPPER_BUTTONS)
-			.addAll(toIds(TCABlockItemIds.COPPER_BUTTON));
-
-		this.builder(TCABlockTags.COPPER_PRESSURE_PLATES)
-			.addAll(toIds(TCABlockItemIds.WEIGHTED_PRESSURE_PLATE));
 
 		this.builder(BlockTags.MINEABLE_WITH_AXE)
 			.add(TCABlockItemIds.COPPER_CAMPFIRE)
@@ -91,11 +66,11 @@ public final class TCABlockTagProvider extends FabricTagsProvider.BlockTagsProvi
 			.add(TCABlockItemIds.COPPER_JACK_O_LANTERN, TCABlockItemIds.REDSTONE_JACK_O_LANTERN);
 
 		this.builder(BlockTags.MINEABLE_WITH_PICKAXE)
-			.addOptionalTag(TCABlockTags.GEARBOXES)
-			.addOptionalTag(TCABlockTags.COPPER_FANS)
-			.addOptionalTag(TCABlockTags.CHIMES)
-			.addOptionalTag(TCABlockTags.COPPER_BUTTONS)
-			.addOptionalTag(TCABlockTags.COPPER_PRESSURE_PLATES);
+			.addOptionalTag(TCABlockItemTags.GEARBOXES.block())
+			.addOptionalTag(TCABlockItemTags.COPPER_FANS.block())
+			.addOptionalTag(TCABlockItemTags.CHIMES.block())
+			.addOptionalTag(TCABlockItemTags.COPPER_BUTTONS.block())
+			.addOptionalTag(TCABlockItemTags.COPPER_PRESSURE_PLATES.block());
 
 		this.builder(BlockTags.MINEABLE_WITH_SHOVEL)
 			.add(TCABlockItemIds.REDSTONE_GRIT);
@@ -116,22 +91,22 @@ public final class TCABlockTagProvider extends FabricTagsProvider.BlockTagsProvi
 			.addOptional(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("trailiertales", "coffin")));
 
 		this.builder(FrozenLibBlockTags.HAS_PUSHABLE_BLOCK_ENTITY)
-			.addOptionalTag(TCABlockTags.STICKY_GEARBOXES)
+			.addOptionalTag(TCABlockItemTags.STICKY_GEARBOXES.block())
 			.add(TCABlockItemIds.CRATE);
 
 		this.builder(FrozenLibBlockTags.BLOWING_CAN_PASS_THROUGH)
-			.addOptionalTag(TCABlockTags.COPPER_FANS)
-			.addOptionalTag(TCABlockTags.CHIMES);
+			.addOptionalTag(TCABlockItemTags.COPPER_FANS.block())
+			.addOptionalTag(TCABlockItemTags.CHIMES.block());
 
 		this.builder(FrozenLibBlockTags.STRUCTURE_PLACE_SCHEDULES_TICK)
-			.addOptionalTag(TCABlockTags.COPPER_FANS);
+			.addOptionalTag(TCABlockItemTags.COPPER_FANS.block());
 
 		final TagAppender<Block> copperFireBaseBlocksTag = this.builder(TCABlockTags.COPPER_FIRE_BASE_BLOCKS);
 		registries.lookupOrThrow(Registries.BLOCK)
 			.listElements()
 			.forEach(block -> {
-				final Identifier location = block.key().identifier();
-				final String path = location.getPath();
+				final Identifier id = block.key().identifier();
+				final String path = id.getPath();
 
 				if (!path.contains("copper")) return;
 				if (path.contains("bars")) return;
@@ -157,19 +132,11 @@ public final class TCABlockTagProvider extends FabricTagsProvider.BlockTagsProvi
 			.add(TCABlockItemIds.COPPER_JACK_O_LANTERN, TCABlockItemIds.REDSTONE_JACK_O_LANTERN);
 	}
 
-	private TagKey<Block> getTag(String id) {
-		return TagKey.create(this.registryKey, Identifier.parse(id));
+	private TagKey<Block> getTag(String name) {
+		return TagKey.create(this.registryKey, Identifier.parse(name));
 	}
 
 	private ResourceKey<Block> getKey(String namespace, String path) {
 		return ResourceKey.create(this.registryKey, Identifier.fromNamespaceAndPath(namespace, path));
-	}
-
-	private static ColorCollection<ResourceKey<Block>> toIds(final ColorCollection<BlockItemId> ids) {
-		return ids.map(BlockItemId::block);
-	}
-
-	private static WeatheringCopperCollection<ResourceKey<Block>> toIds(final WeatheringCopperCollection<BlockItemId> ids) {
-		return ids.map(BlockItemId::block);
 	}
 }

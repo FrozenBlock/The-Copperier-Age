@@ -27,23 +27,23 @@ import net.minecraft.world.inventory.MenuType;
 
 public class CrateMenu extends ChestMenu {
 
-	public CrateMenu(MenuType<?> menuType, int i, Inventory inventory, Container container) {
-		super(menuType, i, inventory, container, CrateBlockEntity.ROW_COUNT);
+	public CrateMenu(MenuType<?> menuType, int containerId, Inventory inventory, Container container) {
+		super(menuType, containerId, inventory, container, CrateBlockEntity.ROW_COUNT);
 	}
 
-	public static CrateMenu create(int i, Inventory inventory) {
-		return new CrateMenu(TCAMenuTypes.CRATE, i, inventory, new SimpleContainer(9 * CrateBlockEntity.ROW_COUNT));
+	public static CrateMenu create(int containerId, Inventory inventory) {
+		return new CrateMenu(TCAMenuTypes.CRATE, containerId, inventory, new SimpleContainer(9 * CrateBlockEntity.ROW_COUNT));
 	}
 
-	public static CrateMenu create(int i, Inventory inventory, Container container) {
-		return new CrateMenu(TCAMenuTypes.CRATE, i, inventory, container);
+	public static CrateMenu create(int containerId, Inventory inventory, Container container) {
+		return new CrateMenu(TCAMenuTypes.CRATE, containerId, inventory, container);
 	}
 
 	@Override
-	public void addChestGrid(Container container, int startingX, int startingY) {
+	public void addChestGrid(Container container, int left, int top) {
 		for (int row = 0; row < this.getRowCount(); row++) {
 			for (int column = 0; column < 9; column++) {
-				this.addSlot(new CrateSlot(container, column + row * 9, startingX + column * 18, startingY + row * 18));
+				this.addSlot(new CrateSlot(container, column + row * 9, left + column * 18, top + row * 18));
 			}
 		}
 	}

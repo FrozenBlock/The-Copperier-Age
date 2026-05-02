@@ -28,13 +28,11 @@ public final class TCAStats {
 	public static final Identifier CHIME_RING = makeCustomStat("chime_ring", StatFormatter.DEFAULT);
 	public static final Identifier OPEN_CRATE = makeCustomStat("open_crate", StatFormatter.DEFAULT);
 
-	public static void init() {
-		TCAConstants.logWithModId("Registering Stats for", TCAConstants.UNSTABLE_LOGGING);
-	}
+	public static void init() {}
 
-	private static Identifier makeCustomStat(String id, StatFormatter formatter) {
-		final Identifier identifier = TCAConstants.id(id);
-		Registry.register(BuiltInRegistries.CUSTOM_STAT, id, identifier);
+	private static Identifier makeCustomStat(String name, StatFormatter formatter) {
+		final Identifier identifier = TCAConstants.id(name);
+		Registry.register(BuiltInRegistries.CUSTOM_STAT, name, identifier);
 		Stats.CUSTOM.get(identifier, formatter);
 		return identifier;
 	}

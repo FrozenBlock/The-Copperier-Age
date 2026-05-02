@@ -26,7 +26,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.block.SoundType;
 
 public final class TCASounds {
-
 	// BLOCK
 	public static final SoundEvent BLOCK_GEARBOX_ON = register("block.gearbox.on");
 	public static final SoundEvent BLOCK_GEARBOX_OFF = register("block.gearbox.off");
@@ -66,6 +65,7 @@ public final class TCASounds {
 	public static final Holder.Reference<SoundEvent> ITEM_COPPER_HORN_CLARINET = registerForHolder("item.copper_horn.clarinet");
 	public static final Holder.Reference<SoundEvent> ITEM_COPPER_HORN_TRUMPET = registerForHolder("item.copper_horn.trumpet");
 	public static final Holder.Reference<SoundEvent> ITEM_COPPER_HORN_TROMBONE = registerForHolder("item.copper_horn.trombone");
+	public static final SoundEvent ITEM_WRENCH_USE = register("item.wrench.use");
 
 	// ENTITY
 	public static final SoundEvent ENTITY_COPPER_GOLEM_BUTTON_PRESS = register("entity.copper_golem.button_press");
@@ -73,31 +73,18 @@ public final class TCASounds {
 	// UI
 	public static final Holder.Reference<SoundEvent> UI_CRATE_CLICK_FAIL = registerForHolder("ui.crate.click_fail");
 
-	public static final SoundEvent ITEM_WRENCH_USE = register("item.wrench.use");
-
-	private TCASounds() {
-		throw new UnsupportedOperationException("TCASounds contains only static declarations.");
+	private static Holder.Reference<SoundEvent> registerForHolder(String name) {
+		return registerForHolder(TCAConstants.id(name));
 	}
 
-	private static Holder.Reference<SoundEvent> registerForHolder(String string) {
-		return registerForHolder(TCAConstants.id(string));
-	}
-
-	private static Holder.Reference<SoundEvent> registerForHolder(Identifier identifier) {
-		return registerForHolder(identifier, identifier);
-	}
-
-	public static SoundEvent register(String path) {
-		var id = TCAConstants.id(path);
+	public static SoundEvent register(String name) {
+		final Identifier id = TCAConstants.id(name);
 		return Registry.register(BuiltInRegistries.SOUND_EVENT, id, SoundEvent.createVariableRangeEvent(id));
 	}
 
-	private static Holder.Reference<SoundEvent> registerForHolder(Identifier identifier, Identifier identifier2) {
-		return Registry.registerForHolder(BuiltInRegistries.SOUND_EVENT, identifier, SoundEvent.createVariableRangeEvent(identifier2));
+	private static Holder.Reference<SoundEvent> registerForHolder(Identifier id) {
+		return Registry.registerForHolder(BuiltInRegistries.SOUND_EVENT, id, SoundEvent.createVariableRangeEvent(id));
 	}
 
-	public static void init() {
-		TCAConstants.logWithModId("Registering SoundEvents for", TCAConstants.UNSTABLE_LOGGING);
-	}
-
+	public static void init() {}
 }

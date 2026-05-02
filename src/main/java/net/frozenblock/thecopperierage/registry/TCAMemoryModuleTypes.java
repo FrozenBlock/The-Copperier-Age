@@ -31,14 +31,6 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.animal.golem.CopperGolem;
 
 public final class TCAMemoryModuleTypes {
-
-	private TCAMemoryModuleTypes() {
-		throw new UnsupportedOperationException("TCAMemoryModuleTypes contains only static declarations.");
-	}
-
-	public static void init() {
-	}
-
 	public static final MemoryModuleType<Set<GlobalPos>> UNREACHABLE_BUTTON_PRESS_BLOCK_POSITIONS = register(
 		"unreachable_button_press_block_positions",
 		GlobalPos.CODEC.listOf().xmap(Sets::newHashSet, Lists::newArrayList)
@@ -48,12 +40,13 @@ public final class TCAMemoryModuleTypes {
 	public static final MemoryModuleType<Integer> BUTTON_PRESS_COOLDOWN_TICKS = register("button_press_cooldown_ticks", Codec.INT);
 	public static final MemoryModuleType<Integer> NEARBY_BUTTON_SEARCH_TICKS = register("nearby_button_search_ticks", Codec.INT);
 
-	private static <U> MemoryModuleType<U> register(String path, Codec<U> codec) {
-		return Registry.register(BuiltInRegistries.MEMORY_MODULE_TYPE, TCAConstants.id(path), new MemoryModuleType<>(Optional.of(codec)));
+	public static void init() {}
+
+	private static <U> MemoryModuleType<U> register(String name, Codec<U> codec) {
+		return Registry.register(BuiltInRegistries.MEMORY_MODULE_TYPE, TCAConstants.id(name), new MemoryModuleType<>(Optional.of(codec)));
 	}
 
-	private static <U> MemoryModuleType<U> register(String path) {
-		return Registry.register(BuiltInRegistries.MEMORY_MODULE_TYPE, TCAConstants.id(path), new MemoryModuleType<>(Optional.empty()));
+	private static <U> MemoryModuleType<U> register(String name) {
+		return Registry.register(BuiltInRegistries.MEMORY_MODULE_TYPE, TCAConstants.id(name), new MemoryModuleType<>(Optional.empty()));
 	}
-
 }

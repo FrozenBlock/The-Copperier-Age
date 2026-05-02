@@ -19,7 +19,7 @@ package net.frozenblock.thecopperierage.mixin.datagen.client;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.frozenblock.thecopperierage.datagen.model.TCAPackModelProvider;
+import net.frozenblock.thecopperierage.data.model.TCAPackModelProvider;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.renderer.block.dispatch.VariantMutator;
 import org.spongepowered.asm.mixin.Mixin;

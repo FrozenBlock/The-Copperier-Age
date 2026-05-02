@@ -23,7 +23,7 @@ import com.mojang.datafixers.util.Pair;
 import java.util.ArrayList;
 import net.frozenblock.thecopperierage.entity.ai.coppergolem.CopperGolemPressButton;
 import net.frozenblock.thecopperierage.registry.TCAMemoryModuleTypes;
-import net.frozenblock.thecopperierage.tag.TCABlockTags;
+import net.frozenblock.thecopperierage.tag.TCABlockItemTags;
 import net.minecraft.world.entity.ai.behavior.CountDownCooldownTicks;
 import net.minecraft.world.entity.animal.golem.CopperGolemAi;
 import org.spongepowered.asm.mixin.Mixin;
@@ -61,7 +61,7 @@ public class CopperGolemAiMixin {
 				0,
 				new CopperGolemPressButton(
 					1F,
-					state -> state.is(TCABlockTags.COPPER_BUTTONS),
+					state -> state.is(TCABlockItemTags.COPPER_BUTTONS.block()),
 					12,
 					6
 				)

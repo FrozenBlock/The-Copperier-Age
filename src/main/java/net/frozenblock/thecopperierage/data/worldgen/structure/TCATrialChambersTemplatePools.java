@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.structure;
+package net.frozenblock.thecopperierage.data.worldgen.structure;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
@@ -34,12 +34,12 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 
 public class TCATrialChambersTemplatePools {
 
-	public static void bootstrapTemplatePool(BootstrapContext<StructureTemplatePool> pool) {
-		HolderGetter<StructureTemplatePool> holderGetter = pool.lookup(Registries.TEMPLATE_POOL);
-		Holder<StructureTemplatePool> empty = holderGetter.getOrThrow(Pools.EMPTY);
+	public static void bootstrapTemplatePool(BootstrapContext<StructureTemplatePool> registries) {
+		final HolderGetter<StructureTemplatePool> pools = registries.lookup(Registries.TEMPLATE_POOL);
+		final Holder<StructureTemplatePool> empty = pools.getOrThrow(Pools.EMPTY);
 
 		register(
-			pool,
+			registries,
 			string("chamber/addon"),
 			new StructureTemplatePool(
 				empty,
@@ -103,7 +103,7 @@ public class TCATrialChambersTemplatePools {
 		return entries.register(key, new StructureProcessorList(list));
 	}
 
-	public static void register(BootstrapContext<StructureTemplatePool> pool, String location, StructureTemplatePool templatePool) {
-		pool.register(Pools.parseKey(location), templatePool);
+	public static void register(BootstrapContext<StructureTemplatePool> pool, String name, StructureTemplatePool templatePool) {
+		pool.register(Pools.parseKey(name), templatePool);
 	}
 }

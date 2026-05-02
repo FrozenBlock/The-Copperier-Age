@@ -105,13 +105,13 @@ public final class TCAModelProvider extends FabricModelProvider {
 		createRedstoneGrit(generator, TCABlocks.REDSTONE_GRIT);
 
 		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.weathering().unaffected(), Blocks.COPPER_BLOCK.weathering().unaffected());
-		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed().unaffected(), Blocks.COPPER_BLOCK.waxed().unaffected());
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed().unaffected(), Blocks.COPPER_BLOCK.weathering().unaffected());
 		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.weathering().exposed(), Blocks.COPPER_BLOCK.weathering().exposed());
-		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed().exposed(), Blocks.COPPER_BLOCK.waxed().exposed());
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed().exposed(), Blocks.COPPER_BLOCK.weathering().exposed());
 		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.weathering().weathered(), Blocks.COPPER_BLOCK.weathering().weathered());
-		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed().weathered(), Blocks.COPPER_BLOCK.waxed().weathered());
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed().weathered(), Blocks.COPPER_BLOCK.weathering().weathered());
 		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.weathering().oxidized(), Blocks.COPPER_BLOCK.weathering().oxidized());
-		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed().oxidized(), Blocks.COPPER_BLOCK.waxed().oxidized());
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed().oxidized(), Blocks.COPPER_BLOCK.weathering().oxidized());
 
 		TCABlocks.GEARBOX.zipUnwaxedWaxed((block, waxedBlock) -> createGearbox(generator, block, waxedBlock));
 		TCABlocks.STICKY_GEARBOX.zipUnwaxedWaxed((block, waxedBlock) -> createGearbox(generator, block, waxedBlock));

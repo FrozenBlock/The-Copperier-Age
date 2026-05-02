@@ -24,9 +24,9 @@ import net.frozenblock.thecopperierage.references.TCAItemIds;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.InstrumentComponent;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.block.WeatheringCopperCollection;
-import net.minecraft.world.item.component.InstrumentComponent;
 
 public final class TCAItems {
 	// BLOCK ITEMS

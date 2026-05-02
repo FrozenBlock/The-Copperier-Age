@@ -24,7 +24,6 @@ import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 import net.frozenblock.lib.tag.api.FrozenLibBlockTags;
 import net.frozenblock.thecopperierage.references.TCABlockIds;
 import net.frozenblock.thecopperierage.references.TCABlockItemIds;
-import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.tag.TCABlockTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -37,7 +36,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ColorCollection;
 import net.minecraft.world.level.block.WeatheringCopperCollection;
 

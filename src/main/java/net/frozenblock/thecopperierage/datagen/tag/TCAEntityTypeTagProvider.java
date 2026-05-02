@@ -28,7 +28,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityTypeIds;
-import net.minecraft.world.entity.EntityTypes;
 
 public final class TCAEntityTypeTagProvider extends FabricTagsProvider.EntityTypeTagsProvider {
 

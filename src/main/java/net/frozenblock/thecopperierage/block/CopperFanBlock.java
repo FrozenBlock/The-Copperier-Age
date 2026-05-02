@@ -23,12 +23,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.frozenblock.lib.particle.options.WindParticleOptions;
 import net.frozenblock.lib.wind.api.BlowingHelper;
 import net.frozenblock.lib.wind.api.WindDisturbance;
 import net.frozenblock.lib.wind.api.WindDisturbanceLogic;
 import net.frozenblock.lib.wind.api.WindManager;
+import net.frozenblock.lib.wind.client.impl.ClientWindManager;
 import net.frozenblock.thecopperierage.entity.impl.CopperFanQueuedMovementInterface;
 import net.frozenblock.thecopperierage.networking.packet.TCACopperFanBlowPacket;
 import net.frozenblock.thecopperierage.registry.TCASounds;
@@ -260,20 +262,19 @@ public class CopperFanBlock extends DirectionalBlock {
 			.orElse(mutable.immutable());
 		final AABB blowingArea = aabb(pos, posWithCutoff);
 		final Vec3 fanStartPos = Vec3.atCenterOf(pos);
+		final WindDisturbance<CopperFanBlock> windDisturbance = new WindDisturbance<CopperFanBlock>(
+			Optional.of(this),
+			fanStartPos,
+			blowingArea.inflate(0.5D).move(direction.step().mul(0.5F)),
+			WindDisturbanceLogic.getWindDisturbanceLogic(
+				!reverse ? TCAWindDisturbances.COPPER_FAN_WIND_DISTURBANCE : TCAWindDisturbances.COPPER_FAN_WIND_DISTURBANCE_REVERSE
+			).orElse(DUMMY_WIND_LOGIC)
+		);
 
 		if (level instanceof ServerLevel serverLevel) {
-			WindManager.getOrCreateWindManager(serverLevel).addWindDisturbanceAndSync(
-				new WindDisturbance<CopperFanBlock>(
-					Optional.of(this),
-					fanStartPos,
-					blowingArea.inflate(0.5D).move(direction.step().mul(0.5F)),
-					WindDisturbanceLogic.getWindDisturbanceLogic(
-						!reverse ? TCAWindDisturbances.COPPER_FAN_WIND_DISTURBANCE : TCAWindDisturbances.COPPER_FAN_WIND_DISTURBANCE_REVERSE
-					).orElse(DUMMY_WIND_LOGIC)
-				),
-				serverLevel
-			);
+			WindManager.getOrCreateWindManager(serverLevel).addWindDisturbance(windDisturbance);
 		} else if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+			addWindDisturbanceToClient(windDisturbance);
 			final RandomSource random = level.getRandom();
 			if (random.nextFloat() <= (!reverse ? 0.35F : 0.2F) && random.nextDouble() <= this.cosmeticStrength) {
 				final double sizeOfBlowingArea = Math.min(blowingArea.getSize() / 9D, 1D);
@@ -438,5 +439,10 @@ public class CopperFanBlock extends DirectionalBlock {
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(FACING, POWERED);
+	}
+
+	@Environment(EnvType.CLIENT)
+	private static void addWindDisturbanceToClient(WindDisturbance windDisturbance) {
+		ClientWindManager.addWindDisturbance(windDisturbance);
 	}
 }

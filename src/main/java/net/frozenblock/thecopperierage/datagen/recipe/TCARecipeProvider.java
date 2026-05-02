@@ -106,46 +106,46 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.unlockedBy("has_redstone", this.has(Items.REDSTONE))
 					.save(this.output);
 
-				this.shaped(RecipeCategory.BUILDING_BLOCKS, TCABlocks.COPPER_BUTTON.unaffected())
+				this.shaped(RecipeCategory.BUILDING_BLOCKS, TCABlocks.COPPER_BUTTON.weathering().unaffected())
 					.define('#', Ingredient.of(Items.COPPER_NUGGET))
 					.pattern("##")
 					.pattern("##")
 					.unlockedBy("has_copper_nugget", this.has(Items.COPPER_NUGGET))
 					.save(this.output);
 
-				createCopperPressurePlateRecipe(this, exporter, TCABlocks.WEIGHTED_PRESSURE_PLATE.unaffected(), Items.COPPER_INGOT);
+				createCopperPressurePlateRecipe(this, exporter, TCABlocks.WEIGHTED_PRESSURE_PLATE.weathering().unaffected(), Items.COPPER_INGOT);
 
-				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.unaffected(), Blocks.COPPER_BLOCK);
-				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.exposed(), Blocks.EXPOSED_COPPER);
-				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.weathered(), Blocks.WEATHERED_COPPER);
-				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.oxidized(), Blocks.OXIDIZED_COPPER);
+				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.weathering().unaffected(), Blocks.COPPER_BLOCK.weathering().unaffected());
+				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.weathering().exposed(), Blocks.COPPER_BLOCK.weathering().exposed());
+				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.weathering().weathered(), Blocks.COPPER_BLOCK.weathering().weathered());
+				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.weathering().oxidized(), Blocks.COPPER_BLOCK.weathering().oxidized());
 
-				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.waxed(), Blocks.WAXED_COPPER_BLOCK);
-				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.waxedExposed(), Blocks.WAXED_EXPOSED_COPPER);
-				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.waxedWeathered(), Blocks.WAXED_WEATHERED_COPPER);
-				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.waxedOxidized(), Blocks.WAXED_OXIDIZED_COPPER);
+				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.waxed().unaffected(), Blocks.COPPER_BLOCK.waxed().unaffected());
+				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.waxed().exposed(), Blocks.COPPER_BLOCK.waxed().exposed());
+				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.waxed().weathered(), Blocks.COPPER_BLOCK.waxed().weathered());
+				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.waxed().oxidized(), Blocks.COPPER_BLOCK.waxed().oxidized());
 
-				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.unaffected(), TCABlocks.GEARBOX.unaffected());
-				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.exposed(), TCABlocks.GEARBOX.exposed());
-				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.weathered(), TCABlocks.GEARBOX.weathered());
-				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.oxidized(), TCABlocks.GEARBOX.oxidized());
+				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.weathering().unaffected(), TCABlocks.GEARBOX.weathering().unaffected());
+				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.weathering().exposed(), TCABlocks.GEARBOX.weathering().exposed());
+				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.weathering().weathered(), TCABlocks.GEARBOX.weathering().weathered());
+				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.weathering().oxidized(), TCABlocks.GEARBOX.weathering().oxidized());
 
-				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.waxed(), TCABlocks.GEARBOX.waxed());
-				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.waxedExposed(), TCABlocks.GEARBOX.waxedExposed());
-				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.waxedWeathered(), TCABlocks.GEARBOX.waxedWeathered());
-				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.waxedOxidized(), TCABlocks.GEARBOX.waxedOxidized());
+				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.waxed().unaffected(), TCABlocks.GEARBOX.waxed().unaffected());
+				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.waxed().exposed(), TCABlocks.GEARBOX.waxed().exposed());
+				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.waxed().weathered(), TCABlocks.GEARBOX.waxed().weathered());
+				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.waxed().oxidized(), TCABlocks.GEARBOX.waxed().oxidized());
 
-				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.unaffected(), Blocks.COPPER_BLOCK);
-				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.exposed(), Blocks.EXPOSED_COPPER);
-				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.weathered(), Blocks.WEATHERED_COPPER);
-				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.oxidized(), Blocks.OXIDIZED_COPPER);
+				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.weathering().unaffected(), Blocks.COPPER_BLOCK.weathering().unaffected());
+				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.weathering().exposed(), Blocks.COPPER_BLOCK.weathering().exposed());
+				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.weathering().weathered(), Blocks.COPPER_BLOCK.weathering().weathered());
+				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.weathering().oxidized(), Blocks.COPPER_BLOCK.weathering().oxidized());
 
-				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.waxed(), Blocks.WAXED_COPPER_BLOCK);
-				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.waxedExposed(), Blocks.WAXED_EXPOSED_COPPER);
-				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.waxedWeathered(), Blocks.WAXED_WEATHERED_COPPER);
-				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.waxedOxidized(), Blocks.WAXED_OXIDIZED_COPPER);
+				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.waxed().unaffected(), Blocks.COPPER_BLOCK.waxed().unaffected());
+				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.waxed().exposed(), Blocks.COPPER_BLOCK.waxed().exposed());
+				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.waxed().weathered(), Blocks.COPPER_BLOCK.waxed().weathered());
+				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.waxed().oxidized(), Blocks.COPPER_BLOCK.waxed().oxidized());
 
-				this.shaped(RecipeCategory.DECORATIONS, TCABlocks.CHIME.unaffected(), 1)
+				this.shaped(RecipeCategory.DECORATIONS, TCABlocks.CHIME.weathering().unaffected(), 1)
 					.define('-', Ingredient.of(Items.COPPER_INGOT))
 					.define('T', Ingredient.of(Items.IRON_CHAIN))
 					.define('V', Ingredient.of(Items.AMETHYST_SHARD))

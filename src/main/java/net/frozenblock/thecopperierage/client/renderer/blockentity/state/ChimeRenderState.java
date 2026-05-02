@@ -44,11 +44,11 @@ public class ChimeRenderState extends BlockEntityRenderState {
 
 	public void extractTexture(BlockState state) {
 		Identifier texture = UNAFFECTED;
-		if (state.is(TCABlocks.CHIME.exposed()) || state.is(TCABlocks.CHIME.waxedExposed())) {
+		if (state.is(TCABlocks.CHIME.weathering().exposed()) || state.is(TCABlocks.CHIME.waxed().exposed())) {
 			texture = EXPOSED;
-		} else if (state.is(TCABlocks.CHIME.weathered()) || state.is(TCABlocks.CHIME.waxedWeathered())) {
+		} else if (state.is(TCABlocks.CHIME.weathering().weathered()) || state.is(TCABlocks.CHIME.weathering().weathered())) {
 			texture = WEATHERED;
-		} if (state.is(TCABlocks.CHIME.oxidized()) || state.is(TCABlocks.CHIME.waxedOxidized())) {
+		} if (state.is(TCABlocks.CHIME.weathering().oxidized()) || state.is(TCABlocks.CHIME.waxed().oxidized())) {
 			texture = OXIDIZED;
 		}
 		this.texture = texture;

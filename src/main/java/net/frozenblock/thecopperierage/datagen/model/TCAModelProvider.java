@@ -104,25 +104,25 @@ public final class TCAModelProvider extends FabricModelProvider {
 		generator.createCampfires(TCABlocks.COPPER_CAMPFIRE);
 		createRedstoneGrit(generator, TCABlocks.REDSTONE_GRIT);
 
-		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.unaffected(), Blocks.COPPER_BLOCK);
-		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed(), Blocks.COPPER_BLOCK);
-		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.exposed(), Blocks.EXPOSED_COPPER);
-		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxedExposed(), Blocks.EXPOSED_COPPER);
-		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.weathered(), Blocks.WEATHERED_COPPER);
-		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxedWeathered(), Blocks.WEATHERED_COPPER);
-		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.oxidized(), Blocks.OXIDIZED_COPPER);
-		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxedOxidized(), Blocks.OXIDIZED_COPPER);
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.weathering().unaffected(), Blocks.COPPER_BLOCK.weathering().unaffected());
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed().unaffected(), Blocks.COPPER_BLOCK.waxed().unaffected());
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.weathering().exposed(), Blocks.COPPER_BLOCK.weathering().exposed());
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed().exposed(), Blocks.COPPER_BLOCK.waxed().exposed());
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.weathering().weathered(), Blocks.COPPER_BLOCK.weathering().weathered());
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed().weathered(), Blocks.COPPER_BLOCK.waxed().weathered());
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.weathering().oxidized(), Blocks.COPPER_BLOCK.weathering().oxidized());
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed().oxidized(), Blocks.COPPER_BLOCK.waxed().oxidized());
 
-		TCABlocks.GEARBOX.waxedMapping().forEach((block, waxedBlock) -> createGearbox(generator, block, waxedBlock));
-		TCABlocks.STICKY_GEARBOX.waxedMapping().forEach((block, waxedBlock) -> createGearbox(generator, block, waxedBlock));
-		TCABlocks.COPPER_FAN.waxedMapping().forEach((block, waxedBlock) -> createCopperFan(generator, block, waxedBlock));
-		TCABlocks.CHIME.waxedMapping().forEach((block, waxedBlock) -> createChime(generator, block, waxedBlock));
+		TCABlocks.GEARBOX.zipUnwaxedWaxed((block, waxedBlock) -> createGearbox(generator, block, waxedBlock));
+		TCABlocks.STICKY_GEARBOX.zipUnwaxedWaxed((block, waxedBlock) -> createGearbox(generator, block, waxedBlock));
+		TCABlocks.COPPER_FAN.zipUnwaxedWaxed((block, waxedBlock) -> createCopperFan(generator, block, waxedBlock));
+		TCABlocks.CHIME.zipUnwaxedWaxed((block, waxedBlock) -> createChime(generator, block, waxedBlock));
 		createCrate(generator, TCABlocks.CRATE);
 
-		createCopperButton(generator, TCABlocks.COPPER_BUTTON.unaffected(), TCABlocks.COPPER_BUTTON.waxed(), Blocks.COPPER_BLOCK);
-		createCopperButton(generator, TCABlocks.COPPER_BUTTON.exposed(), TCABlocks.COPPER_BUTTON.waxedExposed(), Blocks.EXPOSED_COPPER);
-		createCopperButton(generator, TCABlocks.COPPER_BUTTON.weathered(), TCABlocks.COPPER_BUTTON.waxedWeathered(), Blocks.WEATHERED_COPPER);
-		createCopperButton(generator, TCABlocks.COPPER_BUTTON.oxidized(), TCABlocks.COPPER_BUTTON.waxedOxidized(), Blocks.OXIDIZED_COPPER);
+		createCopperButton(generator, TCABlocks.COPPER_BUTTON.weathering().unaffected(), TCABlocks.COPPER_BUTTON.waxed().unaffected(), Blocks.COPPER_BLOCK.weathering().unaffected());
+		createCopperButton(generator, TCABlocks.COPPER_BUTTON.weathering().exposed(), TCABlocks.COPPER_BUTTON.waxed().exposed(), Blocks.COPPER_BLOCK.weathering().exposed());
+		createCopperButton(generator, TCABlocks.COPPER_BUTTON.weathering().weathered(), TCABlocks.COPPER_BUTTON.waxed().weathered(), Blocks.COPPER_BLOCK.weathering().weathered());
+		createCopperButton(generator, TCABlocks.COPPER_BUTTON.weathering().oxidized(), TCABlocks.COPPER_BUTTON.waxed().oxidized(), Blocks.COPPER_BLOCK.weathering().oxidized());
 	}
 
 	@Override

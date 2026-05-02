@@ -153,7 +153,7 @@ public class FrozenLibIntegration extends ModIntegration {
 				trialChambers,
 				new BlockStateRespectingRuleProcessor(
 					ImmutableList.of(
-						new BlockStateRespectingProcessorRule(new BlockMatchTest(Blocks.OAK_BUTTON), AlwaysTrueTest.INSTANCE, TCABlocks.COPPER_BUTTON.waxed())
+						new BlockStateRespectingProcessorRule(new BlockMatchTest(Blocks.OAK_BUTTON), AlwaysTrueTest.INSTANCE, TCABlocks.COPPER_BUTTON.waxed().unaffected())
 					)
 				)
 			);
@@ -164,7 +164,7 @@ public class FrozenLibIntegration extends ModIntegration {
 				trialChambers,
 				new BlockStateRespectingRuleProcessor(
 					ImmutableList.of(
-						new BlockStateRespectingProcessorRule(new BlockMatchTest(Blocks.CHEST), AlwaysTrueTest.INSTANCE, Blocks.WAXED_COPPER_CHEST)
+						new BlockStateRespectingProcessorRule(new BlockMatchTest(Blocks.CHEST), AlwaysTrueTest.INSTANCE, Blocks.COPPER_CHEST.waxed().unaffected())
 					)
 				)
 			);
@@ -175,7 +175,7 @@ public class FrozenLibIntegration extends ModIntegration {
 				trialChambers,
 				new BlockStateRespectingRuleProcessor(
 					ImmutableList.of(
-						new BlockStateRespectingProcessorRule(new BlockMatchTest(Blocks.OAK_PRESSURE_PLATE), AlwaysTrueTest.INSTANCE, TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed())
+						new BlockStateRespectingProcessorRule(new BlockMatchTest(Blocks.OAK_PRESSURE_PLATE), AlwaysTrueTest.INSTANCE, TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed().unaffected())
 					)
 				)
 			);

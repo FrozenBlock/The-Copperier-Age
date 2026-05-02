@@ -24,8 +24,10 @@ import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.entity.ChimeBlockEntity;
 import net.frozenblock.thecopperierage.block.entity.CrateBlockEntity;
 import net.frozenblock.thecopperierage.block.entity.StickyGearboxBlockEntity;
+import net.frozenblock.thecopperierage.references.TCABlockEntityTypeIds;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Util;
 import net.minecraft.util.datafix.fixes.References;
 import net.minecraft.world.level.block.Block;
@@ -34,17 +36,17 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public final class TCABlockEntityTypes {
 	public static final BlockEntityType<ChimeBlockEntity> CHIME = register(
-		"chime",
+		TCABlockEntityTypeIds.CHIME,
 		ChimeBlockEntity::new,
 		TCABlocks.CHIME.asList()
 	);
 	public static final BlockEntityType<StickyGearboxBlockEntity> STICKY_GEARBOX = register(
-		"sticky_gearbox",
+		TCABlockEntityTypeIds.STICKY_GEARBOX,
 		StickyGearboxBlockEntity::new,
 		TCABlocks.STICKY_GEARBOX.asList()
 	);
 	public static final BlockEntityType<CrateBlockEntity> CRATE = register(
-		"crate",
+		TCABlockEntityTypeIds.CRATE,
 		CrateBlockEntity::new,
 		List.of(TCABlocks.CRATE)
 	);
@@ -53,9 +55,8 @@ public final class TCABlockEntityTypes {
 		TCAConstants.logWithModId("Registering BlockEntities for", TCAConstants.UNSTABLE_LOGGING);
 	}
 
-	private static <T extends BlockEntity> BlockEntityType<T> register(String path, BlockEntityType.BlockEntitySupplier<T> builder, Collection<Block> blocks) {
-		Util.fetchChoiceType(References.BLOCK_ENTITY, TCAConstants.string(path));
-		return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, TCAConstants.id(path), new BlockEntityType<>(builder, Set.copyOf(blocks)));
+	private static <T extends BlockEntity> BlockEntityType<T> register(ResourceKey<BlockEntityType<?>> id, BlockEntityType.BlockEntitySupplier<T> builder, Collection<Block> blocks) {
+		return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, id, new BlockEntityType<>(builder, Set.copyOf(blocks)));
 	}
 
 }

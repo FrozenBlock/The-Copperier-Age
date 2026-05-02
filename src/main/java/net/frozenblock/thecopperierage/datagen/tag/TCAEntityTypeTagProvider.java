@@ -27,6 +27,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypeIds;
+import net.minecraft.world.entity.EntityTypes;
 
 public final class TCAEntityTypeTagProvider extends FabricTagsProvider.EntityTypeTagsProvider {
 
@@ -36,64 +38,64 @@ public final class TCAEntityTypeTagProvider extends FabricTagsProvider.EntityTyp
 
 	@Override
 	protected void addTags(HolderLookup.Provider arg) {
-		this.valueLookupBuilder(TCAEntityTypeTags.COPPER_FAN_WEAKER_PUSH)
-			.add(EntityType.ALLAY)
-			.add(EntityType.HORSE)
-			.add(EntityType.ZOMBIE_HORSE)
-			.add(EntityType.SKELETON_HORSE)
-			.add(EntityType.DONKEY)
-			.add(EntityType.MULE)
-			.add(EntityType.LLAMA)
-			.add(EntityType.TRADER_LLAMA)
-			.add(EntityType.SNIFFER)
-			.add(EntityType.POLAR_BEAR)
-			.add(EntityType.HOGLIN)
-			.add(EntityType.ZOGLIN)
-			.add(EntityType.CAMEL)
-			.add(EntityType.GUARDIAN)
-			.add(EntityType.CREAKING)
-			.add(EntityType.GHAST)
-			.add(EntityType.HAPPY_GHAST);
+		this.builder(TCAEntityTypeTags.COPPER_FAN_WEAKER_PUSH)
+			.add(EntityTypeIds.ALLAY)
+			.add(EntityTypeIds.HORSE)
+			.add(EntityTypeIds.ZOMBIE_HORSE)
+			.add(EntityTypeIds.SKELETON_HORSE)
+			.add(EntityTypeIds.DONKEY)
+			.add(EntityTypeIds.MULE)
+			.add(EntityTypeIds.LLAMA)
+			.add(EntityTypeIds.TRADER_LLAMA)
+			.add(EntityTypeIds.SNIFFER)
+			.add(EntityTypeIds.POLAR_BEAR)
+			.add(EntityTypeIds.HOGLIN)
+			.add(EntityTypeIds.ZOGLIN)
+			.add(EntityTypeIds.CAMEL)
+			.add(EntityTypeIds.GUARDIAN)
+			.add(EntityTypeIds.CREAKING)
+			.add(EntityTypeIds.GHAST)
+			.add(EntityTypeIds.HAPPY_GHAST);
 
 		this.builder(TCAEntityTypeTags.COPPER_FAN_WEAKER_PUSH)
 			.addOptional(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath("wilderwild", "ostrich")));
 
-		this.valueLookupBuilder(TCAEntityTypeTags.COPPER_FAN_CANNOT_PUSH)
-			.add(EntityType.WITHER)
-			.add(EntityType.ENDER_DRAGON)
-			.add(EntityType.EYE_OF_ENDER)
-			.add(EntityType.BLOCK_DISPLAY)
-			.add(EntityType.MARKER)
-			.add(EntityType.BREEZE)
-			.add(EntityType.GIANT)
-			.add(EntityType.ELDER_GUARDIAN)
-			.add(EntityType.IRON_GOLEM)
-			.add(EntityType.WARDEN)
-			.add(EntityType.VEX)
-			.add(EntityType.SHULKER)
-			.add(EntityType.RAVAGER)
-			.add(EntityType.WIND_CHARGE);
+		this.builder(TCAEntityTypeTags.COPPER_FAN_CANNOT_PUSH)
+			.add(EntityTypeIds.WITHER)
+			.add(EntityTypeIds.ENDER_DRAGON)
+			.add(EntityTypeIds.EYE_OF_ENDER)
+			.add(EntityTypeIds.BLOCK_DISPLAY)
+			.add(EntityTypeIds.MARKER)
+			.add(EntityTypeIds.BREEZE)
+			.add(EntityTypeIds.GIANT)
+			.add(EntityTypeIds.ELDER_GUARDIAN)
+			.add(EntityTypeIds.IRON_GOLEM)
+			.add(EntityTypeIds.WARDEN)
+			.add(EntityTypeIds.VEX)
+			.add(EntityTypeIds.SHULKER)
+			.add(EntityTypeIds.RAVAGER)
+			.add(EntityTypeIds.WIND_CHARGE);
 
 		this.builder(TCAEntityTypeTags.COPPER_FAN_CANNOT_PUSH)
 			.addOptional(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath("trailiertales", "apparition"))); ;
 
-		this.valueLookupBuilder(TCAEntityTypeTags.GEARBOX_CANNOT_ROTATE)
-			.add(EntityType.WITHER)
-			.add(EntityType.ENDER_DRAGON)
-			.add(EntityType.EYE_OF_ENDER)
-			.add(EntityType.BLOCK_DISPLAY)
-			.add(EntityType.BREEZE)
-			.add(EntityType.BLAZE)
-			.add(EntityType.GIANT)
-			.add(EntityType.ELDER_GUARDIAN)
-			.add(EntityType.IRON_GOLEM)
-			.add(EntityType.VEX)
-			.add(EntityType.SHULKER)
-			.add(EntityType.RAVAGER)
-			.add(EntityType.GHAST)
-			.add(EntityType.HAPPY_GHAST)
-			.add(EntityType.ALLAY)
-			.add(EntityType.BAT);
+		this.builder(TCAEntityTypeTags.GEARBOX_CANNOT_ROTATE)
+			.add(EntityTypeIds.WITHER)
+			.add(EntityTypeIds.ENDER_DRAGON)
+			.add(EntityTypeIds.EYE_OF_ENDER)
+			.add(EntityTypeIds.BLOCK_DISPLAY)
+			.add(EntityTypeIds.BREEZE)
+			.add(EntityTypeIds.BLAZE)
+			.add(EntityTypeIds.GIANT)
+			.add(EntityTypeIds.ELDER_GUARDIAN)
+			.add(EntityTypeIds.IRON_GOLEM)
+			.add(EntityTypeIds.VEX)
+			.add(EntityTypeIds.SHULKER)
+			.add(EntityTypeIds.RAVAGER)
+			.add(EntityTypeIds.GHAST)
+			.add(EntityTypeIds.HAPPY_GHAST)
+			.add(EntityTypeIds.ALLAY)
+			.add(EntityTypeIds.BAT);
 
 		this.builder(TCAEntityTypeTags.GEARBOX_CANNOT_ROTATE)
 			.addOptionalTag(getTag("netheriernether:blazes"))

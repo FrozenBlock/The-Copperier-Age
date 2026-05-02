@@ -17,11 +17,8 @@
 
 package net.frozenblock.thecopperierage.registry;
 
-import java.util.function.BiFunction;
-import java.util.function.Function;
 import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry;
 import net.frozenblock.thecopperierage.TCAConstants;
-import net.frozenblock.thecopperierage.TCAFeatureFlags;
 import net.frozenblock.thecopperierage.block.ChimeBlock;
 import net.frozenblock.thecopperierage.block.CopperButtonBlock;
 import net.frozenblock.thecopperierage.block.CopperFanBlock;
@@ -38,33 +35,24 @@ import net.frozenblock.thecopperierage.block.WeatheringCopperFanBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperPressurePlateBlock;
 import net.frozenblock.thecopperierage.block.WeatheringGearboxBlock;
 import net.frozenblock.thecopperierage.block.WeatheringStickyGearboxBlock;
-import net.minecraft.core.Registry;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
-import net.minecraft.resources.ResourceKey;
+import net.frozenblock.thecopperierage.references.TCABlockIds;
+import net.frozenblock.thecopperierage.references.TCABlockItemIds;
 import net.minecraft.util.ColorRGBA;
-import net.minecraft.world.item.DoubleHighBlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.CarvedPumpkinBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.WeatheringCopper;
-import net.minecraft.world.level.block.WeatheringCopperBlocks;
-import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.WeatheringCopperCollection;
+import net.minecraft.world.level.block.entity.BlockEntityTypes;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
-import org.apache.commons.lang3.function.TriFunction;
 
 public final class TCABlocks {
-	public static final CopperFireBlock COPPER_FIRE = registerWithoutItem("copper_fire",
+	public static final Block COPPER_FIRE = Blocks.register(TCABlockIds.COPPER_FIRE,
 		CopperFireBlock::new,
 		BlockBehaviour.Properties.of()
 			.mapColor(MapColor.COLOR_LIGHT_GREEN)
@@ -73,7 +61,7 @@ public final class TCABlocks {
 			.randomTicks()
 	);
 
-	public static final CampfireBlock COPPER_CAMPFIRE = register("copper_campfire",
+	public static final Block COPPER_CAMPFIRE = Blocks.register(TCABlockItemIds.COPPER_CAMPFIRE,
 		properties -> new CampfireBlock(true, 1, properties),
 		BlockBehaviour.Properties.of()
 			.mapColor(MapColor.PODZOL)
@@ -85,7 +73,7 @@ public final class TCABlocks {
 			.ignitedByLava()
 	);
 
-	public static final CarvedPumpkinBlock COPPER_JACK_O_LANTERN = register("copper_jack_o_lantern",
+	public static final Block COPPER_JACK_O_LANTERN = Blocks.register(TCABlockItemIds.COPPER_JACK_O_LANTERN,
 		CarvedPumpkinBlock::new,
 		BlockBehaviour.Properties.of()
 			.mapColor(MapColor.COLOR_ORANGE)
@@ -96,7 +84,7 @@ public final class TCABlocks {
 			.pushReaction(PushReaction.DESTROY)
 	);
 
-	public static final RedstonePumpkinBlock REDSTONE_JACK_O_LANTERN = register("redstone_jack_o_lantern",
+	public static final Block REDSTONE_JACK_O_LANTERN = Blocks.register(TCABlockItemIds.REDSTONE_JACK_O_LANTERN,
 		RedstonePumpkinBlock::new,
 		BlockBehaviour.Properties.of()
 			.mapColor(MapColor.COLOR_ORANGE)
@@ -108,7 +96,7 @@ public final class TCABlocks {
 			.isRedstoneConductor(Blocks::never)
 	);
 
-	public static final RedstoneGritBlock REDSTONE_GRIT = register("redstone_grit",
+	public static final Block REDSTONE_GRIT = Blocks.register(TCABlockItemIds.REDSTONE_GRIT,
 		properties -> new RedstoneGritBlock(new ColorRGBA(0xe3001a), properties),
 		BlockBehaviour.Properties.of()
 			.mapColor(MapColor.COLOR_RED)
@@ -119,10 +107,10 @@ public final class TCABlocks {
 			.isRedstoneConductor(Blocks::never)
 	);
 
-	public static final WeatheringCopperBlocks GEARBOX = WeatheringCopperBlocks.create(
-		"gearbox",
-		TCABlocks::register,
-		GearboxBlock::new,
+	public static final WeatheringCopperCollection<Block> GEARBOX = WeatheringCopperCollection.registerBlocks(
+		TCABlockItemIds.GEARBOX,
+		Blocks::register,
+		(weatherState, properties) -> new GearboxBlock(properties),
 		WeatheringGearboxBlock::new,
 		(weatherState) -> BlockBehaviour.Properties.of()
 			.mapColor(MapColor.STONE)
@@ -130,10 +118,10 @@ public final class TCABlocks {
 			.isRedstoneConductor(Blocks::never)
 	);
 
-	public static final WeatheringCopperBlocks STICKY_GEARBOX = WeatheringCopperBlocks.create(
-		"sticky_gearbox",
-		TCABlocks::register,
-		StickyGearboxBlock::new,
+	public static final WeatheringCopperCollection<Block> STICKY_GEARBOX = WeatheringCopperCollection.registerBlocks(
+		TCABlockItemIds.STICKY_GEARBOX,
+		Blocks::register,
+		(weatherState, properties) -> new StickyGearboxBlock(properties),
 		WeatheringStickyGearboxBlock::new,
 		(weatherState) -> BlockBehaviour.Properties.of()
 			.mapColor(MapColor.STONE)
@@ -141,9 +129,9 @@ public final class TCABlocks {
 			.isRedstoneConductor(Blocks::never)
 	);
 
-	public static final WeatheringCopperBlocks COPPER_FAN = createWeatheringCopperSet(
-		"copper_fan",
-		TCABlocks::register,
+	public static final WeatheringCopperCollection<Block> COPPER_FAN = WeatheringCopperCollection.registerBlocks(
+		TCABlockItemIds.COPPER_FAN,
+		Blocks::register,
 		CopperFanBlock::new,
 		WeatheringCopperFanBlock::new,
 		(weatherState) -> BlockBehaviour.Properties.of()
@@ -154,10 +142,10 @@ public final class TCABlocks {
 			.isSuffocating(Blocks::never)
 	);
 
-	public static final WeatheringCopperBlocks CHIME = WeatheringCopperBlocks.create(
-		"chime",
-		TCABlocks::register,
-		ChimeBlock::new,
+	public static final WeatheringCopperCollection<Block> CHIME = WeatheringCopperCollection.registerBlocks(
+		TCABlockItemIds.CHIME,
+		Blocks::register,
+		(weatherState, properties) -> new ChimeBlock(properties),
 		WeatheringChimeBlock::new,
 		(weatherState) -> BlockBehaviour.Properties.of()
 			.mapColor(MapColor.METAL)
@@ -167,8 +155,7 @@ public final class TCABlocks {
 			.noOcclusion()
 	);
 
-	public static final CrateBlock CRATE = registerWithContainerComponentItem(
-		"crate",
+	public static final Block CRATE = Blocks.register(TCABlockItemIds.CRATE,
 		CrateBlock::new,
 		BlockBehaviour.Properties.of()
 			.mapColor(MapColor.WOOD)
@@ -178,9 +165,9 @@ public final class TCABlocks {
 			.ignitedByLava()
 	);
 
-	public static final WeatheringCopperBlocks COPPER_BUTTON = createWeatheringCopperSet(
-		"copper_button",
-		TCABlocks::register,
+	public static final WeatheringCopperCollection<Block> COPPER_BUTTON = WeatheringCopperCollection.registerBlocks(
+		TCABlockItemIds.COPPER_BUTTON,
+		Blocks::register,
 		CopperButtonBlock::new,
 		WeatheringCopperButtonBlock::new,
 		(weatherState) -> BlockBehaviour.Properties.of()
@@ -190,9 +177,9 @@ public final class TCABlocks {
 			.pushReaction(PushReaction.DESTROY)
 	);
 
-	public static final WeatheringCopperBlocks WEIGHTED_PRESSURE_PLATE = createWeatheringCopperSet(
-		"weighted_pressure_plate",
-		TCABlocks::register,
+	public static final WeatheringCopperCollection<Block> WEIGHTED_PRESSURE_PLATE = WeatheringCopperCollection.registerBlocks(
+		TCABlockItemIds.WEIGHTED_PRESSURE_PLATE,
+		Blocks::register,
 		CopperPressurePlateBlock::new,
 		WeatheringCopperPressurePlateBlock::new,
 		(weatherState) -> BlockBehaviour.Properties.of()
@@ -210,51 +197,10 @@ public final class TCABlocks {
 		TCAConstants.logWithModId("Registering Blocks for", TCAConstants.UNSTABLE_LOGGING);
 	}
 
-	private static <T extends Block> T registerWithoutItem(String path, Function<BlockBehaviour.Properties, T> block, BlockBehaviour.Properties properties) {
-		Identifier id = TCAConstants.id(path);
-		properties = properties.requiredFeatures(TCAFeatureFlags.FEATURE_FLAG);
-		return doRegister(id, makeBlock(block, properties, id));
-	}
-
-	private static <T extends Block> T register(String path, Function<BlockBehaviour.Properties, T> block, BlockBehaviour.Properties properties) {
-		T registered = registerWithoutItem(path, block, properties);
-		Items.registerBlock(registered);
-		return registered;
-	}
-
-	private static <T extends Block> T registerWithContainerComponentItem(String path, Function<BlockBehaviour.Properties, T> block, BlockBehaviour.Properties properties) {
-		T registered = registerWithoutItem(path, block, properties);
-		Items.registerBlock(registered, new Item.Properties().component(DataComponents.CONTAINER, ItemContainerContents.EMPTY));
-		return registered;
-	}
-
-	private static <T extends Block> T registerWithDoubleHighItem(String path, Function<BlockBehaviour.Properties, T> block, BlockBehaviour.Properties properties) {
-		T registered = registerWithoutItem(path, block, properties);
-		Items.registerBlock(registered, DoubleHighBlockItem::new);
-		return registered;
-	}
-
-	private static <T extends Block> T registerWithFireResistantItem(String path, Function<BlockBehaviour.Properties, T> block, BlockBehaviour.Properties properties) {
-		T registered = registerWithoutItem(path, block, properties);
-		Items.registerBlock(registered, new Item.Properties().fireResistant());
-		return registered;
-	}
-
-	private static <T extends Block> T doRegister(Identifier id, T block) {
-		if (BuiltInRegistries.BLOCK.getOptional(id).isEmpty()) {
-			return Registry.register(BuiltInRegistries.BLOCK, id, block);
-		}
-		throw new IllegalArgumentException("Block with id " + id + " is already in the block registry.");
-	}
-
-	private static <T extends Block> T makeBlock(Function<BlockBehaviour.Properties, T> function, BlockBehaviour.Properties properties, Identifier id) {
-		return function.apply(properties.setId(ResourceKey.create(Registries.BLOCK, id)));
-	}
-
 	public static void registerBlockProperties() {
 		registerDispenses();
 
-		BlockEntityType.CAMPFIRE.addValidBlock(TCABlocks.COPPER_CAMPFIRE);
+		BlockEntityTypes.CAMPFIRE.addValidBlock(TCABlocks.COPPER_CAMPFIRE);
 
 		OxidizableBlocksRegistry.registerWeatheringCopperBlocks(GEARBOX);
 		OxidizableBlocksRegistry.registerWeatheringCopperBlocks(STICKY_GEARBOX);
@@ -275,55 +221,4 @@ public final class TCABlocks {
 		return MapColor.NONE;
 	}
 
-	public static <W extends Block> WeatheringCopperBlocks createWeatheringCopperSet(
-		String id,
-		TriFunction<String, Function<BlockBehaviour.Properties, Block>, BlockBehaviour.Properties, Block> blockCreator,
-		BiFunction<WeatheringCopper.WeatherState, BlockBehaviour.Properties, W> waxedBlockCreator,
-		BiFunction<WeatheringCopper.WeatherState, BlockBehaviour.Properties, ? extends Block> weatheringBlockCreator,
-		Function<WeatheringCopper.WeatherState, BlockBehaviour.Properties> propertiesCreator
-	) {
-		final Block unaffected = blockCreator.apply(
-			id,
-			properties -> weatheringBlockCreator.apply(WeatheringCopper.WeatherState.UNAFFECTED, properties),
-			propertiesCreator.apply(WeatheringCopper.WeatherState.UNAFFECTED)
-		);
-		final Block exposed = blockCreator.apply(
-			"exposed_" + id,
-			properties -> weatheringBlockCreator.apply(WeatheringCopper.WeatherState.EXPOSED, properties),
-			propertiesCreator.apply(WeatheringCopper.WeatherState.EXPOSED)
-		);
-		final Block weathered = blockCreator.apply(
-			"weathered_" + id,
-			properties -> weatheringBlockCreator.apply(WeatheringCopper.WeatherState.WEATHERED, properties),
-			propertiesCreator.apply(WeatheringCopper.WeatherState.WEATHERED)
-		);
-		final Block oxidized = blockCreator.apply(
-			"oxidized_" + id,
-			properties -> weatheringBlockCreator.apply(WeatheringCopper.WeatherState.OXIDIZED, properties),
-			propertiesCreator.apply(WeatheringCopper.WeatherState.OXIDIZED)
-		);
-
-		final Block waxed = blockCreator.apply(
-			"waxed_" + id,
-			properties -> waxedBlockCreator.apply(WeatheringCopper.WeatherState.UNAFFECTED, properties),
-			propertiesCreator.apply(WeatheringCopper.WeatherState.UNAFFECTED)
-		);
-		final Block waxedExposed = blockCreator.apply(
-			"waxed_exposed_" + id,
-			properties -> waxedBlockCreator.apply(WeatheringCopper.WeatherState.EXPOSED, properties),
-			propertiesCreator.apply(WeatheringCopper.WeatherState.EXPOSED)
-		);
-		final Block waxedWeathered = blockCreator.apply(
-			"waxed_weathered_" + id,
-			properties -> waxedBlockCreator.apply(WeatheringCopper.WeatherState.WEATHERED, properties),
-			propertiesCreator.apply(WeatheringCopper.WeatherState.WEATHERED)
-		);
-		final Block waxedOxidized = blockCreator.apply(
-			"waxed_oxidized_" + id,
-			properties -> waxedBlockCreator.apply(WeatheringCopper.WeatherState.OXIDIZED, properties),
-			propertiesCreator.apply(WeatheringCopper.WeatherState.OXIDIZED)
-		);
-
-		return new WeatheringCopperBlocks(unaffected, exposed, weathered, oxidized, waxed, waxedExposed, waxedWeathered, waxedOxidized);
-	}
 }

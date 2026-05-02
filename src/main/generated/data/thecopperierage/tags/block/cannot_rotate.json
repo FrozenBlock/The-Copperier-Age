@@ -6,8 +6,8 @@
     "minecraft:end_portal_frame",
     "minecraft:nether_portal",
     "minecraft:big_dripleaf",
-    "minecraft:big_dripleaf_stem",
     "minecraft:small_dripleaf",
+    "minecraft:big_dripleaf_stem",
     {
       "id": "#minecraft:shulker_boxes",
       "required": false

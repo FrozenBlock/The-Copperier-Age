@@ -22,20 +22,28 @@ import java.util.concurrent.CompletableFuture;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
+import net.frozenblock.thecopperierage.references.TCABlockItemIds;
+import net.frozenblock.thecopperierage.references.TCAItemIds;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.frozenblock.thecopperierage.tag.TCAItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.tags.BlockItemTagAppender;
 import net.minecraft.data.tags.TagAppender;
+import net.minecraft.references.BlockItemId;
+import net.minecraft.references.ItemIds;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BlockItemTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.ColorCollection;
 import net.minecraft.world.level.block.WeatheringCopper;
+import net.minecraft.world.level.block.WeatheringCopperCollection;
 
 public final class TCAItemTagProvider extends FabricTagsProvider.ItemTagsProvider {
 
@@ -45,70 +53,72 @@ public final class TCAItemTagProvider extends FabricTagsProvider.ItemTagsProvide
 
 	@Override
 	protected void addTags(HolderLookup.Provider arg) {
-		this.builder(ItemTags.BUTTONS)
+		// TODO 26.2 blockitemtag provider? might need fabric change
+		this.builder(BlockItemTags.BUTTONS.item())
 			.addOptionalTag(TCAItemTags.COPPER_BUTTONS);
 
-		final TagAppender<Item, Item> gearboxesTag = this.valueLookupBuilder(TCAItemTags.GEARBOXES);
-		TCABlocks.GEARBOX.forEach(block -> gearboxesTag.add(block.asItem()));
+		this.builder(TCAItemTags.GEARBOXES)
+			.addAll(toIds(TCABlockItemIds.GEARBOX))
+			.addTag(TCAItemTags.STICKY_GEARBOXES);
 
-		final TagAppender<Item, Item> stickyGearboxesTag = this.valueLookupBuilder(TCAItemTags.STICKY_GEARBOXES);
-		TCABlocks.STICKY_GEARBOX.forEach(block -> stickyGearboxesTag.add(block.asItem()));
-		gearboxesTag.addOptionalTag(TCAItemTags.STICKY_GEARBOXES);
+		this.builder(TCAItemTags.STICKY_GEARBOXES)
+			.addAll(toIds(TCABlockItemIds.STICKY_GEARBOX));
 
-		final TagAppender<Item, Item> copperFansTag = this.valueLookupBuilder(TCAItemTags.COPPER_FANS);
-		TCABlocks.COPPER_FAN.forEach(block -> copperFansTag.add(block.asItem()));
+		this.builder(TCAItemTags.COPPER_FANS)
+			.addAll(toIds(TCABlockItemIds.COPPER_FAN));
 
-		final TagAppender<Item, Item> chimesTag = this.valueLookupBuilder(TCAItemTags.CHIMES);
-		TCABlocks.CHIME.forEach(block -> chimesTag.add(block.asItem()));
+		this.builder(TCAItemTags.CHIMES)
+			.addAll(toIds(TCABlockItemIds.CHIME));
 
-		final TagAppender<Item, Item> copperButtonsTag = this.valueLookupBuilder(TCAItemTags.COPPER_BUTTONS);
-		TCABlocks.COPPER_BUTTON.forEach(block -> copperButtonsTag.add(block.asItem()));
+		this.builder(TCAItemTags.COPPER_BUTTONS)
+			.addAll(toIds(TCABlockItemIds.COPPER_BUTTON));
 
-		final TagAppender<Item, Item> copperPressurePlatesTag = this.valueLookupBuilder(TCAItemTags.COPPER_PRESSURE_PLATES);
-		TCABlocks.WEIGHTED_PRESSURE_PLATE.forEach(block -> copperPressurePlatesTag.add(block.asItem()));
+		this.builder(TCAItemTags.COPPER_PRESSURE_PLATES)
+			.addAll(toIds(TCABlockItemIds.WEIGHTED_PRESSURE_PLATE));
 
-		this.valueLookupBuilder(ItemTags.BREAKS_DECORATED_POTS)
-			.add(TCAItems.WRENCH);
+		this.builder(ItemTags.BREAKS_DECORATED_POTS)
+			.add(TCAItemIds.WRENCH);
 
-		this.valueLookupBuilder(ItemTags.DURABILITY_ENCHANTABLE)
-			.add(TCAItems.WRENCH);
+		this.builder(ItemTags.DURABILITY_ENCHANTABLE)
+			.add(TCAItemIds.WRENCH);
 
-		this.valueLookupBuilder(TCAItemTags.OXIDIZABLE_EQUIPMENT)
-			.add(Items.COPPER_SWORD)
-			.add(Items.COPPER_AXE)
-			.add(Items.COPPER_HOE)
-			.add(Items.COPPER_PICKAXE)
-			.add(Items.COPPER_SHOVEL)
-			.add(Items.COPPER_SPEAR)
-			.add(Items.COPPER_HELMET)
-			.add(Items.COPPER_CHESTPLATE)
-			.add(Items.COPPER_LEGGINGS)
-			.add(Items.COPPER_BOOTS)
-			.add(Items.BRUSH)
-			.add(TCAItems.WRENCH);
+		this.builder(TCAItemTags.OXIDIZABLE_EQUIPMENT)
+			.add(ItemIds.COPPER_SWORD)
+			.add(ItemIds.COPPER_AXE)
+			.add(ItemIds.COPPER_HOE)
+			.add(ItemIds.COPPER_PICKAXE)
+			.add(ItemIds.COPPER_SHOVEL)
+			.add(ItemIds.COPPER_SPEAR)
+			.add(ItemIds.COPPER_HELMET)
+			.add(ItemIds.COPPER_CHESTPLATE)
+			.add(ItemIds.COPPER_LEGGINGS)
+			.add(ItemIds.COPPER_BOOTS)
+			.add(ItemIds.BRUSH)
+			.add(TCAItemIds.WRENCH);
 
-		this.valueLookupBuilder(TCAItemTags.OXIDIZING_DOES_NOT_SCALE_ATTACK_SPEED)
-			.add(Items.COPPER_SPEAR);
+		this.builder(TCAItemTags.OXIDIZING_DOES_NOT_SCALE_ATTACK_SPEED)
+			.add(ItemIds.COPPER_SPEAR);
 
-		final TagAppender<Item, Item> unaffectedTag = this.valueLookupBuilder(TCAItemTags.WEATHERING_UNAFFECTED);
-		final TagAppender<Item, Item> exposedTag = this.valueLookupBuilder(TCAItemTags.WEATHERING_EXPOSED);
-		final TagAppender<Item, Item> weatheredTag = this.valueLookupBuilder(TCAItemTags.WEATHERING_WEATHERED);
-		final TagAppender<Item, Item> oxidizedTag = this.valueLookupBuilder(TCAItemTags.WEATHERING_OXIDIZED);
-		final TagAppender<Item, Item> waxedTag = this.valueLookupBuilder(TCAItemTags.WEATHERING_WAXED);
+		final BlockItemTagAppender<Item> unaffectedTag = this.builder(TCAItemTags.WEATHERING_UNAFFECTED);
+		final BlockItemTagAppender<Item> exposedTag = this.builder(TCAItemTags.WEATHERING_EXPOSED);
+		final BlockItemTagAppender<Item> weatheredTag = this.builder(TCAItemTags.WEATHERING_WEATHERED);
+		final BlockItemTagAppender<Item> oxidizedTag = this.builder(TCAItemTags.WEATHERING_OXIDIZED);
+		final BlockItemTagAppender<Item> waxedTag = this.builder(TCAItemTags.WEATHERING_WAXED);
 		arg.lookupOrThrow(Registries.BLOCK)
 			.listElements()
 			.forEach(block -> {
 				final Item item = block.value().asItem();
+				final ResourceKey<Item> itemId = item.builtInRegistryHolder().key();
 
 				final Optional<Block> nonWaxedBlock = OxidizableItemHelper.getNonWaxedEquivalent(block.value());
 				if (nonWaxedBlock.orElse(block.value()) instanceof WeatheringCopper weatheringCopper) {
 					final WeatheringCopper.WeatherState weatherState = weatheringCopper.getAge();
-					if (weatherState == WeatheringCopper.WeatherState.UNAFFECTED) unaffectedTag.add(item);
-					if (weatherState == WeatheringCopper.WeatherState.EXPOSED) exposedTag.add(item);
-					if (weatherState == WeatheringCopper.WeatherState.WEATHERED) weatheredTag.add(item);
-					if (weatherState == WeatheringCopper.WeatherState.OXIDIZED) oxidizedTag.add(item);
+					if (weatherState == WeatheringCopper.WeatherState.UNAFFECTED) unaffectedTag.add(itemId);
+					if (weatherState == WeatheringCopper.WeatherState.EXPOSED) exposedTag.add(itemId);
+					if (weatherState == WeatheringCopper.WeatherState.WEATHERED) weatheredTag.add(itemId);
+					if (weatherState == WeatheringCopper.WeatherState.OXIDIZED) oxidizedTag.add(itemId);
 				}
-				if (nonWaxedBlock.isPresent()) waxedTag.add(item);
+				if (nonWaxedBlock.isPresent()) waxedTag.add(itemId);
 			});
 	}
 
@@ -118,5 +128,13 @@ public final class TCAItemTagProvider extends FabricTagsProvider.ItemTagsProvide
 
 	private ResourceKey<Item> getKey(String namespace, String path) {
 		return ResourceKey.create(this.registryKey, Identifier.fromNamespaceAndPath(namespace, path));
+	}
+
+	private static ColorCollection<ResourceKey<Item>> toIds(final ColorCollection<BlockItemId> ids) {
+		return ids.map(BlockItemId::item);
+	}
+
+	private static WeatheringCopperCollection<ResourceKey<Item>> toIds(final WeatheringCopperCollection<BlockItemId> ids) {
+		return ids.map(BlockItemId::item);
 	}
 }

@@ -17,26 +17,57 @@
 
 package net.frozenblock.thecopperierage.registry;
 
-import java.util.function.Function;
-import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.item.CopperHornItem;
 import net.frozenblock.thecopperierage.item.WrenchItem;
+import net.frozenblock.thecopperierage.references.TCABlockItemIds;
+import net.frozenblock.thecopperierage.references.TCAItemIds;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.ItemContainerContents;
+import net.minecraft.world.level.block.WeatheringCopperCollection;
 import net.minecraft.world.item.component.InstrumentComponent;
 
 public final class TCAItems {
-	public static final WrenchItem WRENCH = register("wrench",
+	// BLOCK ITEMS
+	public static final Item COPPER_CAMPFIRE = Items.registerBlock(TCABlockItemIds.COPPER_CAMPFIRE, TCABlocks.COPPER_CAMPFIRE);
+	public static final Item COPPER_JACK_O_LANTERN = Items.registerBlock(TCABlockItemIds.COPPER_JACK_O_LANTERN, TCABlocks.COPPER_JACK_O_LANTERN);
+	public static final Item REDSTONE_JACK_O_LANTERN = Items.registerBlock(TCABlockItemIds.REDSTONE_JACK_O_LANTERN, TCABlocks.REDSTONE_JACK_O_LANTERN);
+	public static final Item REDSTONE_GRIT = Items.registerBlock(TCABlockItemIds.REDSTONE_GRIT, TCABlocks.REDSTONE_GRIT);
+
+	public static final WeatheringCopperCollection<Item> GEARBOX = WeatheringCopperCollection.registerItems(
+		TCABlockItemIds.GEARBOX, TCABlocks.GEARBOX, Items::registerBlock
+	);
+	public static final WeatheringCopperCollection<Item> STICKY_GEARBOX = WeatheringCopperCollection.registerItems(
+		TCABlockItemIds.STICKY_GEARBOX, TCABlocks.STICKY_GEARBOX, Items::registerBlock
+	);
+	public static final WeatheringCopperCollection<Item> COPPER_FAN = WeatheringCopperCollection.registerItems(
+		TCABlockItemIds.COPPER_FAN, TCABlocks.COPPER_FAN, Items::registerBlock
+	);
+	public static final WeatheringCopperCollection<Item> CHIME = WeatheringCopperCollection.registerItems(
+		TCABlockItemIds.CHIME, TCABlocks.CHIME, Items::registerBlock
+	);
+
+	public static final Item CRATE = Items.registerBlock(TCABlockItemIds.CRATE, TCABlocks.CRATE,
+		new Item.Properties().component(DataComponents.CONTAINER, ItemContainerContents.EMPTY)
+	);
+
+	public static final WeatheringCopperCollection<Item> COPPER_BUTTON = WeatheringCopperCollection.registerItems(
+		TCABlockItemIds.COPPER_BUTTON, TCABlocks.COPPER_BUTTON, Items::registerBlock
+	);
+	public static final WeatheringCopperCollection<Item> WEIGHTED_PRESSURE_PLATE = WeatheringCopperCollection.registerItems(
+		TCABlockItemIds.WEIGHTED_PRESSURE_PLATE, TCABlocks.WEIGHTED_PRESSURE_PLATE, Items::registerBlock
+	);
+
+	// ITEMS
+	public static final Item WRENCH = Items.registerItem(TCAItemIds.WRENCH,
 		WrenchItem::new,
 		new Item.Properties()
 			.stacksTo(1)
 			.durability(128)
 	);
 
-	public static final CopperHornItem COPPER_HORN = register("copper_horn",
+	public static final Item COPPER_HORN = Items.registerItem(TCAItemIds.COPPER_HORN,
 		CopperHornItem::new,
 		new Item.Properties()
 			.stacksTo(1)
@@ -44,13 +75,9 @@ public final class TCAItems {
 	);
 
 	private TCAItems() {
-		throw new UnsupportedOperationException("WWItems contains only static declarations.");
+		throw new UnsupportedOperationException("TCAItems contains only static declarations.");
 	}
 
 	public static void init() {
-	}
-
-	private static <T extends Item> T register(String name, Function<Item.Properties, Item> function, Item.Properties properties) {
-		return (T) Items.registerItem(ResourceKey.create(Registries.ITEM, TCAConstants.id(name)), function, properties);
 	}
 }

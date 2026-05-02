@@ -109,16 +109,16 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 
 	@Override
 	public void generateBlockStateModels(BlockModelGenerators generator) {
-		generateCopperChain(generator, Blocks.COPPER_CHAIN.unaffected());
-		generateCopperChain(generator, Blocks.COPPER_CHAIN.exposed());
-		generateCopperChain(generator, Blocks.COPPER_CHAIN.weathered());
-		generateCopperChain(generator, Blocks.COPPER_CHAIN.oxidized());
-		generateCopperLantern(generator, Blocks.COPPER_LANTERN.unaffected(), Blocks.COPPER_CHAIN.unaffected());
-		generateCopperLantern(generator, Blocks.COPPER_LANTERN.exposed(), Blocks.COPPER_CHAIN.exposed());
-		generateCopperLantern(generator, Blocks.COPPER_LANTERN.weathered(), Blocks.COPPER_CHAIN.weathered());
-		generateCopperLantern(generator, Blocks.COPPER_LANTERN.oxidized(), Blocks.COPPER_CHAIN.oxidized());
-		Blocks.COPPER_BARS.waxedMapping().forEach((block, waxedBlock) -> generateCopperBars(generator, block, waxedBlock));
-		TCABlocks.COPPER_BUTTON.waxedMapping().forEach((block, waxedBlock) -> createCopperButtonOverrides(generator, block, waxedBlock));
+		generateCopperChain(generator, Blocks.COPPER_CHAIN.weathering().unaffected());
+		generateCopperChain(generator, Blocks.COPPER_CHAIN.weathering().exposed());
+		generateCopperChain(generator, Blocks.COPPER_CHAIN.weathering().weathered());
+		generateCopperChain(generator, Blocks.COPPER_CHAIN.weathering().oxidized());
+		generateCopperLantern(generator, Blocks.COPPER_LANTERN.weathering().unaffected(), Blocks.COPPER_CHAIN.weathering().unaffected());
+		generateCopperLantern(generator, Blocks.COPPER_LANTERN.weathering().exposed(), Blocks.COPPER_CHAIN.weathering().exposed());
+		generateCopperLantern(generator, Blocks.COPPER_LANTERN.weathering().weathered(), Blocks.COPPER_CHAIN.weathering().weathered());
+		generateCopperLantern(generator, Blocks.COPPER_LANTERN.weathering().oxidized(), Blocks.COPPER_CHAIN.weathering().oxidized());
+		Blocks.COPPER_BARS.zipUnwaxedWaxed((block, waxedBlock) -> generateCopperBars(generator, block, waxedBlock));
+		TCABlocks.COPPER_BUTTON.zipUnwaxedWaxed((block, waxedBlock) -> createCopperButtonOverrides(generator, block, waxedBlock));
 	}
 
 	@Override

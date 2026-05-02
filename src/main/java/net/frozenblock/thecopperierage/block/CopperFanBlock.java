@@ -259,12 +259,10 @@ public class CopperFanBlock extends DirectionalBlock {
 			.map(blockPos -> blockPos.immutable().relative(oppositeDirection))
 			.orElse(mutable.immutable());
 		final AABB blowingArea = aabb(pos, posWithCutoff);
+		final Vec3 fanStartPos = Vec3.atCenterOf(pos);
 
 		if (level instanceof ServerLevel serverLevel) {
-			final Vec3 fanStartPos = Vec3.atCenterOf(pos);
-
-			final WindManager windManager = WindManager.getOrCreateWindManager(serverLevel);
-			windManager.addWindDisturbanceAndSync(
+			WindManager.getOrCreateWindManager(serverLevel).addWindDisturbanceAndSync(
 				new WindDisturbance<CopperFanBlock>(
 					Optional.of(this),
 					fanStartPos,
@@ -275,46 +273,6 @@ public class CopperFanBlock extends DirectionalBlock {
 				),
 				serverLevel
 			);
-
-			final double fanDistance = fanDistanceInBlocks + 1D;
-			final double pushIntensity = !reverse ? PUSH_INTENSITY : PUSH_INTENSITY_SUCK;
-			final Vec3 movement = Vec3.atLowerCornerOf((!reverse ? direction : oppositeDirection).getUnitVec3i());
-
-			final List<Entity> entities = level.getEntities(EntityTypeTest.forClass(Entity.class), blowingArea, EFFECT_PREDICATE);
-			for (Entity entity : entities) {
-				if (!(entity instanceof CopperFanQueuedMovementInterface queuedMovementInterface)) continue;
-				if (entity.is(TCAEntityTypeTags.COPPER_FAN_CANNOT_PUSH)) continue;
-
-				final AABB boundingBox = entity.getBoundingBox();
-				if (!blowingArea.intersects(boundingBox)) continue;
-
-				if (entity instanceof Player player) {
-					if (player.getAbilities().flying) continue;
-					if (direction == Direction.UP) {
-						final Vec3 lastImpactPos = player.currentImpulseImpactPos;
-						final Vec3 playerPos = player.position();
-						player.setIgnoreFallDamageFromCurrentImpulse(
-							true,
-							new Vec3(
-								playerPos.x(),
-								lastImpactPos != null ? Math.min(lastImpactPos.y(), playerPos.y()) : playerPos.y(),
-								playerPos.z()
-							)
-						);
-					}
-				} else if (entity instanceof AbstractArrow abstractArrow) {
-					if (abstractArrow.isInGround()) continue;
-				}
-
-				final double pushScale = !entity.is(TCAEntityTypeTags.COPPER_FAN_WEAKER_PUSH) ? 1D : 0.5D;
-				final double intensity = (fanDistance - Math.min(entity.position().distanceTo(fanStartPos), fanDistance)) / fanDistance;
-				final double fixedIntensity = reverse ? ((2D + intensity) / 3D) : intensity;
-				final double overallIntensity = fixedIntensity * pushIntensity * pushScale;
-				final Vec3 fanMovement = movement.scale(overallIntensity);
-				queuedMovementInterface.theCopperierAge$queueCopperFanMovement(fanMovement);
-				entity.needsSync = true;
-				entity.hurtMarked = true;
-			}
 		} else if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
 			final RandomSource random = level.getRandom();
 			if (random.nextFloat() <= (!reverse ? 0.35F : 0.2F) && random.nextDouble() <= this.cosmeticStrength) {
@@ -354,6 +312,45 @@ public class CopperFanBlock extends DirectionalBlock {
 					);
 				}
 			}
+		}
+
+		final double fanDistance = fanDistanceInBlocks + 1D;
+		final double pushIntensity = !reverse ? PUSH_INTENSITY : PUSH_INTENSITY_SUCK;
+		final Vec3 movement = Vec3.atLowerCornerOf((!reverse ? direction : oppositeDirection).getUnitVec3i());
+
+		final List<Entity> entities = level.getEntities(EntityTypeTest.forClass(Entity.class), blowingArea, EFFECT_PREDICATE);
+		for (Entity entity : entities) {
+			if (!(entity instanceof CopperFanQueuedMovementInterface queuedMovementInterface)) continue;
+			if (entity.is(TCAEntityTypeTags.COPPER_FAN_CANNOT_PUSH)) continue;
+
+			final AABB boundingBox = entity.getBoundingBox();
+			if (!blowingArea.intersects(boundingBox)) continue;
+
+			if (entity instanceof Player player) {
+				if (player.getAbilities().flying) continue;
+				if (direction == Direction.UP) {
+					final Vec3 lastImpactPos = player.currentImpulseImpactPos;
+					final Vec3 playerPos = player.position();
+					player.setIgnoreFallDamageFromCurrentImpulse(
+						true,
+						new Vec3(
+							playerPos.x(),
+							lastImpactPos != null ? Math.min(lastImpactPos.y(), playerPos.y()) : playerPos.y(),
+							playerPos.z()
+						)
+					);
+				}
+			} else if (entity instanceof AbstractArrow abstractArrow) {
+				if (abstractArrow.isInGround()) continue;
+			}
+
+			final double pushScale = !entity.is(TCAEntityTypeTags.COPPER_FAN_WEAKER_PUSH) ? 1D : 0.5D;
+			final double intensity = (fanDistance - Math.min(entity.position().distanceTo(fanStartPos), fanDistance)) / fanDistance;
+			final double fixedIntensity = reverse ? ((2D + intensity) / 3D) : intensity;
+			final double overallIntensity = fixedIntensity * pushIntensity * pushScale;
+			final Vec3 fanMovement = movement.scale(overallIntensity);
+			queuedMovementInterface.theCopperierAge$queueCopperFanMovement(fanMovement);
+			entity.needsSync = true;
 		}
 	}
 

@@ -64,7 +64,8 @@ public final class TCABlockTagProvider extends FabricTagsProvider.BlockTagsProvi
 			.add(TCABlockIds.COPPER_FIRE);
 
 		this.builder(TCABlockTags.GEARBOXES)
-			.addAll(toIds(TCABlockItemIds.GEARBOX));
+			.addAll(toIds(TCABlockItemIds.GEARBOX))
+			.addTag(TCABlockTags.STICKY_GEARBOXES);
 
 		this.builder(TCABlockTags.STICKY_GEARBOXES)
 			.addAll(toIds(TCABlockItemIds.STICKY_GEARBOX));

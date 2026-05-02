@@ -46,7 +46,7 @@ public class ChimeRenderState extends BlockEntityRenderState {
 		Identifier texture = UNAFFECTED;
 		if (state.is(TCABlocks.CHIME.weathering().exposed()) || state.is(TCABlocks.CHIME.waxed().exposed())) {
 			texture = EXPOSED;
-		} else if (state.is(TCABlocks.CHIME.weathering().weathered()) || state.is(TCABlocks.CHIME.weathering().weathered())) {
+		} else if (state.is(TCABlocks.CHIME.weathering().weathered()) || state.is(TCABlocks.CHIME.waxed().weathered())) {
 			texture = WEATHERED;
 		} if (state.is(TCABlocks.CHIME.weathering().oxidized()) || state.is(TCABlocks.CHIME.waxed().oxidized())) {
 			texture = OXIDIZED;

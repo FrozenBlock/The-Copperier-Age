@@ -20,6 +20,7 @@ package net.frozenblock.thecopperierage.data;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.frozenblock.lib.feature_flag.api.FeatureFlagApi;
+import net.frozenblock.lib.registry.FrozenLibRegistries;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.data.loot.TCABlockLootProvider;
 import net.frozenblock.thecopperierage.data.model.TCAModelProvider;
@@ -29,6 +30,7 @@ import net.frozenblock.thecopperierage.data.tag.TCABlockTagsProvider;
 import net.frozenblock.thecopperierage.data.tag.TCAEntityTypeTagsProvider;
 import net.frozenblock.thecopperierage.data.tag.TCAInstrumentTagsProvider;
 import net.frozenblock.thecopperierage.data.tag.TCAItemTagsProvider;
+import net.frozenblock.thecopperierage.registry.TCAFireTypes;
 import net.frozenblock.thecopperierage.registry.TCAInstruments;
 import net.frozenblock.thecopperierage.data.worldgen.structure.TCATrialChambersTemplatePools;
 import net.minecraft.core.RegistrySetBuilder;
@@ -65,6 +67,7 @@ public final class TCADataGenerator implements DataGeneratorEntrypoint {
 
 		registryBuilder.add(Registries.INSTRUMENT, TCAInstruments::bootstrap);
 		registryBuilder.add(Registries.TEMPLATE_POOL, TCATrialChambersTemplatePools::bootstrapTemplatePool);
+		registryBuilder.add(FrozenLibRegistries.FIRE_TYPE, TCAFireTypes::bootstrap);
 	}
 
 	@Override

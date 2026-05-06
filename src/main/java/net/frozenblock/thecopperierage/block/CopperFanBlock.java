@@ -298,7 +298,7 @@ public class CopperFanBlock extends DirectionalBlock {
 				} else {
 					final BlockPos startPos = pos.relative(direction);
 					final BlockPos endPos = posWithCutoff.relative(direction);
-					final BlockPos particleBlockPos = BlockPos.containing(Mth.lerp(random.nextDouble(), startPos.getCenter(), endPos.getCenter()));
+					final BlockPos particleBlockPos = BlockPos.containing(Mth.lerp(random.nextDouble(), Vec3.atCenterOf(startPos), Vec3.atCenterOf(endPos)));
 
 					particlePos = getParticlePos(particleBlockPos, oppositeDirection, random);
 					particleVelocity = getParticleVelocity(oppositeDirection, random, 0.2D, 0.4D);

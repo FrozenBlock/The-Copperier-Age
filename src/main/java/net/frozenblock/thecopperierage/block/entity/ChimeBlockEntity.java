@@ -199,9 +199,9 @@ public class ChimeBlockEntity extends BlockEntity {
 		}
 
 		private Vec3 getWind(Level level, BlockPos pos) {
-			if (level.isClientSide()) return ClientWindManager.getWindMovement(level, pos.getCenter(), 1D, 1D, 2D);
+			if (level.isClientSide()) return ClientWindManager.getWindMovement(level, Vec3.atCenterOf(pos), 1D, 1D, 2D);
 			if (!(level instanceof ServerLevel serverLevel)) return Vec3.ZERO;
-			return WindManager.getOrCreateWindManager(serverLevel).getWindMovement(pos.getCenter(), 1D, 1D, 2D);
+			return WindManager.getOrCreateWindManager(serverLevel).getWindMovement(Vec3.atCenterOf(pos), 1D, 1D, 2D);
 		}
 
 		@Override

@@ -20,6 +20,7 @@ package net.frozenblock.thecopperierage.block;
 import com.mojang.serialization.MapCodec;
 import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.tag.TCABlockTags;
+import net.frozenblock.thecopperierage.tag.TCAEntityTypeTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -85,7 +86,7 @@ public class CopperFireBlock extends BaseFireBlock {
     }
 
 	public static void poisonEntity(Level level, Entity entity) {
-		if (level.isClientSide() || !(entity instanceof LivingEntity livingEntity) || !TCAConfig.COPPER_FIRE_POISONS.get()) return;
+		if (level.isClientSide() || !(entity instanceof LivingEntity livingEntity) || !TCAConfig.COPPER_FIRE_POISONS.get() || entity.is(TCAEntityTypeTags.COPPER)) return;
 		livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 119));
 	}
 

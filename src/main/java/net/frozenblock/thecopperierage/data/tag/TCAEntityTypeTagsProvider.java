@@ -93,11 +93,12 @@ public final class TCAEntityTypeTagsProvider extends FabricTagsProvider.EntityTy
 			.add(EntityTypeIds.GHAST)
 			.add(EntityTypeIds.HAPPY_GHAST)
 			.add(EntityTypeIds.ALLAY)
-			.add(EntityTypeIds.BAT);
-
-		this.builder(TCAEntityTypeTags.GEARBOX_CANNOT_ROTATE)
+			.add(EntityTypeIds.BAT)
 			.addOptionalTag(FrozenLibEntityTypeTags.BLAZES)
 			.addOptionalTag(FrozenLibEntityTypeTags.GHOST_LIKE);
+
+		this.builder(TCAEntityTypeTags.COPPER)
+			.add(EntityTypeIds.COPPER_GOLEM);
 	}
 
 	private TagKey<EntityType<?>> getTag(String name) {

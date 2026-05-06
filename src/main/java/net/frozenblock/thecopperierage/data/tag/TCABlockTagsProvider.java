@@ -127,6 +127,10 @@ public final class TCABlockTagsProvider extends FabricTagsProvider.BlockTagsProv
 				copperFireBaseBlocksTag.add(block.key());
 			});
 
+		this.builder(TCABlockTags.COPPER_FIRE_BLOCKS)
+			.add(TCABlockIds.COPPER_FIRE)
+			.add(TCABlockItemIds.COPPER_CAMPFIRE.block());
+
 		// WILDER WILD
 		this.builder(getTag("wilderwild:sound/melon"))
 			.add(TCABlockItemIds.COPPER_JACK_O_LANTERN, TCABlockItemIds.REDSTONE_JACK_O_LANTERN);

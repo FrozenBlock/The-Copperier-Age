@@ -17,9 +17,12 @@
 
 package net.frozenblock.thecopperierage;
 
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.loader.api.ModContainer;
+import net.frozenblock.lib.block.impl.fire.FireData;
 import net.frozenblock.lib.entrypoint.api.FrozenModInitializer;
 import net.frozenblock.lib.feature_flag.api.FeatureFlagApi;
+import net.frozenblock.lib.registry.FrozenLibRegistries;
 import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
 import net.frozenblock.thecopperierage.levelgen.structure.modification.TCAStructureModifications;
@@ -28,6 +31,7 @@ import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCACreativeInventorySorting;
 import net.frozenblock.thecopperierage.registry.TCADataComponents;
+import net.frozenblock.thecopperierage.registry.TCAFireTypes;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.frozenblock.thecopperierage.registry.TCAMemoryModuleTypes;
 import net.frozenblock.thecopperierage.registry.TCAMenuTypes;
@@ -40,6 +44,7 @@ import net.frozenblock.thecopperierage.registry.TCASoundPredicates;
 import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.frozenblock.thecopperierage.registry.TCAStats;
 import net.frozenblock.thecopperierage.registry.TCAWindDisturbances;
+import net.frozenblock.thecopperierage.tag.TCAEntityTypeTags;
 
 public final class TheCopperierAge extends FrozenModInitializer {
 
@@ -72,6 +77,11 @@ public final class TheCopperierAge extends FrozenModInitializer {
 		TCAStructureModifications.init();
 		TCANetworking.init();
 		TCAResources.init(container);
+
+		ServerEntityEvents.ENTITY_LOAD.register(((entity, level) -> {
+			if (!(entity.is(TCAEntityTypeTags.COPPER) && TCAConfig.COPPER_FIRE_ENABLED.get())) return;
+			FireData.trySet(entity, level.registryAccess().lookupOrThrow(FrozenLibRegistries.FIRE_TYPE).getOrThrow(TCAFireTypes.COPPER_FIRE), true);
+		}));
 
 		TCAConfig.CONFIG.load(true);
 	}

@@ -236,7 +236,7 @@ public class CrateBlockEntity extends RandomizableContainerBlockEntity implement
 
 	private ItemStack dispenseItem(Level level, BlockPos pos, BlockState state, ItemStack stack, boolean dispenseWholeStack) {
 		final Direction facing = state.getValue(CrateBlock.FACING);
-		final Vec3 dispensePos = pos.getCenter().relative(facing, 0.7D);
+		final Vec3 dispensePos = Vec3.atCenterOf(pos).relative(facing, 0.7D);
 		final ItemStack dispenseStack = dispenseWholeStack ? stack.copyAndClear() : stack.split(1);
 		DefaultDispenseItemBehavior.spawnItem(level, dispenseStack, 2, facing, dispensePos);
 		level.playSound(null, pos, TCASounds.BLOCK_CRATE_EJECT, SoundSource.BLOCKS, 0.2F, (level.getRandom().nextFloat() * 0.25F) + 0.8F);

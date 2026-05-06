@@ -189,7 +189,7 @@ public class ChimeBlock extends BaseEntityBlock {
 		if (!(level.getBlockEntity(pos) instanceof ChimeBlockEntity chime)) return super.useWithoutItem(state, level, pos, player, hitResult);
 
 		final Vec3 playerPos = player.getEyePosition();
-		final Vec3 barCenter = pos.getCenter().add(0.3125D);
+		final Vec3 barCenter = Vec3.atCenterOf(pos).add(0.3125D);
 		final Vec3 difference = barCenter.subtract(playerPos);
 		final Vec3 differenceWithoutY = new Vec3(difference.x(), 0D, difference.z());
 		final double strength = (barCenter.y() - hitResult.getLocation().y()) * 1.25F;
@@ -215,7 +215,7 @@ public class ChimeBlock extends BaseEntityBlock {
 	protected void onExplosionHit(BlockState state, ServerLevel level, BlockPos pos, Explosion explosion, BiConsumer<ItemStack, BlockPos> onHit) {
 		if (level.getBlockEntity(pos) instanceof ChimeBlockEntity chime) {
 			float radius = explosion.radius();
-			Vec3 difference = pos.getCenter().subtract(explosion.center());
+			Vec3 difference = Vec3.atCenterOf(pos).subtract(explosion.center());
 			double closeness = (radius - difference.length()) / radius;
 			chime.addInfluence(level, pos, state, difference.normalize().scale(closeness), 0.9875D, true, true);
 		}

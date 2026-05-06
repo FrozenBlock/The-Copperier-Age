@@ -53,6 +53,8 @@ public abstract class LocalPlayerGearboxRotationMixin {
 		DebugScreenOverlay instance, long deltaTime, Operation<Void> original,
 		boolean advanceGameTime
 	) {
+		original.call(instance, deltaTime);
+
 		final Minecraft minecraft = Minecraft.class.cast(this);
 		if (!advanceGameTime || this.pause || !this.isLevelRunningNormally()) return;
 

@@ -20,6 +20,7 @@ package net.frozenblock.thecopperierage.data;
 import java.util.concurrent.CompletableFuture;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
+import net.frozenblock.lib.registry.FrozenLibRegistries;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
@@ -37,6 +38,8 @@ final class TCARegistryProvider extends FabricDynamicRegistryProvider {
 		entries.addAll(asLookup(entries.getLookup(Registries.INSTRUMENT)));
 		TCAConstants.log("Adding finalized template pools to datagen", true);
 		entries.addAll(asLookup(entries.getLookup(Registries.TEMPLATE_POOL)));
+		TCAConstants.log("Adding finalized fire types to datagen", true);
+		entries.addAll(asLookup(entries.getLookup(FrozenLibRegistries.FIRE_TYPE)));
 	}
 
 	public static <T> HolderLookup.RegistryLookup<T> asLookup(HolderGetter<T> getter) {

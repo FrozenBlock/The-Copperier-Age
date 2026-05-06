@@ -296,7 +296,7 @@ public class CopperGolemPressButton extends Behavior<CopperGolem> {
 
 	private Vec3 getPositionToReachTargetFrom(final @Nullable Path path, final CopperGolem body) {
 		final boolean haveNoValidPath = path == null || path.getEndNode() == null;
-		final Vec3 bottomCenter = haveNoValidPath ? body.position() : path.getEndNode().asBlockPos().getBottomCenter();
+		final Vec3 bottomCenter = haveNoValidPath ? body.position() : Vec3.atBottomCenterOf(path.getEndNode().asBlockPos());
 		return this.setMiddleYPosition(body, bottomCenter);
 	}
 
@@ -374,7 +374,7 @@ public class CopperGolemPressButton extends Behavior<CopperGolem> {
 	}
 
 	private boolean canSeeAnyTargetSide(final PressButtonTarget target, final Level level, final CopperGolem body, final Vec3 eyePosition) {
-		final Vec3 center = target.pos.getCenter();
+		final Vec3 center = Vec3.atCenterOf(target.pos);
 		return Direction.stream()
 			.map(
 				direction -> center.add(

@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.Block;
 
 public final class TCABlockTags {
 	public static final TagKey<Block> COPPER_FIRE_BASE_BLOCKS = bind("copper_fire_base_blocks");
+	public static final TagKey<Block> COPPER_FIRE_BLOCKS = bind("copper_fire_blocks");
 	public static final TagKey<Block> CANNOT_ROTATE = bind("cannot_rotate");
 
 	private static TagKey<Block> bind(String name) {

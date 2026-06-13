@@ -1,9 +1,12 @@
 {
-  "blocks": "#thecopperierage:copper_fire_blocks",
-  "damage": 1.0,
-  "replaceable": true,
-  "spreads_from_ignite_enchantments": true,
-  "spreads_from_zombie": true,
-  "texture_0": "thecopperierage:copper_fire_0",
-  "texture_1": "thecopperierage:copper_fire_1"
+  "damage_settings": {},
+  "particle_settings": {},
+  "source_settings": {
+    "fire_source_blocks": "#thecopperierage:copper_fire_blocks"
+  },
+  "spread_settings": {},
+  "textures": {
+    "texture_0": "thecopperierage:copper_fire_0",
+    "texture_1": "thecopperierage:copper_fire_1"
+  }
 }

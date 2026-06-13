@@ -37,9 +37,9 @@ public final class TCAFireTypes {
 		FireTypes.register(
 			context,
 			COPPER_FIRE,
-			blocks.getOrThrow(TCABlockTags.COPPER_FIRE_BLOCKS),
-			TCAConstants.id("copper_fire_0"),
-			TCAConstants.id("copper_fire_1")
+			FireType.builder()
+				.fireSourceBlocks(blocks.getOrThrow(TCABlockTags.COPPER_FIRE_BLOCKS))
+				.textures(TCAConstants.id("copper_fire_0"), TCAConstants.id("copper_fire_1"))
 		);
 	}
 

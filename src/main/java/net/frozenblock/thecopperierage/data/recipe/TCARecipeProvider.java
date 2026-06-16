@@ -20,7 +20,7 @@ package net.frozenblock.thecopperierage.data.recipe;
 import java.util.concurrent.CompletableFuture;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
-import net.frozenblock.lib.recipe.api.RecipeExportNamespaceFix;
+import net.frozenblock.lib.item.api.recipe.RecipeExportNamespaceFix;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.TCAFeatureFlags;
 import net.frozenblock.thecopperierage.recipe.ItemWaxRecipe;

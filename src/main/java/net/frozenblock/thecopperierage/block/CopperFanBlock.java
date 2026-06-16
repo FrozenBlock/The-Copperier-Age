@@ -22,19 +22,13 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.loader.api.FabricLoader;
 import net.frozenblock.lib.particle.options.WindParticleOptions;
-import net.frozenblock.lib.wind.api.BlowingHelper;
-import net.frozenblock.lib.wind.api.WindDisturbance;
-import net.frozenblock.lib.wind.api.WindDisturbanceLogic;
-import net.frozenblock.lib.wind.api.WindManager;
-import net.frozenblock.lib.wind.client.impl.ClientWindManager;
+import net.frozenblock.lib.wind.BlowingHelper;
+import net.frozenblock.lib.wind.WindManager;
 import net.frozenblock.thecopperierage.entity.impl.CopperFanQueuedMovementInterface;
 import net.frozenblock.thecopperierage.networking.packet.TCACopperFanBlowPacket;
 import net.frozenblock.thecopperierage.registry.TCASounds;
-import net.frozenblock.thecopperierage.registry.TCAWindDisturbances;
+import net.frozenblock.thecopperierage.wind.disturbance.CopperFanWindDisturbance;
 import net.frozenblock.thecopperierage.tag.TCAEntityTypeTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -74,7 +68,6 @@ public class CopperFanBlock extends DirectionalBlock {
 	public static final double WIND_INTENSITY_SUCK_SCALE = 0.8D;
 	public static final double WIND_INTENSITY_SUCK = WIND_INTENSITY * WIND_INTENSITY_SUCK_SCALE;
 	private static final Predicate<Entity> EFFECT_PREDICATE = EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.NO_SPECTATORS);
-	private static final WindDisturbanceLogic<? extends CopperFanBlock> DUMMY_WIND_LOGIC = new WindDisturbanceLogic<>((source, level, origin, area, target) -> WindDisturbance.DUMMY_RESULT);
 	public static final MapCodec<CopperFanBlock> CODEC = RecordCodecBuilder.mapCodec(
 		instance -> instance.group(
 			WeatheringCopper.WeatherState.CODEC.fieldOf("weathering_state").forGetter(copperFanBlock -> copperFanBlock.weatherState),
@@ -262,19 +255,20 @@ public class CopperFanBlock extends DirectionalBlock {
 			.orElse(mutable.immutable());
 		final AABB blowingArea = aabb(pos, posWithCutoff);
 		final Vec3 fanStartPos = Vec3.atCenterOf(pos);
-		final WindDisturbance<CopperFanBlock> windDisturbance = new WindDisturbance<CopperFanBlock>(
-			Optional.of(this),
+		final AABB disturbanceArea = blowingArea.inflate(0.5D).move(direction.step().mul(0.5F));
+		final CopperFanWindDisturbance windDisturbance = new CopperFanWindDisturbance(
 			fanStartPos,
-			blowingArea.inflate(0.5D).move(direction.step().mul(0.5F)),
-			WindDisturbanceLogic.getWindDisturbanceLogic(
-				!reverse ? TCAWindDisturbances.COPPER_FAN_WIND_DISTURBANCE : TCAWindDisturbances.COPPER_FAN_WIND_DISTURBANCE_REVERSE
-			).orElse(DUMMY_WIND_LOGIC)
+			new Vec3(disturbanceArea.minX, disturbanceArea.minY, disturbanceArea.minZ),
+			new Vec3(disturbanceArea.maxX, disturbanceArea.maxY, disturbanceArea.maxZ),
+			direction,
+			fanDistanceInBlocks + 1D,
+			reverse,
+			level.getGameTime()
 		);
 
-		if (level instanceof ServerLevel serverLevel) {
-			WindManager.getOrCreateWindManager(serverLevel).addWindDisturbance(windDisturbance);
-		} else if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-			addWindDisturbanceToClient(windDisturbance);
+		WindManager.getOrCreate(level).addWindDisturbance(level, windDisturbance);
+
+		if (!(level instanceof ServerLevel)) {
 			final RandomSource random = level.getRandom();
 			if (random.nextFloat() <= (!reverse ? 0.35F : 0.2F) && random.nextDouble() <= this.cosmeticStrength) {
 				final double sizeOfBlowingArea = Math.min(blowingArea.getSize() / 9D, 1D);
@@ -439,10 +433,5 @@ public class CopperFanBlock extends DirectionalBlock {
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(FACING, POWERED);
-	}
-
-	@Environment(EnvType.CLIENT)
-	private static void addWindDisturbanceToClient(WindDisturbance windDisturbance) {
-		ClientWindManager.addWindDisturbance(windDisturbance);
 	}
 }

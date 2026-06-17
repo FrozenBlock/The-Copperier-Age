@@ -41,11 +41,11 @@ public class CopperCampfireSmokeParticle extends CampfireSmokeParticle {
 	protected CopperCampfireSmokeParticle(
 		ClientLevel level,
 		double x, double y, double z,
-		double xd, double yd, double zd,
-		boolean isSignal,
+		double xa, double ya, double za,
+		boolean isSignalFire,
 		TextureAtlasSprite sprite
 	) {
-		super(level, x, y, z, xd, yd, zd, isSignal, sprite);
+		super(level, x, y, z, xa, ya, za, isSignalFire, sprite);
 		this.targetRColor = this.rCol;
 		this.rCol = this.startRColor = Math.max(this.targetRColor - 0.3F, 0F);
 		this.targetBColor = this.bCol;
@@ -73,10 +73,10 @@ public class CopperCampfireSmokeParticle extends CampfireSmokeParticle {
 			SimpleParticleType options,
 			ClientLevel level,
 			double x, double y, double z,
-			double xd, double yd, double zd,
+			double xAux, double yAux, double zAux,
 			RandomSource random
 		) {
-			final CopperCampfireSmokeParticle particle = new CopperCampfireSmokeParticle(level, x, y, z, xd, yd, zd, false, this.spriteSet.get(random));
+			final CopperCampfireSmokeParticle particle = new CopperCampfireSmokeParticle(level, x, y, z, xAux, yAux, zAux, false, this.spriteSet.get(random));
 			particle.setAlpha(0.9F);
 			return particle;
 		}
@@ -88,10 +88,10 @@ public class CopperCampfireSmokeParticle extends CampfireSmokeParticle {
 			SimpleParticleType options,
 			ClientLevel level,
 			double x, double y, double z,
-			double xd, double yd, double zd,
+			double xAux, double yAux, double zAux,
 			RandomSource random
 		) {
-			final CopperCampfireSmokeParticle particle = new CopperCampfireSmokeParticle(level, x, y, z, xd, yd, zd, true, this.spriteSet.get(random));
+			final CopperCampfireSmokeParticle particle = new CopperCampfireSmokeParticle(level, x, y, z, xAux, yAux, zAux, true, this.spriteSet.get(random));
 			particle.setAlpha(0.95F);
 			return particle;
 		}

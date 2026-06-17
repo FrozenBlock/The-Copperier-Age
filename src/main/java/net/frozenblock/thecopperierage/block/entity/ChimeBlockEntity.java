@@ -20,8 +20,7 @@ package net.frozenblock.thecopperierage.block.entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import net.frozenblock.lib.wind.api.WindManager;
-import net.frozenblock.lib.wind.client.impl.ClientWindManager;
+import net.frozenblock.lib.wind.WindManager;
 import net.frozenblock.thecopperierage.networking.packet.TCAChimeInfluencePacket;
 import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
 import net.frozenblock.thecopperierage.registry.TCASounds;
@@ -199,9 +198,7 @@ public class ChimeBlockEntity extends BlockEntity {
 		}
 
 		private Vec3 getWind(Level level, BlockPos pos) {
-			if (level.isClientSide()) return ClientWindManager.getWindMovement(level, Vec3.atCenterOf(pos), 1D, 1D, 2D);
-			if (!(level instanceof ServerLevel serverLevel)) return Vec3.ZERO;
-			return WindManager.getOrCreateWindManager(serverLevel).getWindMovement(Vec3.atCenterOf(pos), 1D, 1D, 2D);
+			return WindManager.getOrCreate(level).getWindMovement(Vec3.atCenterOf(pos), 1D, 1D, 2D);
 		}
 
 		@Override

@@ -18,7 +18,7 @@ buildscript {
 }
 
 plugins {
-    id("net.fabricmc.fabric-loom") version("1.16-SNAPSHOT")
+    id("net.fabricmc.fabric-loom") version("1.17-SNAPSHOT")
     id("org.quiltmc.gradle.licenser") version("+")
     id("org.ajoberstar.grgit") version("+")
     id("com.modrinth.minotaur") version("+")
@@ -96,6 +96,11 @@ loom {
         }
 
         named("client") {
+            name("Run Client")
+            vmArg("-DMC_DEBUG_FROZENLIB_WIND_DISTURBANCES=true")
+            vmArg("-DMC_DEBUG_ENABLED=true")
+            vmArg("-DMC_DEBUG_FROZENLIB_WIND=true")
+
             ideConfigGenerated(true)
         }
         named("server") {
@@ -168,10 +173,10 @@ dependencies {
     api("maven.modrinth:frozenlib:$frozenlib_version")
 
     // Mod Menu
-    implementation("maven.modrinth:modmenu:$modmenu_version")
+    compileOnly("maven.modrinth:modmenu:$modmenu_version")
 
     // Cloth Config
-    implementation("me.shedaniel.cloth:cloth-config-fabric:$cloth_config_version") {
+    compileOnly("me.shedaniel.cloth:cloth-config-fabric:$cloth_config_version") {
         exclude(group = "net.fabricmc.fabric-api")
         exclude(group = "com.terraformersmc")
     }

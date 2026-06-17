@@ -80,7 +80,7 @@ public final class TheCopperierAge extends FrozenModInitializer {
 
 		ServerEntityEvents.ENTITY_LOAD.register(((entity, level) -> {
 			if (!(entity.is(TCAEntityTypeTags.COPPER) && TCAConfig.COPPER_FIRE_ENABLED.get())) return;
-			FireData.trySet(entity, level.registryAccess().lookupOrThrow(FrozenLibRegistries.FIRE_TYPE).getOrThrow(TCAFireTypes.COPPER_FIRE), true);
+			FireData.trySet(entity, level.registryAccess().lookupOrThrow(FrozenLibRegistries.FIRE_TYPE).getOrThrow(TCAFireTypes.COPPER_FIRE));
 		}));
 
 		TCAConfig.CONFIG.load(true);

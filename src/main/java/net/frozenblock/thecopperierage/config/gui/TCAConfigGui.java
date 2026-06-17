@@ -23,7 +23,7 @@ import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.frozenblock.lib.config.clothconfig.FrozenClothConfig;
+import net.frozenblock.lib.config.clothconfig.FrozenLibClothConfigGuiHelper;
 import net.frozenblock.thecopperierage.TCAConstants;
 import static net.frozenblock.thecopperierage.TCAConstants.text;
 import net.frozenblock.thecopperierage.config.TCAConfig;
@@ -41,7 +41,7 @@ public final class TCAConfigGui {
 		category.addEntry(booleanEntry(builder, "copper_chests_in_trial_chambers", TCAConfig.COPPER_CHESTS_IN_TRIAL_CHAMBERS));
 		category.addEntry(booleanEntry(builder, "copper_pressure_plates_in_trial_chambers", TCAConfig.COPPER_PRESSURE_PLATES_IN_TRIAL_CHAMBERS));
 		category.addEntry(
-			FrozenClothConfig.syncedEntry(
+			FrozenLibClothConfigGuiHelper.syncedEntry(
 				(AbstractConfigListEntry) builder.startIntSlider(text("gearbox_entity_rotation"), (int) (TCAConfig.GEARBOX_ENTITY_ROTATION.get() * 100), 0, 10000)
 					.setDefaultValue((int) (TCAConfig.GEARBOX_ENTITY_ROTATION.defaultValue() * 100))
 					.setSaveConsumer(newValue -> TCAConfig.GEARBOX_ENTITY_ROTATION.setValue(newValue / 100F))

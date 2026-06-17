@@ -20,7 +20,7 @@ package net.frozenblock.thecopperierage.config.gui;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import me.shedaniel.clothconfig2.gui.entries.BooleanListEntry;
 import me.shedaniel.clothconfig2.gui.entries.IntegerSliderEntry;
-import net.frozenblock.lib.config.clothconfig.FrozenClothConfig;
+import net.frozenblock.lib.config.clothconfig.FrozenLibClothConfigGuiHelper;
 import net.frozenblock.lib.config.v2.entry.ConfigEntry;
 import static net.frozenblock.thecopperierage.TCAConstants.text;
 import static net.frozenblock.thecopperierage.TCAConstants.tooltip;
@@ -45,7 +45,7 @@ public final class TCAConfigGuiHelper {
 	}
 
 	public static IntegerSliderEntry intSliderEntry(ConfigEntryBuilder builder, String key, ConfigEntry<Integer> configEntry, int min, int max) {
-		return FrozenClothConfig.syncedEntry(
+		return FrozenLibClothConfigGuiHelper.syncedEntry(
 			builder.startIntSlider(text(key), configEntry.get(), min, max).setTooltip(tooltip(key)),
 			configEntry
 		);
@@ -56,7 +56,7 @@ public final class TCAConfigGuiHelper {
 	}
 
 	public static BooleanListEntry booleanEntry(ConfigEntryBuilder builder, Component name, ConfigEntry<Boolean> configEntry, Component... tooltip) {
-		return FrozenClothConfig.syncedEntry(
+		return FrozenLibClothConfigGuiHelper.syncedEntry(
 			builder.startBooleanToggle(name, configEntry.get()).setTooltip(tooltip),
 			configEntry
 		);

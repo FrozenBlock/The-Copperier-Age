@@ -1,10 +1,60 @@
 {
-  "damage_settings": {},
-  "particle_settings": {},
-  "source_settings": {
-    "fire_source_blocks": "#thecopperierage:copper_fire_blocks"
+  "config_predicate": {
+    "type": "minecraft:equal_to",
+    "entry": "thecopperierage:main/copperFireEnabled",
+    "target": true
   },
-  "spread_settings": {},
+  "damage_settings": {},
+  "particle_settings": {
+    "campfire_cosy_smoke_particle": {
+      "type": "frozenlib:campfire_cosy_smoke_colored",
+      "b_difference": -0.15,
+      "g_difference": 0.0,
+      "r_difference": -0.15,
+      "smoke_type": "campfire_cosy"
+    },
+    "campfire_signal_smoke_particle": {
+      "type": "frozenlib:campfire_signal_smoke_colored",
+      "b_difference": -0.15,
+      "g_difference": 0.0,
+      "r_difference": -0.15,
+      "smoke_type": "campfire_signal"
+    },
+    "campfire_smoke_config_predicate": {
+      "type": "minecraft:equal_to",
+      "entry": "thecopperierage:main/copperParticles",
+      "target": true
+    },
+    "large_smoke_particle": {
+      "type": "frozenlib:large_smoke_colored",
+      "b_difference": 0.0,
+      "g_difference": 0.075,
+      "r_difference": 0.0,
+      "smoke_type": "large_smoke"
+    },
+    "lava_particle": {
+      "type": "thecopperierage:copper_lava"
+    },
+    "smoke_config_predicate": {
+      "type": "minecraft:equal_to",
+      "entry": "thecopperierage:main/copperParticles",
+      "target": true
+    },
+    "smoke_particle": {
+      "type": "frozenlib:smoke_colored",
+      "b_difference": 0.0,
+      "g_difference": 0.075,
+      "r_difference": 0.0,
+      "smoke_type": "smoke"
+    }
+  },
+  "source_settings": {
+    "fire_source_blocks": "#thecopperierage:copper_fire_blocks",
+    "supporting_blocks": "#thecopperierage:copper_fire_base_blocks"
+  },
+  "spread_settings": {
+    "always_apply_to_entity_types": "#thecopperierage:copper"
+  },
   "textures": {
     "texture_0": "thecopperierage:copper_fire_0",
     "texture_1": "thecopperierage:copper_fire_1"

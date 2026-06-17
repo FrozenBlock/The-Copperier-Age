@@ -60,5 +60,4 @@ public final class TCAClientNetworking {
 			chime.addClientInfluence(level, packet.influence(), packet.scaleEachTick(), packet.entityID());
 		});
 	}
-
 }

@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8.5",
   "package": "net.frozenblock.thecopperierage.mixin",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "JAVA_25",
   "mixins": [
     "block.copper_crate.AbstractContainerMenuMixin",
     "block.copper_fan.EntityMixin",
@@ -22,12 +22,6 @@
     "worldgen.TrickierTrialsPackCheckerMixin"
   ],
   "client": [
-    "client.copper_fire.BaseFireBlockMixin",
-    "client.copper_fire.CampfireBlockMixin",
-    "client.copper_fire.LavaParticleMixin",
-    "client.copper_fire.LavaParticleProviderMixin",
-    "client.copper_fire.TorchBlockMixin",
-    "client.copper_fire.WallTorchBlockMixin",
     "client.copper_golem.CopperGolemModelMixin",
     "client.copper_golem.CopperGolemRendererMixin",
     "client.copper_golem.CopperGolemRenderStateMixin",

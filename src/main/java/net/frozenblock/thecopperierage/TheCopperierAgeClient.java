@@ -38,5 +38,4 @@ public final class TheCopperierAgeClient implements ClientModInitializer {
 		TCAMenuScreens.init();
 		TCAClientNetworking.registerPacketReceivers();
 	}
-
 }

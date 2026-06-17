@@ -281,26 +281,26 @@ public class CopperFanBlock extends DirectionalBlock {
 		final int fanDistanceInBlocks = !reverse ? this.pushBlocks : this.suckBlocks;
 		final Direction oppositeDirection = direction.getOpposite();
 
-		final CopperFanWindDisturbance windDisturbance = new CopperFanWindDisturbance(state, pos, fanDistanceInBlocks + 1D, reverse);
-		WindDisturbances.addIf(
-			level,
-			level.getChunk(pos),
-			chunk -> {
-				final WindDisturbances disturbances = WindDisturbances.get(chunk);
-				if (disturbances.isEmpty()) return true;
-				return disturbances.noneMatch(disturbance -> {
-					if (disturbance.type() != windDisturbance.type()) return false;
-					final CopperFanWindDisturbance fanDisturbance = (CopperFanWindDisturbance) disturbance;
-					return fanDisturbance.distance == fanDistanceInBlocks + 1D
-						&& fanDisturbance.reverse == reverse
-						&& fanDisturbance.position.equals(pos)
-						&& fanDisturbance.blockState.equals(state);
-				});
-			},
-			() -> windDisturbance
-		);
-
-		if (!(level instanceof ServerLevel)) {
+		if (!level.isClientSide()) {
+			final CopperFanWindDisturbance windDisturbance = new CopperFanWindDisturbance(state, pos, fanDistanceInBlocks + 1D, reverse);
+			WindDisturbances.addIf(
+				level,
+				level.getChunk(pos),
+				chunk -> {
+					final WindDisturbances disturbances = WindDisturbances.get(chunk);
+					if (disturbances.isEmpty()) return true;
+					return disturbances.noneMatch(disturbance -> {
+						if (disturbance.type() != windDisturbance.type()) return false;
+						final CopperFanWindDisturbance fanDisturbance = (CopperFanWindDisturbance) disturbance;
+						return fanDisturbance.distance == fanDistanceInBlocks + 1D
+							&& fanDisturbance.reverse == reverse
+							&& fanDisturbance.position.equals(pos)
+							&& fanDisturbance.blockState.equals(state);
+					});
+				},
+				() -> windDisturbance
+			);
+		} else {
 			final RandomSource random = level.getRandom();
 			if (random.nextFloat() <= (!reverse ? 0.35F : 0.2F) && random.nextDouble() <= this.cosmeticStrength) {
 				final double sizeOfBlowingArea = Math.min(blowingArea.getSize() / 9D, 1D);

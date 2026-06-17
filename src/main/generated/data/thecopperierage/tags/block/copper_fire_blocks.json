@@ -1,6 +1,8 @@
 {
   "values": [
     "thecopperierage:copper_fire",
-    "thecopperierage:copper_campfire"
+    "thecopperierage:copper_campfire",
+    "minecraft:copper_torch",
+    "minecraft:copper_wall_torch"
   ]
 }

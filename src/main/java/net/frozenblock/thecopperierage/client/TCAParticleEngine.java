@@ -20,9 +20,6 @@ package net.frozenblock.thecopperierage.client;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
-import net.frozenblock.thecopperierage.particle.CopperCampfireSmokeParticle;
-import net.frozenblock.thecopperierage.particle.CopperSmokeParticle;
-import net.frozenblock.thecopperierage.particle.LargeCopperSmokeParticle;
 import net.frozenblock.thecopperierage.registry.TCAParticleTypes;
 import net.minecraft.client.particle.LavaParticle;
 
@@ -31,11 +28,6 @@ public final class TCAParticleEngine {
 
 	public static void init() {
 		final ParticleProviderRegistry particleRegistry = ParticleProviderRegistry.getInstance();
-		particleRegistry.register(TCAParticleTypes.COPPER_SMOKE, CopperSmokeParticle.Provider::new);
-		particleRegistry.register(TCAParticleTypes.LARGE_COPPER_SMOKE, LargeCopperSmokeParticle.Provider::new);
 		particleRegistry.register(TCAParticleTypes.COPPER_LAVA, LavaParticle.Provider::new);
-		particleRegistry.register(TCAParticleTypes.COPPER_CAMPFIRE_COSY_SMOKE, CopperCampfireSmokeParticle.CosyProvider::new);
-		particleRegistry.register(TCAParticleTypes.COPPER_CAMPFIRE_SIGNAL_SMOKE, CopperCampfireSmokeParticle.SignalProvider::new);
-		particleRegistry.register(TCAParticleTypes.COPPER_CAMPFIRE_SIGNAL_SMOKE, CopperCampfireSmokeParticle.SignalProvider::new);
 	}
 }

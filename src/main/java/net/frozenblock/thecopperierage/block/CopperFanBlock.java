@@ -24,7 +24,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import net.frozenblock.lib.particle.options.WindParticleOptions;
 import net.frozenblock.lib.wind.BlowingHelper;
-import net.frozenblock.lib.wind.WindManager;
+import net.frozenblock.lib.wind.disturbance.WindDisturbances;
 import net.frozenblock.thecopperierage.entity.impl.CopperFanQueuedMovementInterface;
 import net.frozenblock.thecopperierage.networking.packet.TCACopperFanBlowPacket;
 import net.frozenblock.thecopperierage.registry.TCASounds;
@@ -266,7 +266,7 @@ public class CopperFanBlock extends DirectionalBlock {
 			level.getGameTime()
 		);
 
-		WindManager.getOrCreate(level).addWindDisturbance(level, windDisturbance);
+		WindDisturbances.add(level, level.getChunk(pos), windDisturbance);
 
 		if (!(level instanceof ServerLevel)) {
 			final RandomSource random = level.getRandom();

@@ -31,6 +31,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -42,7 +43,7 @@ public record CopperFanWindDisturbance(
 	double fanDistance,
 	boolean reverse,
 	long creationGameTime
-) implements WindDisturbance<Level> {
+) implements WindDisturbance<LevelChunk> {
 	public static final MapCodec<CopperFanWindDisturbance> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		Vec3.CODEC.fieldOf("origin").forGetter(CopperFanWindDisturbance::origin),
 		Vec3.CODEC.fieldOf("area_min").forGetter(CopperFanWindDisturbance::areaMin),
@@ -64,17 +65,17 @@ public record CopperFanWindDisturbance(
 	);
 
 	@Override
-	public Vec3 origin(Level source, Level level) {
+	public Vec3 origin(LevelChunk source, Level level) {
 		return this.origin;
 	}
 
 	@Override
-	public AABB area(Level source, Level level, Vec3 origin, Vec3 target, double scale) {
+	public AABB area(LevelChunk source, Level level, Vec3 origin, Vec3 target, double scale) {
 		return new AABB(this.areaMin, this.areaMax);
 	}
 
 	@Override
-	public WindDisturbanceResult get(Level source, Level level, Vec3 origin, AABB area, Vec3 target, double scale) {
+	public WindDisturbanceResult get(LevelChunk source, Level level, Vec3 origin, AABB area, Vec3 target, double scale) {
 		final Vec3 movement = Vec3.atLowerCornerOf(this.direction.getUnitVec3i());
 		final double windIntensityScale = this.reverse ? CopperFanBlock.WIND_INTENSITY_SUCK_SCALE : 1D;
 		final double strength = this.fanDistance - Math.min(target.distanceTo(origin), this.fanDistance);
@@ -88,7 +89,7 @@ public record CopperFanWindDisturbance(
 	}
 
 	@Override
-	public boolean expired(Level source, Level level) {
+	public boolean expired(LevelChunk source, Level level) {
 		return level.getGameTime() > this.creationGameTime;
 	}
 

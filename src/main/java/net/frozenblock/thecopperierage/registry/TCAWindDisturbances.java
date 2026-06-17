@@ -33,6 +33,5 @@ public final class TCAWindDisturbances {
 		CopperFanWindDisturbance.STREAM_CODEC
 	);
 
-	public static void init() {
-	}
+	public static void init() {}
 }

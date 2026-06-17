@@ -225,23 +225,25 @@ public class CopperFanBlock extends DirectionalBlock {
 		);
 	}
 
-	private void handleBlowing(Level level, BlockPos pos, Direction direction, boolean reverse) {
+	public static Optional<BlockPos> computeCutoffPos(Level level, BlockState state, BlockPos pos, Direction direction, boolean reverse) {
+		if (!(state.getBlock() instanceof CopperFanBlock copperFanBlock)) return Optional.empty();
+
 		Optional<BlockPos> cutoffPos = Optional.empty();
 		final BlockPos.MutableBlockPos mutable = pos.mutable();
 
-		final int fanDistanceInBlocks = !reverse ? this.pushBlocks : this.suckBlocks;
+		final int fanDistanceInBlocks = !reverse ? copperFanBlock.pushBlocks : copperFanBlock.suckBlocks;
 		for (int i = 0; i < fanDistanceInBlocks; i++) {
 			final boolean isFirstSearch = i == 0;
 			if (!level.hasChunkAt(mutable.move(direction))) break;
 
-			final BlockState state = level.getBlockState(mutable);
-			if (!BlowingHelper.canBlowingPassThrough(level, mutable, state, direction)) {
-				if (isFirstSearch) return;
+			final BlockState searchState = level.getBlockState(mutable);
+			if (!BlowingHelper.canBlowingPassThrough(level, mutable, searchState, direction)) {
+				if (isFirstSearch) return Optional.empty();
 				break;
 			}
 
 			if (!level.getFluidState(mutable).isEmpty()) {
-				if (isFirstSearch) return;
+				if (isFirstSearch) return Optional.empty();
 				cutoffPos = Optional.of(mutable.immutable());
 				break;
 			}
@@ -253,20 +255,50 @@ public class CopperFanBlock extends DirectionalBlock {
 		final BlockPos posWithCutoff = cutoffPos
 			.map(blockPos -> blockPos.immutable().relative(oppositeDirection))
 			.orElse(mutable.immutable());
-		final AABB blowingArea = aabb(pos, posWithCutoff);
-		final Vec3 fanStartPos = Vec3.atCenterOf(pos);
-		final AABB disturbanceArea = blowingArea.inflate(0.5D).move(direction.step().mul(0.5F));
-		final CopperFanWindDisturbance windDisturbance = new CopperFanWindDisturbance(
-			fanStartPos,
-			new Vec3(disturbanceArea.minX, disturbanceArea.minY, disturbanceArea.minZ),
-			new Vec3(disturbanceArea.maxX, disturbanceArea.maxY, disturbanceArea.maxZ),
-			direction,
-			fanDistanceInBlocks + 1D,
-			reverse,
-			level.getGameTime()
-		);
+		return Optional.of(posWithCutoff);
+	}
 
-		WindDisturbances.add(level, level.getChunk(pos), windDisturbance);
+	public static Optional<AABB> computeBlowingArea(Level level, BlockState state, BlockPos pos, Direction direction, boolean reverse) {
+		final Optional<BlockPos> cutoffPos = CopperFanBlock.computeCutoffPos(level, state, pos, direction, reverse);
+		if (cutoffPos.isEmpty()) return Optional.empty();
+
+		final AABB blowingArea = aabb(pos, cutoffPos.get());
+		return Optional.of(blowingArea.inflate(0.5D).move(direction.step().mul(0.5F)));
+	}
+
+	private void handleBlowing(Level level, BlockPos pos, Direction direction, boolean reverse) {
+		final BlockState state = level.getBlockState(pos);
+
+		final Optional<BlockPos> cutoffPosOptional = CopperFanBlock.computeCutoffPos(level, state, pos, direction, reverse);
+		if (cutoffPosOptional.isEmpty()) return;
+
+		final Optional<AABB> blowingAreaOptional = CopperFanBlock.computeBlowingArea(level, state, pos, direction, reverse);
+		if (blowingAreaOptional.isEmpty()) return;
+
+		final BlockPos posWithCutoff = cutoffPosOptional.get();
+		final Vec3 fanStartPos = Vec3.atCenterOf(pos);
+		final AABB blowingArea = blowingAreaOptional.get();
+		final int fanDistanceInBlocks = !reverse ? this.pushBlocks : this.suckBlocks;
+		final Direction oppositeDirection = direction.getOpposite();
+
+		final CopperFanWindDisturbance windDisturbance = new CopperFanWindDisturbance(state, pos, fanDistanceInBlocks + 1D, reverse);
+		WindDisturbances.addIf(
+			level,
+			level.getChunk(pos),
+			chunk -> {
+				final WindDisturbances disturbances = WindDisturbances.get(chunk);
+				if (disturbances.isEmpty()) return true;
+				return disturbances.noneMatch(disturbance -> {
+					if (disturbance.type() != windDisturbance.type()) return false;
+					final CopperFanWindDisturbance fanDisturbance = (CopperFanWindDisturbance) disturbance;
+					return fanDisturbance.distance == fanDistanceInBlocks + 1D
+						&& fanDisturbance.reverse == reverse
+						&& fanDisturbance.position.equals(pos)
+						&& fanDisturbance.blockState.equals(state);
+				});
+			},
+			() -> windDisturbance
+		);
 
 		if (!(level instanceof ServerLevel)) {
 			final RandomSource random = level.getRandom();

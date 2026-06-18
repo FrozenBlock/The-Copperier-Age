@@ -69,5 +69,4 @@ public class CopperGolemAiMixin {
 		);
 		return ImmutableList.copyOf(behaviors);
 	}
-
 }

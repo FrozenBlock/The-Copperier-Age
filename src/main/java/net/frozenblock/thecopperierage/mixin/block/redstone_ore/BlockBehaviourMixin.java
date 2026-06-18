@@ -29,20 +29,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BlockBehaviour.class)
-public class RedStoneOreBlockMixin {
+public class BlockBehaviourMixin {
 
 	@Inject(method = "isSignalSource(Lnet/minecraft/world/level/block/state/BlockState;)Z", at = @At("HEAD"), cancellable = true)
 	private void theCopperierAge$isSignalSource(BlockState state, CallbackInfoReturnable<Boolean> info) {
-		if ((Object) this instanceof RedStoneOreBlock) {
-			info.setReturnValue(true);
-		}
+		if (BlockBehaviour.class.cast(this) instanceof RedStoneOreBlock) info.setReturnValue(true);
 	}
 
 	@Inject(method = "getSignal(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;)I", at = @At("HEAD"), cancellable = true)
 	private void theCopperierAge$getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction, CallbackInfoReturnable<Integer> info) {
-		if ((Object) this instanceof RedStoneOreBlock) {
-			info.setReturnValue(state.getValue(RedStoneOreBlock.LIT) ? 15 : 0);
-		}
+		if (BlockBehaviour.class.cast(this) instanceof RedStoneOreBlock) info.setReturnValue(state.getValue(RedStoneOreBlock.LIT) ? 15 : 0);
 	}
 }
 

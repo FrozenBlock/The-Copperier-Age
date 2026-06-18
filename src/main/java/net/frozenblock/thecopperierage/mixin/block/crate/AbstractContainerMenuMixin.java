@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.mixin.block.copper_crate;
+package net.frozenblock.thecopperierage.mixin.block.crate;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -44,15 +44,15 @@ public class AbstractContainerMenuMixin {
 		)
 	)
 	private boolean theCopperierAge$preventBundlingInCrateSlots(
-		ItemStack instance, ItemStack otherStack, Slot slot, ClickAction clickAction, Player player, SlotAccess slotAccess, Operation<Boolean> original
+		ItemStack instance, ItemStack other, Slot slot, ClickAction clickAction, Player player, SlotAccess carriedItem, Operation<Boolean> original
 	) {
 		if (slot instanceof CrateSlot) {
-			if (instance.has(DataComponents.BUNDLE_CONTENTS) && !otherStack.isEmpty() && !otherStack.has(DataComponents.BUNDLE_CONTENTS)) {
+			if (instance.has(DataComponents.BUNDLE_CONTENTS) && !other.isEmpty() && !other.has(DataComponents.BUNDLE_CONTENTS)) {
 				player.level().playPlayerSound(TCASounds.UI_CRATE_CLICK_FAIL.value(), SoundSource.UI, 0.25F, 1F);
 				BundleItem.playInsertFailSound(player);
 			}
 			return false;
 		}
-		return original.call(instance, otherStack, slot, clickAction, player, slotAccess);
+		return original.call(instance, other, slot, clickAction, player, carriedItem);
 	}
 }

@@ -62,12 +62,12 @@ public class EquipmentLayerRendererMixin {
 	)
 	public RenderType theCopperierAge$submitOxidizedArmor(
 		Identifier texture, Operation<RenderType> original,
-		@Local(argsOnly = true) ItemStack stack
+		@Local(argsOnly = true) ItemStack itemStack
 	) {
-		if (!TCAConfig.OXIDIZABLE_COPPER_EQUIPMENT.get() || !texture.getPath().contains("humanoid") || !stack.is(TCAItemTags.OXIDIZABLE_EQUIPMENT)) return original.call(texture);
-		if (stack.is(ItemTags.LEG_ARMOR)) return original.call(
+		if (!TCAConfig.OXIDIZABLE_COPPER_EQUIPMENT.get() || !texture.getPath().contains("humanoid") || !itemStack.is(TCAItemTags.OXIDIZABLE_EQUIPMENT)) return original.call(texture);
+		if (itemStack.is(ItemTags.LEG_ARMOR)) return original.call(
 			OxidizableItemHelper.getValueForOxidization(
-				stack,
+				itemStack,
 				texture,
 				THE_COPPERIER_AGE$EXPOSED_COPPER_LEGGINGS,
 				THE_COPPERIER_AGE$WEATHERED_COPPER_LEGGINGS,
@@ -76,7 +76,7 @@ public class EquipmentLayerRendererMixin {
 		);
 		return original.call(
 			OxidizableItemHelper.getValueForOxidization(
-				stack,
+				itemStack,
 				texture,
 				THE_COPPERIER_AGE$EXPOSED_COPPER,
 				THE_COPPERIER_AGE$WEATHERED_COPPER,
@@ -84,5 +84,4 @@ public class EquipmentLayerRendererMixin {
 			)
 		);
 	}
-
 }

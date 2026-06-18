@@ -76,12 +76,12 @@ public class ItemStackMixin {
 		)
 	)
 	public void theCopperierAge$addWeatheringAndWaxedTooltips(
-		Item.TooltipContext context, TooltipDisplay display, @Nullable Player player, TooltipFlag flag, Consumer<Component> consumer, CallbackInfo info
+		Item.TooltipContext context, TooltipDisplay display, @Nullable Player player, TooltipFlag tooltipFlag, Consumer<Component> builder, CallbackInfo info
 	) {
 		final ItemStack stack = ItemStack.class.cast(this);
 		if (stack.is(TCAItemTags.OXIDIZABLE_EQUIPMENT)) {
 			theCopperierAge$addWeatherStateTooltip(
-				consumer,
+				builder,
 				OxidizableItemHelper.getValueForOxidization(
 					stack,
 					WeatheringCopper.WeatherState.UNAFFECTED,
@@ -91,14 +91,14 @@ public class ItemStackMixin {
 				)
 			);
 		}
-		if (OxidizableItemHelper.hasWaxedComponent(stack)) consumer.accept(OxidizableItemHelper.WAXED_TOOLTIP);
+		if (OxidizableItemHelper.hasWaxedComponent(stack)) builder.accept(OxidizableItemHelper.WAXED_TOOLTIP);
 
 		if (!TCAConfig.BETTER_COPPER_TOOLTIPS.get()) return;
 		if (!(stack.getItem() instanceof ItemOxidizationCacheInterface oxidizationCache)) return;
 
 		final WeatheringCopper.WeatherState weatherState = oxidizationCache.theCopperierAge$weatherState();
-		if (weatherState != null) theCopperierAge$addWeatherStateTooltip(consumer, weatherState);
-		if (oxidizationCache.theCopperierAge$waxed()) consumer.accept(OxidizableItemHelper.WAXED_TOOLTIP);
+		if (weatherState != null) theCopperierAge$addWeatherStateTooltip(builder, weatherState);
+		if (oxidizationCache.theCopperierAge$waxed()) builder.accept(OxidizableItemHelper.WAXED_TOOLTIP);
 	}
 
 	@Unique

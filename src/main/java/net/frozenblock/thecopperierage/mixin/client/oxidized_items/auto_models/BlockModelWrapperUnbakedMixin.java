@@ -42,7 +42,6 @@ import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.client.resources.model.sprite.TextureSlots;
 import net.minecraft.resources.Identifier;
 import org.joml.Matrix4fc;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -58,9 +57,6 @@ public abstract class BlockModelWrapperUnbakedMixin {
 	@Shadow
 	public abstract ItemModel bake(ItemModel.BakingContext context, Matrix4fc transformation);
 
-	@Shadow
-	@Final
-	private Identifier model;
 	@Unique
 	private boolean theCopperierAge$generatingNewModel = false;
 	@Unique
@@ -72,7 +68,7 @@ public abstract class BlockModelWrapperUnbakedMixin {
 	public ItemModel theCopperierAge$createOxidizingArmors(
 		ItemModel original,
 		ItemModel.BakingContext context, Matrix4fc transformation,
-		@Local(name = "textureSlots") TextureSlots slots
+		@Local(name = "textureSlots") TextureSlots textureSlots
 	) {
 		if (this.theCopperierAge$generatingNewModel) return original;
 
@@ -81,7 +77,7 @@ public abstract class BlockModelWrapperUnbakedMixin {
 		if (!(path.contains("item/copper_") || path.equals("item/brush") || path.contains("item/brush_brushing_") || path.equals("item/wrench"))) return original;
 		if (OxidizableItemHelper.getOxidizingModelSearchTerms().stream().noneMatch(path::contains)) return original;
 
-		final Material layer0Material = slots.getMaterial("layer0");
+		final Material layer0Material = textureSlots.getMaterial("layer0");
 		if (layer0Material == null) return original;
 
 		final Identifier texture = layer0Material.sprite();
@@ -138,10 +134,9 @@ public abstract class BlockModelWrapperUnbakedMixin {
 		)
 	)
 	public QuadCollection theCopperierAge$useOxidizingModelState(
-		ResolvedModel instance, TextureSlots slots, ModelBaker baker, ModelState modelState, Operation<QuadCollection> original
+		ResolvedModel instance, TextureSlots textureSlots, ModelBaker baker, ModelState state, Operation<QuadCollection> original
 	) {
-		if (this.theCopperierAge$generatingNewModel) return original.call(instance, slots, baker, BlockModelOxidization.create(this.theCopperierAge$oxidationStage, modelState));
-		return original.call(instance, slots, baker, modelState);
+		if (this.theCopperierAge$generatingNewModel) return original.call(instance, textureSlots, baker, BlockModelOxidization.create(this.theCopperierAge$oxidationStage, state));
+		return original.call(instance, textureSlots, baker, state);
 	}
-
 }

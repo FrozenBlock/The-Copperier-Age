@@ -50,10 +50,10 @@ public abstract class LocalPlayerGearboxRotationMixin {
 		)
 	)
 	private void theCopperierAge$applyLocalPlayerGearboxRotation(
-		DebugScreenOverlay instance, long deltaTime, Operation<Void> original,
+		DebugScreenOverlay instance, long frameDuration, Operation<Void> original,
 		boolean advanceGameTime
 	) {
-		original.call(instance, deltaTime);
+		original.call(instance, frameDuration);
 
 		final Minecraft minecraft = Minecraft.class.cast(this);
 		if (!advanceGameTime || this.pause || !this.isLevelRunningNormally()) return;
@@ -63,7 +63,7 @@ public abstract class LocalPlayerGearboxRotationMixin {
 		if (!(entity instanceof GearboxRotationSessionInterface rotationSession)) return;
 
 		final float gearboxYawDelta = rotationSession.theCopperierAge$getGearboxYawDelta();
-		float deltaSeconds = deltaTime * theCopperierAge$NANOS_TO_SECONDS;
+		float deltaSeconds = frameDuration * theCopperierAge$NANOS_TO_SECONDS;
 		if (deltaSeconds <= 0F) return;
 
 		final float yawDeltaThisFrame = gearboxYawDelta * 20F * deltaSeconds;

@@ -46,5 +46,4 @@ public class SelectItemModelPropertiesMixin {
 		ID_MAPPER.put(TCAConstants.id("oxidized_items_enabled"), OxidizedItemsEnabled.TYPE);
 		ID_MAPPER.put(TCAConstants.id("weather_state"), WeatherState.TYPE);
 	}
-
 }

@@ -32,15 +32,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class RedstoneWireBlockMixin {
 
     @Inject(method = "shouldConnectTo(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/Direction;)Z", at = @At("HEAD"), cancellable = true)
-    private static void theCopperierAge$handleRedstonePumpkinAndGearboxConnections(BlockState state, Direction direction, CallbackInfoReturnable<Boolean> info) {
-		final Block block = state.getBlock();
+    private static void theCopperierAge$handleRedstonePumpkinAndGearboxConnections(BlockState blockState, Direction direction, CallbackInfoReturnable<Boolean> info) {
+		final Block block = blockState.getBlock();
         if (block instanceof RedstonePumpkinBlock) {
             // Only allow connection if this direction matches the output face of the Redstone Pumpkin
-            final Direction outputFace = state.getValue(RedstonePumpkinBlock.FACING).getOpposite();
+            final Direction outputFace = blockState.getValue(RedstonePumpkinBlock.FACING).getOpposite();
 			info.setReturnValue(direction == outputFace);
         } else if (block instanceof GearboxBlock) {
 			// Only allow connection if this direction doesn't match the top face of the Gearbox
-			final Direction outputFace = state.getValue(GearboxBlock.FACING).getOpposite();
+			final Direction outputFace = blockState.getValue(GearboxBlock.FACING).getOpposite();
 			info.setReturnValue(direction != outputFace);
 		}
     }

@@ -57,5 +57,4 @@ public final class TCABlockEntityTypes {
 	) {
 		return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, id, new BlockEntityType<>(builder, Set.copyOf(blocks)));
 	}
-
 }

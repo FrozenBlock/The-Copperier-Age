@@ -36,10 +36,9 @@ public class CopperGolemRendererMixin {
 		method = "extractRenderState(Lnet/minecraft/world/entity/animal/golem/CopperGolem;Lnet/minecraft/client/renderer/entity/state/CopperGolemRenderState;F)V",
 		at = @At("TAIL")
 	)
-	public void theCopperierAge$extractRenderState(CopperGolem copperGolem, CopperGolemRenderState renderState, float partialTicks, CallbackInfo info) {
-		if (!(copperGolem instanceof CopperGolemPressButtonInterface copperGolemInterface)) return;
-		if (!(renderState instanceof CopperGolemPressButtonInterface renderStateInterface)) return;
+	public void theCopperierAge$extractRenderState(CopperGolem entity, CopperGolemRenderState state, float partialTicks, CallbackInfo info) {
+		if (!(entity instanceof CopperGolemPressButtonInterface copperGolemInterface)) return;
+		if (!(state instanceof CopperGolemPressButtonInterface renderStateInterface)) return;
 		renderStateInterface.theCopperierAge$getPressingButtonAnimationState().copyFrom(copperGolemInterface.theCopperierAge$getPressingButtonAnimationState());
 	}
-
 }

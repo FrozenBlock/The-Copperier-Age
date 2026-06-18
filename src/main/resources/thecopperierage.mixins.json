@@ -4,7 +4,7 @@
   "package": "net.frozenblock.thecopperierage.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
-    "block.copper_crate.AbstractContainerMenuMixin",
+    "block.crate.AbstractContainerMenuMixin",
     "block.copper_fan.EntityMixin",
     "block.copper_fire.BaseFireBlockMixin",
     "block.copper_fire.CampfireBlockMixin",
@@ -12,7 +12,7 @@
     "block.gearbox.EntityMixin",
     "block.gearbox.SulfurCubeLookControlMixin",
     "block.redstone.RedstoneWireBlockMixin",
-    "block.redstone_ore.RedStoneOreBlockMixin",
+    "block.redstone_ore.BlockBehaviourMixin",
     "datafix.DataFixersMixin",
     "datafix.v4533Mixin",
     "entity.copper_golem.CopperGolemAiMixin",

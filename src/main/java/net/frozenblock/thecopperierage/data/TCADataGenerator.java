@@ -30,9 +30,9 @@ import net.frozenblock.thecopperierage.data.tag.TCABlockTagsProvider;
 import net.frozenblock.thecopperierage.data.tag.TCAEntityTypeTagsProvider;
 import net.frozenblock.thecopperierage.data.tag.TCAInstrumentTagsProvider;
 import net.frozenblock.thecopperierage.data.tag.TCAItemTagsProvider;
+import net.frozenblock.thecopperierage.data.worldgen.structure.TCATrialChambersTemplatePools;
 import net.frozenblock.thecopperierage.registry.TCAFireTypes;
 import net.frozenblock.thecopperierage.registry.TCAInstruments;
-import net.frozenblock.thecopperierage.data.worldgen.structure.TCATrialChambersTemplatePools;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 

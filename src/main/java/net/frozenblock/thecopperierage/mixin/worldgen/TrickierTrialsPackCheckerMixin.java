@@ -43,5 +43,4 @@ public class TrickierTrialsPackCheckerMixin {
 		TCAConstants.log(TCAResources.HAS_TRICKIER_TRIALS_PACK ? "Has Trickier Trials pack!" : "Does not have Trickier Trials pack!", TCAConstants.UNSTABLE_LOGGING);
 		return resourceManager;
 	}
-
 }

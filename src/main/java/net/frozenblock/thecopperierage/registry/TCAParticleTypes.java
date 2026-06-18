@@ -24,11 +24,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 
 public final class TCAParticleTypes {
-	public static final SimpleParticleType COPPER_SMOKE = register("copper_smoke");
-	public static final SimpleParticleType LARGE_COPPER_SMOKE = register("large_copper_smoke");
 	public static final SimpleParticleType COPPER_LAVA = register("copper_lava");
-	public static final SimpleParticleType COPPER_CAMPFIRE_COSY_SMOKE = register("copper_campfire_cosy_smoke");
-	public static final SimpleParticleType COPPER_CAMPFIRE_SIGNAL_SMOKE = register("copper_campfire_signal_smoke");
 
 	public static void init() {}
 

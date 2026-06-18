@@ -31,7 +31,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class EntityMixin implements CopperFanQueuedMovementInterface {
 
 	@Shadow
-	public abstract void addDeltaMovement(Vec3 vec3);
+	public abstract void addDeltaMovement(Vec3 momentum);
 
 	@Unique
 	private Vec3 theCopperierAge$queuedCopperFanMovementMin = Vec3.ZERO;

@@ -32,7 +32,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public interface VariantMutatorMixin {
 
     @Inject(method = "then", at = @At("HEAD"), cancellable = true)
-    private void theCopperierAge$removeButtonUVLockIfGeneratingPack(VariantMutator variantMutator, CallbackInfoReturnable<VariantMutator> info) {
-		if (TCAPackModelProvider.GENERATING_COPPER_BUTTON && variantMutator == BlockModelGenerators.UV_LOCK) info.setReturnValue(VariantMutator.class.cast(this));
+    private void theCopperierAge$removeButtonUVLockIfGeneratingPack(VariantMutator other, CallbackInfoReturnable<VariantMutator> info) {
+		if (TCAPackModelProvider.GENERATING_COPPER_BUTTON && other == BlockModelGenerators.UV_LOCK) info.setReturnValue(VariantMutator.class.cast(this));
     }
 }

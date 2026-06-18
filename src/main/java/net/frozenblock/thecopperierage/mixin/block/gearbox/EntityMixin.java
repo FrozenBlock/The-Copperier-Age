@@ -84,6 +84,18 @@ public abstract class EntityMixin implements GearboxRotationSessionInterface {
 	}
 
 	@Unique
+	@Override
+	public boolean theCopperierAge$rotating() {
+		final Entity entity = Entity.class.cast(this);
+		if (!this.theCopperierAge$activeGearboxRotation || !entity.onGround() || entity.is(TCAEntityTypeTags.GEARBOX_CANNOT_ROTATE)) return false;
+
+		final BlockState onState = entity.level().getBlockState(entity.getOnPos());
+		return onState.getBlock() instanceof GearboxBlock
+			&& onState.getValue(GearboxBlock.FACING) == Direction.UP
+			&& onState.getValue(GearboxBlock.POWER) > 0;
+	}
+
+	@Unique
 	private float theCopperierAge$getCachedSupportYawDelta(Entity entity) {
 		if (!this.theCopperierAge$hasCachedSupportPos) return 0F;
 		if (!GearboxEntityRotationHelper.isStandingOnBlock(entity, this.theCopperierAge$cachedSupportPos)) return 0F;

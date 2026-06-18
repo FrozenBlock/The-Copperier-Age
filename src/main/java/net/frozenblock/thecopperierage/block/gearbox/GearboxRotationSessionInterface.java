@@ -25,4 +25,5 @@ public interface GearboxRotationSessionInterface {
 	BlockPos theCopperierAge$getGearboxPosition();
 	void theCopperierAge$tickRotationSession(boolean invertVisualRot);
 	boolean theCopperierAge$automaticallyRotatesWithGearbox();
+	boolean theCopperierAge$rotating();
 }

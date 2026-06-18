@@ -25,6 +25,7 @@ accessible class net/minecraft/world/level/block/entity/BlockEntityType$BlockEnt
 accessible field net/minecraft/world/entity/animal/equine/AbstractHorse inventory Lnet/minecraft/world/SimpleContainer;
 accessible method net/minecraft/world/entity/projectile/arrow/AbstractArrow isInGround ()Z
 accessible method net/minecraft/world/entity/animal/golem/CopperGolemState id ()I
+accessible class net/minecraft/world/entity/monster/cubemob/SulfurCube$SulfurCubeLookControl
 
 # Menus
 accessible method net/minecraft/world/inventory/ChestMenu addChestGrid (Lnet/minecraft/world/Container;II)V

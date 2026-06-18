@@ -10,6 +10,7 @@
     "block.copper_fire.CampfireBlockMixin",
     "block.gearbox.AbstractMinecartMixin",
     "block.gearbox.EntityMixin",
+    "block.gearbox.SulfurCubeLookControlMixin",
     "block.redstone.RedstoneWireBlockMixin",
     "block.redstone_ore.RedStoneOreBlockMixin",
     "datafix.DataFixersMixin",

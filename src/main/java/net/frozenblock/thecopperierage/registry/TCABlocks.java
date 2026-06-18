@@ -211,5 +211,4 @@ public final class TCABlocks {
 		if (weatherState == WeatheringCopper.WeatherState.OXIDIZED) return MapColor.WARPED_NYLIUM;
 		return MapColor.NONE;
 	}
-
 }

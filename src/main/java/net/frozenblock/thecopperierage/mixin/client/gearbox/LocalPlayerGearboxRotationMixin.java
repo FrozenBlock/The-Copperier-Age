@@ -70,6 +70,7 @@ public abstract class LocalPlayerGearboxRotationMixin {
 		@Share("theCopperierAge$isLevelRunningNormally") LocalBooleanRef isLevelRunningNormally
 	) {
 		final Minecraft minecraft = Minecraft.class.cast(this);
+		original.call(instance, deltaTime);
 		if (this.pause || !isLevelRunningNormally.get()) return;
 
 		final LocalPlayer player = minecraft.player;

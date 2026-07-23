@@ -25,6 +25,12 @@ import net.minecraft.world.item.Item;
 public final class TCAItemIds {
 	public static final ResourceKey<Item> WRENCH = create("wrench");
 	public static final ResourceKey<Item> COPPER_HORN = create("copper_horn");
+	public static final ResourceKey<Item> MINECART_COUPLING = create("minecart_coupling");
+	public static final ResourceKey<Item> CRATE_MINECART = create("crate_minecart");
+	public static final ResourceKey<Item> COPPER_GOLEM_STATUE_MINECART = create("copper_golem_statue_minecart");
+	public static final ResourceKey<Item> DISPENSER_MINECART = create("dispenser_minecart");
+	public static final ResourceKey<Item> DROPPER_MINECART = create("dropper_minecart");
+	public static final ResourceKey<Item> JUKEBOX_MINECART = create("jukebox_minecart");
 
 	private static ResourceKey<Item> create(String name) {
 		return ResourceKey.create(Registries.ITEM, TCAConstants.id(name));

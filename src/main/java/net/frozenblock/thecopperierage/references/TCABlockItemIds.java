@@ -32,6 +32,7 @@ public final class TCABlockItemIds {
     public static final WeatheringCopperCollection<BlockItemId> COPPER_FAN = createSimpleCopper("copper_fan");
     public static final WeatheringCopperCollection<BlockItemId> CHIME = createSimpleCopper("chime");
     public static final BlockItemId CRATE = create("crate");
+    public static final BlockItemId KILN = create("kiln");
     public static final WeatheringCopperCollection<BlockItemId> COPPER_BUTTON = createSimpleCopper("copper_button");
     public static final WeatheringCopperCollection<BlockItemId> WEIGHTED_PRESSURE_PLATE = createSimpleCopper("weighted_pressure_plate");
 

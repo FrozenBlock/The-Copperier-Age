@@ -49,6 +49,7 @@ import static net.minecraft.client.renderer.item.ItemModel.Unbaked;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -91,6 +92,17 @@ public final class TCAModelProvider extends FabricModelProvider {
 		Optional.of("_powered"),
 		TextureSlot.FRONT, TextureSlot.SIDE, TextureSlot.BOTTOM
 	);
+	// KILN
+	private static final ModelTemplate KILN_MODEL = new ModelTemplate(
+		Optional.of(Identifier.withDefaultNamespace("block/orientable_with_bottom")),
+		Optional.empty(),
+		TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE, TextureSlot.FRONT
+	);
+	private static final PropertyDispatch<VariantMutator> KILN_ROTATION = PropertyDispatch.modify(BlockStateProperties.HORIZONTAL_FACING)
+		.select(Direction.EAST, BlockModelGenerators.Y_ROT_90)
+		.select(Direction.SOUTH, BlockModelGenerators.Y_ROT_180)
+		.select(Direction.WEST, BlockModelGenerators.Y_ROT_270)
+		.select(Direction.NORTH, BlockModelGenerators.NOP);
 
 	public TCAModelProvider(FabricPackOutput output) {
 		super(output);
@@ -118,6 +130,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 		TCABlocks.COPPER_FAN.zipUnwaxedWaxed((block, waxedBlock) -> createCopperFan(generator, block, waxedBlock));
 		TCABlocks.CHIME.zipUnwaxedWaxed((block, waxedBlock) -> createChime(generator, block, waxedBlock));
 		createCrate(generator, TCABlocks.CRATE);
+		createKiln(generator);
 
 		createCopperButton(generator, TCABlocks.COPPER_BUTTON.weathering().unaffected(), TCABlocks.COPPER_BUTTON.waxed().unaffected(), Blocks.COPPER_BLOCK.weathering().unaffected());
 		createCopperButton(generator, TCABlocks.COPPER_BUTTON.weathering().exposed(), TCABlocks.COPPER_BUTTON.waxed().exposed(), Blocks.COPPER_BLOCK.weathering().exposed());
@@ -129,6 +142,12 @@ public final class TCAModelProvider extends FabricModelProvider {
 	public void generateItemModels(ItemModelGenerators generator) {
 		generateCopperHorn(generator, TCAItems.COPPER_HORN);
 		generator.generateFlatItem(TCAItems.WRENCH, ModelTemplates.FLAT_HANDHELD_ITEM);
+		generator.generateFlatItem(TCAItems.MINECART_COUPLING, ModelTemplates.FLAT_ITEM);
+		generator.generateFlatItem(TCAItems.CRATE_MINECART, ModelTemplates.FLAT_ITEM);
+		generator.generateFlatItem(TCAItems.COPPER_GOLEM_STATUE_MINECART, ModelTemplates.FLAT_ITEM);
+		generator.generateFlatItem(TCAItems.JUKEBOX_MINECART, ModelTemplates.FLAT_ITEM);
+		generator.generateFlatItem(TCAItems.DISPENSER_MINECART, ModelTemplates.FLAT_ITEM);
+		generator.generateFlatItem(TCAItems.DROPPER_MINECART, ModelTemplates.FLAT_ITEM);
 	}
 
 	private static void createCopperFire(BlockModelGenerators generator) {
@@ -282,6 +301,40 @@ public final class TCAModelProvider extends FabricModelProvider {
 				.with(PropertyDispatch.initial(BlockStateProperties.OPEN).select(false, model).select(true, openModel))
 				.with(BlockModelGenerators.ROTATIONS_COLUMN_WITH_FACING)
 		);
+	}
+
+	private static void createKiln(BlockModelGenerators generator) {
+		final Material furnaceTop = TextureMapping.getBlockTexture(TCABlocks.KILN, "_top");
+		final Material furnaceBottom = TextureMapping.getBlockTexture(TCABlocks.KILN, "_bottom");
+		final Material furnaceSide = TextureMapping.getBlockTexture(TCABlocks.KILN, "_side");
+		final Material furnaceFront = TextureMapping.getBlockTexture(TCABlocks.KILN, "_front");
+		final Material furnaceFrontOn = TextureMapping.getBlockTexture(TCABlocks.KILN, "_front_lit");
+
+		final TextureMapping mapping = new TextureMapping()
+			.put(TextureSlot.TOP, furnaceTop)
+			.put(TextureSlot.BOTTOM, furnaceBottom)
+			.put(TextureSlot.SIDE, furnaceSide)
+			.put(TextureSlot.FRONT, furnaceFront);
+		final Identifier model = KILN_MODEL.create(TCABlocks.KILN, mapping, generator.modelOutput);
+
+		final TextureMapping litMapping = new TextureMapping()
+			.put(TextureSlot.TOP, furnaceTop)
+			.put(TextureSlot.BOTTOM, furnaceBottom)
+			.put(TextureSlot.SIDE, furnaceSide)
+			.put(TextureSlot.FRONT, furnaceFrontOn);
+		final Identifier modelOn = KILN_MODEL.createWithSuffix(TCABlocks.KILN, "_lit", litMapping, generator.modelOutput);
+
+		generator.blockStateOutput.accept(
+			MultiVariantGenerator.dispatch(TCABlocks.KILN)
+				.with(
+					PropertyDispatch.initial(BlockStateProperties.LIT)
+						.select(false, BlockModelGenerators.plainVariant(model))
+						.select(true, BlockModelGenerators.plainVariant(modelOn))
+				)
+				.with(KILN_ROTATION)
+		);
+
+		generator.registerSimpleItemModel(TCABlocks.KILN, model);
 	}
 
 	private static void createCopperButton(BlockModelGenerators generator, Block block, Block waxedBlock, Block originalBlock) {

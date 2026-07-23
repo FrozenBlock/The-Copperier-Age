@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:minecart",
+    "minecraft:copper_golem_statue"
+  ],
+  "result": {
+    "id": "thecopperierage:copper_golem_statue_minecart"
+  }
+}

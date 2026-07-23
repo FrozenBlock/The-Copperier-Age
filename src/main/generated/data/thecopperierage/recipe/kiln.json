@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": "minecraft:copper_ingot",
+    "F": "minecraft:furnace",
+    "~": "minecraft:bricks"
+  },
+  "pattern": [
+    "#~#",
+    "~F~",
+    "#~#"
+  ],
+  "result": {
+    "id": "thecopperierage:kiln"
+  }
+}

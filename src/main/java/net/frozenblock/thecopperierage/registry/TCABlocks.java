@@ -26,6 +26,7 @@ import net.frozenblock.thecopperierage.block.CopperFireBlock;
 import net.frozenblock.thecopperierage.block.CopperPressurePlateBlock;
 import net.frozenblock.thecopperierage.block.CrateBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
+import net.frozenblock.thecopperierage.block.KilnBlock;
 import net.frozenblock.thecopperierage.block.RedstoneGritBlock;
 import net.frozenblock.thecopperierage.block.RedstonePumpkinBlock;
 import net.frozenblock.thecopperierage.block.StickyGearboxBlock;
@@ -94,6 +95,15 @@ public final class TCABlocks {
 			.isValidSpawn(Blocks::always)
 			.pushReaction(PushReaction.DESTROY)
 			.isRedstoneConductor(Blocks::never)
+	);
+
+	public static final Block KILN = Blocks.register(TCABlockItemIds.KILN,
+		KilnBlock::new,
+		BlockBehaviour.Properties.of()
+			.mapColor(MapColor.STONE)
+			.requiresCorrectToolForDrops()
+			.strength(3.5F)
+			.lightLevel(Blocks.litBlockEmission(13))
 	);
 
 	public static final Block REDSTONE_GRIT = Blocks.register(TCABlockItemIds.REDSTONE_GRIT,

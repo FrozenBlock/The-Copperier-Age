@@ -20,6 +20,8 @@ package net.frozenblock.thecopperierage.registry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.frozenblock.thecopperierage.client.gui.screens.inventory.CrateScreen;
+import net.frozenblock.thecopperierage.client.gui.screens.inventory.FurnaceMinecartScreen;
+import net.frozenblock.thecopperierage.client.gui.screens.inventory.KilnScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
 
 @Environment(EnvType.CLIENT)
@@ -27,5 +29,7 @@ public final class TCAMenuScreens {
 
 	public static void init() {
 		MenuScreens.register(TCAMenuTypes.CRATE, CrateScreen::new);
+		MenuScreens.register(TCAMenuTypes.KILN, KilnScreen::new);
+		MenuScreens.register(TCAMenuTypes.FURNACE_MINECART, FurnaceMinecartScreen::new);
 	}
 }

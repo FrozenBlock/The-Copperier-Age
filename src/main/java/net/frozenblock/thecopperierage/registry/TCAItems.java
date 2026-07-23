@@ -24,6 +24,7 @@ import net.frozenblock.thecopperierage.references.TCAItemIds;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.MinecartItem;
 import net.minecraft.world.item.component.InstrumentComponent;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.block.WeatheringCopperCollection;
@@ -49,6 +50,7 @@ public final class TCAItems {
 	public static final Item CRATE = Items.registerBlock(TCABlockItemIds.CRATE, TCABlocks.CRATE,
 		new Item.Properties().component(DataComponents.CONTAINER, ItemContainerContents.EMPTY)
 	);
+	public static final Item KILN = Items.registerBlock(TCABlockItemIds.KILN, TCABlocks.KILN);
 	public static final WeatheringCopperCollection<Item> COPPER_BUTTON = WeatheringCopperCollection.registerItems(
 		TCABlockItemIds.COPPER_BUTTON, TCABlocks.COPPER_BUTTON, Items::registerBlock
 	);
@@ -66,6 +68,32 @@ public final class TCAItems {
 		new Item.Properties()
 			.stacksTo(1)
 			.delayedComponent(DataComponents.INSTRUMENT, context -> new InstrumentComponent(context.getOrThrow(TCAInstruments.SAX_COPPER_HORN)))
+	);
+
+	// MINECART ITEMS
+	public static final Item MINECART_COUPLING = Items.registerItem(TCAItemIds.MINECART_COUPLING,
+		Item::new,
+		new Item.Properties().stacksTo(16)
+	);
+	public static final Item CRATE_MINECART = Items.registerItem(TCAItemIds.CRATE_MINECART,
+		properties -> new MinecartItem(TCAEntityTypes.CRATE_MINECART, properties),
+		new Item.Properties().stacksTo(1)
+	);
+	public static final Item COPPER_GOLEM_STATUE_MINECART = Items.registerItem(TCAItemIds.COPPER_GOLEM_STATUE_MINECART,
+		properties -> new MinecartItem(TCAEntityTypes.COPPER_GOLEM_STATUE_MINECART, properties),
+		new Item.Properties().stacksTo(1)
+	);
+	public static final Item DISPENSER_MINECART = Items.registerItem(TCAItemIds.DISPENSER_MINECART,
+		properties -> new MinecartItem(TCAEntityTypes.DISPENSER_MINECART, properties),
+		new Item.Properties().stacksTo(1)
+	);
+	public static final Item DROPPER_MINECART = Items.registerItem(TCAItemIds.DROPPER_MINECART,
+		properties -> new MinecartItem(TCAEntityTypes.DROPPER_MINECART, properties),
+		new Item.Properties().stacksTo(1)
+	);
+	public static final Item JUKEBOX_MINECART = Items.registerItem(TCAItemIds.JUKEBOX_MINECART,
+		properties -> new MinecartItem(TCAEntityTypes.JUKEBOX_MINECART, properties),
+		new Item.Properties().stacksTo(1)
 	);
 
 	public static void init() {}

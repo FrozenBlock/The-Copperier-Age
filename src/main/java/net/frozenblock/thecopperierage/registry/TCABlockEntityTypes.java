@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Set;
 import net.frozenblock.thecopperierage.block.entity.ChimeBlockEntity;
 import net.frozenblock.thecopperierage.block.entity.CrateBlockEntity;
+import net.frozenblock.thecopperierage.block.entity.KilnBlockEntity;
 import net.frozenblock.thecopperierage.block.entity.StickyGearboxBlockEntity;
 import net.frozenblock.thecopperierage.references.TCABlockEntityTypeIds;
 import net.minecraft.core.Registry;
@@ -46,6 +47,11 @@ public final class TCABlockEntityTypes {
 		TCABlockEntityTypeIds.CRATE,
 		CrateBlockEntity::new,
 		List.of(TCABlocks.CRATE)
+	);
+	public static final BlockEntityType<KilnBlockEntity> KILN = register(
+		TCABlockEntityTypeIds.KILN,
+		KilnBlockEntity::new,
+		List.of(TCABlocks.KILN)
 	);
 
 	public static void init() {}

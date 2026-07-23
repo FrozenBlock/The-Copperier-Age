@@ -119,6 +119,19 @@ public final class TCACreativeInventorySorting {
 		insertAfterInBuildingBlocks(Items.COPPER_TRAPDOOR.weathering().oxidized(), TCABlocks.WEIGHTED_PRESSURE_PLATE.weathering().oxidized());
 		insertAfterInBuildingBlocks(Items.COPPER_TRAPDOOR.waxed().oxidized(), TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed().oxidized());
 
+		insertAfterInFunctionalBlocks(Items.FURNACE, TCABlocks.KILN);
+
+		// MINECARTS
+		insertAfterInToolsAndUtilities(Items.CHEST_MINECART, TCAItems.CRATE_MINECART);
+		insertAfterInToolsAndUtilities(Items.FURNACE_MINECART, TCAItems.DISPENSER_MINECART);
+		insertAfterInToolsAndUtilities(TCAItems.DISPENSER_MINECART, TCAItems.DROPPER_MINECART);
+		insertAfterInToolsAndUtilities(TCAItems.DROPPER_MINECART, TCAItems.JUKEBOX_MINECART);
+		insertBeforeInToolsAndUtilities(Items.GOAT_HORN, TCAItems.MINECART_COUPLING);
+		insertAfterInRedstoneBlocks(Items.CHEST_MINECART, TCAItems.CRATE_MINECART);
+		insertAfterInRedstoneBlocks(Items.FURNACE_MINECART, TCAItems.DISPENSER_MINECART);
+		insertAfterInRedstoneBlocks(TCAItems.DISPENSER_MINECART, TCAItems.DROPPER_MINECART);
+		insertAfterInRedstoneBlocks(TCAItems.DROPPER_MINECART, TCAItems.JUKEBOX_MINECART);
+
 		insertAfterInFunctionalBlocks(Items.SOUL_CAMPFIRE, TCABlocks.COPPER_CAMPFIRE);
 		insertBeforeInToolsAndUtilities(Items.BRUSH, TCAItems.WRENCH);
 		insertInstrumentBefore(Items.MUSIC_DISC_13, TCAItems.COPPER_HORN, TCAInstrumentTags.COPPER_HORNS, CreativeModeTabs.TOOLS_AND_UTILITIES);

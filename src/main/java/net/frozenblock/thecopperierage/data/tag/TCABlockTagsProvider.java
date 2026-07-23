@@ -70,7 +70,8 @@ public final class TCABlockTagsProvider extends FabricTagsProvider.BlockTagsProv
 			.addOptionalTag(TCABlockItemTags.COPPER_FANS.block())
 			.addOptionalTag(TCABlockItemTags.CHIMES.block())
 			.addOptionalTag(TCABlockItemTags.COPPER_BUTTONS.block())
-			.addOptionalTag(TCABlockItemTags.COPPER_PRESSURE_PLATES.block());
+			.addOptionalTag(TCABlockItemTags.COPPER_PRESSURE_PLATES.block())
+			.add(TCABlockItemIds.KILN);
 
 		this.builder(BlockTags.MINEABLE_WITH_SHOVEL)
 			.add(TCABlockItemIds.REDSTONE_GRIT);

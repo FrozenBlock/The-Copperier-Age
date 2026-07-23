@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "minecart_coupling",
+  "key": {
+    "C": "minecraft:iron_ingot",
+    "X": "minecraft:iron_chain"
+  },
+  "pattern": [
+    "  C",
+    " X ",
+    "C  "
+  ],
+  "result": {
+    "id": "thecopperierage:minecart_coupling"
+  }
+}

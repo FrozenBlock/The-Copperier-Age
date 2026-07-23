@@ -71,6 +71,46 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.unlockedBy(RecipeProvider.getHasName(Items.COPPER_INGOT), this.has(Items.COPPER_INGOT))
 					.save(exporter);
 
+				this.shaped(RecipeCategory.TOOLS, TCAItems.MINECART_COUPLING)
+					.group("minecart_coupling")
+					.define('X', Ingredient.of(Items.IRON_CHAIN))
+					.define('C', Ingredient.of(Items.IRON_INGOT))
+					.pattern("  C")
+					.pattern(" X ")
+					.pattern("C  ")
+					.unlockedBy(RecipeProvider.getHasName(Items.MINECART), this.has(Items.MINECART))
+					.save(exporter);
+
+				this.shapeless(RecipeCategory.TRANSPORTATION, TCAItems.CRATE_MINECART)
+					.requires(Items.MINECART)
+					.requires(TCABlocks.CRATE)
+					.unlockedBy(RecipeProvider.getHasName(Items.MINECART), this.has(Items.MINECART))
+					.save(this.output);
+
+				this.shapeless(RecipeCategory.TRANSPORTATION, TCAItems.COPPER_GOLEM_STATUE_MINECART)
+					.requires(Items.MINECART)
+					.requires(Items.COPPER_GOLEM_STATUE.weathering().unaffected())
+					.unlockedBy(RecipeProvider.getHasName(TCAItems.COPPER_GOLEM_STATUE_MINECART), this.has(TCAItems.COPPER_GOLEM_STATUE_MINECART))
+					.save(this.output);
+
+				this.shapeless(RecipeCategory.TRANSPORTATION, TCAItems.DISPENSER_MINECART)
+					.requires(Items.MINECART)
+					.requires(Items.DISPENSER)
+					.unlockedBy(RecipeProvider.getHasName(Items.MINECART), this.has(Items.MINECART))
+					.save(this.output);
+
+				this.shapeless(RecipeCategory.TRANSPORTATION, TCAItems.DROPPER_MINECART)
+					.requires(Items.MINECART)
+					.requires(Items.DROPPER)
+					.unlockedBy(RecipeProvider.getHasName(Items.MINECART), this.has(Items.MINECART))
+					.save(this.output);
+
+				this.shapeless(RecipeCategory.TRANSPORTATION, TCAItems.JUKEBOX_MINECART)
+					.requires(Items.MINECART)
+					.requires(Items.JUKEBOX)
+					.unlockedBy(RecipeProvider.getHasName(Items.MINECART), this.has(Items.MINECART))
+					.save(this.output);
+
 				this.shaped(RecipeCategory.DECORATIONS, TCABlocks.COPPER_CAMPFIRE)
 					.define('L', ItemTags.LOGS)
 					.define('S', Items.STICK)
@@ -79,6 +119,16 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.pattern("SCS")
 					.pattern("LLL")
 					.unlockedBy("has_copper_nugget", this.has(Items.COPPER_NUGGET))
+					.save(this.output);
+
+				this.shaped(RecipeCategory.DECORATIONS, TCABlocks.KILN)
+					.define('~', Ingredient.of(Items.BRICKS))
+					.define('F', Ingredient.of(Items.FURNACE))
+					.define('#', Ingredient.of(Items.COPPER_INGOT))
+					.pattern("#~#")
+					.pattern("~F~")
+					.pattern("#~#")
+					.unlockedBy(RecipeProvider.getHasName(Items.FURNACE), this.has(Items.FURNACE))
 					.save(this.output);
 
 				this.shaped(RecipeCategory.BUILDING_BLOCKS, TCABlocks.COPPER_JACK_O_LANTERN)

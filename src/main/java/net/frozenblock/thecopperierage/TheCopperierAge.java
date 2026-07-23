@@ -27,10 +27,12 @@ import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
 import net.frozenblock.thecopperierage.levelgen.structure.modification.TCAStructureModifications;
 import net.frozenblock.thecopperierage.networking.TCANetworking;
+import net.frozenblock.thecopperierage.registry.TCAAttachments;
 import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCACreativeInventorySorting;
 import net.frozenblock.thecopperierage.registry.TCADataComponents;
+import net.frozenblock.thecopperierage.registry.TCAEntityTypes;
 import net.frozenblock.thecopperierage.registry.TCAFireTypes;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.frozenblock.thecopperierage.registry.TCAMemoryModuleTypes;
@@ -56,9 +58,11 @@ public final class TheCopperierAge extends FrozenModInitializer {
 	public void onInitialize(String modId, ModContainer container) {
 		TCAFeatureFlags.init();
 		FeatureFlagApi.rebuild();
+		TCAAttachments.init();
 
 		TCABlocks.init();
 		TCABlockEntityTypes.init();
+		TCAEntityTypes.init();
 		TCAItems.init();
 		TCADataComponents.init();
 		TCARecipeTypes.init();

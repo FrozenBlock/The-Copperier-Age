@@ -6,6 +6,7 @@
   "mixins": [
     "block.crate.AbstractContainerMenuMixin",
     "block.copper_fan.EntityMixin",
+    "block.dispenser.DispenserBlockMixin",
     "block.copper_fire.BaseFireBlockMixin",
     "block.copper_fire.CampfireBlockMixin",
     "block.gearbox.AbstractMinecartMixin",
@@ -20,6 +21,17 @@
     "entity.copper_golem.CopperGolemStateMixin",
     "item.ItemMixin",
     "item.ItemStackMixin",
+    "recipe.RecipeManagerMixin",
+    "recipe.SingleItemRecipeAccessor",
+    "block.rail.DetectorRailBlockMixin",
+    "entity.minecart.AbstractMinecartMixin",
+    "entity.minecart.VehicleEntityMixin",
+    "entity.minecart.motion.AbstractMinecartMixin",
+    "entity.minecart.motion.NewMinecartBehaviorMixin",
+    "entity.minecart.coupling.AbstractMinecartMixin",
+    "entity.minecart.coupling.PlayerMinecartCouplingMixin",
+    "entity.minecart.dispenser.AbstractMinecartMixin",
+    "entity.minecart.furnace.MinecartFurnaceMixin",
     "worldgen.TrickierTrialsPackCheckerMixin"
   ],
   "client": [
@@ -31,6 +43,8 @@
     "client.oxidized_items.SelectItemModelPropertiesMixin",
     "client.oxidized_items.auto_models.BlockModelWrapperUnbakedMixin",
     "client.slot_overlay.GuiGraphicsExtractorMixin",
+    "client.minecart.coupling.AbstractMinecartRendererMixin",
+    "entity.minecart.smoothing.AbstractMinecartMixin",
     "datagen.client.VariantMutatorMixin"
   ],
   "injectors": {

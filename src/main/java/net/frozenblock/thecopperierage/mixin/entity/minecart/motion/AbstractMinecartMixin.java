@@ -1,6 +1,7 @@
 /*
- * Copyright 2025-2026 FrozenBlock
+ * Copyright 2026 FrozenBlock
  * This file is part of The Copperier Age.
+ *
  * This program is free software; you can modify it under
  * the terms of version 1 of the FrozenBlock Modding Oasis License
  * as published by FrozenBlock Modding Oasis.

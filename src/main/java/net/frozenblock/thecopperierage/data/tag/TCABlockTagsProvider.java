@@ -57,6 +57,10 @@ public final class TCABlockTagsProvider extends FabricTagsProvider.BlockTagsProv
 		this.builder(BlockTags.FIRE)
 			.add(TCABlockIds.COPPER_FIRE);
 
+		final var railsBuilder = this.builder(BlockTags.RAILS);
+		TCABlockItemIds.COPPER_RAIL.forEach(railsBuilder::add);
+		railsBuilder.add(TCABlockItemIds.CROSS_RAIL, TCABlockItemIds.RELAYOR_RAIL);
+
 		this.builder(BlockTags.MINEABLE_WITH_AXE)
 			.add(TCABlockItemIds.COPPER_CAMPFIRE)
 			.add(TCABlockItemIds.COPPER_JACK_O_LANTERN, TCABlockItemIds.REDSTONE_JACK_O_LANTERN)

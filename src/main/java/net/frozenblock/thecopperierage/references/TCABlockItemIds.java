@@ -35,6 +35,9 @@ public final class TCABlockItemIds {
     public static final BlockItemId KILN = create("kiln");
     public static final WeatheringCopperCollection<BlockItemId> COPPER_BUTTON = createSimpleCopper("copper_button");
     public static final WeatheringCopperCollection<BlockItemId> WEIGHTED_PRESSURE_PLATE = createSimpleCopper("weighted_pressure_plate");
+    public static final WeatheringCopperCollection<BlockItemId> COPPER_RAIL = createSimpleCopper("copper_rail");
+    public static final BlockItemId CROSS_RAIL = create("cross_rail");
+    public static final BlockItemId RELAYOR_RAIL = create("relayor_rail");
 
     private static BlockItemId create(String name) {
         final Identifier id = TCAConstants.id(name);

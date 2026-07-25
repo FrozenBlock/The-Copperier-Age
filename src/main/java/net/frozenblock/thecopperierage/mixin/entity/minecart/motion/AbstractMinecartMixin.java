@@ -1,7 +1,6 @@
 /*
  * Copyright 2025-2026 FrozenBlock
  * This file is part of The Copperier Age.
- *
  * This program is free software; you can modify it under
  * the terms of version 1 of the FrozenBlock Modding Oasis License
  * as published by FrozenBlock Modding Oasis.
@@ -48,6 +47,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * <p>Coupled carts are skipped entirely: the coupling solver ({@code MinecartCouplingUtil}) already
  * pushes carts both ways to hold a train at length, and correcting those as "reversals" fought the
  * solver, making couplings oscillate and snap apart.
+ *
  */
 @Mixin(AbstractMinecart.class)
 public abstract class AbstractMinecartMixin {

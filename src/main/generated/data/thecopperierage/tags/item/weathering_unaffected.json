@@ -41,6 +41,8 @@
     "thecopperierage:copper_button",
     "thecopperierage:waxed_copper_button",
     "thecopperierage:weighted_pressure_plate",
-    "thecopperierage:waxed_weighted_pressure_plate"
+    "thecopperierage:waxed_weighted_pressure_plate",
+    "thecopperierage:copper_rail",
+    "thecopperierage:waxed_copper_rail"
   ]
 }

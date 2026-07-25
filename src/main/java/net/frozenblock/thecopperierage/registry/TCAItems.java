@@ -57,6 +57,11 @@ public final class TCAItems {
 	public static final WeatheringCopperCollection<Item> WEIGHTED_PRESSURE_PLATE = WeatheringCopperCollection.registerItems(
 		TCABlockItemIds.WEIGHTED_PRESSURE_PLATE, TCABlocks.WEIGHTED_PRESSURE_PLATE, Items::registerBlock
 	);
+	public static final WeatheringCopperCollection<Item> COPPER_RAIL = WeatheringCopperCollection.registerItems(
+		TCABlockItemIds.COPPER_RAIL, TCABlocks.COPPER_RAIL, Items::registerBlock
+	);
+	public static final Item CROSS_RAIL = Items.registerBlock(TCABlockItemIds.CROSS_RAIL, TCABlocks.CROSS_RAIL);
+	public static final Item RELAYOR_RAIL = Items.registerBlock(TCABlockItemIds.RELAYOR_RAIL, TCABlocks.RELAYOR_RAIL);
 
 	// ITEMS
 	public static final Item WRENCH = Items.registerItem(TCAItemIds.WRENCH,

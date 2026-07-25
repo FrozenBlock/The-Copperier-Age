@@ -214,6 +214,31 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.unlockedBy(RecipeProvider.getHasName(Items.IRON_INGOT), this.has(Items.IRON_INGOT))
 					.save(exporter);
 
+				this.shaped(RecipeCategory.TRANSPORTATION, TCABlocks.COPPER_RAIL.weathering().unaffected(), 16)
+					.define('X', Ingredient.of(Items.COPPER_INGOT))
+					.define('#', Ingredient.of(Items.STICK))
+					.pattern("X X")
+					.pattern("X#X")
+					.pattern("X X")
+					.unlockedBy(RecipeProvider.getHasName(Items.COPPER_INGOT), this.has(Items.COPPER_INGOT))
+					.save(exporter);
+
+				this.shapeless(RecipeCategory.TRANSPORTATION, TCABlocks.CROSS_RAIL)
+					.requires(Items.RAIL, 2)
+					.unlockedBy(RecipeProvider.getHasName(Items.RAIL), this.has(Items.RAIL))
+					.save(exporter);
+
+				this.shaped(RecipeCategory.TRANSPORTATION, TCABlocks.RELAYOR_RAIL, 6)
+					.define('I', Ingredient.of(Items.IRON_INGOT))
+					.define('G', Ingredient.of(Items.GOLD_INGOT))
+					.define('R', Ingredient.of(Items.REDSTONE))
+					.define('#', Ingredient.of(Items.STICK))
+					.pattern("IRI")
+					.pattern("G#G")
+					.pattern("GRG")
+					.unlockedBy(RecipeProvider.getHasName(Items.GOLD_INGOT), this.has(Items.GOLD_INGOT))
+					.save(exporter);
+
 				RecipeExportNamespaceFix.clearCurrentGeneratingModId();
 			}
 		};

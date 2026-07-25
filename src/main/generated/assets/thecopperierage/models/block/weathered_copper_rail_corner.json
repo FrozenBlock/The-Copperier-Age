@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/rail_curved",
+  "textures": {
+    "rail": "thecopperierage:block/weathered_copper_rail"
+  }
+}

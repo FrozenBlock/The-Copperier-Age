@@ -46,7 +46,6 @@ public class TCAConfig {
 	public static final ConfigEntry<Boolean> IMPROVED_FURNACE_MINECARTS = CONFIG.entry("improvedFurnaceMinecarts", EntryType.BOOL, true);
 	public static final ConfigEntry<Boolean> SMOOTH_MINECART_ROTATION = CONFIG.unsyncableEntry("smoothMinecartRotation", EntryType.BOOL, true);
 	public static final ConfigEntry<Float> MINECART_ROTATION_SPEED = CONFIG.unsyncableEntry("minecartRotationSpeed", EntryType.FLOAT, 45F);
-	public static final ConfigEntry<Boolean> SMOOTH_MINECART_MOTION = CONFIG.entry("smoothMinecartMotion", EntryType.BOOL, true);
-	public static final ConfigEntry<Float> MINECART_MOMENTUM_RETENTION = CONFIG.entry("minecartMomentumRetention", EntryType.FLOAT, 0.8F);
+	public static final ConfigEntry<Boolean> SMOOTH_MINECART_MOTION = CONFIG.entry("smoothMinecartMotion", EntryType.BOOL, false);
 	public static final ConfigEntry<Boolean> DEBUG_MINECART_MOTION = CONFIG.entry("debugMinecartMotion", EntryType.BOOL, false);
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_rail_raised_sw",
+  "textures": {
+    "rail": "thecopperierage:block/relayor_rail_locked_front"
+  }
+}

@@ -132,6 +132,17 @@ public final class TCACreativeInventorySorting {
 		insertAfterInRedstoneBlocks(TCAItems.DISPENSER_MINECART, TCAItems.DROPPER_MINECART);
 		insertAfterInRedstoneBlocks(TCAItems.DROPPER_MINECART, TCAItems.JUKEBOX_MINECART);
 
+		insertAfterInRedstoneBlocks(Items.ACTIVATOR_RAIL, TCABlocks.COPPER_RAIL.weathering().unaffected());
+		insertAfterInRedstoneBlocks(TCABlocks.COPPER_RAIL.weathering().unaffected(), TCABlocks.COPPER_RAIL.weathering().exposed());
+		insertAfterInRedstoneBlocks(TCABlocks.COPPER_RAIL.weathering().exposed(), TCABlocks.COPPER_RAIL.weathering().weathered());
+		insertAfterInRedstoneBlocks(TCABlocks.COPPER_RAIL.weathering().weathered(), TCABlocks.COPPER_RAIL.weathering().oxidized());
+		insertAfterInRedstoneBlocks(TCABlocks.COPPER_RAIL.weathering().oxidized(), TCABlocks.COPPER_RAIL.waxed().unaffected());
+		insertAfterInRedstoneBlocks(TCABlocks.COPPER_RAIL.waxed().unaffected(), TCABlocks.COPPER_RAIL.waxed().exposed());
+		insertAfterInRedstoneBlocks(TCABlocks.COPPER_RAIL.waxed().exposed(), TCABlocks.COPPER_RAIL.waxed().weathered());
+		insertAfterInRedstoneBlocks(TCABlocks.COPPER_RAIL.waxed().weathered(), TCABlocks.COPPER_RAIL.waxed().oxidized());
+		insertAfterInRedstoneBlocks(TCABlocks.COPPER_RAIL.waxed().oxidized(), TCABlocks.CROSS_RAIL);
+		insertAfterInRedstoneBlocks(TCABlocks.CROSS_RAIL, TCABlocks.RELAYOR_RAIL);
+
 		insertAfterInFunctionalBlocks(Items.SOUL_CAMPFIRE, TCABlocks.COPPER_CAMPFIRE);
 		insertBeforeInToolsAndUtilities(Items.BRUSH, TCAItems.WRENCH);
 		insertInstrumentBefore(Items.MUSIC_DISC_13, TCAItems.COPPER_HORN, TCAInstrumentTags.COPPER_HORNS, CreativeModeTabs.TOOLS_AND_UTILITIES);

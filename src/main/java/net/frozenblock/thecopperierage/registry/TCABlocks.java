@@ -24,7 +24,10 @@ import net.frozenblock.thecopperierage.block.CopperButtonBlock;
 import net.frozenblock.thecopperierage.block.CopperFanBlock;
 import net.frozenblock.thecopperierage.block.CopperFireBlock;
 import net.frozenblock.thecopperierage.block.CopperPressurePlateBlock;
+import net.frozenblock.thecopperierage.block.CopperRailBlock;
 import net.frozenblock.thecopperierage.block.CrateBlock;
+import net.frozenblock.thecopperierage.block.CrossRailBlock;
+import net.frozenblock.thecopperierage.block.RelayorRailBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
 import net.frozenblock.thecopperierage.block.KilnBlock;
 import net.frozenblock.thecopperierage.block.RedstoneGritBlock;
@@ -34,6 +37,7 @@ import net.frozenblock.thecopperierage.block.WeatheringChimeBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperButtonBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperFanBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperPressurePlateBlock;
+import net.frozenblock.thecopperierage.block.WeatheringCopperRailBlock;
 import net.frozenblock.thecopperierage.block.WeatheringGearboxBlock;
 import net.frozenblock.thecopperierage.block.WeatheringStickyGearboxBlock;
 import net.frozenblock.thecopperierage.references.TCABlockIds;
@@ -199,6 +203,36 @@ public final class TCABlocks {
 			.pushReaction(PushReaction.DESTROY)
 	);
 
+	public static final WeatheringCopperCollection<Block> COPPER_RAIL = WeatheringCopperCollection.registerBlocks(
+		TCABlockItemIds.COPPER_RAIL,
+		Blocks::register,
+		CopperRailBlock::new,
+		WeatheringCopperRailBlock::new,
+		weatherState -> BlockBehaviour.Properties.of()
+			.mapColor(getMapColorForWeatherState(weatherState))
+			.noCollision()
+			.strength(0.7F)
+			.sound(SoundType.METAL)
+	);
+
+	public static final Block CROSS_RAIL = Blocks.register(TCABlockItemIds.CROSS_RAIL,
+		CrossRailBlock::new,
+		BlockBehaviour.Properties.of()
+			.mapColor(MapColor.METAL)
+			.noCollision()
+			.strength(0.7F)
+			.sound(SoundType.METAL)
+	);
+
+	public static final Block RELAYOR_RAIL = Blocks.register(TCABlockItemIds.RELAYOR_RAIL,
+		RelayorRailBlock::new,
+		BlockBehaviour.Properties.of()
+			.mapColor(MapColor.METAL)
+			.noCollision()
+			.strength(0.7F)
+			.sound(SoundType.METAL)
+	);
+
 	public static void init() {
 		TCAConstants.logWithModId("Registering Blocks for", TCAConstants.UNSTABLE_LOGGING);
 	}
@@ -212,6 +246,7 @@ public final class TCABlocks {
 		OxidizableBlocksRegistry.registerWeatheringCopperBlocks(CHIME);
 		OxidizableBlocksRegistry.registerWeatheringCopperBlocks(COPPER_BUTTON);
 		OxidizableBlocksRegistry.registerWeatheringCopperBlocks(WEIGHTED_PRESSURE_PLATE);
+		OxidizableBlocksRegistry.registerWeatheringCopperBlocks(COPPER_RAIL);
 	}
 
 	public static MapColor getMapColorForWeatherState(WeatheringCopper.WeatherState weatherState) {

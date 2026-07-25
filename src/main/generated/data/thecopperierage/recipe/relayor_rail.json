@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": "minecraft:stick",
+    "G": "minecraft:gold_ingot",
+    "I": "minecraft:iron_ingot",
+    "R": "minecraft:redstone"
+  },
+  "pattern": [
+    "IRI",
+    "G#G",
+    "GRG"
+  ],
+  "result": {
+    "count": 6,
+    "id": "thecopperierage:relayor_rail"
+  }
+}

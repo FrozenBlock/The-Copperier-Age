@@ -58,8 +58,6 @@
   "tooltip.thecopperierage.smooth_minecart_rotation": "Eases minecart rotation for the experimental minecart movement, removing jitter and the snap when carts move on and off rails. \nVisual only.",
   "option.thecopperierage.minecart_rotation_speed": "Minecart Rotation Speed",
   "tooltip.thecopperierage.minecart_rotation_speed": "Base degrees per tick the smoothed minecart rotation may turn, at a typical cart speed. \nThe actual turn rate scales with how fast the cart is moving, so slow carts turn gently and fast carts keep up. \nHigher = snappier; lower = smoother.",
-  "option.thecopperierage.smooth_minecart_motion": "Smooth Minecart Motion (Experimental)",
-  "tooltip.thecopperierage.smooth_minecart_motion": "Tries to stop experimental minecarts spontaneously reversing direction. \nOff by default: it cannot tell a legitimate cart-on-cart bounce from a spurious reversal, so it can make carts jitter and can break couplings. \nEnable only if you would rather have the reversal guard than vanilla physics.",
   "option.thecopperierage.debug_minecart_motion": "Debug Minecart Motion",
   "tooltip.thecopperierage.debug_minecart_motion": "Logs a line to the console whenever an experimental minecart suddenly reverses travel direction, with the surrounding physics state. \nDiagnostic only -- leave off for normal play.",
 

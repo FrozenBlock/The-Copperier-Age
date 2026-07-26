@@ -60,6 +60,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -82,6 +84,12 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
     private static final String THECOPPERIERAGE$FACING_X_TAG_ID = "FacingX";
     @Unique
     private static final String THECOPPERIERAGE$FACING_Z_TAG_ID = "FacingZ";
+    @Unique
+    private static final double THECOPPERIERAGE$FURNACE_SPEED_CAP_UNDO = 2.0D;
+    @Unique
+    private static final double THECOPPERIERAGE$PUSH_MAGNITUDE = 0.0101D;
+    @Unique
+    private static final double THECOPPERIERAGE$FUELLED_COASTING = 0.975D;
     @Unique
     private static final int[] THECOPPERIERAGE$SLOTS_FOR_ALL_SIDES = IntStream.range(0, THECOPPERIERAGE$CONTAINER_SIZE).toArray();
 
@@ -201,23 +209,23 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
         if (!Mth.equal((float) minecartFurnace.push.x, 0F) || !Mth.equal((float) minecartFurnace.push.z, 0F)) return;
 
         if (this.theCopperierAge$facing.lengthSqr() > 1.0E-4D) {
-            minecartFurnace.push = this.theCopperierAge$facing;
+            minecartFurnace.push = this.theCopperierAge$facing.scale(THECOPPERIERAGE$PUSH_MAGNITUDE);
             return;
         }
 
         final Vec3 horizontalVelocity = this.getDeltaMovement().multiply(1D, 0D, 1D);
         if (horizontalVelocity.lengthSqr() > 1.0E-4D) {
-            minecartFurnace.push = horizontalVelocity.normalize();
+            minecartFurnace.push = horizontalVelocity.normalize().scale(THECOPPERIERAGE$PUSH_MAGNITUDE);
             return;
         }
 
         final Vec3 facingDirection = Vec3.directionFromRotation(0F, this.getYRot()).multiply(1D, 0D, 1D);
         if (facingDirection.lengthSqr() > 1.0E-4D) {
-            minecartFurnace.push = facingDirection.normalize();
+            minecartFurnace.push = facingDirection.normalize().scale(THECOPPERIERAGE$PUSH_MAGNITUDE);
             return;
         }
 
-        minecartFurnace.push = new Vec3(1D, 0D, 0D);
+        minecartFurnace.push = new Vec3(THECOPPERIERAGE$PUSH_MAGNITUDE, 0D, 0D);
     }
 
     @Unique
@@ -239,7 +247,7 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
         // unfuelled cart would accelerate it, since applyNaturalSlowdown adds push to
         // velocity every tick regardless of fuel.
         if (this.fuel > 0) {
-            MinecartFurnace.class.cast(this).push = this.theCopperierAge$facing;
+            MinecartFurnace.class.cast(this).push = this.theCopperierAge$facing.scale(THECOPPERIERAGE$PUSH_MAGNITUDE);
         }
 
         // Turn the cart (and therefore the rendered furnace) to face the aimed direction.
@@ -274,6 +282,18 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
         // Off-rail: fall back to the nearest cardinal so the furnace still faces cleanly.
         final Direction cardinal = Direction.getApproximateNearest(look.x, 0D, look.z);
         return new Vec3(cardinal.getStepX(), 0D, cardinal.getStepZ());
+    }
+
+    @ModifyConstant(method = "applyNaturalSlowdown", constant = @Constant(doubleValue = 0.8D))
+    private double theCopperierAge$fuelledCartsCoastLikeNormalCarts(double vanillaDrag) {
+        if (!TCAConfig.IMPROVED_FURNACE_MINECARTS.get()) return vanillaDrag;
+        return THECOPPERIERAGE$FUELLED_COASTING;
+    }
+
+    @ModifyReturnValue(method = "getMaxSpeed(Lnet/minecraft/server/level/ServerLevel;)D", at = @At("RETURN"))
+    private double theCopperierAge$allowBoostAboveSelfPropelledSpeed(double original) {
+        if (!TCAConfig.IMPROVED_FURNACE_MINECARTS.get()) return original;
+        return original * THECOPPERIERAGE$FURNACE_SPEED_CAP_UNDO;
     }
 
     @ModifyReturnValue(method = "getDefaultDisplayBlockState", at = @At("RETURN"))

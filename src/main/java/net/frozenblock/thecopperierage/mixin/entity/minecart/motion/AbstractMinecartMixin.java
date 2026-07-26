@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 FrozenBlock
+ * Copyright 2025-2026 FrozenBlock
  * This file is part of The Copperier Age.
  *
  * This program is free software; you can modify it under
@@ -19,15 +19,10 @@ package net.frozenblock.thecopperierage.mixin.entity.minecart.motion;
 
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.config.TCAConfig;
-import net.frozenblock.thecopperierage.entity.coupling.CouplingData;
-import net.frozenblock.thecopperierage.entity.coupling.MinecartCouplingUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
-import net.minecraft.world.entity.vehicle.minecart.NewMinecartBehavior;
 import net.minecraft.world.level.block.BaseRailBlock;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.Vec3;
@@ -37,19 +32,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-/**
- * Keeps the experimental minecart movement from spontaneously reversing a cart's travel direction
- * (the "miraculous reverse"). This also stops furnace carts from suddenly powering backwards, since
- * their push follows the cart's velocity ({@code MinecartFurnace#calculateNewPushAlong}). Legitimate
- * reversals -- gravity roll-back on slopes, powered rails, block collisions, and rider steering --
- * are left untouched. Only near-180-degree flips within a single tick are corrected, so genuine
- * curves and corners (which turn at most ~90 degrees per tick) are unaffected.
- *
- * <p>Coupled carts are skipped entirely: the coupling solver ({@code MinecartCouplingUtil}) already
- * pushes carts both ways to hold a train at length, and correcting those as "reversals" fought the
- * solver, making couplings oscillate and snap apart.
- *
- */
 @Mixin(AbstractMinecart.class)
 public abstract class AbstractMinecartMixin {
 	@Unique
@@ -57,93 +39,64 @@ public abstract class AbstractMinecartMixin {
 	@Unique
 	private static final double THECOPPERIERAGE$REVERSAL_DOT = -0.5D;
 	@Unique
-	private Vec3 theCopperierAge$lastTravelDirection = Vec3.ZERO;
+	private static final double THECOPPERIERAGE$STALL_REPORT_SPEED = 0.02D;
 
-	@Inject(method = "moveAlongTrack", at = @At("TAIL"))
-	private void theCopperierAge$preventSpuriousReversal(ServerLevel level, CallbackInfo info) {
+	@Unique
+	private Vec3 theCopperierAge$lastTravelDirection = Vec3.ZERO;
+	@Unique
+	private double theCopperierAge$lastSpeed;
+
+	@Inject(method = "tick", at = @At("TAIL"))
+	private void theCopperierAge$reportMotionEvents(CallbackInfo info) {
+		if (!TCAConfig.DEBUG_MINECART_MOTION.get()) return;
+
 		final AbstractMinecart minecart = AbstractMinecart.class.cast(this);
-		if (!TCAConfig.SMOOTH_MINECART_MOTION.get()
-			|| !AbstractMinecart.useExperimentalMovement(level)
-			|| !(minecart.getBehavior() instanceof NewMinecartBehavior)
-			|| !minecart.isOnRails()
-			|| theCopperierAge$isCoupled(minecart)) {
-			this.theCopperierAge$lastTravelDirection = Vec3.ZERO;
-			return;
-		}
+		if (!(minecart.level() instanceof ServerLevel level)) return;
 
 		final Vec3 velocity = minecart.getDeltaMovement();
 		final double speedSqr = (velocity.x * velocity.x) + (velocity.z * velocity.z);
-		if (speedSqr < THECOPPERIERAGE$MIN_SPEED_SQR) return;
+		if (speedSqr < THECOPPERIERAGE$MIN_SPEED_SQR) {
+			if (this.theCopperierAge$lastSpeed > THECOPPERIERAGE$STALL_REPORT_SPEED) {
+				theCopperierAge$log(minecart, level, "STALLED", this.theCopperierAge$lastTravelDirection,
+					Vec3.ZERO, this.theCopperierAge$lastSpeed, 0.0D);
+			}
+			this.theCopperierAge$lastSpeed = 0.0D;
+			return;
+		}
 
 		final double speed = Math.sqrt(speedSqr);
 		final Vec3 direction = new Vec3(velocity.x / speed, 0.0D, velocity.z / speed);
 		final Vec3 last = this.theCopperierAge$lastTravelDirection;
 
 		if (last.lengthSqr() > 1.0E-6D && direction.dot(last) < THECOPPERIERAGE$REVERSAL_DOT) {
-			final boolean allowed = theCopperierAge$reversalAllowed(minecart, level);
-			if (TCAConfig.DEBUG_MINECART_MOTION.get()) {
-				theCopperierAge$logReversal(minecart, level, last, direction, speed, allowed);
-			}
-			if (!allowed) {
-				minecart.setDeltaMovement(last.x * speed, velocity.y, last.z * speed);
-				return;
-			}
+			theCopperierAge$log(minecart, level, "REVERSE", last, direction, this.theCopperierAge$lastSpeed, speed);
 		}
 
 		this.theCopperierAge$lastTravelDirection = direction;
+		this.theCopperierAge$lastSpeed = speed;
 	}
 
 	@Unique
-	private static boolean theCopperierAge$isCoupled(AbstractMinecart minecart) {
-		final CouplingData coupling = MinecartCouplingUtil.getCoupling(minecart);
-		return coupling.isCoupledTo() || coupling.isCoupledFrom();
-	}
-
-	@Unique
-	private static void theCopperierAge$logReversal(
-		AbstractMinecart minecart, ServerLevel level, Vec3 last, Vec3 now, double speed, boolean allowed
+	private static void theCopperierAge$log(
+		AbstractMinecart minecart, ServerLevel level, String event, Vec3 last, Vec3 now, double previousSpeed, double speed
 	) {
 		final BlockPos pos = minecart.getCurrentBlockPosOrRailBelow();
 		final BlockState state = level.getBlockState(pos);
-		final boolean isRail = BaseRailBlock.isRail(state);
-		final RailShape shape = isRail ? state.getValue(((BaseRailBlock) state.getBlock()).getShapeProperty()) : null;
-
-		final StringBuilder reason = new StringBuilder();
-		if (minecart.horizontalCollision) reason.append("collision ");
-		if (minecart.getFirstPassenger() instanceof Player) reason.append("rider ");
-		if (!isRail) reason.append("offRail ");
-		if (shape != null && shape.isSlope()) reason.append("slope ");
-		if (state.is(Blocks.POWERED_RAIL)) reason.append("poweredRail ");
-		if (reason.isEmpty()) reason.append("<none>");
+		final RailShape shape = BaseRailBlock.isRail(state)
+			? state.getValue(((BaseRailBlock) state.getBlock()).getShapeProperty())
+			: null;
 
 		TCAConstants.LOGGER.info(String.format(
-			"[TCA minecart] t=%d id=%d %s REVERSAL %s dot=%.3f speed=%.4f last=(%.2f,%.2f) new=(%.2f,%.2f) "
-				+ "pos=%s rail=%s hCol=%b vCol=%b onRails=%b allowReason=[%s]",
-			level.getGameTime(),
-			minecart.getId(),
-			minecart.getClass().getSimpleName(),
-			allowed ? "ALLOWED" : "corrected",
-			now.dot(last),
-			speed,
-			last.x, last.z,
-			now.x, now.z,
+			"[TCA %s] t=%d id=%d %s dot=%.3f speed %.4f -> %.4f last=(%.3f,%.3f) new=(%.3f,%.3f) "
+				+ "pos=%s block=%s shape=%s hCol=%b vCol=%b onRails=%b onGround=%b passengers=%d",
+			event, level.getGameTime(), minecart.getId(), minecart.getType().toString(),
+			now.dot(last), previousSpeed, speed,
+			last.x, last.z, now.x, now.z,
 			pos.toShortString(),
+			state.getBlock().builtInRegistryHolder().key().identifier().toString(),
 			shape == null ? "none" : shape.getSerializedName(),
-			minecart.horizontalCollision,
-			minecart.verticalCollision,
-			minecart.isOnRails(),
-			reason.toString().trim()
+			minecart.horizontalCollision, minecart.verticalCollision,
+			minecart.isOnRails(), minecart.onGround(), minecart.getPassengers().size()
 		));
-	}
-
-	@Unique
-	private static boolean theCopperierAge$reversalAllowed(AbstractMinecart minecart, ServerLevel level) {
-		if (minecart.horizontalCollision) return true;
-		if (minecart.getFirstPassenger() instanceof Player) return true;
-		final BlockPos pos = minecart.getCurrentBlockPosOrRailBelow();
-		final BlockState state = level.getBlockState(pos);
-		if (!BaseRailBlock.isRail(state)) return true;
-		final RailShape shape = state.getValue(((BaseRailBlock) state.getBlock()).getShapeProperty());
-		return shape.isSlope() || state.is(Blocks.POWERED_RAIL);
 	}
 }

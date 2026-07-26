@@ -52,9 +52,9 @@ public class RelayorRailBlock extends BaseRailBlock {
 	public static final EnumProperty<DirectionSign> DIRECTION = EnumProperty.create("direction", DirectionSign.class);
 	public static final EnumProperty<Appearance> APPEARANCE = EnumProperty.create("appearance", Appearance.class);
 
-	private static final double BOOST_PER_TICK = 0.06D;
-	private static final double LAUNCH_FROM_REST = 0.2D;
-	private static final double MIN_MOVING_SPEED = 0.01D;
+	public static final double LAUNCH_FROM_REST = 0.2D;
+	public static final double BOOST_PER_TICK = 0.06D;
+	public static final double MIN_MOVING_SPEED = 0.01D;
 	private static final int MAX_CHAIN_LENGTH = 15;
 	private static final int OCCUPIED_CHECK_INTERVAL = 2;
 
@@ -289,17 +289,10 @@ public class RelayorRailBlock extends BaseRailBlock {
 	}
 
 	private void release(ServerLevel level, BlockPos pos, BlockState state, AbstractMinecart minecart) {
-		if (state.getValue(OCCUPIED)) {
-			level.setBlock(pos, state.setValue(OCCUPIED, false), UPDATE_ALL);
-			refreshChain(level, pos);
-			updateChainComparators(level, pos);
-		}
-
-		final Direction direction = this.getDirection(state);
-		final Vec3 velocity = minecart.getDeltaMovement();
-		final double speed = velocity.horizontalDistance();
-		final double target = speed > MIN_MOVING_SPEED ? speed + BOOST_PER_TICK : LAUNCH_FROM_REST;
-		minecart.setDeltaMovement(direction.getStepX() * target, velocity.y, direction.getStepZ() * target);
+		if (!state.getValue(OCCUPIED)) return;
+		level.setBlock(pos, state.setValue(OCCUPIED, false), UPDATE_ALL);
+		refreshChain(level, pos);
+		updateChainComparators(level, pos);
 	}
 
 	public static boolean isDocked(Level level, BlockPos pos, BlockState state, AbstractMinecart minecart) {

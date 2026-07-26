@@ -41,6 +41,8 @@ public class AbstractMinecartMixin implements MinecartRotationSmoothing {
 	/** Ceiling on the turn-rate scale, so very fast carts do not spin instantly. */
 	@Unique
 	private static final float THECOPPERIERAGE$MAX_ROTATION_FACTOR = 2.5F;
+	@Unique
+	private static final float THECOPPERIERAGE$SNAP_DEGREES = 150.0F;
 
 	@Unique
 	private boolean theCopperierAge$rotationInitialized;
@@ -120,6 +122,7 @@ public class AbstractMinecartMixin implements MinecartRotationSmoothing {
 	@Unique
 	private static float theCopperierAge$approachAngle(float current, float target, float maxStep) {
 		final float delta = Mth.wrapDegrees(target - current);
+		if (Math.abs(delta) >= THECOPPERIERAGE$SNAP_DEGREES) return target;
 		return current + Mth.clamp(delta, -maxStep, maxStep);
 	}
 

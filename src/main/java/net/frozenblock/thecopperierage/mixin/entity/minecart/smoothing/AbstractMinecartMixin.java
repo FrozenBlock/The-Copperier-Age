@@ -17,7 +17,6 @@
 
 package net.frozenblock.thecopperierage.mixin.entity.minecart.smoothing;
 
-import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.entity.coupling.CouplingData;
 import net.frozenblock.thecopperierage.entity.impl.MinecartRotationSmoothing;
 import net.frozenblock.thecopperierage.registry.TCAAttachments;
@@ -43,6 +42,11 @@ public class AbstractMinecartMixin implements MinecartRotationSmoothing {
 	private static final float THECOPPERIERAGE$MAX_ROTATION_FACTOR = 2.5F;
 	@Unique
 	private static final float THECOPPERIERAGE$SNAP_DEGREES = 150.0F;
+	/** Disabled: rotation smoothing is retained for reference but never applied. */
+	@Unique
+	private static final boolean THECOPPERIERAGE$SMOOTHING_ENABLED = false;
+	@Unique
+	private static final float THECOPPERIERAGE$TURN_DEGREES_PER_TICK = 45.0F;
 
 	@Unique
 	private boolean theCopperierAge$rotationInitialized;
@@ -59,7 +63,7 @@ public class AbstractMinecartMixin implements MinecartRotationSmoothing {
 	private void theCopperierAge$smoothRotation(CallbackInfo info) {
 		final AbstractMinecart minecart = AbstractMinecart.class.cast(this);
 		if (!minecart.level().isClientSide()
-			|| !TCAConfig.SMOOTH_MINECART_ROTATION.get()
+			|| !THECOPPERIERAGE$SMOOTHING_ENABLED
 			|| !AbstractMinecart.useExperimentalMovement(minecart.level())
 			|| !(minecart.getBehavior() instanceof NewMinecartBehavior behavior)
 		) {
@@ -87,7 +91,7 @@ public class AbstractMinecartMixin implements MinecartRotationSmoothing {
 		}
 
 		// Cap how far the rendered rotation may turn in one tick.
-		final float configured = Math.max(1.0F, TCAConfig.MINECART_ROTATION_SPEED.get());
+		final float configured = THECOPPERIERAGE$TURN_DEGREES_PER_TICK;
 		final float maxStep;
 		if (theCopperierAge$isCoupled(minecart)) {
 			// Coupled carts: the coupling solver nudges velocity both ways while a train settles.

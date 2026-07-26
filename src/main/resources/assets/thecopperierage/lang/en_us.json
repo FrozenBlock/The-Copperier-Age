@@ -54,10 +54,6 @@
   "subtitles.entity.minecart.couple_break": "Minecart coupling broken",
   "option.thecopperierage.improved_furnace_minecarts": "Improved Furnace Minecarts",
   "tooltip.thecopperierage.improved_furnace_minecarts": "Whether Furnace Minecarts are overhauled. \nProvides Furnace Minecarts a special container GUI that can have fuel items deposited into. \nSlots treated as with standard container minecarts.",
-  "option.thecopperierage.smooth_minecart_rotation": "Smooth Minecart Rotation",
-  "tooltip.thecopperierage.smooth_minecart_rotation": "Eases minecart rotation for the experimental minecart movement, removing jitter and the snap when carts move on and off rails. \nVisual only.",
-  "option.thecopperierage.minecart_rotation_speed": "Minecart Rotation Speed",
-  "tooltip.thecopperierage.minecart_rotation_speed": "Base degrees per tick the smoothed minecart rotation may turn, at a typical cart speed. \nThe actual turn rate scales with how fast the cart is moving, so slow carts turn gently and fast carts keep up. \nHigher = snappier; lower = smoother.",
   "option.thecopperierage.debug_minecart_motion": "Debug Minecart Motion",
   "tooltip.thecopperierage.debug_minecart_motion": "Logs a line to the console whenever an experimental minecart suddenly reverses travel direction, with the surrounding physics state. \nDiagnostic only -- leave off for normal play.",
 

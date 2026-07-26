@@ -64,6 +64,7 @@ public class KilnScreen extends AbstractRecipeBookScreen<KilnMenu> {
 
 	@Override
 	public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+		super.extractBackground(guiGraphics, mouseX, mouseY, partialTick);
 		final int x = this.leftPos;
 		final int y = this.topPos;
 		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);

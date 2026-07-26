@@ -44,6 +44,7 @@ public class FurnaceMinecartScreen extends AbstractContainerScreen<FurnaceMineca
 
 	@Override
 	public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+		super.extractBackground(guiGraphics, mouseX, mouseY, partialTick);
 		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND_TEXTURE, this.leftPos, this.topPos, 0F, 0F, this.imageWidth, this.imageHeight, 256, 256);
 		this.renderLitProgress(guiGraphics);
 	}

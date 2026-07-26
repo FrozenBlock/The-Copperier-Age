@@ -23,7 +23,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.frozenblock.thecopperierage.client.coupling.MinecartCouplingClientHandler;
 import net.frozenblock.thecopperierage.client.renderer.entity.state.CouplingRenderState;
-import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.entity.impl.MinecartRotationSmoothing;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.AbstractMinecartRenderer;
@@ -39,6 +38,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Environment(EnvType.CLIENT)
 @Mixin(AbstractMinecartRenderer.class)
 public class AbstractMinecartRendererMixin {
+	/** Disabled: see the rotation smoothing mixin. */
+	private static final boolean THECOPPERIERAGE$SMOOTHING_ENABLED = false;
 
 	@Inject(
 		method = "extractRenderState(Lnet/minecraft/world/entity/vehicle/minecart/AbstractMinecart;Lnet/minecraft/client/renderer/entity/state/MinecartRenderState;F)V",
@@ -53,7 +54,7 @@ public class AbstractMinecartRendererMixin {
 		CouplingRenderState.extract(minecart, renderState, partialTicks);
 
 		// Rotation 2.0: replace vanilla's snappy step-lerp yaw/pitch with the eased values.
-		if (TCAConfig.SMOOTH_MINECART_ROTATION.get()
+		if (THECOPPERIERAGE$SMOOTHING_ENABLED
 			&& minecart instanceof MinecartRotationSmoothing smoothing
 			&& smoothing.theCopperierAge$hasSmoothedRotation()) {
 			renderState.yRot = smoothing.theCopperierAge$getSmoothYRot(partialTicks);

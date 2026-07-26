@@ -251,7 +251,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 
 	private static void createCopperRail(BlockModelGenerators generator, Block block, Block waxedBlock) {
 		final TextureMapping texture = TextureMapping.rail(block);
-		final TextureMapping cornerTexture = texture;
+		final TextureMapping cornerTexture = TextureMapping.rail(TextureMapping.getBlockTexture(block, "_corner"));
 		final MultiVariant flat = BlockModelGenerators.plainVariant(ModelTemplates.RAIL_FLAT.create(block, texture, generator.modelOutput));
 		final MultiVariant curved = BlockModelGenerators.plainVariant(ModelTemplates.RAIL_CURVED.create(block, cornerTexture, generator.modelOutput));
 		final MultiVariant risingNE = BlockModelGenerators.plainVariant(ModelTemplates.RAIL_RAISED_NE.create(block, texture, generator.modelOutput));

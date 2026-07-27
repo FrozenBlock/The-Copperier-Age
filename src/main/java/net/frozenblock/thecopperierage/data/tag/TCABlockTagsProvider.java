@@ -70,6 +70,7 @@ public final class TCABlockTagsProvider extends FabricTagsProvider.BlockTagsProv
 			.add(TCABlockItemIds.COPPER_JACK_O_LANTERN, TCABlockItemIds.REDSTONE_JACK_O_LANTERN);
 
 		this.builder(BlockTags.MINEABLE_WITH_PICKAXE)
+			.add(TCABlockItemIds.CUPRIC_LANTERN)
 			.addOptionalTag(TCABlockItemTags.GEARBOXES.block())
 			.addOptionalTag(TCABlockItemTags.COPPER_FANS.block())
 			.addOptionalTag(TCABlockItemTags.CHIMES.block())

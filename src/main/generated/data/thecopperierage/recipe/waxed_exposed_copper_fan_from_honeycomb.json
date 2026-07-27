@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "waxed_exposed_copper_fan",
+  "ingredients": [
+    "thecopperierage:exposed_copper_fan",
+    "minecraft:honeycomb"
+  ],
+  "result": {
+    "id": "thecopperierage:waxed_exposed_copper_fan"
+  }
+}

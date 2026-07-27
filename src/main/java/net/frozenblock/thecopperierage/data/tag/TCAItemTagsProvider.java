@@ -29,6 +29,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.tags.BlockItemTagAppender;
 import net.minecraft.data.tags.BlockItemTagsProvider;
 import net.minecraft.references.ItemIds;
+import net.frozenblock.thecopperierage.references.TCABlockItemIds;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
@@ -46,6 +47,9 @@ public final class TCAItemTagsProvider extends FabricTagsProvider.ItemTagsProvid
 	@Override
 	protected void addTags(HolderLookup.Provider registries) {
 		new TCABlockItemTagsProvider(tagId -> BlockItemTagsProvider.wrapForItems(this.tag(tagId.item()))).run();
+
+		this.builder(chaosHypercubedTag("sulfur_cube_functional"))
+			.add(TCABlockItemIds.KILN.item());
 
 		this.builder(ItemTags.BREAKS_DECORATED_POTS)
 			.add(TCAItemIds.WRENCH);
@@ -95,6 +99,10 @@ public final class TCAItemTagsProvider extends FabricTagsProvider.ItemTagsProvid
 
 	private TagKey<Item> getTag(String name) {
 		return TagKey.create(this.registryKey, Identifier.parse(name));
+	}
+
+	private TagKey<Item> chaosHypercubedTag(String name) {
+		return TagKey.create(this.registryKey, Identifier.fromNamespaceAndPath("chaoshypercubed", name));
 	}
 
 	private ResourceKey<Item> getKey(String namespace, String path) {

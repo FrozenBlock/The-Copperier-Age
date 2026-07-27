@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "waxed_sticky_gearbox",
+  "ingredients": [
+    "thecopperierage:sticky_gearbox",
+    "minecraft:honeycomb"
+  ],
+  "result": {
+    "id": "thecopperierage:waxed_sticky_gearbox"
+  }
+}

@@ -19,6 +19,7 @@ package net.frozenblock.thecopperierage.registry;
 
 import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry;
 import net.frozenblock.thecopperierage.TCAConstants;
+import net.frozenblock.thecopperierage.TCAFeatureFlags;
 import net.frozenblock.thecopperierage.block.ChimeBlock;
 import net.frozenblock.thecopperierage.block.CopperButtonBlock;
 import net.frozenblock.thecopperierage.block.CopperFanBlock;
@@ -47,6 +48,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.CarvedPumpkinBlock;
+import net.minecraft.world.level.block.LanternBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.WeatheringCopperCollection;
@@ -76,6 +78,19 @@ public final class TCABlocks {
 			.lightLevel(Blocks.litBlockEmission(15))
 			.noOcclusion()
 			.ignitedByLava()
+	);
+
+	public static final Block CUPRIC_LANTERN = Blocks.register(TCABlockItemIds.CUPRIC_LANTERN,
+		LanternBlock::new,
+		BlockBehaviour.Properties.of()
+			.mapColor(MapColor.METAL)
+			.forceSolidOn()
+			.requiresCorrectToolForDrops()
+			.strength(3.5F)
+			.sound(SoundType.LANTERN)
+			.lightLevel(state -> 15)
+			.noOcclusion()
+			.pushReaction(PushReaction.DESTROY)
 	);
 
 	public static final Block COPPER_JACK_O_LANTERN = Blocks.register(TCABlockItemIds.COPPER_JACK_O_LANTERN,
@@ -127,6 +142,7 @@ public final class TCABlocks {
 		(weatherState, properties) -> new GearboxBlock(properties),
 		WeatheringGearboxBlock::new,
 		weatherState -> BlockBehaviour.Properties.of()
+			.requiredFeatures(TCAFeatureFlags.FEATURE_FLAG)
 			.mapColor(MapColor.STONE)
 			.strength(1.5F)
 			.isRedstoneConductor(Blocks::never)
@@ -138,6 +154,7 @@ public final class TCABlocks {
 		(weatherState, properties) -> new StickyGearboxBlock(properties),
 		WeatheringStickyGearboxBlock::new,
 		weatherState -> BlockBehaviour.Properties.of()
+			.requiredFeatures(TCAFeatureFlags.FEATURE_FLAG)
 			.mapColor(MapColor.STONE)
 			.strength(1.5F)
 			.isRedstoneConductor(Blocks::never)
@@ -149,6 +166,7 @@ public final class TCABlocks {
 		CopperFanBlock::new,
 		WeatheringCopperFanBlock::new,
 		weatherState -> BlockBehaviour.Properties.of()
+			.requiredFeatures(TCAFeatureFlags.FEATURE_FLAG)
 			.mapColor(MapColor.STONE)
 			.strength(1.5F)
 			.isValidSpawn(Blocks::never)
@@ -162,6 +180,7 @@ public final class TCABlocks {
 		(weatherState, properties) -> new ChimeBlock(properties),
 		WeatheringChimeBlock::new,
 		weatherState -> BlockBehaviour.Properties.of()
+			.requiredFeatures(TCAFeatureFlags.FEATURE_FLAG)
 			.mapColor(MapColor.METAL)
 			.requiresCorrectToolForDrops()
 			.strength(5F, 6F)
@@ -185,6 +204,7 @@ public final class TCABlocks {
 		CopperButtonBlock::new,
 		WeatheringCopperButtonBlock::new,
 		weatherState -> BlockBehaviour.Properties.of()
+			.requiredFeatures(TCAFeatureFlags.FEATURE_FLAG)
 			.mapColor(MapColor.NONE)
 			.strength(0.5F)
 			.noCollision()
@@ -197,6 +217,7 @@ public final class TCABlocks {
 		CopperPressurePlateBlock::new,
 		WeatheringCopperPressurePlateBlock::new,
 		weatherState -> BlockBehaviour.Properties.of()
+			.requiredFeatures(TCAFeatureFlags.FEATURE_FLAG)
 			.mapColor(getMapColorForWeatherState(weatherState))
 			.strength(0.5F)
 			.noCollision()
@@ -209,6 +230,7 @@ public final class TCABlocks {
 		CopperRailBlock::new,
 		WeatheringCopperRailBlock::new,
 		weatherState -> BlockBehaviour.Properties.of()
+			.requiredFeatures(TCAFeatureFlags.FEATURE_FLAG)
 			.mapColor(getMapColorForWeatherState(weatherState))
 			.noCollision()
 			.strength(0.7F)

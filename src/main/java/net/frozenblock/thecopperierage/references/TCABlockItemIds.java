@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.WeatheringCopperCollection;
 
 public final class TCABlockItemIds {
     public static final BlockItemId COPPER_CAMPFIRE = create("copper_campfire");
+    public static final BlockItemId CUPRIC_LANTERN = create("cupric_lantern");
     public static final BlockItemId COPPER_JACK_O_LANTERN = create("copper_jack_o_lantern");
     public static final BlockItemId REDSTONE_JACK_O_LANTERN = create("redstone_jack_o_lantern");
     public static final BlockItemId REDSTONE_GRIT = create("redstone_grit");

@@ -18,6 +18,7 @@
 package net.frozenblock.thecopperierage.entity;
 
 import java.util.Optional;
+import net.frozenblock.thecopperierage.mod_compat.audioplayer.AudioPlayerIntegration;
 import net.frozenblock.thecopperierage.registry.TCAEntityTypes;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.minecraft.core.Holder;
@@ -27,6 +28,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -55,6 +57,9 @@ public class MinecartJukebox extends AbstractMinecartContainer {
 	private static final EntityDataAccessor<Byte> DATA_PLAYING = SynchedEntityData.defineId(MinecartJukebox.class, EntityDataSerializers.BYTE);
 	private static final int CONTAINER_SIZE = 1;
 	private long ticksSinceSongStarted;
+	private boolean customAudio;
+	@Nullable
+	private ServerPlayer insertingPlayer;
 
 	public MinecartJukebox(EntityType<? extends MinecartJukebox> type, Level level) {
 		super(type, level);
@@ -90,7 +95,10 @@ public class MinecartJukebox extends AbstractMinecartContainer {
 			return;
 		}
 
-		if (this.ticksSinceSongStarted >= song.get().value().lengthInTicks()) {
+		final boolean finished = this.customAudio
+			? AudioPlayerIntegration.isStopped(this)
+			: this.ticksSinceSongStarted >= song.get().value().lengthInTicks();
+		if (finished) {
 			this.stopPlaying();
 			return;
 		}
@@ -120,12 +128,13 @@ public class MinecartJukebox extends AbstractMinecartContainer {
 
 		if (canInsertSong) {
 			final ItemStack insertStack = heldStack.consumeAndReturn(1, player);
-			this.setItem(0, insertStack);
+			this.insertingPlayer = player instanceof ServerPlayer serverPlayer ? serverPlayer : null;
+			try {
+				this.setItem(0, insertStack);
+			} finally {
+				this.insertingPlayer = null;
+			}
 			player.awardStat(Stats.PLAY_RECORD);
-
-			final Optional<Holder<JukeboxSong>> song = JukeboxSong.fromStack(heldStack);
-			if (song.isEmpty()) return InteractionResult.PASS;
-			this.startPlaying();
 			return InteractionResult.SUCCESS;
 		}
 
@@ -203,12 +212,18 @@ public class MinecartJukebox extends AbstractMinecartContainer {
 		}
 
 		this.ticksSinceSongStarted = 0L;
-		this.getEntityData().set(DATA_PLAYING, (byte) 1);
+		this.customAudio = this.level() instanceof ServerLevel serverLevel
+			&& AudioPlayerIntegration.startMusicDisc(serverLevel, this, this.getItem(0), this.insertingPlayer);
+		this.getEntityData().set(DATA_PLAYING, (byte) (this.customAudio ? 3 : 1));
 	}
 
 	private void stopPlaying() {
 		if (!this.isSongPlaying()) return;
 
+		if (this.customAudio) {
+			AudioPlayerIntegration.stop(this);
+			this.customAudio = false;
+		}
 		this.ticksSinceSongStarted = 0L;
 		this.getEntityData().set(DATA_PLAYING, (byte) 0);
 		this.level().gameEvent(GameEvent.JUKEBOX_STOP_PLAY, this.position(), GameEvent.Context.of(this));

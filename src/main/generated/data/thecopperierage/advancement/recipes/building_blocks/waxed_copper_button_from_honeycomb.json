@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_minecart": {
+    "has_copper_button": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:minecart"
+            "items": "thecopperierage:copper_button"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thecopperierage:dispenser_minecart"
+        "recipe": "thecopperierage:waxed_copper_button_from_honeycomb"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_minecart"
+      "has_copper_button"
     ]
   ],
   "rewards": {
     "recipes": [
-      "thecopperierage:dispenser_minecart"
+      "thecopperierage:waxed_copper_button_from_honeycomb"
     ]
   }
 }

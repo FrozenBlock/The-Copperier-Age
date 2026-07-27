@@ -32,6 +32,9 @@ public final class TCABlockItemTagsProvider extends BlockItemTagsProvider {
 
 	@Override
 	protected void run() {
+		this.tag(BlockItemTags.LANTERNS)
+			.add(TCABlockItemIds.CUPRIC_LANTERN);
+
 		this.tag(BlockItemTags.BUTTONS)
 			.addTag(TCABlockItemTags.COPPER_BUTTONS);
 

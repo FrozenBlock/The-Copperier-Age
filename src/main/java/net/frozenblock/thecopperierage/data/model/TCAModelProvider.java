@@ -114,6 +114,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 	@Override
 	public void generateBlockStateModels(BlockModelGenerators generator) {
 		createCopperFire(generator);
+		generator.createLantern(TCABlocks.CUPRIC_LANTERN);
 		generator.createPumpkinVariant(TCABlocks.COPPER_JACK_O_LANTERN, TextureMapping.column(Blocks.PUMPKIN));
 		generator.createPumpkinVariant(TCABlocks.REDSTONE_JACK_O_LANTERN, TextureMapping.column(Blocks.PUMPKIN));
 		generator.createCampfires(TCABlocks.COPPER_CAMPFIRE);

@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "#": "minecraft:copper_ingot",
+    "#": "minecraft:smooth_stone",
     "F": "minecraft:furnace",
     "~": "minecraft:bricks"
   },

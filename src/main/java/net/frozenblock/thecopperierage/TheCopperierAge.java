@@ -26,6 +26,7 @@ import net.frozenblock.lib.registry.FrozenLibRegistries;
 import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
 import net.frozenblock.thecopperierage.levelgen.structure.modification.TCAStructureModifications;
+import net.frozenblock.thecopperierage.mod_compat.audioplayer.AudioPlayerIntegration;
 import net.frozenblock.thecopperierage.networking.TCANetworking;
 import net.frozenblock.thecopperierage.registry.TCAAttachments;
 import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
@@ -81,6 +82,7 @@ public final class TheCopperierAge extends FrozenModInitializer {
 		TCAStructureModifications.init();
 		TCANetworking.init();
 		TCAResources.init(container);
+		AudioPlayerIntegration.init();
 
 		ServerEntityEvents.ENTITY_LOAD.register(((entity, level) -> {
 			if (!(entity.is(TCAEntityTypeTags.COPPER) && TCAConfig.COPPER_FIRE_ENABLED.get())) return;

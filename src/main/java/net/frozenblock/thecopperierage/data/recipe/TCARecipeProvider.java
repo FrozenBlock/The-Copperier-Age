@@ -90,18 +90,6 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 				this.shapeless(RecipeCategory.TRANSPORTATION, TCAItems.COPPER_GOLEM_STATUE_MINECART)
 					.requires(Items.MINECART)
 					.requires(Items.COPPER_GOLEM_STATUE.weathering().unaffected())
-					.unlockedBy(RecipeProvider.getHasName(TCAItems.COPPER_GOLEM_STATUE_MINECART), this.has(TCAItems.COPPER_GOLEM_STATUE_MINECART))
-					.save(this.output);
-
-				this.shapeless(RecipeCategory.TRANSPORTATION, TCAItems.DISPENSER_MINECART)
-					.requires(Items.MINECART)
-					.requires(Items.DISPENSER)
-					.unlockedBy(RecipeProvider.getHasName(Items.MINECART), this.has(Items.MINECART))
-					.save(this.output);
-
-				this.shapeless(RecipeCategory.TRANSPORTATION, TCAItems.DROPPER_MINECART)
-					.requires(Items.MINECART)
-					.requires(Items.DROPPER)
 					.unlockedBy(RecipeProvider.getHasName(Items.MINECART), this.has(Items.MINECART))
 					.save(this.output);
 
@@ -124,11 +112,20 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 				this.shaped(RecipeCategory.DECORATIONS, TCABlocks.KILN)
 					.define('~', Ingredient.of(Items.BRICKS))
 					.define('F', Ingredient.of(Items.FURNACE))
-					.define('#', Ingredient.of(Items.COPPER_INGOT))
+					.define('#', Ingredient.of(Items.SMOOTH_STONE))
 					.pattern("#~#")
 					.pattern("~F~")
 					.pattern("#~#")
 					.unlockedBy(RecipeProvider.getHasName(Items.FURNACE), this.has(Items.FURNACE))
+					.save(this.output);
+
+				this.shaped(RecipeCategory.DECORATIONS, TCABlocks.CUPRIC_LANTERN)
+					.define('#', Items.COPPER_TORCH)
+					.define('X', Items.IRON_NUGGET)
+					.pattern("XXX")
+					.pattern("X#X")
+					.pattern("XXX")
+					.unlockedBy(RecipeProvider.getHasName(Items.COPPER_TORCH), this.has(Items.COPPER_TORCH))
 					.save(this.output);
 
 				this.shaped(RecipeCategory.BUILDING_BLOCKS, TCABlocks.COPPER_JACK_O_LANTERN)

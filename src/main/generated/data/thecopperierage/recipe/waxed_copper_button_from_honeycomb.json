@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "waxed_copper_button",
+  "ingredients": [
+    "thecopperierage:copper_button",
+    "minecraft:honeycomb"
+  ],
+  "result": {
+    "id": "thecopperierage:waxed_copper_button"
+  }
+}

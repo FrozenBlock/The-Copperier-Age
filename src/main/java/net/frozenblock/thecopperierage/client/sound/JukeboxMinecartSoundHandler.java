@@ -31,6 +31,7 @@ import net.minecraft.client.resources.sounds.EntityBoundSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.core.Holder;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.JukeboxSong;
@@ -58,6 +59,7 @@ public final class JukeboxMinecartSoundHandler {
 
 			final Optional<Holder<JukeboxSong>> song = minecart.getSong();
 			if (song.isEmpty()) continue;
+			if (song.get().value().soundEvent().value() == SoundEvents.EMPTY) continue;
 
 			activeSongMinecartIds.add(minecart.getId());
 

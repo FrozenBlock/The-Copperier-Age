@@ -47,6 +47,8 @@ val frozenlib_version: String by project
 
 val modmenu_version: String by project
 val cloth_config_version: String by project
+val audioplayer_version: String by project
+val voicechat_api_version: String by project
 
 base {
     archivesName = archives_base_name
@@ -156,6 +158,12 @@ repositories {
     maven("https://maven.frozenblock.net/release") {
         name = "FrozenBlock"
     }
+    maven("https://maven.maxhenkel.de/repository/public") {
+        name = "Henkelmax"
+        content {
+            includeGroup("de.maxhenkel.voicechat")
+        }
+    }
 
     flatDir {
         dirs("libs")
@@ -180,6 +188,9 @@ dependencies {
         exclude(group = "net.fabricmc.fabric-api")
         exclude(group = "com.terraformersmc")
     }
+
+    compileOnly("maven.modrinth:audioplayer:$audioplayer_version")
+    compileOnly("de.maxhenkel.voicechat:voicechat-api:$voicechat_api_version")
 
     "datagenImplementation"(sourceSets.main.get().output)
 }

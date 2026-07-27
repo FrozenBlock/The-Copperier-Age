@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_minecart": {
+    "has_chime": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:minecart"
+            "items": "thecopperierage:chime"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thecopperierage:dropper_minecart"
+        "recipe": "thecopperierage:waxed_chime_from_honeycomb"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_minecart"
+      "has_chime"
     ]
   ],
   "rewards": {
     "recipes": [
-      "thecopperierage:dropper_minecart"
+      "thecopperierage:waxed_chime_from_honeycomb"
     ]
   }
 }

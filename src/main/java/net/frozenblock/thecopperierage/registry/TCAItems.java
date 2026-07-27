@@ -32,6 +32,7 @@ import net.minecraft.world.level.block.WeatheringCopperCollection;
 public final class TCAItems {
 	// BLOCK ITEMS
 	public static final Item COPPER_CAMPFIRE = Items.registerBlock(TCABlockItemIds.COPPER_CAMPFIRE, TCABlocks.COPPER_CAMPFIRE);
+	public static final Item CUPRIC_LANTERN = Items.registerBlock(TCABlockItemIds.CUPRIC_LANTERN, TCABlocks.CUPRIC_LANTERN);
 	public static final Item COPPER_JACK_O_LANTERN = Items.registerBlock(TCABlockItemIds.COPPER_JACK_O_LANTERN, TCABlocks.COPPER_JACK_O_LANTERN);
 	public static final Item REDSTONE_JACK_O_LANTERN = Items.registerBlock(TCABlockItemIds.REDSTONE_JACK_O_LANTERN, TCABlocks.REDSTONE_JACK_O_LANTERN);
 	public static final Item REDSTONE_GRIT = Items.registerBlock(TCABlockItemIds.REDSTONE_GRIT, TCABlocks.REDSTONE_GRIT);

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "hanging=false": {
+      "model": "thecopperierage:block/cupric_lantern"
+    },
+    "hanging=true": {
+      "model": "thecopperierage:block/cupric_lantern_hanging"
+    }
+  }
+}

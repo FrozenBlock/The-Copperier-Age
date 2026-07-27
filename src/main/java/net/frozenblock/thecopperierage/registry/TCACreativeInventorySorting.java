@@ -123,14 +123,10 @@ public final class TCACreativeInventorySorting {
 
 		// MINECARTS
 		insertAfterInToolsAndUtilities(Items.CHEST_MINECART, TCAItems.CRATE_MINECART);
-		insertAfterInToolsAndUtilities(Items.FURNACE_MINECART, TCAItems.DISPENSER_MINECART);
-		insertAfterInToolsAndUtilities(TCAItems.DISPENSER_MINECART, TCAItems.DROPPER_MINECART);
-		insertAfterInToolsAndUtilities(TCAItems.DROPPER_MINECART, TCAItems.JUKEBOX_MINECART);
+		insertAfterInToolsAndUtilities(Items.FURNACE_MINECART, TCAItems.JUKEBOX_MINECART);
 		insertBeforeInToolsAndUtilities(Items.GOAT_HORN, TCAItems.MINECART_COUPLING);
 		insertAfterInRedstoneBlocks(Items.CHEST_MINECART, TCAItems.CRATE_MINECART);
-		insertAfterInRedstoneBlocks(Items.FURNACE_MINECART, TCAItems.DISPENSER_MINECART);
-		insertAfterInRedstoneBlocks(TCAItems.DISPENSER_MINECART, TCAItems.DROPPER_MINECART);
-		insertAfterInRedstoneBlocks(TCAItems.DROPPER_MINECART, TCAItems.JUKEBOX_MINECART);
+		insertAfterInRedstoneBlocks(Items.FURNACE_MINECART, TCAItems.JUKEBOX_MINECART);
 
 		insertAfterInRedstoneBlocks(Items.ACTIVATOR_RAIL, TCABlocks.COPPER_RAIL.weathering().unaffected());
 		insertAfterInRedstoneBlocks(TCABlocks.COPPER_RAIL.weathering().unaffected(), TCABlocks.COPPER_RAIL.weathering().exposed());
@@ -144,6 +140,7 @@ public final class TCACreativeInventorySorting {
 		insertAfterInRedstoneBlocks(TCABlocks.CROSS_RAIL, TCABlocks.RELAYOR_RAIL);
 
 		insertAfterInFunctionalBlocks(Items.SOUL_CAMPFIRE, TCABlocks.COPPER_CAMPFIRE);
+		insertAfterInFunctionalBlocks(Items.SOUL_LANTERN, TCABlocks.CUPRIC_LANTERN);
 		insertBeforeInToolsAndUtilities(Items.BRUSH, TCAItems.WRENCH);
 		insertInstrumentBefore(Items.MUSIC_DISC_13, TCAItems.COPPER_HORN, TCAInstrumentTags.COPPER_HORNS, CreativeModeTabs.TOOLS_AND_UTILITIES);
 		insertAfterInNaturalBlocks(Blocks.JACK_O_LANTERN, TCABlocks.COPPER_JACK_O_LANTERN);

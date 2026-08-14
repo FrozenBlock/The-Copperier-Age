@@ -23,7 +23,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.frozenblock.thecopperierage.TheCopperierAge"
+      "net.frozenblock.thecopperierage.TheCopperierAgeFabric"
     ],
     "client": [
       "net.frozenblock.thecopperierage.TheCopperierAgeClient"

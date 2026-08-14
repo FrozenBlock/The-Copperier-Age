@@ -20,7 +20,7 @@ package net.frozenblock.thecopperierage;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.frozenblock.lib.menu.api.SplashTextAPI;
+import net.frozenblock.lib.menu.api.SplashTextEvents;
 import net.frozenblock.thecopperierage.client.TCAModelLayers;
 import net.frozenblock.thecopperierage.client.TCAParticleEngine;
 import net.frozenblock.thecopperierage.client.coupling.MinecartCouplingClientHandler;
@@ -33,7 +33,7 @@ public final class TheCopperierAgeClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		SplashTextAPI.addSplashLocation(TCAConstants.id("texts/splashes.txt"));
+		SplashTextEvents.ADD_SOURCE_FILES.register(sourceFiles -> sourceFiles.add(TCAConstants.id("texts/splashes.txt")));
 
 		TCAParticleEngine.init();
 		TCAModelLayers.init();

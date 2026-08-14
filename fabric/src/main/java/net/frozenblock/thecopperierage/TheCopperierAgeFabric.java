@@ -49,9 +49,9 @@ import net.frozenblock.thecopperierage.registry.TCAStats;
 import net.frozenblock.thecopperierage.registry.TCAWindDisturbances;
 import net.frozenblock.thecopperierage.tag.TCAEntityTypeTags;
 
-public final class TheCopperierAge extends FrozenModInitializer {
+public final class TheCopperierAgeFabric extends FrozenModInitializer {
 
-	public TheCopperierAge() {
+	public TheCopperierAgeFabric() {
 		super(TCAConstants.MOD_ID);
 	}
 

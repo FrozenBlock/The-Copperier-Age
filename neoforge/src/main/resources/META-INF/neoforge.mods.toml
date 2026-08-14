@@ -1,0 +1,43 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="FrozenBlock Modding Oasis License v1.0"
+issueTrackerURL="https://github.com/FrozenBlock/TheCopperierAge/issues"
+
+[[mods]]
+    modId="thecopperierage"
+    version="${mod_version}"
+    displayName="The Copperier Age"
+    displayURL="https://modrinth.com/mod/the-copperier-age"
+    logoFile="assets/thecopperierage/icon.png"
+    authors="Lunade, Lufurrius"
+    description='''
+Expends and enhances the theme of The Copper Age drop. New blocks and mechanics, many tweaks, and awesome optional retextures!
+    '''
+
+[[ dependencies.thecopperierage ]]
+    modId="neoforge"
+    type="required"
+    versionRange="[~26.2-,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[ dependencies.thecopperierage ]]
+    modId="minecraft"
+    type="required"
+    versionRange="[~26.2-,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[ dependencies.thecopperierage ]]
+    modId="frozenlib"
+    type="required"
+    versionRange="[3.0,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[ dependencies.thecopperierage ]]
+    modId="cloth-config"
+    type="optional"
+    versionRange="*"
+    ordering="NONE"
+    side="BOTH"

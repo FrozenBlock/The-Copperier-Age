@@ -17,7 +17,7 @@
 
 package net.frozenblock.thecopperierage.registry;
 
-import net.frozenblock.lib.item.api.FrozenCreativeTabs;
+import net.frozenblock.lib.item.api.creative.CreativeModeTabSorter;
 import net.frozenblock.thecopperierage.tag.TCAInstrumentTags;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
@@ -150,91 +150,91 @@ public final class TCACreativeInventorySorting {
 	}
 
 	private static void insertBeforeInBuildingBlocks(ItemLike comparedItem, ItemLike item) {
-		FrozenCreativeTabs.insertBefore(comparedItem, item, CreativeModeTabs.BUILDING_BLOCKS);
+		CreativeModeTabSorter.insertBefore(comparedItem, item, CreativeModeTabs.BUILDING_BLOCKS);
 	}
 
 	private static void insertAfterInBuildingBlocks(ItemLike comparedItem, ItemLike item) {
-		FrozenCreativeTabs.insertAfter(comparedItem, item, CreativeModeTabs.BUILDING_BLOCKS);
+		CreativeModeTabSorter.insertAfter(comparedItem, item, CreativeModeTabs.BUILDING_BLOCKS);
 	}
 
 	private static void insertBeforeInColoredBlocks(ItemLike comparedItem, ItemLike item) {
-		FrozenCreativeTabs.insertBefore(comparedItem, item, CreativeModeTabs.COLORED_BLOCKS);
+		CreativeModeTabSorter.insertBefore(comparedItem, item, CreativeModeTabs.COLORED_BLOCKS);
 	}
 
 	private static void insertAfterInColoredBlocks(ItemLike comparedItem, ItemLike item) {
-		FrozenCreativeTabs.insertAfter(comparedItem, item, CreativeModeTabs.COLORED_BLOCKS);
+		CreativeModeTabSorter.insertAfter(comparedItem, item, CreativeModeTabs.COLORED_BLOCKS);
 	}
 
 	private static void insertBeforeInNaturalBlocks(ItemLike comparedItem, ItemLike item) {
-		FrozenCreativeTabs.insertBefore(comparedItem, item, CreativeModeTabs.NATURAL_BLOCKS);
+		CreativeModeTabSorter.insertBefore(comparedItem, item, CreativeModeTabs.NATURAL_BLOCKS);
 	}
 
 	private static void insertAfterInNaturalBlocks(ItemLike comparedItem, ItemLike item) {
-		FrozenCreativeTabs.insertAfter(comparedItem, item, CreativeModeTabs.NATURAL_BLOCKS);
+		CreativeModeTabSorter.insertAfter(comparedItem, item, CreativeModeTabs.NATURAL_BLOCKS);
 	}
 
 	private static void insertAfterInBuildingAndNaturalBlocks(ItemLike comparedItem, ItemLike item) {
-		FrozenCreativeTabs.insertAfter(comparedItem, item, CreativeModeTabs.BUILDING_BLOCKS, CreativeModeTabs.NATURAL_BLOCKS);
+		CreativeModeTabSorter.insertAfter(comparedItem, item, CreativeModeTabs.BUILDING_BLOCKS, CreativeModeTabs.NATURAL_BLOCKS);
 	}
 
 	private static void insertAfterInNaturalAndFunctionalBlocks(ItemLike comparedItem, ItemLike item) {
-		FrozenCreativeTabs.insertAfter(comparedItem, item, CreativeModeTabs.NATURAL_BLOCKS, CreativeModeTabs.FUNCTIONAL_BLOCKS);
+		CreativeModeTabSorter.insertAfter(comparedItem, item, CreativeModeTabs.NATURAL_BLOCKS, CreativeModeTabs.FUNCTIONAL_BLOCKS);
 	}
 
 	private static void insertBeforeInFunctionalBlocks(ItemLike comparedItem, ItemLike item) {
-		FrozenCreativeTabs.insertBefore(comparedItem, item, CreativeModeTabs.FUNCTIONAL_BLOCKS);
+		CreativeModeTabSorter.insertBefore(comparedItem, item, CreativeModeTabs.FUNCTIONAL_BLOCKS);
 	}
 
 	private static void insertAfterInFunctionalBlocks(ItemLike comparedItem, ItemLike item) {
-		FrozenCreativeTabs.insertAfter(comparedItem, item, CreativeModeTabs.FUNCTIONAL_BLOCKS);
+		CreativeModeTabSorter.insertAfter(comparedItem, item, CreativeModeTabs.FUNCTIONAL_BLOCKS);
 	}
 
 	private static void insertBeforeInRedstoneBlocks(ItemLike comparedItem, ItemLike item) {
-		FrozenCreativeTabs.insertBefore(comparedItem, item, CreativeModeTabs.REDSTONE_BLOCKS);
+		CreativeModeTabSorter.insertBefore(comparedItem, item, CreativeModeTabs.REDSTONE_BLOCKS);
 	}
 
 	private static void insertAfterInRedstoneBlocks(ItemLike comparedItem, ItemLike item) {
-		FrozenCreativeTabs.insertAfter(comparedItem, item, CreativeModeTabs.REDSTONE_BLOCKS);
+		CreativeModeTabSorter.insertAfter(comparedItem, item, CreativeModeTabs.REDSTONE_BLOCKS);
 	}
 
 	private static void insertInToolsAndUtilities(ItemLike item) {
-		FrozenCreativeTabs.insert(item, CreativeModeTabs.TOOLS_AND_UTILITIES);
+		CreativeModeTabSorter.insert(item, CreativeModeTabs.TOOLS_AND_UTILITIES);
 	}
 
 	private static void insertAfterInToolsAndUtilities(ItemLike comparedItem, ItemLike item) {
-		FrozenCreativeTabs.insertAfter(comparedItem, item, CreativeModeTabs.TOOLS_AND_UTILITIES);
+		CreativeModeTabSorter.insertAfter(comparedItem, item, CreativeModeTabs.TOOLS_AND_UTILITIES);
 	}
 
 	private static void insertBeforeInToolsAndUtilities(ItemLike comparedItem, ItemLike item) {
-		FrozenCreativeTabs.insertBefore(comparedItem, item, CreativeModeTabs.TOOLS_AND_UTILITIES);
+		CreativeModeTabSorter.insertBefore(comparedItem, item, CreativeModeTabs.TOOLS_AND_UTILITIES);
 	}
 
 	private static void insertBeforeInIngredients(ItemLike comparedItem, ItemLike item) {
-		FrozenCreativeTabs.insertBefore(comparedItem, item, CreativeModeTabs.INGREDIENTS);
+		CreativeModeTabSorter.insertBefore(comparedItem, item, CreativeModeTabs.INGREDIENTS);
 	}
 
 	private static void insertAfterInIngredients(ItemLike comparedItem, ItemLike item) {
-		FrozenCreativeTabs.insertAfter(comparedItem, item, CreativeModeTabs.INGREDIENTS);
+		CreativeModeTabSorter.insertAfter(comparedItem, item, CreativeModeTabs.INGREDIENTS);
 	}
 
 	private static void insertBeforeInFoodAndDrinks(ItemLike comparedItem, ItemLike item) {
-		FrozenCreativeTabs.insertBefore(comparedItem, item, CreativeModeTabs.FOOD_AND_DRINKS);
+		CreativeModeTabSorter.insertBefore(comparedItem, item, CreativeModeTabs.FOOD_AND_DRINKS);
 	}
 
 	private static void insertAfterInFoodAndDrinks(ItemLike comparedItem, ItemLike item) {
-		FrozenCreativeTabs.insertAfter(comparedItem, item, CreativeModeTabs.FOOD_AND_DRINKS);
+		CreativeModeTabSorter.insertAfter(comparedItem, item, CreativeModeTabs.FOOD_AND_DRINKS);
 	}
 
 	private static void insertAfterInCombat(ItemLike comparedItem, ItemLike item) {
-		FrozenCreativeTabs.insertAfter(comparedItem, item, CreativeModeTabs.COMBAT);
+		CreativeModeTabSorter.insertAfter(comparedItem, item, CreativeModeTabs.COMBAT);
 	}
 
 	private static void insertBeforeInSpawnEggs(ItemLike comparedItem, ItemLike item) {
-		FrozenCreativeTabs.insertBefore(comparedItem, item, CreativeModeTabs.SPAWN_EGGS);
+		CreativeModeTabSorter.insertBefore(comparedItem, item, CreativeModeTabs.SPAWN_EGGS);
 	}
 
 	private static void insertAfterInSpawnEggs(ItemLike comparedItem, ItemLike item) {
-		FrozenCreativeTabs.insertAfter(comparedItem, item, CreativeModeTabs.SPAWN_EGGS);
+		CreativeModeTabSorter.insertAfter(comparedItem, item, CreativeModeTabs.SPAWN_EGGS);
 	}
 
 	@SafeVarargs
@@ -244,6 +244,6 @@ public final class TCACreativeInventorySorting {
 		TagKey<Instrument> tagKey,
 		ResourceKey<CreativeModeTab>... tabs
 	) {
-		FrozenCreativeTabs.addInstrumentBefore(comparedItem, instrument, tagKey, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS, tabs);
+		CreativeModeTabSorter.addInstrumentBefore(comparedItem, instrument, tagKey, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS, tabs);
 	}
 }

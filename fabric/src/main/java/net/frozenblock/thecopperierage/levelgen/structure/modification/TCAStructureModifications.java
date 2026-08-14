@@ -18,10 +18,10 @@
 package net.frozenblock.thecopperierage.levelgen.structure.modification;
 
 import com.google.common.collect.ImmutableList;
-import net.frozenblock.lib.levelgen.structure.api.BlockStateRespectingProcessorRule;
-import net.frozenblock.lib.levelgen.structure.api.BlockStateRespectingRuleProcessor;
-import net.frozenblock.lib.levelgen.structure.api.StructureProcessorApi;
-import net.frozenblock.lib.levelgen.structure.api.TemplatePoolApi;
+import net.frozenblock.lib.levelgen.structure.api.processor.BlockStateRespectingProcessorRule;
+import net.frozenblock.lib.levelgen.structure.api.processor.BlockStateRespectingRuleProcessor;
+import net.frozenblock.lib.levelgen.structure.api.processor.StructureProcessorApi;
+import net.frozenblock.lib.levelgen.structure.api.pools.TemplatePoolApi;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.registry.TCABlocks;

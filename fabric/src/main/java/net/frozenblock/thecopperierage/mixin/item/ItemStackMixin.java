@@ -42,7 +42,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemStack.class)
-public class ItemStackMixin {
+public class ItemStackMixin { // in common mixins.json
 
 	@Inject(method = "set(Lnet/minecraft/core/component/DataComponentType;Ljava/lang/Object;)Ljava/lang/Object;", at = @At("HEAD"))
 	public <T> void theCopperierAge$onDamageSet(DataComponentType<T> component, @Nullable T value, CallbackInfoReturnable<T> info) {

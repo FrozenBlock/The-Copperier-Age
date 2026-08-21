@@ -43,23 +43,23 @@ public final class TCABlockLootProvider extends FabricBlockLootSubProvider {
 	public void generate() {
 		final HolderLookup.RegistryLookup<Enchantment> enchantments = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
 
-		TCABlocks.GEARBOX.forEach(this::dropSelf);
-		TCABlocks.STICKY_GEARBOX.forEach(this::dropSelf);
-		TCABlocks.COPPER_FAN.forEach(this::dropSelf);
-		TCABlocks.CHIME.forEach(this::dropSelf);
-		TCABlocks.COPPER_BUTTON.forEach(this::dropSelf);
-		TCABlocks.WEIGHTED_PRESSURE_PLATE.forEach(this::dropSelf);
-		TCABlocks.COPPER_RAIL.forEach(this::dropSelf);
-		this.dropSelf(TCABlocks.CROSS_RAIL);
-		this.dropSelf(TCABlocks.RELAYOR_RAIL);
+		TCABlocks.GEARBOX.forEach(block -> this.dropSelf(block.get()));
+		TCABlocks.STICKY_GEARBOX.forEach(block -> this.dropSelf(block.get()));
+		TCABlocks.COPPER_FAN.forEach(block -> this.dropSelf(block.get()));
+		TCABlocks.CHIME.forEach(block -> this.dropSelf(block.get()));
+		TCABlocks.COPPER_BUTTON.forEach(block -> this.dropSelf(block.get()));
+		TCABlocks.WEIGHTED_PRESSURE_PLATE.forEach(block -> this.dropSelf(block.get()));
+		TCABlocks.COPPER_RAIL.forEach(block -> this.dropSelf(block.get()));
+		this.dropSelf(TCABlocks.CROSS_RAIL.get());
+		this.dropSelf(TCABlocks.RELAYOR_RAIL.get());
 
-		this.crateDrop(TCABlocks.CRATE);
+		this.crateDrop(TCABlocks.CRATE.get());
 
-		this.dropSelf(TCABlocks.CUPRIC_LANTERN);
-		this.dropSelf(TCABlocks.COPPER_JACK_O_LANTERN);
-		this.dropSelf(TCABlocks.REDSTONE_JACK_O_LANTERN);
-		this.dropSelf(TCABlocks.REDSTONE_GRIT);
-		this.dropSelf(TCABlocks.KILN);
+		this.dropSelf(TCABlocks.CUPRIC_LANTERN.get());
+		this.dropSelf(TCABlocks.COPPER_JACK_O_LANTERN.get());
+		this.dropSelf(TCABlocks.REDSTONE_JACK_O_LANTERN.get());
+		this.dropSelf(TCABlocks.REDSTONE_GRIT.get());
+		this.dropSelf(TCABlocks.KILN.get());
 	}
 
 	public void crateDrop(Block block) {

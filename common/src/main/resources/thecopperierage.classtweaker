@@ -16,6 +16,8 @@ accessible method net/minecraft/world/level/block/Blocks never (Lnet/minecraft/w
 accessible field net/minecraft/world/level/block/state/BlockBehaviour UPDATE_SHAPE_ORDER [Lnet/minecraft/core/Direction;
 accessible method net/minecraft/world/level/block/DispenserBlock getDispenseMethod (Lnet/minecraft/world/level/Level;Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/core/dispenser/DispenseItemBehavior;
 accessible method net/minecraft/world/level/block/DropperBlock getDispenseMethod (Lnet/minecraft/world/level/Level;Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/core/dispenser/DispenseItemBehavior;
+accessible method net/minecraft/world/level/block/Blocks litBlockEmission (I)Ljava/util/function/ToIntFunction;
+accessible method net/minecraft/world/level/block/CarvedPumpkinBlock <init> (Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;)V
 
 # Block Entities
 accessible method net/minecraft/world/level/block/entity/BlockEntityType <init> (Lnet/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier;Ljava/util/Set;)V
@@ -30,6 +32,21 @@ accessible class net/minecraft/world/entity/monster/cubemob/SulfurCube$SulfurCub
 # Menus
 accessible method net/minecraft/world/inventory/ChestMenu addChestGrid (Lnet/minecraft/world/Container;II)V
 extendable method net/minecraft/world/inventory/ChestMenu addChestGrid (Lnet/minecraft/world/Container;II)V
+accessible class net/minecraft/world/inventory/MenuType$MenuSupplier
+accessible method net/minecraft/world/inventory/MenuType <init> (Lnet/minecraft/world/inventory/MenuType$MenuSupplier;Lnet/minecraft/world/flag/FeatureFlagSet;)V
+
+# Item Groups
+accessible field net/minecraft/world/item/CreativeModeTabs COLORED_BLOCKS Lnet/minecraft/resources/ResourceKey;
+
+# Menu Screens
+accessible method net/minecraft/client/gui/screens/MenuScreens register (Lnet/minecraft/world/inventory/MenuType;Lnet/minecraft/client/gui/screens/MenuScreens$ScreenConstructor;)V
+accessible class net/minecraft/client/gui/screens/MenuScreens$ScreenConstructor
+
+# Structure Processors
+accessible field net/minecraft/data/worldgen/ProcessorLists EMPTY Lnet/minecraft/resources/ResourceKey;
+
+# Points of Interest
+accessible method net/minecraft/world/entity/ai/village/poi/PoiTypes registerBlockStates (Lnet/minecraft/core/Holder;Ljava/util/Set;)V
 
 # Item Models
 accessible field net/minecraft/client/resources/model/sprite/TextureSlots resolvedValues Ljava/util/Map;

@@ -1,0 +1,86 @@
+/*
+ * Copyright 2025-2026 FrozenBlock
+ * This file is part of The Copperier Age.
+ *
+ * This program is free software; you can modify it under
+ * the terms of version 1 of the FrozenBlock Modding Oasis License
+ * as published by FrozenBlock Modding Oasis.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * FrozenBlock Modding Oasis License for more details.
+ *
+ * You should have received a copy of the FrozenBlock Modding Oasis License
+ * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
+ */
+
+package net.frozenblock.thecopperierage.mixin.client.oxidized_armor;
+
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
+import net.frozenblock.thecopperierage.TCAConstants;
+import net.frozenblock.thecopperierage.config.TCAConfig;
+import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
+import net.frozenblock.thecopperierage.tag.TCAItemTags;
+import net.mehvahdjukaar.candlelight.api.ClientOnly;
+import net.minecraft.client.renderer.entity.layers.EquipmentLayerRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.resources.Identifier;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.ItemStack;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+
+@ClientOnly
+@Mixin(EquipmentLayerRenderer.class)
+public class EquipmentLayerRendererMixin {
+
+	@Unique
+	private static final Identifier THE_COPPERIER_AGE$EXPOSED_COPPER_LEGGINGS = TCAConstants.id("textures/entity/equipment/humanoid_leggings/copper_exposed.png");
+	@Unique
+	private static final Identifier THE_COPPERIER_AGE$WEATHERED_COPPER_LEGGINGS = TCAConstants.id("textures/entity/equipment/humanoid_leggings/copper_weathered.png");
+	@Unique
+	private static final Identifier THE_COPPERIER_AGE$OXIDIZED_COPPER_LEGGINGS = TCAConstants.id("textures/entity/equipment/humanoid_leggings/copper_oxidized.png");
+
+	@Unique
+	private static final Identifier THE_COPPERIER_AGE$EXPOSED_COPPER = TCAConstants.id("textures/entity/equipment/humanoid/copper_exposed.png");
+	@Unique
+	private static final Identifier THE_COPPERIER_AGE$WEATHERED_COPPER = TCAConstants.id("textures/entity/equipment/humanoid/copper_weathered.png");
+	@Unique
+	private static final Identifier THE_COPPERIER_AGE$OXIDIZED_COPPER = TCAConstants.id("textures/entity/equipment/humanoid/copper_oxidized.png");
+
+	@WrapOperation(
+		method = "renderLayers(Lnet/minecraft/client/resources/model/EquipmentClientInfo$LayerType;Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/client/model/Model;Ljava/lang/Object;Lnet/minecraft/world/item/ItemStack;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/resources/Identifier;II)V",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/client/renderer/rendertype/RenderTypes;armorCutoutNoCull(Lnet/minecraft/resources/Identifier;)Lnet/minecraft/client/renderer/rendertype/RenderType;"
+		)
+	)
+	public RenderType theCopperierAge$submitOxidizedArmor(
+		Identifier texture, Operation<RenderType> original,
+		@Local(argsOnly = true) ItemStack itemStack
+	) {
+		if (!TCAConfig.OXIDIZABLE_COPPER_EQUIPMENT.get() || !texture.getPath().contains("humanoid") || !itemStack.is(TCAItemTags.OXIDIZABLE_EQUIPMENT)) return original.call(texture);
+		if (itemStack.is(ItemTags.LEG_ARMOR)) return original.call(
+			OxidizableItemHelper.getValueForOxidization(
+				itemStack,
+				texture,
+				THE_COPPERIER_AGE$EXPOSED_COPPER_LEGGINGS,
+				THE_COPPERIER_AGE$WEATHERED_COPPER_LEGGINGS,
+				THE_COPPERIER_AGE$OXIDIZED_COPPER_LEGGINGS
+			)
+		);
+		return original.call(
+			OxidizableItemHelper.getValueForOxidization(
+				itemStack,
+				texture,
+				THE_COPPERIER_AGE$EXPOSED_COPPER,
+				THE_COPPERIER_AGE$WEATHERED_COPPER,
+				THE_COPPERIER_AGE$OXIDIZED_COPPER
+			)
+		);
+	}
+}

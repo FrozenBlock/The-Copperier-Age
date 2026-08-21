@@ -34,9 +34,9 @@ import de.maxhenkel.voicechat.api.audiochannel.LocationalAudioChannel;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.frozenblock.lib.event.api.events.EntityLifecycleEvents;
+import net.frozenblock.lib.event.api.events.LifecycleEvents;
+import net.frozenblock.lib.event.api.events.TickEvents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -44,20 +44,20 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-final class AudioPlayerCompat {
+public final class AudioPlayerCompat {
 	private static final float DEFAULT_RANGE = 65F;
 	private static final int LOAD_TIMEOUT_TICKS = 600;
 	private static final Map<UUID, TrackedAudio> TRACKED = new HashMap<>();
 
 	private AudioPlayerCompat() {}
 
-	static void init() {
-		ServerTickEvents.END_SERVER_TICK.register(server -> tick());
-		ServerEntityEvents.ENTITY_UNLOAD.register((entity, level) -> stop(entity));
-		ServerLifecycleEvents.SERVER_STOPPED.register(server -> stopAll());
+	public static void init() {
+		TickEvents.END_SERVER_TICK.register(server -> tick());
+		EntityLifecycleEvents.ENTITY_UNLOAD.register((entity, level) -> stop(entity));
+		LifecycleEvents.SERVER_STOPPED.register(server -> stopAll());
 	}
 
-	static boolean startMusicDisc(ServerLevel level, Entity source, ItemStack record, @Nullable ServerPlayer causedBy) {
+	public static boolean startMusicDisc(ServerLevel level, Entity source, ItemStack record, @Nullable ServerPlayer causedBy) {
 		final AudioPlayerApi api = AudioPlayerApi.instance();
 		final AudioData data = api.getAudioData(record).orElse(null);
 		if (data == null) return false;
@@ -94,11 +94,11 @@ final class AudioPlayerCompat {
 		return true;
 	}
 
-	static boolean isStopped(Entity source) {
+	public static boolean isStopped(Entity source) {
 		return !TRACKED.containsKey(source.getUUID());
 	}
 
-	static void stop(Entity source) {
+	public static void stop(Entity source) {
 		final TrackedAudio tracked = TRACKED.remove(source.getUUID());
 		if (tracked != null) tracked.channel.stopPlaying();
 	}

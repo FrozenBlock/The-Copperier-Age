@@ -25,13 +25,12 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import java.util.Map;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.client.renderer.item.FakeUnbakedItemModel;
 import net.frozenblock.thecopperierage.client.resources.model.BlockModelOxidization;
 import net.frozenblock.thecopperierage.data.model.TCAModelProvider;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
+import net.mehvahdjukaar.candlelight.api.ClientOnly;
 import net.minecraft.client.renderer.block.dispatch.ModelState;
 import net.minecraft.client.renderer.item.CuboidItemModelWrapper;
 import net.minecraft.client.renderer.item.ItemModel;
@@ -47,7 +46,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Environment(EnvType.CLIENT)
+@ClientOnly
 @Mixin(value = CuboidItemModelWrapper.Unbaked.class, priority = 899)
 public abstract class BlockModelWrapperUnbakedMixin {
 

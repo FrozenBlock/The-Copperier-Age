@@ -1,0 +1,469 @@
+/*
+ * Copyright 2025-2026 FrozenBlock
+ * This file is part of The Copperier Age.
+ *
+ * This program is free software; you can modify it under
+ * the terms of version 1 of the FrozenBlock Modding Oasis License
+ * as published by FrozenBlock Modding Oasis.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * FrozenBlock Modding Oasis License for more details.
+ *
+ * You should have received a copy of the FrozenBlock Modding Oasis License
+ * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
+ */
+
+package net.frozenblock.thecopperierage.block;
+
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
+import net.frozenblock.lib.particle.options.WindParticleOptions;
+import net.frozenblock.lib.wind.BlowingHelper;
+import net.frozenblock.lib.wind.disturbance.WindDisturbances;
+import net.frozenblock.thecopperierage.entity.impl.CopperFanQueuedMovementInterface;
+import net.frozenblock.thecopperierage.networking.packet.TCACopperFanBlowPacket;
+import net.frozenblock.thecopperierage.registry.TCASounds;
+import net.frozenblock.thecopperierage.tag.TCAEntityTypeTags;
+import net.frozenblock.thecopperierage.wind.disturbance.CopperFanWindDisturbance;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DirectionalBlock;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.WeatheringCopper;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.entity.EntityTypeTest;
+import net.minecraft.world.level.redstone.Orientation;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
+
+public class CopperFanBlock extends DirectionalBlock {
+	public static final double PUSH_INTENSITY = 0.15D;
+	public static final double PUSH_INTENSITY_SUCK_SCALE = 0.8D;
+	public static final double PUSH_INTENSITY_SUCK = PUSH_INTENSITY * PUSH_INTENSITY_SUCK_SCALE;
+	public static final double WIND_INTENSITY = 0.5D;
+	public static final double WIND_INTENSITY_SUCK_SCALE = 0.8D;
+	public static final double WIND_INTENSITY_SUCK = WIND_INTENSITY * WIND_INTENSITY_SUCK_SCALE;
+	private static final Predicate<Entity> EFFECT_PREDICATE = EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.NO_SPECTATORS);
+	public static final MapCodec<CopperFanBlock> CODEC = RecordCodecBuilder.mapCodec(
+		instance -> instance.group(
+			WeatheringCopper.WeatherState.CODEC.fieldOf("weathering_state").forGetter(copperFanBlock -> copperFanBlock.weatherState),
+			propertiesCodec()
+		).apply(instance, CopperFanBlock::new)
+	);
+	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+
+	public final WeatheringCopper.WeatherState weatherState;
+	public final int pushBlocks;
+	public final int suckBlocks;
+	private final double cosmeticStrength;
+	private final int windParticleLifetime;
+
+    public CopperFanBlock(WeatheringCopper.WeatherState weatherState, Properties properties) {
+        super(properties);
+		this.weatherState = weatherState;
+		this.pushBlocks = getPushForWeatherState(weatherState);
+		this.suckBlocks = getSuckForWeatherState(weatherState);
+		this.windParticleLifetime = getWindParticleLifetimeForWeatherState(weatherState);
+		this.cosmeticStrength = getCosmeticStrengthForWeatherState(weatherState);
+		this.registerDefaultState(
+			this.stateDefinition.any()
+				.setValue(FACING, Direction.NORTH)
+				.setValue(POWERED, false)
+		);
+    }
+
+	private static int getPushForWeatherState(WeatheringCopper.WeatherState weatherState) {
+		return switch (weatherState) {
+			case UNAFFECTED -> 8;
+			case EXPOSED -> 6;
+			case WEATHERED -> 4;
+			case OXIDIZED -> 2;
+		};
+	}
+
+	private static int getSuckForWeatherState(WeatheringCopper.WeatherState weatherState) {
+		return Math.max(0, getPushForWeatherState(weatherState) - 2);
+	}
+
+	private static double getCosmeticStrengthForWeatherState(WeatheringCopper.WeatherState weatherState) {
+		return switch (weatherState) {
+			case UNAFFECTED -> 1D;
+			case EXPOSED -> 0.7D;
+			case WEATHERED -> 0.4D;
+			case OXIDIZED -> 0.2D;
+		};
+	}
+
+	private static int getWindParticleLifetimeForWeatherState(WeatheringCopper.WeatherState weatherState) {
+		return switch (weatherState) {
+			case UNAFFECTED -> 12;
+			case EXPOSED -> 8;
+			case WEATHERED -> 7;
+			case OXIDIZED -> 7;
+		};
+	}
+
+	@Override
+    public MapCodec<? extends CopperFanBlock> codec() {
+        return CODEC;
+    }
+
+	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		final Direction facing = context.getNearestLookingDirection().getOpposite();
+		return this.defaultBlockState().setValue(FACING, facing);
+	}
+
+	@Override
+	protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+		this.updateFan(state, level, pos, random);
+	}
+
+	@Override
+	protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+		if (level.isClientSide() || state.is(oldState.getBlock())) return;
+		level.scheduleTick(pos, this, 1);
+	}
+
+	@Override
+	protected void neighborChanged(
+		BlockState state,
+		Level level,
+		BlockPos pos,
+		Block block,
+		@Nullable Orientation orientation,
+		boolean movedByPiston
+	) {
+		if (level.isClientSide() || level.getBlockTicks().hasScheduledTick(pos, this)) return;
+		level.scheduleTick(pos, this, 1);
+	}
+
+	@Override
+	protected BlockState updateShape(
+		BlockState state,
+		LevelReader level,
+		ScheduledTickAccess ticks,
+		BlockPos pos,
+		Direction direction,
+		BlockPos neighborPos,
+		BlockState neighborState,
+		RandomSource random
+	) {
+		ticks.scheduleTick(pos, this, 1);
+		return super.updateShape(state, level, ticks, pos, direction, neighborPos, neighborState, random);
+	}
+
+	@Override
+	protected boolean propagatesSkylightDown(BlockState state) {
+		return true;
+	}
+
+	public void updateFan(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+		final boolean hasNeighborSignal = level.hasNeighborSignal(pos);
+		final boolean powered = state.getValue(POWERED);
+		final Direction facing = state.getValue(FACING);
+
+		if (hasNeighborSignal != powered) {
+			final BlockState newState = state.setValue(POWERED, hasNeighborSignal);
+			level.setBlock(pos, newState, UPDATE_ALL);
+
+			final SoundEvent toggleSound = hasNeighborSignal ? TCASounds.BLOCK_COPPER_FAN_ON.get() : TCASounds.BLOCK_COPPER_FAN_OFF.get();
+			level.playSound(
+				null,
+				pos,
+				toggleSound,
+				SoundSource.BLOCKS,
+				Mth.lerp((float) this.cosmeticStrength, 0.3F, 0.9F),
+				Mth.lerp((float) this.cosmeticStrength, 0.75F, 0.9F) + (random.nextFloat() * 0.2F)
+			);
+		}
+
+		if (hasNeighborSignal) {
+			this.blow(level, pos, facing);
+			TCACopperFanBlowPacket.sendToAll(level, pos);
+			level.scheduleTick(pos, this, 1);
+		}
+	}
+
+	public void blow(Level level, BlockPos pos, Direction facing) {
+		this.handleBlowing(level, pos, facing, false);
+		this.handleBlowing(level, pos, facing.getOpposite(), true);
+	}
+
+	private static AABB aabb(BlockPos startPos, BlockPos endPos) {
+		return new AABB(
+			Math.min(startPos.getX(), endPos.getX()),
+			Math.min(startPos.getY(), endPos.getY()),
+			Math.min(startPos.getZ(), endPos.getZ()),
+			Math.max(startPos.getX(), endPos.getX()) + 1D,
+			Math.max(startPos.getY(), endPos.getY()) + 1D,
+			Math.max(startPos.getZ(), endPos.getZ()) + 1D
+		);
+	}
+
+	public static Optional<BlockPos> computeCutoffPos(Level level, BlockState state, BlockPos pos, Direction direction, boolean reverse) {
+		if (!(state.getBlock() instanceof CopperFanBlock copperFanBlock)) return Optional.empty();
+
+		Optional<BlockPos> cutoffPos = Optional.empty();
+		final BlockPos.MutableBlockPos mutable = pos.mutable();
+
+		final int fanDistanceInBlocks = !reverse ? copperFanBlock.pushBlocks : copperFanBlock.suckBlocks;
+		for (int i = 0; i < fanDistanceInBlocks; i++) {
+			final boolean isFirstSearch = i == 0;
+			if (!level.hasChunkAt(mutable.move(direction))) break;
+
+			final BlockState searchState = level.getBlockState(mutable);
+			if (!BlowingHelper.canBlowingPassThrough(level, mutable, searchState, direction)) {
+				if (isFirstSearch) return Optional.empty();
+				break;
+			}
+
+			if (!level.getFluidState(mutable).isEmpty()) {
+				if (isFirstSearch) return Optional.empty();
+				cutoffPos = Optional.of(mutable.immutable());
+				break;
+			}
+		}
+
+		final Direction oppositeDirection = direction.getOpposite();
+		mutable.move(oppositeDirection);
+
+		final BlockPos posWithCutoff = cutoffPos
+			.map(blockPos -> blockPos.immutable().relative(oppositeDirection))
+			.orElse(mutable.immutable());
+		return Optional.of(posWithCutoff);
+	}
+
+	public static Optional<AABB> computeBlowingArea(Level level, BlockState state, BlockPos pos, Direction direction, boolean reverse) {
+		final Optional<BlockPos> cutoffPos = CopperFanBlock.computeCutoffPos(level, state, pos, direction, reverse);
+		if (cutoffPos.isEmpty()) return Optional.empty();
+
+		final AABB blowingArea = aabb(pos, cutoffPos.get());
+		return Optional.of(blowingArea.inflate(0.5D).move(direction.step().mul(0.5F)));
+	}
+
+	private void handleBlowing(Level level, BlockPos pos, Direction direction, boolean reverse) {
+		final BlockState state = level.getBlockState(pos);
+
+		final Optional<BlockPos> cutoffPosOptional = CopperFanBlock.computeCutoffPos(level, state, pos, direction, reverse);
+		if (cutoffPosOptional.isEmpty()) return;
+
+		final Optional<AABB> blowingAreaOptional = CopperFanBlock.computeBlowingArea(level, state, pos, direction, reverse);
+		if (blowingAreaOptional.isEmpty()) return;
+
+		final BlockPos posWithCutoff = cutoffPosOptional.get();
+		final Vec3 fanStartPos = Vec3.atCenterOf(pos);
+		final AABB blowingArea = blowingAreaOptional.get();
+		final int fanDistanceInBlocks = !reverse ? this.pushBlocks : this.suckBlocks;
+		final Direction oppositeDirection = direction.getOpposite();
+
+		if (!level.isClientSide()) {
+			final CopperFanWindDisturbance windDisturbance = new CopperFanWindDisturbance(state, pos, fanDistanceInBlocks + 1D, reverse);
+			WindDisturbances.addIf(
+				level,
+				level.getChunk(pos),
+				chunk -> {
+					final WindDisturbances disturbances = WindDisturbances.get(chunk);
+					if (disturbances.isEmpty()) return true;
+					return disturbances.noneMatch(disturbance -> {
+						if (disturbance.type() != windDisturbance.type()) return false;
+						final CopperFanWindDisturbance fanDisturbance = (CopperFanWindDisturbance) disturbance;
+						return fanDisturbance.distance == fanDistanceInBlocks + 1D
+							&& fanDisturbance.reverse == reverse
+							&& fanDisturbance.position.equals(pos)
+							&& fanDisturbance.blockState.equals(state);
+					});
+				},
+				() -> windDisturbance
+			);
+		} else {
+			final RandomSource random = level.getRandom();
+			if (random.nextFloat() <= (!reverse ? 0.35F : 0.2F) && random.nextDouble() <= this.cosmeticStrength) {
+				final double sizeOfBlowingArea = Math.min(blowingArea.getSize() / 9D, 1D);
+				if (random.nextDouble() < sizeOfBlowingArea * random.nextDouble() * random.nextDouble()) {
+					level.playLocalSound(
+						pos.relative(direction),
+						TCASounds.BLOCK_COPPER_FAN_IDLE_BLOW.get(),
+						SoundSource.BLOCKS,
+						Math.max((float) sizeOfBlowingArea * 1.2F, 0.6F),
+						Math.max((float) sizeOfBlowingArea, 0.5F),
+						false
+					);
+				}
+
+				Vec3 particlePos;
+				Vec3 particleVelocity;
+				if (!reverse) {
+					particlePos = getParticlePos(pos, direction, random);
+					particleVelocity = getParticleVelocity(direction, random, 0.4D, 0.6D);
+					particleVelocity = particleVelocity.add(getVelocityFromDistance(pos, direction, particlePos, random, 0.175D));
+				} else {
+					final BlockPos startPos = pos.relative(direction);
+					final BlockPos endPos = posWithCutoff.relative(direction);
+					final BlockPos particleBlockPos = BlockPos.containing(Mth.lerp(random.nextDouble(), Vec3.atCenterOf(startPos), Vec3.atCenterOf(endPos)));
+
+					particlePos = getParticlePos(particleBlockPos, oppositeDirection, random);
+					particleVelocity = getParticleVelocity(oppositeDirection, random, 0.2D, 0.4D);
+					particleVelocity = particleVelocity.add(getVelocityFromDistance(pos, oppositeDirection, particlePos, random, 0.1D));
+				}
+
+				if (particleVelocity.length() > 0.075D && Direction.getApproximateNearest(particleVelocity) == (!reverse ? direction : oppositeDirection)) {
+					level.addAlwaysVisibleParticle(
+						new WindParticleOptions(this.windParticleLifetime, particleVelocity.scale(this.cosmeticStrength)),
+						particlePos.x, particlePos.y, particlePos.z,
+						0D, 0D, 0D
+					);
+				}
+			}
+		}
+
+		final double fanDistance = fanDistanceInBlocks + 1D;
+		final double pushIntensity = !reverse ? PUSH_INTENSITY : PUSH_INTENSITY_SUCK;
+		final Vec3 movement = Vec3.atLowerCornerOf((!reverse ? direction : oppositeDirection).getUnitVec3i());
+
+		final List<Entity> entities = level.getEntities(EntityTypeTest.forClass(Entity.class), blowingArea, EFFECT_PREDICATE);
+		for (Entity entity : entities) {
+			if (!(entity instanceof CopperFanQueuedMovementInterface queuedMovementInterface)) continue;
+			if (entity.is(TCAEntityTypeTags.COPPER_FAN_CANNOT_PUSH)) continue;
+
+			final AABB boundingBox = entity.getBoundingBox();
+			if (!blowingArea.intersects(boundingBox)) continue;
+
+			if (entity instanceof Player player) {
+				if (player.getAbilities().flying) continue;
+				if (direction == Direction.UP) {
+					final Vec3 lastImpactPos = player.currentImpulseImpactPos;
+					final Vec3 playerPos = player.position();
+					player.setIgnoreFallDamageFromCurrentImpulse(
+						true,
+						new Vec3(
+							playerPos.x(),
+							lastImpactPos != null ? Math.min(lastImpactPos.y(), playerPos.y()) : playerPos.y(),
+							playerPos.z()
+						)
+					);
+				}
+			} else if (entity instanceof AbstractArrow abstractArrow) {
+				if (abstractArrow.isInGround()) continue;
+			}
+
+			final double pushScale = !entity.is(TCAEntityTypeTags.COPPER_FAN_WEAKER_PUSH) ? 1D : 0.5D;
+			final double intensity = (fanDistance - Math.min(entity.position().distanceTo(fanStartPos), fanDistance)) / fanDistance;
+			final double fixedIntensity = reverse ? ((2D + intensity) / 3D) : intensity;
+			final double overallIntensity = fixedIntensity * pushIntensity * pushScale;
+			final Vec3 fanMovement = movement.scale(overallIntensity);
+			queuedMovementInterface.theCopperierAge$queueCopperFanMovement(fanMovement);
+			entity.needsSync = true;
+		}
+	}
+
+	public static Vec3 getParticleVelocity(Direction direction, RandomSource random, double min, double max) {
+		double difference = max - min;
+		double velocity = min + (random.nextDouble() * difference);
+		double x = direction.getStepX() * velocity;
+		double y = direction.getStepY() * velocity;
+		double z = direction.getStepZ() * velocity;
+		return new Vec3(x, y, z);
+	}
+
+	public static Vec3 getVelocityFromDistance(BlockPos pos, Direction direction, Vec3 vec3, RandomSource random, double max) {
+		return vec3.subtract(getParticlePosWithoutRandom(pos, direction, random)).scale(random.nextDouble() * max);
+	}
+
+	public static Vec3 getParticlePosWithoutRandom(BlockPos pos, Direction direction, RandomSource random) {
+		return Vec3.atLowerCornerOf(pos).add(
+			getParticleOffsetX(direction, random, false),
+			getParticleOffsetY(direction, random, false),
+			getParticleOffsetZ(direction, random, false)
+		);
+	}
+
+	public static Vec3 getParticlePos(BlockPos pos, Direction direction, RandomSource random) {
+		return Vec3.atLowerCornerOf(pos).add(
+			getParticleOffsetX(direction, random, true),
+			getParticleOffsetY(direction, random, true),
+			getParticleOffsetZ(direction, random, true)
+		);
+	}
+
+	private static double getRandomParticleOffset(RandomSource random) {
+		return random.nextDouble() / 3D * (random.nextBoolean() ? 1D : -1D);
+	}
+
+	private static double getParticleOffsetX(Direction direction, RandomSource random, boolean useRandom) {
+		return switch (direction) {
+			case UP, DOWN, SOUTH, NORTH -> 0.5D + (useRandom ? getRandomParticleOffset(random) : 0D);
+			case EAST -> 1.05D;
+			case WEST -> -0.05D;
+		};
+	}
+
+	private static double getParticleOffsetY(Direction direction, RandomSource random, boolean useRandom) {
+		return switch (direction) {
+			case DOWN -> -0.05D;
+			case UP -> 1.05D;
+			case NORTH, WEST, EAST, SOUTH -> 0.5D + (useRandom ? getRandomParticleOffset(random) : 0D);
+		};
+	}
+
+	private static double getParticleOffsetZ(Direction direction, RandomSource random, boolean useRandom) {
+		return switch (direction) {
+			case UP, DOWN, EAST, WEST -> 0.5D + (useRandom ? getRandomParticleOffset(random) : 0D);
+			case NORTH -> -0.05D;
+			case SOUTH -> 1.05D;
+		};
+	}
+
+	@Override
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+		if (!state.getValue(POWERED) || random.nextFloat() > 0.1F) return;
+		final float humStrength = Mth.lerp((float) this.cosmeticStrength, 0.5F, 1F);
+		level.playLocalSound(
+			pos,
+			TCASounds.BLOCK_COPPER_FAN_IDLE_HUM.get(),
+			SoundSource.BLOCKS,
+			humStrength * 0.75F,
+			humStrength,
+			false
+		);
+	}
+
+	@Override
+	protected BlockState rotate(BlockState state, Rotation rotation) {
+		return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+	}
+
+	@Override
+	protected BlockState mirror(BlockState state, Mirror mirror) {
+		return state.rotate(mirror.getRotation(state.getValue(FACING)));
+	}
+
+	@Override
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		builder.add(FACING, POWERED);
+	}
+}

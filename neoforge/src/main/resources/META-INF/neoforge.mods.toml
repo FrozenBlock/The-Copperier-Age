@@ -14,6 +14,9 @@ issueTrackerURL="https://github.com/FrozenBlock/TheCopperierAge/issues"
 Expends and enhances the theme of The Copper Age drop. New blocks and mechanics, many tweaks, and awesome optional retextures!
     '''
 
+[[mixins]]
+config="thecopperierage.mixins.json"
+
 [[ dependencies.thecopperierage ]]
     modId="neoforge"
     type="required"

@@ -26,7 +26,7 @@
       "net.frozenblock.thecopperierage.TheCopperierAgeFabric"
     ],
     "client": [
-      "net.frozenblock.thecopperierage.TheCopperierAgeClient"
+      "net.frozenblock.thecopperierage.TheCopperierAgeClientFabric"
     ],
     "modmenu": [
       "net.frozenblock.thecopperierage.config.gui.ModMenuIntegration"

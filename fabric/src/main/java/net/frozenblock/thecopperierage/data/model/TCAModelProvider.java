@@ -18,8 +18,6 @@
 package net.frozenblock.thecopperierage.data.model;
 
 import java.util.Optional;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.frozenblock.thecopperierage.TCAConstants;
@@ -33,6 +31,7 @@ import net.frozenblock.thecopperierage.client.renderer.item.properties.select.Ox
 import net.frozenblock.thecopperierage.client.renderer.item.properties.select.WeatherState;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCAItems;
+import net.mehvahdjukaar.candlelight.api.ClientOnly;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.MultiVariant;
@@ -59,7 +58,7 @@ import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.RailShape;
 
-@Environment(EnvType.CLIENT)
+@ClientOnly
 public final class TCAModelProvider extends FabricModelProvider {
 	// GEARBOX
 	private static final PropertyDispatch<VariantMutator> GEARBOX_ROTATION = PropertyDispatch.modify(GearboxBlock.FACING)
@@ -114,54 +113,54 @@ public final class TCAModelProvider extends FabricModelProvider {
 	@Override
 	public void generateBlockStateModels(BlockModelGenerators generator) {
 		createCopperFire(generator);
-		generator.createLantern(TCABlocks.CUPRIC_LANTERN);
-		generator.createPumpkinVariant(TCABlocks.COPPER_JACK_O_LANTERN, TextureMapping.column(Blocks.PUMPKIN));
-		generator.createPumpkinVariant(TCABlocks.REDSTONE_JACK_O_LANTERN, TextureMapping.column(Blocks.PUMPKIN));
-		generator.createCampfires(TCABlocks.COPPER_CAMPFIRE);
-		createRedstoneGrit(generator, TCABlocks.REDSTONE_GRIT);
+		generator.createLantern(TCABlocks.CUPRIC_LANTERN.get());
+		generator.createPumpkinVariant(TCABlocks.COPPER_JACK_O_LANTERN.get(), TextureMapping.column(Blocks.PUMPKIN));
+		generator.createPumpkinVariant(TCABlocks.REDSTONE_JACK_O_LANTERN.get(), TextureMapping.column(Blocks.PUMPKIN));
+		generator.createCampfires(TCABlocks.COPPER_CAMPFIRE.get());
+		createRedstoneGrit(generator, TCABlocks.REDSTONE_GRIT.get());
 
-		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.weathering().unaffected(), Blocks.COPPER_BLOCK.weathering().unaffected());
-		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed().unaffected(), Blocks.COPPER_BLOCK.weathering().unaffected());
-		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.weathering().exposed(), Blocks.COPPER_BLOCK.weathering().exposed());
-		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed().exposed(), Blocks.COPPER_BLOCK.weathering().exposed());
-		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.weathering().weathered(), Blocks.COPPER_BLOCK.weathering().weathered());
-		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed().weathered(), Blocks.COPPER_BLOCK.weathering().weathered());
-		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.weathering().oxidized(), Blocks.COPPER_BLOCK.weathering().oxidized());
-		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed().oxidized(), Blocks.COPPER_BLOCK.weathering().oxidized());
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.weathering().unaffected().get(), Blocks.COPPER_BLOCK.weathering().unaffected());
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed().unaffected().get(), Blocks.COPPER_BLOCK.weathering().unaffected());
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.weathering().exposed().get(), Blocks.COPPER_BLOCK.weathering().exposed());
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed().exposed().get(), Blocks.COPPER_BLOCK.weathering().exposed());
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.weathering().weathered().get(), Blocks.COPPER_BLOCK.weathering().weathered());
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed().weathered().get(), Blocks.COPPER_BLOCK.weathering().weathered());
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.weathering().oxidized().get(), Blocks.COPPER_BLOCK.weathering().oxidized());
+		generator.createWeightedPressurePlate(TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed().oxidized().get(), Blocks.COPPER_BLOCK.weathering().oxidized());
 
-		TCABlocks.GEARBOX.zipUnwaxedWaxed((block, waxedBlock) -> createGearbox(generator, block, waxedBlock));
-		TCABlocks.STICKY_GEARBOX.zipUnwaxedWaxed((block, waxedBlock) -> createGearbox(generator, block, waxedBlock));
-		TCABlocks.COPPER_FAN.zipUnwaxedWaxed((block, waxedBlock) -> createCopperFan(generator, block, waxedBlock));
-		TCABlocks.CHIME.zipUnwaxedWaxed((block, waxedBlock) -> createChime(generator, block, waxedBlock));
-		TCABlocks.COPPER_RAIL.zipUnwaxedWaxed((block, waxedBlock) -> createCopperRail(generator, block, waxedBlock));
-		createCrossRail(generator, TCABlocks.CROSS_RAIL);
-		createRelayorRail(generator, TCABlocks.RELAYOR_RAIL);
-		createCrate(generator, TCABlocks.CRATE);
+		TCABlocks.GEARBOX.zipUnwaxedWaxed((block, waxedBlock) -> createGearbox(generator, block.get(), waxedBlock.get()));
+		TCABlocks.STICKY_GEARBOX.zipUnwaxedWaxed((block, waxedBlock) -> createGearbox(generator, block.get(), waxedBlock.get()));
+		TCABlocks.COPPER_FAN.zipUnwaxedWaxed((block, waxedBlock) -> createCopperFan(generator, block.get(), waxedBlock.get()));
+		TCABlocks.CHIME.zipUnwaxedWaxed((block, waxedBlock) -> createChime(generator, block.get(), waxedBlock.get()));
+		TCABlocks.COPPER_RAIL.zipUnwaxedWaxed((block, waxedBlock) -> createCopperRail(generator, block.get(), waxedBlock.get()));
+		createCrossRail(generator, TCABlocks.CROSS_RAIL.get());
+		createRelayorRail(generator, TCABlocks.RELAYOR_RAIL.get());
+		createCrate(generator, TCABlocks.CRATE.get());
 		createKiln(generator);
 
-		createCopperButton(generator, TCABlocks.COPPER_BUTTON.weathering().unaffected(), TCABlocks.COPPER_BUTTON.waxed().unaffected(), Blocks.COPPER_BLOCK.weathering().unaffected());
-		createCopperButton(generator, TCABlocks.COPPER_BUTTON.weathering().exposed(), TCABlocks.COPPER_BUTTON.waxed().exposed(), Blocks.COPPER_BLOCK.weathering().exposed());
-		createCopperButton(generator, TCABlocks.COPPER_BUTTON.weathering().weathered(), TCABlocks.COPPER_BUTTON.waxed().weathered(), Blocks.COPPER_BLOCK.weathering().weathered());
-		createCopperButton(generator, TCABlocks.COPPER_BUTTON.weathering().oxidized(), TCABlocks.COPPER_BUTTON.waxed().oxidized(), Blocks.COPPER_BLOCK.weathering().oxidized());
+		createCopperButton(generator, TCABlocks.COPPER_BUTTON.weathering().unaffected().get(), TCABlocks.COPPER_BUTTON.waxed().unaffected().get(), Blocks.COPPER_BLOCK.weathering().unaffected());
+		createCopperButton(generator, TCABlocks.COPPER_BUTTON.weathering().exposed().get(), TCABlocks.COPPER_BUTTON.waxed().exposed().get(), Blocks.COPPER_BLOCK.weathering().exposed());
+		createCopperButton(generator, TCABlocks.COPPER_BUTTON.weathering().weathered().get(), TCABlocks.COPPER_BUTTON.waxed().weathered().get(), Blocks.COPPER_BLOCK.weathering().weathered());
+		createCopperButton(generator, TCABlocks.COPPER_BUTTON.weathering().oxidized().get(), TCABlocks.COPPER_BUTTON.waxed().oxidized().get(), Blocks.COPPER_BLOCK.weathering().oxidized());
 	}
 
 	@Override
 	public void generateItemModels(ItemModelGenerators generator) {
-		generateCopperHorn(generator, TCAItems.COPPER_HORN);
-		generator.generateFlatItem(TCAItems.WRENCH, ModelTemplates.FLAT_HANDHELD_ITEM);
-		generator.generateFlatItem(TCAItems.MINECART_COUPLING, ModelTemplates.FLAT_ITEM);
-		generator.generateFlatItem(TCAItems.CRATE_MINECART, ModelTemplates.FLAT_ITEM);
-		generator.generateFlatItem(TCAItems.COPPER_GOLEM_STATUE_MINECART, ModelTemplates.FLAT_ITEM);
-		generator.generateFlatItem(TCAItems.JUKEBOX_MINECART, ModelTemplates.FLAT_ITEM);
-		generator.generateFlatItem(TCAItems.DISPENSER_MINECART, ModelTemplates.FLAT_ITEM);
-		generator.generateFlatItem(TCAItems.DROPPER_MINECART, ModelTemplates.FLAT_ITEM);
+		generateCopperHorn(generator, TCAItems.COPPER_HORN.get());
+		generator.generateFlatItem(TCAItems.WRENCH.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		generator.generateFlatItem(TCAItems.MINECART_COUPLING.get(), ModelTemplates.FLAT_ITEM);
+		generator.generateFlatItem(TCAItems.CRATE_MINECART.get(), ModelTemplates.FLAT_ITEM);
+		generator.generateFlatItem(TCAItems.COPPER_GOLEM_STATUE_MINECART.get(), ModelTemplates.FLAT_ITEM);
+		generator.generateFlatItem(TCAItems.JUKEBOX_MINECART.get(), ModelTemplates.FLAT_ITEM);
+		generator.generateFlatItem(TCAItems.DISPENSER_MINECART.get(), ModelTemplates.FLAT_ITEM);
+		generator.generateFlatItem(TCAItems.DROPPER_MINECART.get(), ModelTemplates.FLAT_ITEM);
 	}
 
 	private static void createCopperFire(BlockModelGenerators generator) {
-		final MultiVariant floorModels = generator.createFloorFireModels(TCABlocks.COPPER_FIRE);
-		final MultiVariant sideModels = generator.createSideFireModels(TCABlocks.COPPER_FIRE);
+		final MultiVariant floorModels = generator.createFloorFireModels(TCABlocks.COPPER_FIRE.get());
+		final MultiVariant sideModels = generator.createSideFireModels(TCABlocks.COPPER_FIRE.get());
 		generator.blockStateOutput.accept(
-			MultiPartGenerator.multiPart(TCABlocks.COPPER_FIRE)
+			MultiPartGenerator.multiPart(TCABlocks.COPPER_FIRE.get())
 				.with(floorModels)
 				.with(sideModels)
 				.with(sideModels.with(BlockModelGenerators.Y_ROT_90))
@@ -398,28 +397,28 @@ public final class TCAModelProvider extends FabricModelProvider {
 	}
 
 	private static void createKiln(BlockModelGenerators generator) {
-		final Material furnaceTop = TextureMapping.getBlockTexture(TCABlocks.KILN, "_top");
-		final Material furnaceBottom = TextureMapping.getBlockTexture(TCABlocks.KILN, "_bottom");
-		final Material furnaceSide = TextureMapping.getBlockTexture(TCABlocks.KILN, "_side");
-		final Material furnaceFront = TextureMapping.getBlockTexture(TCABlocks.KILN, "_front");
-		final Material furnaceFrontOn = TextureMapping.getBlockTexture(TCABlocks.KILN, "_front_lit");
+		final Material furnaceTop = TextureMapping.getBlockTexture(TCABlocks.KILN.get(), "_top");
+		final Material furnaceBottom = TextureMapping.getBlockTexture(TCABlocks.KILN.get(), "_bottom");
+		final Material furnaceSide = TextureMapping.getBlockTexture(TCABlocks.KILN.get(), "_side");
+		final Material furnaceFront = TextureMapping.getBlockTexture(TCABlocks.KILN.get(), "_front");
+		final Material furnaceFrontOn = TextureMapping.getBlockTexture(TCABlocks.KILN.get(), "_front_lit");
 
 		final TextureMapping mapping = new TextureMapping()
 			.put(TextureSlot.TOP, furnaceTop)
 			.put(TextureSlot.BOTTOM, furnaceBottom)
 			.put(TextureSlot.SIDE, furnaceSide)
 			.put(TextureSlot.FRONT, furnaceFront);
-		final Identifier model = KILN_MODEL.create(TCABlocks.KILN, mapping, generator.modelOutput);
+		final Identifier model = KILN_MODEL.create(TCABlocks.KILN.get(), mapping, generator.modelOutput);
 
 		final TextureMapping litMapping = new TextureMapping()
 			.put(TextureSlot.TOP, furnaceTop)
 			.put(TextureSlot.BOTTOM, furnaceBottom)
 			.put(TextureSlot.SIDE, furnaceSide)
 			.put(TextureSlot.FRONT, furnaceFrontOn);
-		final Identifier modelOn = KILN_MODEL.createWithSuffix(TCABlocks.KILN, "_lit", litMapping, generator.modelOutput);
+		final Identifier modelOn = KILN_MODEL.createWithSuffix(TCABlocks.KILN.get(), "_lit", litMapping, generator.modelOutput);
 
 		generator.blockStateOutput.accept(
-			MultiVariantGenerator.dispatch(TCABlocks.KILN)
+			MultiVariantGenerator.dispatch(TCABlocks.KILN.get())
 				.with(
 					PropertyDispatch.initial(BlockStateProperties.LIT)
 						.select(false, BlockModelGenerators.plainVariant(model))
@@ -428,7 +427,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 				.with(KILN_ROTATION)
 		);
 
-		generator.registerSimpleItemModel(TCABlocks.KILN, model);
+		generator.registerSimpleItemModel(TCABlocks.KILN.get(), model);
 	}
 
 	private static void createCopperButton(BlockModelGenerators generator, Block block, Block waxedBlock, Block originalBlock) {

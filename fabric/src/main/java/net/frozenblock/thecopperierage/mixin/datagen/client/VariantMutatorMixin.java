@@ -17,9 +17,8 @@
 
 package net.frozenblock.thecopperierage.mixin.datagen.client;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.frozenblock.thecopperierage.data.model.TCAPackModelProvider;
+import net.mehvahdjukaar.candlelight.api.ClientOnly;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.renderer.block.dispatch.VariantMutator;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,7 +26,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Environment(EnvType.CLIENT)
+@ClientOnly
 @Mixin(VariantMutator.class)
 public interface VariantMutatorMixin {
 

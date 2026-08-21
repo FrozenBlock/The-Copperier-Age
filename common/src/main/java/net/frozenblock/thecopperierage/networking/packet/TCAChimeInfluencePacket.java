@@ -1,0 +1,59 @@
+/*
+ * Copyright 2025-2026 FrozenBlock
+ * This file is part of The Copperier Age.
+ *
+ * This program is free software; you can modify it under
+ * the terms of version 1 of the FrozenBlock Modding Oasis License
+ * as published by FrozenBlock Modding Oasis.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * FrozenBlock Modding Oasis License for more details.
+ *
+ * You should have received a copy of the FrozenBlock Modding Oasis License
+ * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
+ */
+
+package net.frozenblock.thecopperierage.networking.packet;
+
+import java.util.Optional;
+import net.frozenblock.lib.networking.api.NetworkingHelper;
+import net.frozenblock.lib.networking.api.PlayerLookup;
+import net.frozenblock.thecopperierage.TCAConstants;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
+
+public record TCAChimeInfluencePacket(BlockPos pos, Vec3 influence, double scaleEachTick, Optional<Integer> entityID) implements CustomPacketPayload {
+	public static final Type<TCAChimeInfluencePacket> PACKET_TYPE = new Type<>(TCAConstants.id("chime_influence"));
+	public static final StreamCodec<RegistryFriendlyByteBuf, TCAChimeInfluencePacket> CODEC = StreamCodec.ofMember(TCAChimeInfluencePacket::write, TCAChimeInfluencePacket::new);
+
+	public TCAChimeInfluencePacket(RegistryFriendlyByteBuf buf) {
+		this(buf.readBlockPos(), Vec3.STREAM_CODEC.decode(buf), buf.readDouble(), buf.readOptional(ByteBufCodecs.VAR_INT));
+	}
+
+	public static void sendToAll(ServerLevel level, BlockPos pos, Vec3 influence, double scaleEachTick, @Nullable Entity entity) {
+		final TCAChimeInfluencePacket packet = new TCAChimeInfluencePacket(pos, influence, scaleEachTick, entity == null ? Optional.empty() : Optional.of(entity.getId()));
+		for (ServerPlayer player : PlayerLookup.tracking(level, pos)) NetworkingHelper.sendToPlayer(player, packet);
+	}
+
+	public void write(FriendlyByteBuf buf) {
+		buf.writeBlockPos(this.pos());
+		Vec3.STREAM_CODEC.encode(buf, this.influence());
+		buf.writeDouble(this.scaleEachTick());
+		buf.writeOptional(this.entityID(), ByteBufCodecs.VAR_INT);
+	}
+
+	public Type<?> type() {
+		return PACKET_TYPE;
+	}
+}

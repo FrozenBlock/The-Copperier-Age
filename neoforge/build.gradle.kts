@@ -53,6 +53,13 @@ neoforge {
 
 neoForge {
     accessTransformers {} // Required for transitive AW to apply!
+    runs {
+        named("client") {
+            jvmArguments.add("-DMC_DEBUG_FROZENLIB_WIND_DISTURBANCES=true")
+            jvmArguments.add("-DMC_DEBUG_ENABLED=true")
+            jvmArguments.add("-DMC_DEBUG_FROZENLIB_WIND=true")
+        }
+    }
 }
 
 val githubActions: Boolean = System.getenv("GITHUB_ACTIONS") == "true"

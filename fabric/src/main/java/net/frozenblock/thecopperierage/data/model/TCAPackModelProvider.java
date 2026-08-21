@@ -19,12 +19,11 @@ package net.frozenblock.thecopperierage.data.model;
 
 import java.util.Optional;
 import java.util.function.Function;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
+import net.mehvahdjukaar.candlelight.api.ClientOnly;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import static net.minecraft.client.data.models.BlockModelGenerators.*;
 import net.minecraft.client.data.models.ItemModelGenerators;
@@ -38,7 +37,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-@Environment(EnvType.CLIENT)
+@ClientOnly
 public final class TCAPackModelProvider extends FabricModelProvider {
 	private static final ModelTemplate COPPER_CHAIN_MODEL = new ModelTemplate(
 		Optional.of(TCAConstants.id("block/template_copper_chain")),
@@ -118,7 +117,7 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 		generateCopperLantern(generator, Blocks.COPPER_LANTERN.weathering().weathered(), Blocks.COPPER_CHAIN.weathering().weathered());
 		generateCopperLantern(generator, Blocks.COPPER_LANTERN.weathering().oxidized(), Blocks.COPPER_CHAIN.weathering().oxidized());
 		Blocks.COPPER_BARS.zipUnwaxedWaxed((block, waxedBlock) -> generateCopperBars(generator, block, waxedBlock));
-		TCABlocks.COPPER_BUTTON.zipUnwaxedWaxed((block, waxedBlock) -> createCopperButtonOverrides(generator, block, waxedBlock));
+		TCABlocks.COPPER_BUTTON.zipUnwaxedWaxed((block, waxedBlock) -> createCopperButtonOverrides(generator, block.get(), waxedBlock.get()));
 	}
 
 	@Override

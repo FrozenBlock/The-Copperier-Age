@@ -1,0 +1,273 @@
+/*
+ * Copyright 2025-2026 FrozenBlock
+ * This file is part of The Copperier Age.
+ *
+ * This program is free software; you can modify it under
+ * the terms of version 1 of the FrozenBlock Modding Oasis License
+ * as published by FrozenBlock Modding Oasis.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * FrozenBlock Modding Oasis License for more details.
+ *
+ * You should have received a copy of the FrozenBlock Modding Oasis License
+ * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
+ */
+
+package net.frozenblock.thecopperierage.client.model;
+
+import com.google.common.collect.ImmutableList;
+import com.mojang.datafixers.util.Pair;
+import java.util.List;
+import java.util.function.Function;
+import net.frozenblock.thecopperierage.client.renderer.blockentity.state.ChimeRenderState;
+import net.mehvahdjukaar.candlelight.api.ClientOnly;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
+
+@ClientOnly
+public class ChimeModel extends Model<ChimeRenderState> {
+	private final boolean isChainsModel;
+	private final ModelPart support;
+	private final ModelPart chain;
+	private final ModelPart bar;
+	private final ModelPart chime1;
+	private final ModelPart chain1;
+	private final ModelPart tube1;
+	private final ModelPart chime2;
+	private final ModelPart chain2;
+	private final ModelPart tube2;
+	private final ModelPart chime3;
+	private final ModelPart chain3;
+	private final ModelPart tube3;
+	private final ModelPart chime4;
+	private final ModelPart chain4;
+	private final ModelPart tube4;
+	private final ModelPart chime5;
+	private final ModelPart chain5;
+	private final ModelPart tube5;
+	private final List<Pair<ModelPart, ModelPart>> chimes;
+	private final List<ModelPart> chains;
+	private final List<ModelPart> nonChains;
+
+	public ChimeModel(ModelPart root, Function<Identifier, RenderType> renderType, boolean isChainsModel) {
+		super(root, renderType);
+		this.isChainsModel = isChainsModel;
+		this.support = root.getChild("support");
+		this.chain = this.support.getChild("chain");
+		this.bar = this.support.getChild("bar");
+		this.chime1 = this.bar.getChild("chime1");
+		this.chain1 = this.chime1.getChild("chain");
+		this.tube1 = this.chime1.getChild("tube");
+		this.chime2 = this.bar.getChild("chime2");
+		this.chain2 = this.chime2.getChild("chain");
+		this.tube2 = this.chime2.getChild("tube");
+		this.chime3 = this.bar.getChild("chime3");
+		this.chain3 = this.chime3.getChild("chain");
+		this.tube3 = this.chime3.getChild("tube");
+		this.chime4 = this.bar.getChild("chime4");
+		this.chain4 = this.chime4.getChild("chain");
+		this.tube4 = this.chime4.getChild("tube");
+		this.chime5 = this.bar.getChild("chime5");
+		this.chain5 = this.chime5.getChild("chain");
+		this.tube5 = this.chime5.getChild("tube");
+
+		this.chimes = ImmutableList.of(
+			Pair.of(this.chime1, this.tube1),
+			Pair.of(this.chime2, this.tube2),
+			Pair.of(this.chime3, this.tube3),
+			Pair.of(this.chime4, this.tube4),
+			Pair.of(this.chime5, this.tube5)
+		);
+		this.chains = ImmutableList.of(this.chain, this.chain1, this.chain2, this.chain3, this.chain4, this.chain5);
+		this.nonChains = ImmutableList.copyOf(this.allParts().stream().filter(modelPart -> !this.chains.contains(modelPart)).toList());
+	}
+
+	public static LayerDefinition createLayerDefinition() {
+		final MeshDefinition mesh = new MeshDefinition();
+		final PartDefinition root = mesh.getRoot();
+
+		final PartDefinition support = root.addOrReplaceChild("support", CubeListBuilder.create(), PartPose.offset(0F, 8F, 0F));
+		support.addOrReplaceChild(
+			"chain",
+			CubeListBuilder.create()
+				.texOffs(1, 4)
+				.addBox(-1.5F, 1F, 0F, 3F, 3F, 0F)
+				.texOffs(1, -2)
+				.addBox(0F, 0F, -1.5F, 0F, 2F, 3F),
+			PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -0.7854F, 0F)
+		);
+
+		final PartDefinition bar = support.addOrReplaceChild(
+			"bar",
+			CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(-1F, 0F, -8F, 2F, 2F, 16),
+			PartPose.offset(0F, 4F, 0F)
+		);
+
+		final PartDefinition chime1 = bar.addOrReplaceChild("chime1", CubeListBuilder.create(), PartPose.offset(0F, 2F, -6F));
+		chime1.addOrReplaceChild(
+			"chain",
+			CubeListBuilder.create()
+				.texOffs(1, 10)
+				.addBox(-1.5F, 0F, 0F, 3F, 1F, 0F)
+				.texOffs(1, 5)
+				.addBox(0F, 0F, -1.5F, 0F, 1F, 3F),
+			PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -45F * Mth.DEG_TO_RAD, 0F)
+		);
+		chime1.addOrReplaceChild(
+			"tube",
+			CubeListBuilder.create()
+				.texOffs(32, 18)
+				.addBox(-1F, 0F, -1F, 2F, 3F, 2F),
+			PartPose.offset(0F, 1F, 0F)
+		);
+
+		final PartDefinition chime2 = bar.addOrReplaceChild("chime2", CubeListBuilder.create(), PartPose.offset(0F, 2F, -3F));
+		chime2.addOrReplaceChild(
+			"chain",
+			CubeListBuilder.create()
+				.texOffs(1, 5)
+				.addBox(0F, 0F, -1.5F, 0F, 1F, 3F)
+				.texOffs(1, 10)
+				.addBox(-1.5F, 0F, 0F, 3F, 1F, 0F),
+			PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -45F * Mth.DEG_TO_RAD, 0F)
+		);
+		chime2.addOrReplaceChild(
+			"tube",
+			CubeListBuilder.create()
+				.texOffs(24, 18)
+				.addBox(-1F, 0F, -1F, 2F, 5F, 2F),
+			PartPose.offset(0F, 1F, 0F)
+		);
+
+		final PartDefinition chime3 = bar.addOrReplaceChild("chime3", CubeListBuilder.create(), PartPose.offset(0F, 2F, 0F));
+		chime3.addOrReplaceChild(
+			"chain",
+			CubeListBuilder.create()
+				.texOffs(1, 10)
+				.addBox(-1.5F, 0F, 0F, 3F, 1F, 0F)
+				.texOffs(1, 5)
+				.addBox(0F, 0F, -1.5F, 0F, 1F, 3F),
+			PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -45F * Mth.DEG_TO_RAD, 0F)
+		);
+		chime3.addOrReplaceChild(
+			"tube",
+			CubeListBuilder.create()
+				.texOffs(16, 18)
+				.addBox(-1F, 0F, -1F, 2F, 7F, 2F),
+			PartPose.offset(0F, 1F, 0F)
+		);
+
+		final PartDefinition chime4 = bar.addOrReplaceChild("chime4", CubeListBuilder.create(), PartPose.offset(0F, 2F, 3F));
+		chime4.addOrReplaceChild(
+			"chain",
+			CubeListBuilder.create()
+				.texOffs(1, 10)
+				.addBox(-1.5F, 0F, 0F, 3F, 1F, 0F)
+				.texOffs(1, 5)
+				.addBox(0F, 0F, -1.5F, 0F, 1F, 3F),
+			PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -45F * Mth.DEG_TO_RAD, 0F)
+		);
+		chime4.addOrReplaceChild(
+			"tube",
+			CubeListBuilder.create()
+				.texOffs(8, 18)
+				.addBox(-1F, 0F, -1F, 2F, 9F, 2F),
+			PartPose.offset(0F, 1F, 0F)
+		);
+
+		final PartDefinition chime5 = bar.addOrReplaceChild("chime5", CubeListBuilder.create(), PartPose.offset(0F, 2F, 6F));
+		chime5.addOrReplaceChild(
+			"chain",
+			CubeListBuilder.create()
+				.texOffs(1, 10)
+				.addBox(-1.5F, 0F, 0F, 3F, 1F, 0F)
+				.texOffs(1, 5)
+				.addBox(0F, 0F, -1.5F, 0F, 1F, 3F),
+			PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -45F * Mth.DEG_TO_RAD, 0F)
+		);
+		chime5.addOrReplaceChild(
+			"tube",
+			CubeListBuilder.create()
+				.texOffs(0, 18)
+				.addBox(-1F, 0F, -1F, 2F, 4F, 2F),
+			PartPose.offset(0F, 1F, 0F)
+		);
+
+		return LayerDefinition.create(mesh, 48, 48);
+	}
+
+	@Override
+	public void setupAnim(ChimeRenderState renderState) {
+		super.setupAnim(renderState);
+
+		this.allParts().forEach(modelPart -> modelPart.skipDraw = true);
+		(this.isChainsModel ? this.chains : this.nonChains).forEach(modelPart -> modelPart.skipDraw = false);
+
+		if (renderState.hanging) {
+			final Pair<Float, Float> supportRot = getRotationForMovement(0F, renderState.animationProgress, renderState.relativeInfluence);
+			this.support.xRot += supportRot.getFirst();
+			this.support.zRot += supportRot.getSecond();
+
+			final Pair<Float, Float> barRot = getRotationForMovement(-1F, renderState.animationProgress, renderState.relativeInfluence);
+			this.bar.xRot += barRot.getFirst();
+			this.bar.zRot += barRot.getSecond();
+
+			this.chain.yRot -= renderState.direction.toYRot() * Mth.DEG_TO_RAD;
+		} else {
+			this.chain.skipDraw = true;
+		}
+
+		float movementOffset = 0.5F;
+		for (Pair<ModelPart, ModelPart> pair : this.getChimes()) {
+			movementOffset += 1F;
+			final ModelPart chime = pair.getFirst();
+			final ModelPart tube = pair.getSecond();
+
+			final Pair<Float, Float> chimeRotA = getRotationForMovement(movementOffset, renderState.animationProgress, renderState.relativeInfluence);
+			chime.xRot += chimeRotA.getFirst();
+			chime.zRot += chimeRotA.getSecond();
+
+			final Pair<Float, Float> chimeRotB = getRotationForMovement(movementOffset - 0.5F, renderState.animationProgress, renderState.relativeInfluence);
+			tube.xRot += chimeRotB.getFirst();
+			tube.zRot += chimeRotB.getSecond();
+		}
+	}
+
+	public List<Pair<ModelPart, ModelPart>> getChimes() {
+		return this.chimes;
+	}
+
+	public List<ModelPart> getChains() {
+		return this.chains;
+	}
+
+	private static Pair<Float, Float> getRotationForMovement(float animationOffset, float animationProgress, Vec3 movement) {
+		final float yAge = animationProgress * 0.4F;
+
+		final float zMovement =Mth.clamp((float) movement.z + (Mth.cos(yAge) * (float) movement.y * 0.5F), -0.5F, 0.5F);
+		final float xRotOffset = Math.min(1F, Mth.abs(zMovement));
+		float xRot = (Mth.cos(animationProgress + zMovement - (animationOffset + 2F)) * 0.75F) + (xRotOffset * 0.75F);
+
+		final float xMovement = Mth.clamp((float) movement.x + (Mth.sin(yAge) * (float) movement.y * 0.5F), -0.5F, 0.5F);
+		final float zRotOffset = Math.min(1F, Mth.abs(xMovement));
+		float zRot = (Mth.cos(animationProgress + xMovement - animationOffset) * 0.75F) + (zRotOffset * 0.75F);
+
+		xRot *= (zMovement * 0.75F) + 0.01F;
+		zRot *= (xMovement * 0.75F) + 0.01F;
+
+		return Pair.of(xRot, zRot);
+	}
+}

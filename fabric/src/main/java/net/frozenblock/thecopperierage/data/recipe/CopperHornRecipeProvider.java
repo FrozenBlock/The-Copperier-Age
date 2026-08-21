@@ -78,7 +78,7 @@ public final class CopperHornRecipeProvider {
 			provider.items,
 			RecipeCategory.TOOLS,
 			new ItemStackTemplate(
-				TCAItems.COPPER_HORN,
+				TCAItems.COPPER_HORN.get(),
 				DataComponentPatch.builder().set(
 					DataComponents.INSTRUMENT,
 					new InstrumentComponent(registries.lookupOrThrow(Registries.INSTRUMENT).getOrThrow(instrument))

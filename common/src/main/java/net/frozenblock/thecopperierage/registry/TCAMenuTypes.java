@@ -1,0 +1,47 @@
+/*
+ * Copyright 2025-2026 FrozenBlock
+ * This file is part of The Copperier Age.
+ *
+ * This program is free software; you can modify it under
+ * the terms of version 1 of the FrozenBlock Modding Oasis License
+ * as published by FrozenBlock Modding Oasis.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * FrozenBlock Modding Oasis License for more details.
+ *
+ * You should have received a copy of the FrozenBlock Modding Oasis License
+ * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
+ */
+
+package net.frozenblock.thecopperierage.registry;
+
+import net.frozenblock.lib.platform.api.registry.DeferredRegister;
+import net.frozenblock.lib.platform.api.registry.DeferredHolder;
+import net.frozenblock.thecopperierage.TCAConstants;
+import net.frozenblock.thecopperierage.block.entity.inventory.CrateMenu;
+import net.frozenblock.thecopperierage.block.entity.inventory.KilnMenu;
+import net.frozenblock.thecopperierage.entity.inventory.FurnaceMinecartMenu;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+
+public final class TCAMenuTypes {
+	private static final DeferredRegister<MenuType<?>> REGISTER = DeferredRegister.create(Registries.MENU, TCAConstants.MOD_ID);
+
+	public static final DeferredHolder<MenuType<?>, MenuType<CrateMenu>> CRATE = register("crate", CrateMenu::create);
+	public static final DeferredHolder<MenuType<?>, MenuType<KilnMenu>> KILN = register("kiln", KilnMenu::new);
+	public static final DeferredHolder<MenuType<?>, MenuType<FurnaceMinecartMenu>> FURNACE_MINECART = register("furnace_minecart", FurnaceMinecartMenu::create);
+
+	static {
+		REGISTER.register();
+	}
+
+	public static void init() {}
+
+	private static <T extends AbstractContainerMenu> DeferredHolder<MenuType<?>, MenuType<T>> register(String name, MenuType.MenuSupplier<T> constructor) {
+		return REGISTER.register(name, () -> new MenuType<>(constructor, FeatureFlags.VANILLA_SET));
+	}
+}

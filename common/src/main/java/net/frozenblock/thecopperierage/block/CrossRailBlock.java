@@ -18,6 +18,7 @@
 package net.frozenblock.thecopperierage.block;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -31,7 +32,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 

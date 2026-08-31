@@ -18,8 +18,8 @@
 package net.frozenblock.thecopperierage.registry;
 
 import java.util.function.Supplier;
-import net.frozenblock.lib.platform.api.registry.DeferredRegister;
 import net.frozenblock.lib.platform.api.registry.DeferredHolder;
+import net.frozenblock.lib.platform.api.registry.DeferredRegister;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.entity.ai.coppergolem.CopperGolemSpecificSensor;
 import net.minecraft.core.registries.Registries;

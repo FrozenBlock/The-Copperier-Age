@@ -30,11 +30,11 @@ import net.frozenblock.thecopperierage.block.CopperPressurePlateBlock;
 import net.frozenblock.thecopperierage.block.CopperRailBlock;
 import net.frozenblock.thecopperierage.block.CrateBlock;
 import net.frozenblock.thecopperierage.block.CrossRailBlock;
-import net.frozenblock.thecopperierage.block.RelayorRailBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
 import net.frozenblock.thecopperierage.block.KilnBlock;
 import net.frozenblock.thecopperierage.block.RedstoneGritBlock;
 import net.frozenblock.thecopperierage.block.RedstonePumpkinBlock;
+import net.frozenblock.thecopperierage.block.RelayorRailBlock;
 import net.frozenblock.thecopperierage.block.StickyGearboxBlock;
 import net.frozenblock.thecopperierage.block.WeatheringChimeBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperButtonBlock;
@@ -292,6 +292,4 @@ public final class TCABlocks {
 	public static WeatheringCopperCollection<Block> asBlocks(WeatheringCopperCollection<DeferredBlock<? extends Block>> collection) {
 		return collection.map(DeferredBlock::get);
 	}
-
-
 }

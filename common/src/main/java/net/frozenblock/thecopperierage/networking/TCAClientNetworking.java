@@ -18,7 +18,6 @@
 package net.frozenblock.thecopperierage.networking;
 
 import net.frozenblock.lib.networking.api.ClientNetworkingHelper;
-import net.frozenblock.lib.networking.api.NetworkingHelper;
 import net.frozenblock.thecopperierage.block.CopperFanBlock;
 import net.frozenblock.thecopperierage.block.entity.ChimeBlockEntity;
 import net.frozenblock.thecopperierage.networking.packet.TCAChimeInfluencePacket;

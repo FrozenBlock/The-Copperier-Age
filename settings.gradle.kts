@@ -1,5 +1,5 @@
-import com.possible_triangle.gradle.settings.localRepository
 import com.possible_triangle.gradle.settings.ResolutionStrategy
+import com.possible_triangle.gradle.settings.localRepository
 
 pluginManagement {
 	repositories {

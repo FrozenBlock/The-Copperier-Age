@@ -20,6 +20,7 @@ package net.frozenblock.thecopperierage.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.dispenser.BlockSource;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecartContainer;
@@ -32,7 +33,6 @@ import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.entity.DispenserBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.server.level.ServerLevel;
 
 public abstract class AbstractMinecartDispenser extends AbstractMinecartContainer {
 	private static final int CONTAINER_SIZE = 9;

@@ -1,19 +1,16 @@
 package net.frozenblock.thecopperierage.registry;
 
-import net.frozenblock.lib.platform.api.registry.DeferredRegister;
 import net.frozenblock.lib.platform.api.registry.DeferredHolder;
+import net.frozenblock.lib.platform.api.registry.DeferredRegister;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.entity.MinecartCopperGolemStatue;
 import net.frozenblock.thecopperierage.entity.MinecartCrate;
-import net.frozenblock.thecopperierage.references.TCAEntityTypeIds;
 import net.frozenblock.thecopperierage.entity.MinecartDispenser;
 import net.frozenblock.thecopperierage.entity.MinecartDispenserDropper;
 import net.frozenblock.thecopperierage.entity.MinecartJukebox;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.entity.Entity;
+import net.frozenblock.thecopperierage.references.TCAEntityTypeIds;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import java.util.function.UnaryOperator;
 
 public final class TCAEntityTypes {
 	private static final DeferredRegister.Entities REGISTER = DeferredRegister.createEntities(TCAConstants.MOD_ID);

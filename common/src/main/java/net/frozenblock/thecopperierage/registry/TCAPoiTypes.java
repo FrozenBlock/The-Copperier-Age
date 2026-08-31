@@ -17,12 +17,12 @@
 
 package net.frozenblock.thecopperierage.registry;
 
+import java.util.function.Supplier;
 import net.frozenblock.lib.platform.RegistryHelper;
 import net.frozenblock.lib.platform.api.registry.DeferredHolder;
 import net.frozenblock.lib.platform.api.registry.DeferredRegister;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
-import java.util.function.Supplier;
 
 public final class TCAPoiTypes {
 	private static final DeferredRegister.PoiTypes REGISTER = RegistryHelper.createDeferredPoiTypesRegister(TCAConstants.MOD_ID);

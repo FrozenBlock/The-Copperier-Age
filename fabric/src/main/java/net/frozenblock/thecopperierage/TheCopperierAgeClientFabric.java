@@ -18,13 +18,6 @@
 package net.frozenblock.thecopperierage;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.frozenblock.lib.menu.api.SplashTextEvents;
-import net.frozenblock.thecopperierage.client.TCAModelLayers;
-import net.frozenblock.thecopperierage.client.TCAParticleEngine;
-import net.frozenblock.thecopperierage.client.coupling.MinecartCouplingClientHandler;
-import net.frozenblock.thecopperierage.client.sound.JukeboxMinecartSoundHandler;
-import net.frozenblock.thecopperierage.networking.TCAClientNetworking;
-import net.frozenblock.thecopperierage.registry.TCAMenuScreens;
 import net.mehvahdjukaar.candlelight.api.ClientOnly;
 
 @ClientOnly

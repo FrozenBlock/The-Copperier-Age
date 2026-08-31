@@ -17,8 +17,8 @@
 
 package net.frozenblock.thecopperierage.registry;
 
-import net.frozenblock.lib.platform.api.registry.DeferredRegister;
 import net.frozenblock.lib.platform.api.registry.DeferredHolder;
+import net.frozenblock.lib.platform.api.registry.DeferredRegister;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.entity.inventory.CrateMenu;
 import net.frozenblock.thecopperierage.block.entity.inventory.KilnMenu;

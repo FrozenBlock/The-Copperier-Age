@@ -22,21 +22,21 @@ import net.frozenblock.thecopperierage.block.CrateBlock;
 import net.frozenblock.thecopperierage.block.entity.CrateBlockEntity;
 import net.frozenblock.thecopperierage.block.entity.inventory.CrateMenu;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
-import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.frozenblock.thecopperierage.registry.TCAEntityTypes;
 import net.frozenblock.thecopperierage.registry.TCAItems;
+import net.frozenblock.thecopperierage.registry.TCASounds;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ContainerUser;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecartContainer;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class MinecartCrate extends AbstractMinecartContainer {

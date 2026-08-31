@@ -27,9 +27,9 @@ import net.frozenblock.thecopperierage.client.coupling.MinecartCouplingClientHan
 import net.frozenblock.thecopperierage.entity.impl.CouplingToEntityInterface;
 import net.mehvahdjukaar.candlelight.api.ClientOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.state.MinecartRenderState;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;

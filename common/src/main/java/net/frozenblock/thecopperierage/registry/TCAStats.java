@@ -44,4 +44,6 @@ public final class TCAStats {
 		REGISTER.register(name, () -> identifier, stat -> Stats.CUSTOM.get(stat, formatter));
 		return identifier;
 	}
+
+	private TCAStats() {}
 }

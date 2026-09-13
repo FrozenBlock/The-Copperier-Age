@@ -31,4 +31,6 @@ public final class TCAMenuScreens {
 		MenuScreens.register(TCAMenuTypes.KILN.get(), KilnScreen::new);
 		MenuScreens.register(TCAMenuTypes.FURNACE_MINECART.get(), FurnaceMinecartScreen::new);
 	}
+
+	private TCAMenuScreens() {}
 }

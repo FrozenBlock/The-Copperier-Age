@@ -17,7 +17,6 @@
 
 package net.frozenblock.thecopperierage.data.model;
 
-import java.util.Optional;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.frozenblock.thecopperierage.TCAConstants;
@@ -27,8 +26,6 @@ import net.frozenblock.thecopperierage.block.GearboxBlock;
 import net.frozenblock.thecopperierage.block.RedstoneGritBlock;
 import net.frozenblock.thecopperierage.block.RelayorRailBlock;
 import net.frozenblock.thecopperierage.block.StickyGearboxBlock;
-import net.frozenblock.thecopperierage.client.renderer.item.properties.select.OxidizedItemsEnabled;
-import net.frozenblock.thecopperierage.client.renderer.item.properties.select.WeatherState;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.mehvahdjukaar.candlelight.api.ClientOnly;
@@ -45,66 +42,18 @@ import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
-import net.minecraft.client.renderer.block.dispatch.VariantMutator;
 import static net.minecraft.client.renderer.item.ItemModel.Unbaked;
 import net.minecraft.client.resources.model.sprite.Material;
-import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.RailShape;
 
 @ClientOnly
 public final class TCAModelProvider extends FabricModelProvider {
-	// GEARBOX
-	private static final PropertyDispatch<VariantMutator> GEARBOX_ROTATION = PropertyDispatch.modify(GearboxBlock.FACING)
-		.select(Direction.DOWN, BlockModelGenerators.X_ROT_90)
-		.select(Direction.UP, BlockModelGenerators.X_ROT_270.then(BlockModelGenerators.Y_ROT_180))
-		.select(Direction.NORTH, BlockModelGenerators.NOP)
-		.select(Direction.SOUTH, BlockModelGenerators.Y_ROT_180)
-		.select(Direction.WEST, BlockModelGenerators.Y_ROT_270)
-		.select(Direction.EAST, BlockModelGenerators.Y_ROT_90);
-	private static final ModelTemplate GEARBOX_MODEL = new ModelTemplate(
-		Optional.of(TCAConstants.id("block/template_gearbox")),
-		Optional.empty(),
-		TextureSlot.SIDE, TextureSlot.FRONT
-	);
-	private static final ModelTemplate GEARBOX_COUNTER_CLOCKWISE_MODEL = new ModelTemplate(
-		Optional.of(TCAConstants.id("block/template_gearbox_on")),
-		Optional.of("_counter_clockwise"),
-		TextureSlot.SIDE, TextureSlot.FRONT
-	);
-	private static final ModelTemplate GEARBOX_CLOCKWISE_MODEL = new ModelTemplate(
-		Optional.of(TCAConstants.id("block/template_gearbox_on")),
-		Optional.of("_clockwise"),
-		TextureSlot.SIDE, TextureSlot.FRONT
-	);
-	// COPPER FAN
-	private static final ModelTemplate COPPER_FAN_MODEL = new ModelTemplate(
-		Optional.of(TCAConstants.id("block/template_copper_fan")),
-		Optional.empty(),
-		TextureSlot.SIDE, TextureSlot.BOTTOM
-	);
-	private static final ModelTemplate COPPER_FAN_POWERED_MODEL = new ModelTemplate(
-		Optional.of(TCAConstants.id("block/template_copper_fan")),
-		Optional.of("_powered"),
-		TextureSlot.FRONT, TextureSlot.SIDE, TextureSlot.BOTTOM
-	);
-	// KILN
-	private static final ModelTemplate KILN_MODEL = new ModelTemplate(
-		Optional.of(Identifier.withDefaultNamespace("block/orientable_with_bottom")),
-		Optional.empty(),
-		TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE, TextureSlot.FRONT
-	);
-	private static final PropertyDispatch<VariantMutator> KILN_ROTATION = PropertyDispatch.modify(BlockStateProperties.HORIZONTAL_FACING)
-		.select(Direction.EAST, BlockModelGenerators.Y_ROT_90)
-		.select(Direction.SOUTH, BlockModelGenerators.Y_ROT_180)
-		.select(Direction.WEST, BlockModelGenerators.Y_ROT_270)
-		.select(Direction.NORTH, BlockModelGenerators.NOP);
 
 	public TCAModelProvider(FabricPackOutput output) {
 		super(output);
@@ -205,17 +154,17 @@ public final class TCAModelProvider extends FabricModelProvider {
 		final TextureMapping mapping = new TextureMapping()
 			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(nonStickyBlock, "_side"))
 			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(block, "_top"));
-		final MultiVariant model = BlockModelGenerators.plainVariant(GEARBOX_MODEL.create(block, mapping, generator.modelOutput));
+		final MultiVariant model = BlockModelGenerators.plainVariant(TCAModelHelper.GEARBOX_MODEL.create(block, mapping, generator.modelOutput));
 
 		final TextureMapping counterMapping = new TextureMapping()
 			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(nonStickyBlock, "_side_counter_clockwise"))
 			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(block, "_top_counter_clockwise"));
-		final MultiVariant counterModel = BlockModelGenerators.plainVariant(GEARBOX_COUNTER_CLOCKWISE_MODEL.create(block, counterMapping, generator.modelOutput));
+		final MultiVariant counterModel = BlockModelGenerators.plainVariant(TCAModelHelper.GEARBOX_COUNTER_CLOCKWISE_MODEL.create(block, counterMapping, generator.modelOutput));
 
 		final TextureMapping clockwiseMapping = new TextureMapping()
 			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(nonStickyBlock, "_side_clockwise"))
 			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(block, "_top_clockwise"));
-		final MultiVariant clockwiseModel = BlockModelGenerators.plainVariant(GEARBOX_CLOCKWISE_MODEL.create(block, clockwiseMapping, generator.modelOutput));
+		final MultiVariant clockwiseModel = BlockModelGenerators.plainVariant(TCAModelHelper.GEARBOX_CLOCKWISE_MODEL.create(block, clockwiseMapping, generator.modelOutput));
 
 		generator.itemModelOutput.copy(block.asItem(), waxedBlock.asItem());
 
@@ -245,7 +194,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 						.select(1, counterModel)
 						.select(0, model)
 				)
-				.with(GEARBOX_ROTATION)
+				.with(TCAModelHelper.GEARBOX_ROTATION)
 		);
 	}
 
@@ -345,8 +294,8 @@ public final class TCAModelProvider extends FabricModelProvider {
 			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"))
 			.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_bottom"));
 
-		final MultiVariant model = BlockModelGenerators.plainVariant(COPPER_FAN_MODEL.create(block, mapping, generator.modelOutput));
-		final MultiVariant poweredModel = BlockModelGenerators.plainVariant(COPPER_FAN_POWERED_MODEL.create(block, poweredMapping, generator.modelOutput));
+		final MultiVariant model = BlockModelGenerators.plainVariant(TCAModelHelper.COPPER_FAN_MODEL.create(block, mapping, generator.modelOutput));
+		final MultiVariant poweredModel = BlockModelGenerators.plainVariant(TCAModelHelper.COPPER_FAN_POWERED_MODEL.create(block, poweredMapping, generator.modelOutput));
 
 		generator.itemModelOutput.copy(block.asItem(), waxedBlock.asItem());
 
@@ -408,14 +357,14 @@ public final class TCAModelProvider extends FabricModelProvider {
 			.put(TextureSlot.BOTTOM, furnaceBottom)
 			.put(TextureSlot.SIDE, furnaceSide)
 			.put(TextureSlot.FRONT, furnaceFront);
-		final Identifier model = KILN_MODEL.create(TCABlocks.KILN.get(), mapping, generator.modelOutput);
+		final Identifier model = TCAModelHelper.KILN_MODEL.create(TCABlocks.KILN.get(), mapping, generator.modelOutput);
 
 		final TextureMapping litMapping = new TextureMapping()
 			.put(TextureSlot.TOP, furnaceTop)
 			.put(TextureSlot.BOTTOM, furnaceBottom)
 			.put(TextureSlot.SIDE, furnaceSide)
 			.put(TextureSlot.FRONT, furnaceFrontOn);
-		final Identifier modelOn = KILN_MODEL.createWithSuffix(TCABlocks.KILN.get(), "_lit", litMapping, generator.modelOutput);
+		final Identifier modelOn = TCAModelHelper.KILN_MODEL.createWithSuffix(TCABlocks.KILN.get(), "_lit", litMapping, generator.modelOutput);
 
 		generator.blockStateOutput.accept(
 			MultiVariantGenerator.dispatch(TCABlocks.KILN.get())
@@ -424,7 +373,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 						.select(false, BlockModelGenerators.plainVariant(model))
 						.select(true, BlockModelGenerators.plainVariant(modelOn))
 				)
-				.with(KILN_ROTATION)
+				.with(TCAModelHelper.KILN_ROTATION)
 		);
 
 		generator.registerSimpleItemModel(TCABlocks.KILN.get(), model);
@@ -458,22 +407,5 @@ public final class TCAModelProvider extends FabricModelProvider {
 		final Unbaked model = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item));
 		final Unbaked tooting = ItemModelUtils.plainModel(TCAConstants.id("item/copper_horn_tooting"));
 		generator.generateBooleanDispatch(item, ItemModelUtils.isUsingItem(), tooting, model);
-	}
-
-	public static Unbaked createOxidizableDispatch(Unbaked unaffected, Unbaked exposed, Unbaked weathered, Unbaked oxidized) {
-		return ItemModelUtils.select(
-			OxidizedItemsEnabled.INSTANCE,
-			unaffected,
-			ItemModelUtils.when(
-				true,
-				ItemModelUtils.select(
-					WeatherState.INSTANCE,
-					unaffected,
-					ItemModelUtils.when(WeatheringCopper.WeatherState.EXPOSED, exposed),
-					ItemModelUtils.when(WeatheringCopper.WeatherState.WEATHERED, weathered),
-					ItemModelUtils.when(WeatheringCopper.WeatherState.OXIDIZED, oxidized)
-				)
-			)
-		);
 	}
 }

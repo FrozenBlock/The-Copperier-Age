@@ -3,6 +3,7 @@ package net.frozenblock.thecopperierage.registry;
 import net.frozenblock.lib.platform.api.registry.DeferredItem;
 import net.frozenblock.lib.platform.api.registry.DeferredRegister;
 import net.frozenblock.thecopperierage.TCAConstants;
+import net.frozenblock.thecopperierage.TCAFeatureFlags;
 import net.frozenblock.thecopperierage.item.CopperHornItem;
 import net.frozenblock.thecopperierage.item.WrenchItem;
 import net.frozenblock.thecopperierage.references.TCABlockItemIds;
@@ -16,7 +17,7 @@ import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.block.WeatheringCopperCollection;
 
 public final class TCAItems {
-	private static final DeferredRegister.Items REGISTER = DeferredRegister.createItems(TCAConstants.MOD_ID);
+	private static final DeferredRegister.Items REGISTER = DeferredRegister.createItems(TCAConstants.MOD_ID).requiredFeatures(TCAFeatureFlags.FEATURE_FLAG);
 
 	// BLOCK ITEMS
 	public static final DeferredItem<BlockItem> COPPER_CAMPFIRE = REGISTER.registerSimpleBlockItem(TCABlockItemIds.COPPER_CAMPFIRE, TCABlocks.COPPER_CAMPFIRE);
@@ -95,4 +96,6 @@ public final class TCAItems {
 	}
 
 	public static void init() {}
+
+	private TCAItems() {}
 }

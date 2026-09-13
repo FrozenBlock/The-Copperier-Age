@@ -63,4 +63,6 @@ public final class TCASoundPredicates {
 			}
 		});
 	}
+
+	private TCASoundPredicates() {}
 }

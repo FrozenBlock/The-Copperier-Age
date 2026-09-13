@@ -31,6 +31,7 @@ import net.frozenblock.thecopperierage.data.tag.TCAEntityTypeTagsProvider;
 import net.frozenblock.thecopperierage.data.tag.TCAInstrumentTagsProvider;
 import net.frozenblock.thecopperierage.data.tag.TCAItemTagsProvider;
 import net.frozenblock.thecopperierage.data.worldgen.structure.TCATrialChambersTemplatePools;
+import net.frozenblock.thecopperierage.registry.TCAConfigPredicates;
 import net.frozenblock.thecopperierage.registry.TCAFireTypes;
 import net.frozenblock.thecopperierage.registry.TCAInstruments;
 import net.minecraft.core.RegistrySetBuilder;
@@ -67,6 +68,7 @@ public final class TCADataGenerator implements DataGeneratorEntrypoint {
 
 		registryBuilder.add(Registries.INSTRUMENT, TCAInstruments::bootstrap);
 		registryBuilder.add(Registries.TEMPLATE_POOL, TCATrialChambersTemplatePools::bootstrapTemplatePool);
+		registryBuilder.add(FrozenLibRegistries.CONFIG_PREDICATE_PROVIDER, TCAConfigPredicates::bootstrap);
 		registryBuilder.add(FrozenLibRegistries.FIRE_TYPE, TCAFireTypes::bootstrap);
 	}
 

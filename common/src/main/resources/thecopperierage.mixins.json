@@ -58,6 +58,7 @@
     "client.minecart.coupling.AbstractMinecartRendererMixin",
     "client.oxidized_armor.EquipmentLayerRendererMixin",
     "client.oxidized_items.SelectItemModelPropertiesMixin",
+    "client.oxidized_items.model.BlockModelWrapperUnbakedMixin",
     "client.slot_overlay.GuiGraphicsExtractorMixin",
     "entity.minecart.smoothing.AbstractMinecartMixin"
   ],

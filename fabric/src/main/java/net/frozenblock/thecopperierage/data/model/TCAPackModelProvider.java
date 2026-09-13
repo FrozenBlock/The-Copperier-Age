@@ -117,12 +117,14 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 		generateCopperLantern(generator, Blocks.COPPER_LANTERN.weathering().weathered(), Blocks.COPPER_CHAIN.weathering().weathered());
 		generateCopperLantern(generator, Blocks.COPPER_LANTERN.weathering().oxidized(), Blocks.COPPER_CHAIN.weathering().oxidized());
 		Blocks.COPPER_BARS.zipUnwaxedWaxed((block, waxedBlock) -> generateCopperBars(generator, block, waxedBlock));
+
+		GENERATING_COPPER_BUTTON = true;
 		TCABlocks.COPPER_BUTTON.zipUnwaxedWaxed((block, waxedBlock) -> createCopperButtonOverrides(generator, block.get(), waxedBlock.get()));
+		GENERATING_COPPER_BUTTON = false;
 	}
 
 	@Override
-	public void generateItemModels(ItemModelGenerators generator) {
-	}
+	public void generateItemModels(ItemModelGenerators generator) {}
 
 	private static void generateCopperChain(BlockModelGenerators generator, Block chain) {
 		COPPER_CHAIN_PROVIDER.create(chain, generator.modelOutput);
@@ -198,9 +200,6 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 	}
 
 	private static void createCopperButtonOverrides(BlockModelGenerators generator, Block block, Block waxedBlock) {
-		GENERATING_COPPER_BUTTON = true;
 		TCAModelProvider.createCopperButton(generator, block, waxedBlock, block, COPPER_BUTTON_MODEL, COPPER_BUTTON_PRESSED_MODEL, COPPER_BUTTON_INVENTORY_MODEL);
-		GENERATING_COPPER_BUTTON = false;
 	}
-
 }

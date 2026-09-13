@@ -20,11 +20,7 @@
       "r_difference": -0.15,
       "smoke_type": "campfire_signal"
     },
-    "campfire_smoke_config_predicate": {
-      "type": "minecraft:equal_to",
-      "entry": "thecopperierage:main/copperParticles",
-      "target": true
-    },
+    "campfire_smoke_config_predicate": "thecopperierage:copper_fire_particles",
     "large_smoke_particle": {
       "type": "frozenlib:large_smoke_colored",
       "b_difference": 0.0,
@@ -35,11 +31,7 @@
     "lava_particle": {
       "type": "thecopperierage:copper_lava"
     },
-    "smoke_config_predicate": {
-      "type": "minecraft:equal_to",
-      "entry": "thecopperierage:main/copperParticles",
-      "target": true
-    },
+    "smoke_config_predicate": "thecopperierage:copper_fire_particles",
     "smoke_particle": {
       "type": "frozenlib:smoke_colored",
       "b_difference": 0.0,

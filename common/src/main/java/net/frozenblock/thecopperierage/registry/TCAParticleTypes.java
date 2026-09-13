@@ -17,18 +17,14 @@
 
 package net.frozenblock.thecopperierage.registry;
 
-import net.frozenblock.lib.platform.api.registry.DeferredHolder;
 import net.frozenblock.lib.platform.api.registry.DeferredRegister;
+import net.frozenblock.lib.platform.api.registry.DeferredSimpleParticleType;
 import net.frozenblock.thecopperierage.TCAConstants;
-import net.minecraft.core.particles.ParticleType;
-import net.minecraft.core.particles.SimpleParticleType;
 
 public final class TCAParticleTypes {
-	private static final DeferredRegister.ParticleTypes REGISTER = DeferredRegister.createParticleTypes(
-		TCAConstants.MOD_ID
-	);
+	private static final DeferredRegister.ParticleTypes REGISTER = DeferredRegister.createParticleTypes(TCAConstants.MOD_ID);
 
-	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> COPPER_LAVA = register("copper_lava");
+	public static final DeferredSimpleParticleType COPPER_LAVA = register("copper_lava");
 
 	static {
 		REGISTER.register();
@@ -36,11 +32,13 @@ public final class TCAParticleTypes {
 
 	public static void init() {}
 
-	private static DeferredHolder<ParticleType<?>, SimpleParticleType> register(String name, boolean alwaysShow) {
+	private static DeferredSimpleParticleType register(String name, boolean alwaysShow) {
 		return REGISTER.register(name, alwaysShow);
 	}
 
-	private static DeferredHolder<ParticleType<?>, SimpleParticleType> register(String name) {
+	private static DeferredSimpleParticleType register(String name) {
 		return register(name, false);
 	}
+
+	private TCAParticleTypes() {}
 }

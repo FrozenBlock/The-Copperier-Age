@@ -61,9 +61,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 
 public final class TCABlocks {
-	private static final DeferredRegister.Blocks REGISTER = DeferredRegister.createBlocks(
-		TCAConstants.MOD_ID
-	);
+	private static final DeferredRegister.Blocks REGISTER = DeferredRegister.createBlocks(TCAConstants.MOD_ID).requiredFeatures(TCAFeatureFlags.FEATURE_FLAG);
 
 	public static final DeferredBlock<Block> COPPER_FIRE = REGISTER.registerBlock(TCABlockIds.COPPER_FIRE,
 		CopperFireBlock::new,

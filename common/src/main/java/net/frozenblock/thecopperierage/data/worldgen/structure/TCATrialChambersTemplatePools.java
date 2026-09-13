@@ -32,7 +32,7 @@ import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 
-public class TCATrialChambersTemplatePools {
+public final class TCATrialChambersTemplatePools {
 
 	public static void bootstrapTemplatePool(BootstrapContext<StructureTemplatePool> registries) {
 		final HolderGetter<StructureTemplatePool> pools = registries.lookup(Registries.TEMPLATE_POOL);
@@ -106,4 +106,6 @@ public class TCATrialChambersTemplatePools {
 	public static void register(BootstrapContext<StructureTemplatePool> pool, String name, StructureTemplatePool templatePool) {
 		pool.register(Pools.parseKey(name), templatePool);
 	}
+
+	private TCATrialChambersTemplatePools() {}
 }

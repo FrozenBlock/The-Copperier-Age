@@ -36,7 +36,8 @@
     ]
   },
   "mixins": [
-    "thecopperierage.mixins.json"
+    "thecopperierage.mixins.json",
+    "thecopperierage.fabric.mixins.json"
   ],
   "accessWidener": "thecopperierage.classtweaker",
   "depends": {

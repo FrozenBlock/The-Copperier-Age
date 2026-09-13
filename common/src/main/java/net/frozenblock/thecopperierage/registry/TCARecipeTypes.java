@@ -51,4 +51,6 @@ public final class TCARecipeTypes {
 	}
 
 	public static void init() {}
+
+	private TCARecipeTypes() {}
 }

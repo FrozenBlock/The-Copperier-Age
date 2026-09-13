@@ -6,7 +6,6 @@
   "mixins": [
   ],
   "client": [
-    "client.oxidized_items.auto_models.BlockModelWrapperUnbakedMixin",
     "datagen.client.VariantMutatorMixin"
   ],
   "injectors": {

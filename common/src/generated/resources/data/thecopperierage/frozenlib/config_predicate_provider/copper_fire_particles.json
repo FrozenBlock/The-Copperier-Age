@@ -1,0 +1,5 @@
+{
+  "type": "minecraft:equal_to",
+  "entry": "thecopperierage:main/copperParticles",
+  "target": true
+}

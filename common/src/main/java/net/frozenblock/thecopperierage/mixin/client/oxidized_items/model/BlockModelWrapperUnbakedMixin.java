@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.mixin.client.oxidized_items.auto_models;
+package net.frozenblock.thecopperierage.mixin.client.oxidized_items.model;
 
 import com.google.common.collect.ImmutableMap;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
@@ -28,7 +28,7 @@ import java.util.Map;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.client.renderer.item.FakeUnbakedItemModel;
 import net.frozenblock.thecopperierage.client.resources.model.BlockModelOxidization;
-import net.frozenblock.thecopperierage.data.model.TCAModelProvider;
+import net.frozenblock.thecopperierage.data.model.TCAModelHelper;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
 import net.mehvahdjukaar.candlelight.api.ClientOnly;
 import net.minecraft.client.renderer.block.dispatch.ModelState;
@@ -100,7 +100,7 @@ public abstract class BlockModelWrapperUnbakedMixin {
 		this.theCopperierAge$oxidationStage = 0;
 		this.theCopperierAge$material = null;
 
-		return TCAModelProvider.createOxidizableDispatch(
+		return TCAModelHelper.createOxidizableDispatch(
 			new FakeUnbakedItemModel(original),
 			oxidizingModels[0],
 			oxidizingModels[1],

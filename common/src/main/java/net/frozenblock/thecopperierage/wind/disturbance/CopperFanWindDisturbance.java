@@ -87,6 +87,6 @@ public class CopperFanWindDisturbance extends BlockStateWindDisturbance {
 
 	@Override
 	public WindDisturbanceType<?> type() {
-		return this.reverse ? TCAWindDisturbances.COPPER_FAN_WIND_DISTURBANCE_REVERSE : TCAWindDisturbances.COPPER_FAN_WIND_DISTURBANCE;
+		return (this.reverse ? TCAWindDisturbances.COPPER_FAN_WIND_DISTURBANCE_REVERSE : TCAWindDisturbances.COPPER_FAN_WIND_DISTURBANCE).get();
 	}
 }

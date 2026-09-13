@@ -24,7 +24,7 @@ import net.frozenblock.lib.config.v2.entry.EntryType;
 import net.frozenblock.lib.config.v2.registry.ID;
 import net.frozenblock.thecopperierage.TCAConstants;
 
-public class TCAConfig {
+public final class TCAConfig {
 	public static final ConfigData<?> CONFIG = ConfigData.createAndRegister(ID.of(TCAConstants.id("main")), ConfigSettings.JSON5);
 
 	public static final ConfigEntry<Boolean> COPPER_FIRE_ENABLED = CONFIG.entry("copperFireEnabled", EntryType.BOOL, true);
@@ -45,4 +45,6 @@ public class TCAConfig {
 	public static final ConfigEntry<Boolean> EXTRA_ITEM_ICON_OVERLAYS = CONFIG.unsyncableEntry("extraItemIconOverlays", EntryType.BOOL, false);
 	public static final ConfigEntry<Boolean> IMPROVED_FURNACE_MINECARTS = CONFIG.entry("improvedFurnaceMinecarts", EntryType.BOOL, true);
 	public static final ConfigEntry<Boolean> DEBUG_MINECART_MOTION = CONFIG.entry("debugMinecartMotion", EntryType.BOOL, false);
+
+	private TCAConfig() {}
 }

@@ -48,9 +48,7 @@ public final class TCAAttachments {
 		}
 	);
 
-	private TCAAttachments() {
-	}
+	public static void init() {}
 
-	public static void init() {
-	}
+	private TCAAttachments() {}
 }

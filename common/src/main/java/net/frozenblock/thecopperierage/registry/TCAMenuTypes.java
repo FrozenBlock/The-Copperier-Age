@@ -44,4 +44,6 @@ public final class TCAMenuTypes {
 	private static <T extends AbstractContainerMenu> DeferredHolder<MenuType<?>, MenuType<T>> register(String name, MenuType.MenuSupplier<T> constructor) {
 		return REGISTER.register(name, () -> new MenuType<>(constructor, FeatureFlags.VANILLA_SET));
 	}
+
+	private TCAMenuTypes() {}
 }

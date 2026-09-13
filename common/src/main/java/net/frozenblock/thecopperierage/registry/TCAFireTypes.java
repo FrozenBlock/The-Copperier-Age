@@ -21,6 +21,7 @@ import net.frozenblock.lib.block.api.fire.FireTypes;
 import net.frozenblock.lib.block.impl.fire.FireType;
 import net.frozenblock.lib.config.v2.entry.predicates.ConfigPredicate;
 import net.frozenblock.lib.particle.options.ColoredSmokeParticleOptions;
+import net.frozenblock.lib.registry.FrozenLibRegistries;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.tag.TCABlockTags;
@@ -41,6 +42,8 @@ public final class TCAFireTypes {
 	public static void bootstrap(BootstrapContext<FireType> context) {
 		final HolderGetter<Block> blocks = context.lookup(Registries.BLOCK);
 		final HolderGetter<EntityType<?>> entityTypes = context.lookup(Registries.ENTITY_TYPE);
+		final HolderGetter<ConfigPredicate> configPredicates = context.lookup(FrozenLibRegistries.CONFIG_PREDICATE_PROVIDER);
+
 		FireTypes.register(
 			context,
 			COPPER_FIRE,
@@ -52,15 +55,17 @@ public final class TCAFireTypes {
 				.smokeParticles(
 					ColoredSmokeParticleOptions.smoke(0F, 0.075F, 0F),
 					ColoredSmokeParticleOptions.largeSmoke(0F, 0.075F, 0F),
-					ConfigPredicate.equalTo(TCAConfig.COPPER_PARTICLES, true)
+					configPredicates.getOrThrow(TCAConfigPredicates.COPPER_FIRE_PARTICLES)
 				)
 				.campfireSmokeParticles(
 					ColoredSmokeParticleOptions.campfireCosy(-0.15F, 0F, -0.15F),
 					ColoredSmokeParticleOptions.campfireSignal(-0.15F, 0F, -0.15F),
-					ConfigPredicate.equalTo(TCAConfig.COPPER_PARTICLES, true)
+					configPredicates.getOrThrow(TCAConfigPredicates.COPPER_FIRE_PARTICLES)
 				)
 				.lavaParticle(TCAParticleTypes.COPPER_LAVA.get())
-				.enabledWhen(ConfigPredicate.equalTo(TCAConfig.COPPER_FIRE_ENABLED, true))
+				.enabledWhen(ConfigPredicate.equalTo(TCAConfig.COPPER_FIRE_ENABLED, true).asHolder())
 		);
 	}
+
+	private TCAFireTypes() {}
 }

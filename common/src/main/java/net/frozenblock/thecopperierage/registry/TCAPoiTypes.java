@@ -37,4 +37,6 @@ public final class TCAPoiTypes {
 	}
 
 	public static void init() {}
+
+	private TCAPoiTypes() {}
 }

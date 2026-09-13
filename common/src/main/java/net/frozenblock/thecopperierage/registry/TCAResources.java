@@ -26,7 +26,7 @@ public final class TCAResources {
 	public static boolean HAS_TRICKIER_TRIALS_PACK = false;
 
 	public static void init() {
-		var modId = TCAConstants.MOD_ID;
+		final String modId = TCAConstants.MOD_ID;
 		FrozenLibResourceLoader.registerBuiltinPack(
 			TCAConstants.id("copperier_copper"),
 			modId,
@@ -48,4 +48,6 @@ public final class TCAResources {
 			PackActivationType.DEFAULT_ENABLED
 		);
 	}
+
+	private TCAResources() {}
 }

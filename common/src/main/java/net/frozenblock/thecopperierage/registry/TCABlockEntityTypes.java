@@ -72,4 +72,6 @@ public final class TCABlockEntityTypes {
 	) {
 		return REGISTER.register(id, () -> new BlockEntityType<>(builder, Set.copyOf(blocks.get())));
 	}
+
+	private TCABlockEntityTypes() {}
 }

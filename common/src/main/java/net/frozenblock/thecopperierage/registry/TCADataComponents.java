@@ -17,18 +17,15 @@
 
 package net.frozenblock.thecopperierage.registry;
 
-import net.frozenblock.lib.platform.api.registry.DeferredHolder;
+import net.frozenblock.lib.platform.api.registry.DeferredDataComponentType;
 import net.frozenblock.lib.platform.api.registry.DeferredRegister;
 import net.frozenblock.thecopperierage.TCAConstants;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.world.level.block.WeatheringCopper;
 
 public final class TCADataComponents {
-	private static final DeferredRegister.DataComponents REGISTER = DeferredRegister.createDataComponents(
-		TCAConstants.MOD_ID
-	);
+	private static final DeferredRegister.DataComponents REGISTER = DeferredRegister.createDataComponents(TCAConstants.MOD_ID);
 
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<WeatheringCopper.WeatherState>> WAXED = REGISTER.registerComponent(
+	public static final DeferredDataComponentType<WeatheringCopper.WeatherState> WAXED = REGISTER.registerComponent(
 		"waxed",
 		builder -> builder.persistent(WeatheringCopper.WeatherState.CODEC).networkSynchronized(WeatheringCopper.WeatherState.STREAM_CODEC)
 	);
@@ -38,4 +35,6 @@ public final class TCADataComponents {
 	}
 
 	public static void init() {}
+
+	private TCADataComponents() {}
 }

@@ -166,4 +166,6 @@ public final class TCAStructureModifications {
 			);
 		});
 	}
+
+	private TCAStructureModifications() {}
 }

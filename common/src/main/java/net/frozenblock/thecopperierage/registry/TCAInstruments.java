@@ -44,4 +44,6 @@ public final class TCAInstruments {
 		Instruments.register(registry, TROMBONE_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_TROMBONE.asHolder(), 32767, 64F);
 		Instruments.register(registry, TUBA_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_TUBA.asHolder(), 32767, 64F);
 	}
+
+	private TCAInstruments() {}
 }

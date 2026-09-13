@@ -35,4 +35,6 @@ public final class TCAItemIds {
 	private static ResourceKey<Item> create(String name) {
 		return ResourceKey.create(Registries.ITEM, TCAConstants.id(name));
 	}
+
+	private TCAItemIds() {}
 }

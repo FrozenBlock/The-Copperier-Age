@@ -71,4 +71,6 @@ public final class TCAConfigGui {
 
 		return configBuilder.build();
 	}
+
+	private TCAConfigGui() {}
 }

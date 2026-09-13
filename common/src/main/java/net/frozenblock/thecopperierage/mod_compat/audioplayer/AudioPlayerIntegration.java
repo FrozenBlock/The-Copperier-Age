@@ -1,5 +1,6 @@
 package net.frozenblock.thecopperierage.mod_compat.audioplayer;
 
+import net.frozenblock.lib.platform.ModLoader;
 import net.mehvahdjukaar.candlelight.api.PlatformImpl;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -8,8 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 public final class AudioPlayerIntegration {
-
-	private AudioPlayerIntegration() {}
+	public static final boolean LOADED = ModLoader.isModLoaded("audioplayer");
 
 	@PlatformImpl
 	public static void init() {
@@ -30,4 +30,6 @@ public final class AudioPlayerIntegration {
 	public static void stop(Entity source) {
 		throw new AssertionError();
 	}
+
+	private AudioPlayerIntegration() {}
 }

@@ -19,7 +19,7 @@ package net.frozenblock.thecopperierage.block;
 
 import com.mojang.serialization.MapCodec;
 import net.frozenblock.thecopperierage.block.entity.KilnBlockEntity;
-import net.frozenblock.thecopperierage.recipe.TCAKilnRecipeProvider;
+import net.frozenblock.thecopperierage.item.crafting.TCAKilnRecipeProvider;
 import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

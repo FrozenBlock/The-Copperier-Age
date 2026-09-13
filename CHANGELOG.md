@@ -1,4 +1,4 @@
 Please clear changelog after each release.
 Put the changelog BELOW the dashes. ANYTHING ABOVE IS IGNORED.
 -----------------
-- Fixed an oversight that caused Copper Spears to have no texture.
+- Added The Camel Husk and Zombie Ostrich to the `#thecopperierage:copper_fan_weaker_push` Entity Type tag.

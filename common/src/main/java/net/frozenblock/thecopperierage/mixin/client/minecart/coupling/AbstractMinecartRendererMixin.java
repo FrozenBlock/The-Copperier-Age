@@ -30,6 +30,7 @@ import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.phys.AABB;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -38,6 +39,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(AbstractMinecartRenderer.class)
 public class AbstractMinecartRendererMixin {
 	/** Disabled: see the rotation smoothing mixin. */
+	@Unique
 	private static final boolean THECOPPERIERAGE$SMOOTHING_ENABLED = false;
 
 	@Inject(
@@ -45,19 +47,16 @@ public class AbstractMinecartRendererMixin {
 		at = @At("TAIL")
 	)
 	public <T extends AbstractMinecart, S extends MinecartRenderState> void theCopperierAge$extractCouplingRenderState(
-		T minecart,
-		S renderState,
-		float partialTicks,
-		CallbackInfo info
+		T entity, S state, float partialTicks, CallbackInfo info
 	) {
-		CouplingRenderState.extract(minecart, renderState, partialTicks);
+		CouplingRenderState.extract(entity, state, partialTicks);
 
 		// Rotation 2.0: replace vanilla's snappy step-lerp yaw/pitch with the eased values.
 		if (THECOPPERIERAGE$SMOOTHING_ENABLED
-			&& minecart instanceof MinecartRotationSmoothing smoothing
+			&& entity instanceof MinecartRotationSmoothing smoothing
 			&& smoothing.theCopperierAge$hasSmoothedRotation()) {
-			renderState.yRot = smoothing.theCopperierAge$getSmoothYRot(partialTicks);
-			renderState.xRot = smoothing.theCopperierAge$getSmoothXRot(partialTicks);
+			state.yRot = smoothing.theCopperierAge$getSmoothYRot(partialTicks);
+			state.xRot = smoothing.theCopperierAge$getSmoothXRot(partialTicks);
 		}
 	}
 
@@ -66,22 +65,21 @@ public class AbstractMinecartRendererMixin {
 		at = @At("HEAD")
 	)
 	public <T extends AbstractMinecart, S extends MinecartRenderState> void theCopperierAge$submitCoupling(
-		S renderState,
+		S state,
 		PoseStack poseStack,
-		SubmitNodeCollector collector,
+		SubmitNodeCollector submitNodeCollector,
 		CameraRenderState camera,
 		CallbackInfo info
 	) {
-		CouplingRenderState.renderCoupling(poseStack, collector, renderState, renderState.lightCoords, CouplingRenderState.COUPLING_RENDER_STATE);
-		CouplingRenderState.renderCoupling(poseStack, collector, renderState, renderState.lightCoords, CouplingRenderState.COUPLING_HELD_RENDER_STATE);
+		CouplingRenderState.renderCoupling(poseStack, submitNodeCollector, state, state.lightCoords, CouplingRenderState.COUPLING_RENDER_STATE);
+		CouplingRenderState.renderCoupling(poseStack, submitNodeCollector, state, state.lightCoords, CouplingRenderState.COUPLING_HELD_RENDER_STATE);
 	}
 
 	@ModifyReturnValue(
 		method = "getBoundingBoxForCulling(Lnet/minecraft/world/entity/vehicle/minecart/AbstractMinecart;)Lnet/minecraft/world/phys/AABB;",
 		at = @At("RETURN")
 	)
-	public AABB theCopperierAge$modifyBoundingBoxForCulling(AABB original, AbstractMinecart minecart) {
-		return MinecartCouplingClientHandler.modifyBoundingBoxForCoupling(minecart, original);
+	public AABB theCopperierAge$modifyBoundingBoxForCulling(AABB original, AbstractMinecart entity) {
+		return MinecartCouplingClientHandler.modifyBoundingBoxForCoupling(entity, original);
 	}
-
 }

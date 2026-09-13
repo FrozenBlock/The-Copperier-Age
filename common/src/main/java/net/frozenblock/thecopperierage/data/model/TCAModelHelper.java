@@ -99,4 +99,6 @@ public final class TCAModelHelper {
 			)
 		);
 	}
+
+	private TCAModelHelper() {}
 }

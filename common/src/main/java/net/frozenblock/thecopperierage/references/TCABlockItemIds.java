@@ -48,4 +48,6 @@ public final class TCABlockItemIds {
 	private static WeatheringCopperCollection<BlockItemId> createSimpleCopper(String name) {
 		return WeatheringCopperCollection.prefixWithState(WeatheringCopperCollection.create(name)).map(TCABlockItemIds::create);
 	}
+
+	private TCABlockItemIds() {}
 }

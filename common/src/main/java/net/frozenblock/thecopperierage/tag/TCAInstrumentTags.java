@@ -28,4 +28,6 @@ public final class TCAInstrumentTags {
 	private static TagKey<Instrument> bind(String name) {
 		return TagKey.create(Registries.INSTRUMENT, TCAConstants.id(name));
 	}
+
+	private TCAInstrumentTags() {}
 }

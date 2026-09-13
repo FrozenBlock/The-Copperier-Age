@@ -31,4 +31,6 @@ public final class TCABlockEntityTypeIds {
 	private static ResourceKey<BlockEntityType<?>> create(String name) {
 		return ResourceKey.create(Registries.BLOCK_ENTITY_TYPE, TCAConstants.id(name));
 	}
+
+	private TCABlockEntityTypeIds() {}
 }

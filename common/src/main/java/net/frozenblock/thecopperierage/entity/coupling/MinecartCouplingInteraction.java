@@ -37,13 +37,13 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public class MinecartCouplingInteraction {
+public final class MinecartCouplingInteraction {
 	private static final double MAX_PLAYER_DISTANCE = 8D;
 	private static final double MAX_PLAYER_DISTANCE_SQR = MAX_PLAYER_DISTANCE * MAX_PLAYER_DISTANCE;
 
 	@Nullable
-	public static InteractionResult handleInteractionWithMinecart(Player player, InteractionHand hand, Entity interacted) {
-		if (!(interacted instanceof AbstractMinecart minecart)) return null;
+	public static InteractionResult handleInteractionWithMinecart(Player player, InteractionHand hand, Entity target) {
+		if (!(target instanceof AbstractMinecart minecart)) return null;
 
 		final ItemStack heldItem = player.getItemInHand(hand);
 		if (heldItem.is(TCAItems.MINECART_COUPLING.get())) {
@@ -79,7 +79,7 @@ public class MinecartCouplingInteraction {
 		return true;
 	}
 
-	public static boolean isCouplingValidInWorld(Level level, AbstractMinecart selectedCart, Entity target, boolean checkEntityHitResult) {
+	public static boolean isCouplingValidInLevel(Level level, AbstractMinecart selectedCart, Entity target, boolean checkEntityHitResult) {
 		if (target == null || selectedCart == null || level == null || level != selectedCart.level()) return false;
 		if (!target.isAlive() || target.isSpectator() || !selectedCart.isAlive() || selectedCart.isSpectator()) return false;
 
@@ -128,4 +128,6 @@ public class MinecartCouplingInteraction {
 
 		return false;
 	}
+
+	private MinecartCouplingInteraction() {}
 }

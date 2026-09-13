@@ -96,6 +96,7 @@ public final class JukeboxMinecartSoundHandler {
 		PLAYING_SONGS.clear();
 	}
 
-	private record PlayingSong(Holder<JukeboxSong> song, SoundInstance soundInstance) {
-	}
+	private record PlayingSong(Holder<JukeboxSong> song, SoundInstance soundInstance) {}
+
+	private JukeboxMinecartSoundHandler() {}
 }

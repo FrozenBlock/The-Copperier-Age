@@ -21,6 +21,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
+import net.frozenblock.lib.FrozenLibConstants;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
 import net.frozenblock.thecopperierage.references.TCABlockItemIds;
 import net.frozenblock.thecopperierage.references.TCAItemIds;
@@ -97,12 +98,12 @@ public final class TCAItemTagsProvider extends FabricTagsProvider.ItemTagsProvid
 			});
 	}
 
-	private TagKey<Item> getTag(String name) {
-		return TagKey.create(this.registryKey, Identifier.parse(name));
+	private TagKey<Item> getTag(String id) {
+		return TagKey.create(this.registryKey, Identifier.parse(id));
 	}
 
 	private TagKey<Item> chaosHypercubedTag(String name) {
-		return TagKey.create(this.registryKey, Identifier.fromNamespaceAndPath("chaoshypercubed", name));
+		return TagKey.create(this.registryKey, Identifier.fromNamespaceAndPath(FrozenLibConstants.CHAOS_HYPERCUBED_MOD_ID, name));
 	}
 
 	private ResourceKey<Item> getKey(String namespace, String path) {

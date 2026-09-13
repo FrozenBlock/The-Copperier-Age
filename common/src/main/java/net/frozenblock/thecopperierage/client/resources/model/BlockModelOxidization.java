@@ -25,7 +25,7 @@ import net.minecraft.core.Direction;
 import org.joml.Matrix4fc;
 
 @ClientOnly
-public class BlockModelOxidization implements ModelState {
+public final class BlockModelOxidization implements ModelState {
 	private final String name;
 	private final ModelState modelState;
 

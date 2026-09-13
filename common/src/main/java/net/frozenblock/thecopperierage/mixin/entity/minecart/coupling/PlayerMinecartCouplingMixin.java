@@ -36,7 +36,7 @@ public class PlayerMinecartCouplingMixin {
 		at = @At("HEAD"),
 		cancellable = true
 	)
-	private void theCopperierAge$handleMinecartCoupling(Entity entity, InteractionHand hand, Vec3 vec3, CallbackInfoReturnable<InteractionResult> info) {
+	private void theCopperierAge$handleMinecartCoupling(Entity entity, InteractionHand hand, Vec3 location, CallbackInfoReturnable<InteractionResult> info) {
 		final Player player = Player.class.cast(this);
 		final InteractionResult result = MinecartCouplingInteraction.handleInteractionWithMinecart(player, hand, entity);
 		if (result != null) info.setReturnValue(result);

@@ -30,4 +30,6 @@ public final class TCABlockTags {
 	private static TagKey<Block> bind(String name) {
 		return TagKey.create(Registries.BLOCK, TCAConstants.id(name));
 	}
+
+	private TCABlockTags() {}
 }

@@ -2,7 +2,7 @@ package net.frozenblock.thecopperierage;
 
 import net.frozenblock.lib.menu.api.SplashTextEvents;
 import net.frozenblock.thecopperierage.client.TCAModelLayers;
-import net.frozenblock.thecopperierage.client.TCAParticleEngine;
+import net.frozenblock.thecopperierage.client.TCAParticleResources;
 import net.frozenblock.thecopperierage.client.coupling.MinecartCouplingClientHandler;
 import net.frozenblock.thecopperierage.client.sound.JukeboxMinecartSoundHandler;
 import net.frozenblock.thecopperierage.networking.TCAClientNetworking;
@@ -15,7 +15,7 @@ public final class TheCopperierAgeClient {
 	public static void init() {
 		SplashTextEvents.ADD_SOURCE_FILES.register(sourceFiles -> sourceFiles.add(TCAConstants.id("texts/splashes.txt")));
 
-		TCAParticleEngine.init();
+		TCAParticleResources.init();
 		TCAModelLayers.init();
 		MinecartCouplingClientHandler.init();
 		JukeboxMinecartSoundHandler.init();

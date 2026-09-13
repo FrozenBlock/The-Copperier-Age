@@ -23,9 +23,11 @@ import net.mehvahdjukaar.candlelight.api.ClientOnly;
 import net.minecraft.client.particle.LavaParticle;
 
 @ClientOnly
-public final class TCAParticleEngine {
+public final class TCAParticleResources {
 
 	public static void init() {
 		ParticleProviderRegistry.register(TCAParticleTypes.COPPER_LAVA::get, LavaParticle.Provider::new);
 	}
+
+	private TCAParticleResources() {}
 }

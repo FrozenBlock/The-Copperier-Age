@@ -33,5 +33,4 @@ public final class TheCopperierAgeFabric extends FrozenModInitializer {
 		AudioPlayerIntegration.init();
 		TheCopperierAge.setup();
 	}
-
 }

@@ -49,8 +49,6 @@ public final class AudioPlayerCompat {
 	private static final int LOAD_TIMEOUT_TICKS = 600;
 	private static final Map<UUID, TrackedAudio> TRACKED = new HashMap<>();
 
-	private AudioPlayerCompat() {}
-
 	public static void init() {
 		TickEvents.END_SERVER_TICK.register(server -> tick());
 		EntityLifecycleEvents.ENTITY_UNLOAD.register((entity, level) -> stop(entity));
@@ -375,4 +373,6 @@ public final class AudioPlayerCompat {
 			return this.playEvent.getDistance();
 		}
 	}
+
+	private AudioPlayerCompat() {}
 }

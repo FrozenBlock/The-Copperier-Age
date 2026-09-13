@@ -31,4 +31,6 @@ public final class TCAEntityTypeTags {
 	private static TagKey<EntityType<?>> bind(String name) {
 		return TagKey.create(Registries.ENTITY_TYPE, TCAConstants.id(name));
 	}
+
+	private TCAEntityTypeTags() {}
 }

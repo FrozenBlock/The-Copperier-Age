@@ -20,7 +20,7 @@ package net.frozenblock.thecopperierage.registry;
 import net.frozenblock.lib.platform.api.registry.DeferredHolder;
 import net.frozenblock.lib.platform.api.registry.DeferredRegister;
 import net.frozenblock.thecopperierage.TCAConstants;
-import net.frozenblock.thecopperierage.recipe.ItemWaxRecipe;
+import net.frozenblock.thecopperierage.item.crafting.ItemWaxRecipe;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;

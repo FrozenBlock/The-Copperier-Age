@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.recipe;
+package net.frozenblock.thecopperierage.item.crafting;
 
 import java.util.List;
 import net.minecraft.world.item.crafting.RecipeHolder;

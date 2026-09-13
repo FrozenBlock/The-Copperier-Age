@@ -56,5 +56,9 @@ public final class TCABlockItemTagsProvider extends BlockItemTagsProvider {
 
 		this.tag(TCABlockItemTags.COPPER_PRESSURE_PLATES)
 			.addAll(TCABlockItemIds.WEIGHTED_PRESSURE_PLATE.asList());
+
+		final CombinedAppender railsBuilder = this.tag(BlockItemTags.RAILS);
+		TCABlockItemIds.COPPER_RAIL.forEach(railsBuilder::add);
+		railsBuilder.add(TCABlockItemIds.CROSS_RAIL, TCABlockItemIds.RELAYOR_RAIL);
 	}
 }

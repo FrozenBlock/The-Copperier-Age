@@ -1,0 +1,14 @@
+{
+  "values": [
+    "thecopperierage:copper_rail",
+    "thecopperierage:exposed_copper_rail",
+    "thecopperierage:weathered_copper_rail",
+    "thecopperierage:oxidized_copper_rail",
+    "thecopperierage:waxed_copper_rail",
+    "thecopperierage:waxed_exposed_copper_rail",
+    "thecopperierage:waxed_weathered_copper_rail",
+    "thecopperierage:waxed_oxidized_copper_rail",
+    "thecopperierage:cross_rail",
+    "thecopperierage:relayor_rail"
+  ]
+}

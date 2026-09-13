@@ -47,7 +47,7 @@ public final class MinecartCouplingClientHandler {
 
 	public static void onCartClicked(Player player, InteractionHand hand, AbstractMinecart cart) {
 		if (Minecraft.getInstance().player != player) return;
-		if (!MinecartCouplingInteraction.isCouplingValidInWorld(player.level(), cart, player, false)) {
+		if (!MinecartCouplingInteraction.isCouplingValidInLevel(player.level(), cart, player, false)) {
 			clearSelection();
 			return;
 		}
@@ -64,7 +64,7 @@ public final class MinecartCouplingClientHandler {
 
 	private static void tick(Minecraft minecraft) {
 		final LocalPlayer player = minecraft.player;
-		if (!MinecartCouplingInteraction.isCouplingValidInWorld(minecraft.level, selectedCart, player, false)) {
+		if (!MinecartCouplingInteraction.isCouplingValidInLevel(minecraft.level, selectedCart, player, false)) {
 			clearSelection();
 			return;
 		}
@@ -103,4 +103,6 @@ public final class MinecartCouplingClientHandler {
 	private static void clearSelection() {
 		selectedCart = null;
 	}
+
+	private MinecartCouplingClientHandler() {}
 }

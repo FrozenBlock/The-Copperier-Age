@@ -34,4 +34,6 @@ public final class TCAItemTags {
 	private static TagKey<Item> bind(String name) {
 		return TagKey.create(Registries.ITEM, TCAConstants.id(name));
 	}
+
+	private TCAItemTags() {}
 }

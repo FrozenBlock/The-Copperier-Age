@@ -20,10 +20,10 @@ package net.frozenblock.thecopperierage.data.tag;
 import java.util.concurrent.CompletableFuture;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
+import net.frozenblock.lib.FrozenLibConstants;
 import net.frozenblock.lib.tag.api.FrozenLibEntityTypeTags;
 import net.frozenblock.thecopperierage.tag.TCAEntityTypeTags;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
@@ -36,27 +36,25 @@ public final class TCAEntityTypeTagsProvider extends FabricTagsProvider.EntityTy
 		super(output, registries);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void addTags(HolderLookup.Provider arg) {
 		this.builder(TCAEntityTypeTags.COPPER_FAN_WEAKER_PUSH)
 			.add(EntityTypeIds.ALLAY)
-			.add(EntityTypeIds.HORSE)
-			.add(EntityTypeIds.ZOMBIE_HORSE)
-			.add(EntityTypeIds.SKELETON_HORSE)
-			.add(EntityTypeIds.DONKEY)
-			.add(EntityTypeIds.MULE)
-			.add(EntityTypeIds.LLAMA)
-			.add(EntityTypeIds.TRADER_LLAMA)
+			.add(EntityTypeIds.HORSE, EntityTypeIds.ZOMBIE_HORSE, EntityTypeIds.SKELETON_HORSE)
+			.add(EntityTypeIds.DONKEY, EntityTypeIds.MULE)
+			.add(EntityTypeIds.LLAMA, EntityTypeIds.TRADER_LLAMA)
 			.add(EntityTypeIds.SNIFFER)
 			.add(EntityTypeIds.POLAR_BEAR)
-			.add(EntityTypeIds.HOGLIN)
-			.add(EntityTypeIds.ZOGLIN)
-			.add(EntityTypeIds.CAMEL)
+			.add(EntityTypeIds.CAMEL, EntityTypeIds.CAMEL_HUSK)
 			.add(EntityTypeIds.GUARDIAN)
 			.add(EntityTypeIds.CREAKING)
 			.add(EntityTypeIds.GHAST)
 			.add(EntityTypeIds.HAPPY_GHAST)
-			.addOptional(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath("wilderwild", "ostrich")));
+			.addOptionalTag(FrozenLibEntityTypeTags.HOGLINS)
+			.addOptional(getKey(FrozenLibConstants.WILDER_WILD_MOD_ID, "ostrich"))
+			.addOptional(getKey(FrozenLibConstants.WILDER_WILD_MOD_ID, "zombie_ostrich"))
+			.addOptional(getKey(FrozenLibConstants.NETHERIER_NETHER_MOD_ID, "lurker"));
 
 		this.builder(TCAEntityTypeTags.COPPER_FAN_CANNOT_PUSH)
 			.add(EntityTypeIds.WITHER)
@@ -69,12 +67,9 @@ public final class TCAEntityTypeTagsProvider extends FabricTagsProvider.EntityTy
 			.add(EntityTypeIds.ELDER_GUARDIAN)
 			.add(EntityTypeIds.IRON_GOLEM)
 			.add(EntityTypeIds.WARDEN)
-			.add(EntityTypeIds.VEX)
 			.add(EntityTypeIds.SHULKER)
 			.add(EntityTypeIds.RAVAGER)
-			.add(EntityTypeIds.WIND_CHARGE);
-
-		this.builder(TCAEntityTypeTags.COPPER_FAN_CANNOT_PUSH)
+			.add(EntityTypeIds.WIND_CHARGE)
 			.addOptionalTag(FrozenLibEntityTypeTags.GHOST_LIKE);
 
 		this.builder(TCAEntityTypeTags.GEARBOX_CANNOT_ROTATE)

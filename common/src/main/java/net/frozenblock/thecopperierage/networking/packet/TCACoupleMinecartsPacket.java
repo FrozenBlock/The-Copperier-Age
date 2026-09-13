@@ -42,7 +42,7 @@ public record TCACoupleMinecartsPacket(boolean usedOffHand, int firstCartId, int
 
 	public static void handle(TCACoupleMinecartsPacket packet, MinecraftServer server, ServerPlayer player) {
 		if (player.isRemoved()) return;
-		MinecartCouplingUtil.attemptCouple(
+		MinecartCouplingUtil.tryCouple(
 			player,
 			player.level(),
 			packet.usedOffHand() ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND,

@@ -33,4 +33,6 @@ public final class TCABlockItemTags {
 		final Identifier id = TCAConstants.id(name);
 		return BlockItemTagId.create(id, id);
 	}
+
+	private TCABlockItemTags() {}
 }

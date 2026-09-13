@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.recipe;
+package net.frozenblock.thecopperierage.item.crafting;
 
 import com.mojang.serialization.MapCodec;
 import java.util.List;

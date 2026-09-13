@@ -432,4 +432,6 @@ public final class OxidizableItemHelper {
 
 		return Optional.of(new KineticWeapon.Condition(stackCondition.maxDurationTicks(), newMinSpeed, newMinRelativeSpeed));
 	}
+
+	private OxidizableItemHelper() {}
 }

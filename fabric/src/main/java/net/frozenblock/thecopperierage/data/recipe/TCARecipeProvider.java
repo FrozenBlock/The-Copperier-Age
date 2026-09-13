@@ -20,23 +20,33 @@ package net.frozenblock.thecopperierage.data.recipe;
 import java.util.concurrent.CompletableFuture;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.fabricmc.fabric.api.recipe.v1.ingredient.DefaultCustomIngredients;
 import net.frozenblock.lib.item.api.recipe.RecipeExportNamespaceFix;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.TCAFeatureFlags;
-import net.frozenblock.thecopperierage.recipe.ItemWaxRecipe;
+import net.frozenblock.thecopperierage.item.crafting.ItemWaxRecipe;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
+import net.frozenblock.thecopperierage.registry.TCAInstruments;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.SpecialRecipeBuilder;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Instrument;
+import net.minecraft.world.item.Instruments;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.InstrumentComponent;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
@@ -55,12 +65,11 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 			public void buildRecipes() {
 				RecipeExportNamespaceFix.setCurrentGeneratingModId(TCAConstants.MOD_ID);
 
-				final HolderGetter<EntityType<?>> entityTypes = registries.lookupOrThrow(Registries.ENTITY_TYPE);
-				final HolderGetter<Item> items = registries.lookupOrThrow(Registries.ITEM);
+				final HolderGetter<EntityType<?>> entityTypes = this.registries.lookupOrThrow(Registries.ENTITY_TYPE);
+				final HolderGetter<Item> items = this.registries.lookupOrThrow(Registries.ITEM);
 
 				SpecialRecipeBuilder.special(ItemWaxRecipe::new).save(this.output, "equipment_wax");
 				this.waxRecipes(TCAFeatureFlags.THE_COPPERIER_AGE_FLAG_SET);
-				CopperHornRecipeProvider.buildRecipes(this, registries, exporter);
 
 				this.shaped(RecipeCategory.TOOLS, TCAItems.WRENCH)
 					.group("wrench")
@@ -236,7 +245,50 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.unlockedBy(RecipeProvider.getHasName(Items.GOLD_INGOT), this.has(Items.GOLD_INGOT))
 					.save(exporter);
 
+				// COPPER HORN
+				this.copperHorn("recorder", Instruments.YEARN_GOAT_HORN, TCAInstruments.RECORDER_COPPER_HORN);
+				this.copperHorn("clarinet", Instruments.DREAM_GOAT_HORN, TCAInstruments.CLARINET_COPPER_HORN);
+				this.copperHorn("flute", Instruments.CALL_GOAT_HORN, TCAInstruments.FLUTE_COPPER_HORN);
+				this.copperHorn("oboe", Instruments.SING_GOAT_HORN, TCAInstruments.OBOE_COPPER_HORN);
+				this.copperHorn("sax", Instruments.PONDER_GOAT_HORN, TCAInstruments.SAX_COPPER_HORN);
+				this.copperHorn("trombone", Instruments.SEEK_GOAT_HORN, TCAInstruments.TROMBONE_COPPER_HORN);
+				this.copperHorn("trumpet", Instruments.ADMIRE_GOAT_HORN, TCAInstruments.TRUMPET_COPPER_HORN);
+				this.copperHorn("tuba", Instruments.FEEL_GOAT_HORN, TCAInstruments.TUBA_COPPER_HORN);
+
 				RecipeExportNamespaceFix.clearCurrentGeneratingModId();
+			}
+
+			private void copperHorn(
+				String name,
+				ResourceKey<Instrument> goatHornInstrument,
+				ResourceKey<Instrument> copperHornInstrument
+			) {
+				copperHornBuilder(copperHornInstrument)
+					.group("wilderwild_copper_horn")
+					.define('C', Ingredient.of(Items.COPPER_INGOT))
+					.define('G', DefaultCustomIngredients.components(
+						Ingredient.of(Items.GOAT_HORN),
+						DataComponentPatch.builder()
+							.set(DataComponents.INSTRUMENT, new InstrumentComponent(this.registries.lookupOrThrow(Registries.INSTRUMENT).getOrThrow(goatHornInstrument)))
+							.build()
+					))
+					.pattern("CGC")
+					.pattern(" C ")
+					.unlockedBy(getHasName(Items.GOAT_HORN), this.has(Items.GOAT_HORN))
+					.save(exporter, TCAConstants.string(name + "_copper_horn"));
+			}
+
+			private ShapedRecipeBuilder copperHornBuilder(ResourceKey<Instrument> instrument) {
+				return new ShapedRecipeBuilder(
+					this.registries.lookupOrThrow(Registries.ITEM),
+					RecipeCategory.TOOLS,
+					new ItemStackTemplate(
+						TCAItems.COPPER_HORN.get(),
+						DataComponentPatch.builder().set(
+							DataComponents.INSTRUMENT,
+							new InstrumentComponent(this.registries.lookupOrThrow(Registries.INSTRUMENT).getOrThrow(instrument))
+						).build())
+				);
 			}
 		};
 	}

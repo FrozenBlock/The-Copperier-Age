@@ -41,7 +41,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public class MinecartCouplingUtil {
+public final class MinecartCouplingUtil {
 	private static final int MAX_COUPLING_DISTANCE = 3;
 	private static final float MIN_COUPLING_LENGTH = 1.5F;
 	private static final float MAX_HARD_CORRECTION_PER_TICK = 1.75F;
@@ -50,7 +50,7 @@ public class MinecartCouplingUtil {
 	private static final float EXPERIMENTAL_MAX_RELATIVE_CORRECTION = 0.08F;
 	private static final double EPSILON = 1.0E-6D;
 
-	public static boolean attemptCouple(Player player, Level level, InteractionHand hand, int id1, int id2) {
+	public static boolean tryCouple(Player player, Level level, InteractionHand hand, int id1, int id2) {
 		final ItemStack stack = player.getItemInHand(hand);
 		if (!stack.is(TCAItems.MINECART_COUPLING.get())) return false;
 
@@ -72,7 +72,7 @@ public class MinecartCouplingUtil {
 		final double distance = cart1.distanceTo(cart2);
 		if (distance >= MAX_COUPLING_DISTANCE) return false;
 
-		if (!MinecartCouplingInteraction.isCouplingValidInWorld(level, cart1, cart2, true)) return false;
+		if (!MinecartCouplingInteraction.isCouplingValidInLevel(level, cart1, cart2, true)) return false;
 
 		stack.consume(1, player);
 		coupleTo(cart1, cart2);
@@ -421,4 +421,6 @@ public class MinecartCouplingUtil {
 		}
 		if (cart.level() instanceof ServerLevel serverLevel) cart.spawnAtLocation(serverLevel, TCAItems.MINECART_COUPLING.get().getDefaultInstance());
 	}
+
+	private MinecartCouplingUtil() {}
 }

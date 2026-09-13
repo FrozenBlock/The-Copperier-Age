@@ -15,4 +15,6 @@ public final class TCAEntityTypeIds {
 	private static ResourceKey<EntityType<?>> create(String name) {
 		return ResourceKey.create(Registries.ENTITY_TYPE, TCAConstants.id(name));
 	}
+
+	private TCAEntityTypeIds() {}
 }

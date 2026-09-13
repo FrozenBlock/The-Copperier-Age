@@ -24,8 +24,10 @@ import net.frozenblock.lib.config.clothconfig.FrozenLibClothConfigGuiHelper;
 import net.frozenblock.lib.config.v2.entry.ConfigEntry;
 import static net.frozenblock.thecopperierage.TCAConstants.text;
 import static net.frozenblock.thecopperierage.TCAConstants.tooltip;
+import net.mehvahdjukaar.candlelight.api.ClientOnly;
 import net.minecraft.network.chat.Component;
 
+@ClientOnly
 public final class TCAConfigGuiHelper {
 
 	public static IntegerSliderEntry zeroToFiveHundredEntry(ConfigEntryBuilder builder, String key, ConfigEntry<Integer> configEntry) {
@@ -61,4 +63,6 @@ public final class TCAConfigGuiHelper {
 			configEntry
 		);
 	}
+
+	private TCAConfigGuiHelper() {}
 }

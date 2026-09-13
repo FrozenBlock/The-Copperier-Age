@@ -28,4 +28,6 @@ public final class TCABlockIds {
 	private static ResourceKey<Block> create(String name) {
 		return ResourceKey.create(Registries.BLOCK, TCAConstants.id(name));
 	}
+
+	private TCABlockIds() {}
 }

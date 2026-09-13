@@ -46,4 +46,6 @@ public final class TCAModelLayers {
 		EntityRendererRegistry.register(TCAEntityTypes.DROPPER_MINECART.get(), context -> new MinecartRenderer(context, ModelLayers.MINECART));
 		EntityRendererRegistry.register(TCAEntityTypes.JUKEBOX_MINECART.get(), context -> new MinecartRenderer(context, ModelLayers.MINECART));
 	}
+
+	private TCAModelLayers() {}
 }

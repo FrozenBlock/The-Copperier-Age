@@ -113,7 +113,7 @@ public class MinecartJukebox extends AbstractMinecartContainer {
 	}
 
 	@Override
-	public InteractionResult interact(Player player, InteractionHand hand, Vec3 vec3) {
+	public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
 		if (!(this.level().isClientSide() ? this.getClientRecordItem() : this.getItem(0)).isEmpty()) {
 			if (this.level() instanceof ServerLevel serverLevel) this.ejectRecord(serverLevel);
 			return InteractionResult.SUCCESS;
@@ -256,8 +256,8 @@ public class MinecartJukebox extends AbstractMinecartContainer {
 	}
 
 	@Override
-	public ItemStack removeItem(int slot, int amount) {
-		final ItemStack removed = super.removeItem(slot, amount);
+	public ItemStack removeItem(int slot, int count) {
+		final ItemStack removed = super.removeItem(slot, count);
 		final ItemStack remaining = this.getItem(slot);
 		this.setClientRecordItem(remaining);
 		if (remaining.isEmpty()) this.stopPlaying();
@@ -265,27 +265,27 @@ public class MinecartJukebox extends AbstractMinecartContainer {
 	}
 
 	@Override
-	public void setItem(int slot, ItemStack stack) {
-		super.setItem(slot, stack);
-		this.setClientRecordItem(stack.copy());
-		if (!stack.has(DataComponents.JUKEBOX_PLAYABLE)) return;
+	public void setItem(int slot, ItemStack itemStack) {
+		super.setItem(slot, itemStack);
+		this.setClientRecordItem(itemStack.copy());
+		if (!itemStack.has(DataComponents.JUKEBOX_PLAYABLE)) return;
 		this.startPlaying();
 	}
 
 	@Override
-	public boolean canPlaceItem(int slot, ItemStack stack) {
-		return stack.has(DataComponents.JUKEBOX_PLAYABLE) && this.getItem(slot).isEmpty();
+	public boolean canPlaceItem(int slot, ItemStack itemStack) {
+		return itemStack.has(DataComponents.JUKEBOX_PLAYABLE) && this.getItem(slot).isEmpty();
 	}
 
 	@Nullable
 	@Override
-	public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
+	public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player) {
 		return null;
 	}
 
 	@Nullable
 	@Override
-	protected AbstractContainerMenu createMenu(int i, Inventory inventory) {
+	protected AbstractContainerMenu createMenu(int containerId, Inventory inventory) {
 		return null;
 	}
 }

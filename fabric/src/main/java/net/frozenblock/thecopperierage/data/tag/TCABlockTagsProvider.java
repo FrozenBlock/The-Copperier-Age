@@ -88,10 +88,10 @@ public final class TCABlockTagsProvider extends FabricTagsProvider.BlockTagsProv
 			.add(BlockIds.NETHER_PORTAL)
 			.add(BlockItemIds.BIG_DRIPLEAF, BlockItemIds.SMALL_DRIPLEAF)
 			.add(BlockIds.BIG_DRIPLEAF_STEM)
+			.add(BlockIds.ATTACHED_PUMPKIN_STEM, BlockIds.ATTACHED_MELON_STEM)
 			.addOptionalTag(BlockTags.SHULKER_BOXES)
 			.addOptionalTag(ConventionalBlockTags.RELOCATION_NOT_SUPPORTED)
-			.addOptionalTag(BlockTags.BEDS)
-			.addOptionalTag(BlockTags.MAINTAINS_FARMLAND);
+			.addOptionalTag(BlockTags.BEDS);
 
 		this.builder(TCABlockTags.CANNOT_ROTATE)
 			.addOptional(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("trailiertales", "coffin")));

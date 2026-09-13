@@ -40,7 +40,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
-public class BlockRotationHelper {
+public final class BlockRotationHelper {
 
 	public static ResultType getRotationResultType(BlockState state, BlockEntity blockEntity) {
 		final Block block = state.getBlock();
@@ -90,4 +90,6 @@ public class BlockRotationHelper {
 		FAIL,
 		ATTEMPT
 	}
+
+	private BlockRotationHelper() {}
 }

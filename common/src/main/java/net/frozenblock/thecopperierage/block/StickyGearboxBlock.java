@@ -51,7 +51,7 @@ public class StickyGearboxBlock extends GearboxBlock implements EntityBlock {
 	@Unique
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		if (level.isClientSide() || type != TCABlockEntityTypes.STICKY_GEARBOX) return null;
+		if (level.isClientSide() || type != TCABlockEntityTypes.STICKY_GEARBOX.get()) return null;
 		return (levelx, posx, statex, blockEntityx) -> StickyGearboxBlockEntity.tick(levelx, posx, statex, (StickyGearboxBlockEntity) blockEntityx);
 	}
 }

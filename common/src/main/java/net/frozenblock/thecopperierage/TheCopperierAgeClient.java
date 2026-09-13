@@ -10,7 +10,7 @@ import net.frozenblock.thecopperierage.registry.TCAMenuScreens;
 import net.mehvahdjukaar.candlelight.api.ClientOnly;
 
 @ClientOnly
-public class TheCopperierAgeClient {
+public final class TheCopperierAgeClient {
 
 	public static void init() {
 		SplashTextEvents.ADD_SOURCE_FILES.register(sourceFiles -> sourceFiles.add(TCAConstants.id("texts/splashes.txt")));
@@ -26,4 +26,6 @@ public class TheCopperierAgeClient {
 		TCAModelLayers.setup();
 		TCAMenuScreens.setup();
 	}
+
+	private TheCopperierAgeClient() {}
 }

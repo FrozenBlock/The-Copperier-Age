@@ -38,23 +38,19 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 public final class TCABlockEntityTypes {
 	private static final DeferredRegister<BlockEntityType<?>> REGISTER = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, TCAConstants.MOD_ID);
 
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ChimeBlockEntity>> CHIME = register(
-		TCABlockEntityTypeIds.CHIME,
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ChimeBlockEntity>> CHIME = register(TCABlockEntityTypeIds.CHIME,
 		ChimeBlockEntity::new,
 		() -> TCABlocks.asBlocks(TCABlocks.CHIME).asList()
 	);
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<StickyGearboxBlockEntity>> STICKY_GEARBOX = register(
-		TCABlockEntityTypeIds.STICKY_GEARBOX,
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<StickyGearboxBlockEntity>> STICKY_GEARBOX = register(TCABlockEntityTypeIds.STICKY_GEARBOX,
 		StickyGearboxBlockEntity::new,
 		() -> TCABlocks.asBlocks(TCABlocks.STICKY_GEARBOX).asList()
 	);
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CrateBlockEntity>> CRATE = register(
-		TCABlockEntityTypeIds.CRATE,
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CrateBlockEntity>> CRATE = register(TCABlockEntityTypeIds.CRATE,
 		CrateBlockEntity::new,
 		() -> List.of(TCABlocks.CRATE.get())
 	);
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<KilnBlockEntity>> KILN = register(
-		TCABlockEntityTypeIds.KILN,
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<KilnBlockEntity>> KILN = register(TCABlockEntityTypeIds.KILN,
 		KilnBlockEntity::new,
 		() -> List.of(TCABlocks.KILN.get())
 	);

@@ -27,12 +27,10 @@ import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class WeatheringStickyGearboxBlock extends StickyGearboxBlock implements EntityBlock, WeatheringCopper {
-	public static final MapCodec<WeatheringStickyGearboxBlock> CODEC = RecordCodecBuilder.mapCodec(
-		instance -> instance.group(
-			WeatheringCopper.WeatherState.CODEC.fieldOf("weathering_state").forGetter(WeatheringStickyGearboxBlock::getAge),
-			propertiesCodec()
-		).apply(instance, WeatheringStickyGearboxBlock::new)
-	);
+	public static final MapCodec<WeatheringStickyGearboxBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		WeatheringCopper.WeatherState.CODEC.fieldOf("weathering_state").forGetter(WeatheringStickyGearboxBlock::getAge),
+		propertiesCodec()
+	).apply(instance, WeatheringStickyGearboxBlock::new));
 	private final WeatheringCopper.WeatherState weatherState;
 
 	@Override

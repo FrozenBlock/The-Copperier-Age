@@ -8,6 +8,8 @@
     "minecraft:big_dripleaf",
     "minecraft:small_dripleaf",
     "minecraft:big_dripleaf_stem",
+    "minecraft:attached_pumpkin_stem",
+    "minecraft:attached_melon_stem",
     {
       "id": "#minecraft:shulker_boxes",
       "required": false
@@ -18,10 +20,6 @@
     },
     {
       "id": "#minecraft:beds",
-      "required": false
-    },
-    {
-      "id": "#minecraft:maintains_farmland",
       "required": false
     },
     {

@@ -88,7 +88,7 @@ public abstract class CopperGolemMixin extends AbstractGolem implements CopperGo
 	private static List theCopperierAge$addCopperGolemSpecificSensor(List original) {
 		final ArrayList newSensors = new ArrayList<>();
 		newSensors.addAll(original);
-		newSensors.add(TCASensorTypes.COPPER_GOLEM_SPECIFIC_SENSOR);
+		newSensors.add(TCASensorTypes.COPPER_GOLEM_SPECIFIC_SENSOR.get());
 		return List.copyOf(newSensors);
 	}
 

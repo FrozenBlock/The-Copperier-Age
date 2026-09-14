@@ -39,7 +39,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 
 public final class TCAStructureModifications {
 
-	public static void init() {
+	public static void setup() {
 		final Identifier trialChambers = BuiltinStructures.TRIAL_CHAMBERS.identifier();
 
 		if (TCAConfig.COPPER_BUTTONS_IN_TRIAL_CHAMBERS.get()) {

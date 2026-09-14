@@ -253,14 +253,14 @@ public final class TCABlocks {
 	);
 
 	static {
+		// Fabric: register all the blocks
+		// NeoForge: add the RegisterEvent listener
 		REGISTER.register();
 	}
 
-	public static void init() {
-		TCAConstants.logWithModId("Registering Blocks for", TCAConstants.UNSTABLE_LOGGING);
-	}
+	public static void init() {}
 
-	public static void registerBlockProperties() {
+	public static void setupBlockProperties() {
 		BlockEntityTypes.CAMPFIRE.frozenLib$addValidBlock(TCABlocks.COPPER_CAMPFIRE.get());
 
 		OxidizableBlocksRegistry.registerWeatheringCopperBlocks(asBlocks(GEARBOX));

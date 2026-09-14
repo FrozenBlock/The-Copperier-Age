@@ -61,7 +61,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 public class ChimeBlock extends BaseEntityBlock {
@@ -149,14 +148,14 @@ public class ChimeBlock extends BaseEntityBlock {
 		LevelReader level,
 		ScheduledTickAccess ticks,
 		BlockPos pos,
-		Direction direction,
-		BlockPos neighborPos,
-		BlockState neighborState,
+		Direction directionToNeighbour,
+		BlockPos neighbourPos,
+		BlockState neighbourState,
 		RandomSource random
 	) {
 		final Direction connectedDirection = getConnectedDirection(state);
-		if (connectedDirection.getOpposite() == direction && !state.canSurvive(level, pos)) return Blocks.AIR.defaultBlockState();
-		return super.updateShape(state, level, ticks, pos, direction, neighborPos, neighborState, random);
+		if (connectedDirection.getOpposite() == directionToNeighbour && !state.canSurvive(level, pos)) return Blocks.AIR.defaultBlockState();
+		return super.updateShape(state, level, ticks, pos, directionToNeighbour, neighbourPos, neighbourState, random);
 	}
 
 	@Override
@@ -234,6 +233,17 @@ public class ChimeBlock extends BaseEntityBlock {
 	}
 
 	@Override
+	protected boolean hasAnalogOutputSignal(BlockState state) {
+		return true;
+	}
+
+	@Override
+	protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, Direction direction) {
+		if (level.getBlockEntity(pos) instanceof ChimeBlockEntity chime) return Math.min(15, (int) (chime.getAverageInfluence().length() * 7));
+		return 0;
+	}
+
+	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
 		if (!(level.getBlockEntity(pos) instanceof ChimeBlockEntity chime)) return;
 
@@ -247,7 +257,6 @@ public class ChimeBlock extends BaseEntityBlock {
 		level.playLocalSound(pos, TCASounds.BLOCK_CHIME_AMBIENT.get(), SoundSource.AMBIENT, volume, pitch, false);
 	}
 
-	@Contract(pure = true)
 	private static Map<Direction, VoxelShape> selectShapeListFromType(
 		ChimeShapeType shapeType,
 		Map<Direction, VoxelShape> outline,

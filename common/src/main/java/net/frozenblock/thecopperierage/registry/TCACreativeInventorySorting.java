@@ -18,7 +18,6 @@
 package net.frozenblock.thecopperierage.registry;
 
 import net.frozenblock.lib.item.api.creative.CreativeModeTabSorter;
-import net.frozenblock.lib.platform.ModLoader;
 import net.frozenblock.thecopperierage.tag.TCAInstrumentTags;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
@@ -32,12 +31,10 @@ import net.minecraft.world.level.block.Blocks;
 
 public final class TCACreativeInventorySorting {
 
-	public static void init() {
-		// TODO FIX NEOFORGE
-		if (ModLoader.isNeoForge()) return;
+	public static void setup() {
 		// GEARBOX
-		insertAfterInBuildingBlocks(Items.REPEATER, TCAItems.GEARBOX.waxed().unaffected());
-		insertAfterInBuildingBlocks(TCAItems.GEARBOX.waxed().unaffected(), TCAItems.STICKY_GEARBOX.waxed().unaffected());
+		insertAfterInRedstoneBlocks(Items.LIGHTNING_ROD.waxed().unaffected(), TCAItems.GEARBOX.waxed().unaffected());
+		insertAfterInRedstoneBlocks(TCAItems.GEARBOX.waxed().unaffected(), TCAItems.STICKY_GEARBOX.waxed().unaffected());
 
 		insertAfterInBuildingBlocks(Items.COPPER_BULB.weathering().unaffected(), TCAItems.GEARBOX.weathering().unaffected());
 		insertAfterInBuildingBlocks(TCAItems.GEARBOX.weathering().unaffected(), TCAItems.STICKY_GEARBOX.weathering().unaffected());
@@ -69,7 +66,9 @@ public final class TCACreativeInventorySorting {
 		insertAfterInBuildingBlocks(TCAItems.STICKY_GEARBOX.waxed().oxidized(), TCAItems.COPPER_FAN.waxed().oxidized());
 
 		// CHIME
-		insertAfterInFunctionalBlocks(Items.LIGHTNING_ROD.weathering().unaffected(), TCAItems.CHIME.weathering().unaffected());
+		insertBeforeInRedstoneBlocks(Items.SCULK_SENSOR, TCAItems.CHIME.waxed().unaffected());
+
+		insertAfterInFunctionalBlocks(Items.LIGHTNING_ROD.waxed().oxidized(), TCAItems.CHIME.weathering().unaffected());
 		insertAfterInFunctionalBlocks(TCAItems.CHIME.weathering().unaffected(), TCAItems.CHIME.weathering().exposed());
 		insertAfterInFunctionalBlocks(TCAItems.CHIME.weathering().exposed(), TCAItems.CHIME.weathering().weathered());
 		insertAfterInFunctionalBlocks(TCAItems.CHIME.weathering().weathered(), TCAItems.CHIME.weathering().oxidized());
@@ -87,9 +86,8 @@ public final class TCACreativeInventorySorting {
 		insertAfterInBuildingBlocks(TCAItems.COPPER_FAN.weathering().oxidized(), TCAItems.CHIME.weathering().oxidized());
 		insertAfterInBuildingBlocks(TCAItems.COPPER_FAN.waxed().oxidized(), TCAItems.CHIME.waxed().oxidized());
 
-		// COPPER CRATE
-		insertAfterInBuildingBlocks(Items.BARREL, TCAItems.CRATE);
-
+		// CRATE
+		insertAfterInFunctionalBlocks(Items.BARREL, TCAItems.CRATE);
 		insertAfterInRedstoneBlocks(Items.BARREL, TCAItems.CRATE);
 
 		// BUTTON
@@ -131,16 +129,23 @@ public final class TCACreativeInventorySorting {
 		insertAfterInRedstoneBlocks(Items.CHEST_MINECART, TCAItems.CRATE_MINECART);
 		insertAfterInRedstoneBlocks(Items.FURNACE_MINECART, TCAItems.JUKEBOX_MINECART);
 
-		insertAfterInRedstoneBlocks(Items.ACTIVATOR_RAIL, TCAItems.COPPER_RAIL.weathering().unaffected());
-		insertAfterInRedstoneBlocks(TCAItems.COPPER_RAIL.weathering().unaffected(), TCAItems.COPPER_RAIL.weathering().exposed());
-		insertAfterInRedstoneBlocks(TCAItems.COPPER_RAIL.weathering().exposed(), TCAItems.COPPER_RAIL.weathering().weathered());
-		insertAfterInRedstoneBlocks(TCAItems.COPPER_RAIL.weathering().weathered(), TCAItems.COPPER_RAIL.weathering().oxidized());
-		insertAfterInRedstoneBlocks(TCAItems.COPPER_RAIL.weathering().oxidized(), TCAItems.COPPER_RAIL.waxed().unaffected());
+		insertAfterInRedstoneBlocks(Items.ACTIVATOR_RAIL, TCAItems.COPPER_RAIL.waxed().unaffected());
 		insertAfterInRedstoneBlocks(TCAItems.COPPER_RAIL.waxed().unaffected(), TCAItems.COPPER_RAIL.waxed().exposed());
 		insertAfterInRedstoneBlocks(TCAItems.COPPER_RAIL.waxed().exposed(), TCAItems.COPPER_RAIL.waxed().weathered());
 		insertAfterInRedstoneBlocks(TCAItems.COPPER_RAIL.waxed().weathered(), TCAItems.COPPER_RAIL.waxed().oxidized());
 		insertAfterInRedstoneBlocks(TCAItems.COPPER_RAIL.waxed().oxidized(), TCAItems.CROSS_RAIL);
 		insertAfterInRedstoneBlocks(TCAItems.CROSS_RAIL, TCAItems.RELAYOR_RAIL);
+
+		insertAfterInToolsAndUtilities(Items.ACTIVATOR_RAIL, TCAItems.COPPER_RAIL.weathering().unaffected());
+		insertAfterInToolsAndUtilities(TCAItems.COPPER_RAIL.weathering().unaffected(), TCAItems.COPPER_RAIL.weathering().exposed());
+		insertAfterInToolsAndUtilities(TCAItems.COPPER_RAIL.weathering().exposed(), TCAItems.COPPER_RAIL.weathering().weathered());
+		insertAfterInToolsAndUtilities(TCAItems.COPPER_RAIL.weathering().weathered(), TCAItems.COPPER_RAIL.weathering().oxidized());
+		insertAfterInToolsAndUtilities(TCAItems.COPPER_RAIL.weathering().oxidized(), TCAItems.COPPER_RAIL.waxed().unaffected());
+		insertAfterInToolsAndUtilities(TCAItems.COPPER_RAIL.waxed().unaffected(), TCAItems.COPPER_RAIL.waxed().exposed());
+		insertAfterInToolsAndUtilities(TCAItems.COPPER_RAIL.waxed().exposed(), TCAItems.COPPER_RAIL.waxed().weathered());
+		insertAfterInToolsAndUtilities(TCAItems.COPPER_RAIL.waxed().weathered(), TCAItems.COPPER_RAIL.waxed().oxidized());
+		insertAfterInToolsAndUtilities(TCAItems.COPPER_RAIL.waxed().oxidized(), TCAItems.CROSS_RAIL);
+		insertAfterInToolsAndUtilities(TCAItems.CROSS_RAIL, TCAItems.RELAYOR_RAIL);
 
 		insertAfterInFunctionalBlocks(Items.SOUL_CAMPFIRE, TCAItems.COPPER_CAMPFIRE);
 		insertAfterInFunctionalBlocks(Items.SOUL_LANTERN, TCAItems.CUPRIC_LANTERN);

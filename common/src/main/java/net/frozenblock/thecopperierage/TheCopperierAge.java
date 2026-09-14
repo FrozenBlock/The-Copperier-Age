@@ -54,9 +54,9 @@ public final class TheCopperierAge {
 	}
 
 	public static void setup() {
-		TCABlocks.registerBlockProperties();
-		TCACreativeInventorySorting.init();
-		TCAStructureModifications.init();
+		TCABlocks.setupBlockProperties();
+		TCACreativeInventorySorting.setup();
+		TCAStructureModifications.setup();
 	}
 
 	private TheCopperierAge() {}

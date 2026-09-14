@@ -9,9 +9,9 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
 @Mod(value = TCAConstants.MOD_ID, dist = Dist.CLIENT)
-public class TheCopperierAgeClientNeoForge {
+public class TheCopperierAgeNeoForgeClient {
 
-	public TheCopperierAgeClientNeoForge(IEventBus modBus) {
+	public TheCopperierAgeNeoForgeClient(IEventBus modBus) {
 		TheCopperierAgeClient.init();
 
 		modBus.addListener(FMLClientSetupEvent.class, event -> {

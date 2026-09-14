@@ -18,10 +18,8 @@
 package net.frozenblock.thecopperierage.mixin.item;
 
 import java.util.function.Consumer;
-import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
-import net.frozenblock.thecopperierage.item.impl.ItemOxidizationCacheInterface;
-import net.frozenblock.thecopperierage.tag.TCAItemTags;
+import net.frozenblock.thecopperierage.item.api.OxidizableTooltipHelper;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.component.TypedDataComponent;
@@ -31,11 +29,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
-import net.minecraft.world.level.block.WeatheringCopper;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -79,31 +75,6 @@ public class ItemStackMixin { // in common mixins.json
 		Item.TooltipContext context, TooltipDisplay display, @Nullable Player player, TooltipFlag tooltipFlag, Consumer<Component> builder, CallbackInfo info
 	) {
 		final ItemStack stack = ItemStack.class.cast(this);
-		if (stack.is(TCAItemTags.OXIDIZABLE_EQUIPMENT)) {
-			theCopperierAge$addWeatherStateTooltip(
-				builder,
-				OxidizableItemHelper.getValueForOxidization(
-					stack,
-					WeatheringCopper.WeatherState.UNAFFECTED,
-					WeatheringCopper.WeatherState.EXPOSED,
-					WeatheringCopper.WeatherState.WEATHERED,
-					WeatheringCopper.WeatherState.OXIDIZED
-				)
-			);
-		}
-		if (OxidizableItemHelper.hasWaxedComponent(stack)) builder.accept(OxidizableItemHelper.WAXED_TOOLTIP);
-
-		if (!TCAConfig.BETTER_COPPER_TOOLTIPS.get()) return;
-		if (!(stack.getItem() instanceof ItemOxidizationCacheInterface oxidizationCache)) return;
-
-		final WeatheringCopper.WeatherState weatherState = oxidizationCache.theCopperierAge$weatherState();
-		if (weatherState != null) theCopperierAge$addWeatherStateTooltip(builder, weatherState);
-		if (oxidizationCache.theCopperierAge$waxed()) builder.accept(OxidizableItemHelper.WAXED_TOOLTIP);
-	}
-
-	@Unique
-	private static void theCopperierAge$addWeatherStateTooltip(Consumer<Component> consumer, WeatheringCopper.WeatherState weatherState) {
-		if (weatherState == WeatheringCopper.WeatherState.UNAFFECTED) return;
-		consumer.accept(OxidizableItemHelper.getWeatheringStateName(weatherState));
+		OxidizableTooltipHelper.addWeatheringAndWaxedTooltips(stack, context, display, player, tooltipFlag, builder);
 	}
 }

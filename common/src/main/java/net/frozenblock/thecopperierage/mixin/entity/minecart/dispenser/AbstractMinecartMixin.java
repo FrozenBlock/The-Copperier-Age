@@ -55,19 +55,19 @@ public class AbstractMinecartMixin {
 		double x, double y, double z,
 		EntityType<T> type,
 		EntitySpawnReason reason,
-		ItemStack stack,
+		ItemStack itemStack,
 		@Nullable Player player,
 		CallbackInfoReturnable<T> infoReturnable,
-		@Local T minecart
+		@Local(name = "entity") T entity
 	) {
-		if (!(minecart instanceof AbstractMinecartDispenser minecartDispenser) || player == null) return;
-		if (!(minecart.getBehavior() instanceof NewMinecartBehavior)) return;
+		if (!(entity instanceof AbstractMinecartDispenser minecartDispenser) || player == null) return;
+		if (!(entity.getBehavior() instanceof NewMinecartBehavior)) return;
 
 		Direction facing = Direction.orderedByNearest(player)[0].getOpposite();
 		fixDirection: {
 			if (facing.getAxis() == Direction.Axis.Y) break fixDirection;
 
-			final BlockPos pos = minecart.blockPosition();
+			final BlockPos pos = entity.blockPosition();
 			final BlockState state = level.getBlockState(pos);
 			if (!state.is(BlockTags.RAILS)) return;
 
@@ -84,5 +84,4 @@ public class AbstractMinecartMixin {
 			Optional.of(minecartDispenser.getDefaultDisplayBlockState().trySetValue(DispenserBlock.FACING, facing))
 		);
 	}
-
 }

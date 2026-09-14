@@ -59,7 +59,8 @@ public class AbstractMinecartMixin {
 		final AbstractMinecart minecart = AbstractMinecart.class.cast(this);
 		final BlockState state = minecart.level().getBlockState(pos);
 		if (!(state.getBlock() instanceof CrossRailBlock)) return shape;
-		return CrossRailBlock.travelShape(minecart.level(), pos, minecart);
+
+		return CrossRailBlock.railShapeFromMotion(minecart.level(), pos, minecart);
 	}
 
 	@Inject(method = "move", at = @At("HEAD"), cancellable = true)

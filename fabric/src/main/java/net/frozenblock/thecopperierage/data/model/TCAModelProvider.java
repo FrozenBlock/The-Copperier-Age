@@ -99,7 +99,6 @@ public final class TCAModelProvider extends FabricModelProvider {
 		generator.generateFlatItem(TCAItems.WRENCH.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		generator.generateFlatItem(TCAItems.MINECART_COUPLING.get(), ModelTemplates.FLAT_ITEM);
 		generator.generateFlatItem(TCAItems.CRATE_MINECART.get(), ModelTemplates.FLAT_ITEM);
-		generator.generateFlatItem(TCAItems.COPPER_GOLEM_STATUE_MINECART.get(), ModelTemplates.FLAT_ITEM);
 		generator.generateFlatItem(TCAItems.JUKEBOX_MINECART.get(), ModelTemplates.FLAT_ITEM);
 		generator.generateFlatItem(TCAItems.DISPENSER_MINECART.get(), ModelTemplates.FLAT_ITEM);
 		generator.generateFlatItem(TCAItems.DROPPER_MINECART.get(), ModelTemplates.FLAT_ITEM);

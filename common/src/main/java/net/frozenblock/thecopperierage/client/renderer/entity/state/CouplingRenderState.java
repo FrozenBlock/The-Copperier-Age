@@ -37,49 +37,44 @@ import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.phys.Vec3;
 
 @ClientOnly
-public class CouplingRenderState {
+public final class CouplingRenderState {
 	private static final float ONE_AND_A_HALF_PIXELS = 1.5F / 16F;
 	private static final float TWO_PIXELS = 2F / 16F;
 	private static final RenderType COUPLING_RENDER_TYPE = FrozenLibRenderTypes.entityCutoutNoShading(TCAConstants.id("textures/entity/minecart/coupling.png"));
-	public static final RenderStateDataKey<CouplingRenderState> COUPLING_RENDER_STATE = RenderStateDataKey.create(
-		TCAConstants.id("coupling")
-	);
-	public static final RenderStateDataKey<CouplingRenderState> COUPLING_HELD_RENDER_STATE = RenderStateDataKey.create(
-		TCAConstants.id("coupling_held")
-	);
+	public static final RenderStateDataKey<CouplingRenderState> COUPLING_RENDER_STATE = RenderStateDataKey.create(TCAConstants.id("coupling"));
+	public static final RenderStateDataKey<CouplingRenderState> COUPLING_HELD_RENDER_STATE = RenderStateDataKey.create(TCAConstants.id("coupling_held"));
 	public Vec3 vector = Vec3.ZERO;
 
-	public CouplingRenderState() {
-	}
+	public CouplingRenderState() {}
 
-	public static void extract(AbstractMinecart minecart, MinecartRenderState renderState, float partialTicks) {
+	public static void extractRenderState(AbstractMinecart minecart, MinecartRenderState state, float partialTicks) {
 		if (!(minecart instanceof CouplingToEntityInterface coupleInterface)) return;
 
 		final Minecraft minecraft = Minecraft.getInstance();
 		if (minecraft.player != null) {
 			MinecartCouplingClientHandler.createRenderState(minecraft.player, minecart, partialTicks)
-				.ifPresent(couplingRenderState -> renderState.frozenLib$setData(COUPLING_HELD_RENDER_STATE, couplingRenderState));
+				.ifPresent(couplingState -> state.frozenLib$setData(COUPLING_HELD_RENDER_STATE, couplingState));
 		}
 
 		final Entity coupledTo = coupleInterface.theCopperierAge$getCoupledTo();
 		if (coupledTo == null) return;
 
-		final CouplingRenderState couplingRenderState = new CouplingRenderState();
-		couplingRenderState.vector = coupledTo.getPosition(partialTicks).subtract(minecart.getPosition(partialTicks));
-		renderState.frozenLib$setData(COUPLING_RENDER_STATE, couplingRenderState);
+		final CouplingRenderState couplingState = new CouplingRenderState();
+		couplingState.vector = coupledTo.getPosition(partialTicks).subtract(minecart.getPosition(partialTicks));
+		state.frozenLib$setData(COUPLING_RENDER_STATE, couplingState);
 	}
 
-	public static void renderCoupling(
+	public static void submit(
 		PoseStack poseStack,
-		SubmitNodeCollector collector,
-		MinecartRenderState renderState,
+		SubmitNodeCollector submitNodeCollector,
+		MinecartRenderState state,
 		int lightCoords,
 		RenderStateDataKey<CouplingRenderState> key
 	) {
-		final CouplingRenderState couplingRenderState = renderState.frozenLib$getData(key);
-		if (couplingRenderState == null) return;
+		final CouplingRenderState couplingState = state.frozenLib$getData(key);
+		if (couplingState == null) return;
 
-		Vec3 couplingVector = couplingRenderState.vector;
+		Vec3 couplingVector = couplingState.vector;
 		float length = (float) couplingVector.length();
 		couplingVector = couplingVector.normalize();
 		float xRot = (float) Math.acos(couplingVector.y);
@@ -113,7 +108,7 @@ public class CouplingRenderState {
 			final float lengthEnd = lengthRendered / 16F;
 			final float maxV = lengthToRender / 16F;
 
-			collector.submitCustomGeometry(poseStack, COUPLING_RENDER_TYPE, (pose, buffer) -> {
+			submitNodeCollector.submitCustomGeometry(poseStack, COUPLING_RENDER_TYPE, (pose, buffer) -> {
 				vertex(buffer, pose, x1, lengthEnd, z2, maxU, maxV, lightCoords);
 				vertex(buffer, pose, x1, lengthStart, z2, maxU, minV, lightCoords);
 				vertex(buffer, pose, x2, lengthStart, z1, minU, minV, lightCoords);

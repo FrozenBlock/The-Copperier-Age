@@ -21,7 +21,9 @@ import java.util.concurrent.CompletableFuture;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.frozenblock.lib.FrozenLibConstants;
+import net.frozenblock.lib.tag.api.ConventionalEntityTypeTags;
 import net.frozenblock.lib.tag.api.FrozenLibEntityTypeTags;
+import net.frozenblock.thecopperierage.references.TCAEntityTypeIds;
 import net.frozenblock.thecopperierage.tag.TCAEntityTypeTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.Identifier;
@@ -94,6 +96,14 @@ public final class TCAEntityTypeTagsProvider extends FabricTagsProvider.EntityTy
 
 		this.builder(TCAEntityTypeTags.COPPER)
 			.add(EntityTypeIds.COPPER_GOLEM);
+
+		this.builder(ConventionalEntityTypeTags.MINECARTS)
+			.add(
+				TCAEntityTypeIds.CRATE_MINECART,
+				TCAEntityTypeIds.DISPENSER_MINECART,
+				TCAEntityTypeIds.DROPPER_MINECART,
+				TCAEntityTypeIds.JUKEBOX_MINECART
+			);
 	}
 
 	private TagKey<EntityType<?>> getTag(String name) {

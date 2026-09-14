@@ -20,6 +20,7 @@ package net.frozenblock.thecopperierage.mixin.entity.minecart.rail;
 import net.frozenblock.thecopperierage.block.CrossRailBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.MinecartBehavior;
 import net.minecraft.world.entity.vehicle.minecart.OldMinecartBehavior;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,13 +28,17 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(OldMinecartBehavior.class)
-public class OldMinecartBehaviorMixin {
+public abstract class OldMinecartBehaviorMixin extends MinecartBehavior {
+
+	protected OldMinecartBehaviorMixin(AbstractMinecart minecart) {
+		super(minecart);
+	}
 
 	@ModifyVariable(method = "moveAlongTrack", at = @At("STORE"))
 	private RailShape theCopperierAge$crossRailShape(RailShape shape) {
-		final AbstractMinecart minecart = ((MinecartBehaviorAccessor) this).theCopperierAge$getMinecart();
+		final AbstractMinecart minecart = this.minecart;
 		final BlockPos pos = minecart.getCurrentBlockPosOrRailBelow();
 		if (!(minecart.level().getBlockState(pos).getBlock() instanceof CrossRailBlock)) return shape;
-		return CrossRailBlock.travelShape(minecart.level(), pos, minecart);
+		return CrossRailBlock.railShapeFromMotion(minecart.level(), pos, minecart);
 	}
 }

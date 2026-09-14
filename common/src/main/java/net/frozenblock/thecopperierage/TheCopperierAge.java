@@ -5,7 +5,7 @@ import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
 import net.frozenblock.thecopperierage.levelgen.structure.modification.TCAStructureModifications;
 import net.frozenblock.thecopperierage.networking.TCANetworking;
-import net.frozenblock.thecopperierage.registry.TCAAttachments;
+import net.frozenblock.thecopperierage.registry.TCAAttachmentTypes;
 import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCACreativeInventorySorting;
@@ -29,7 +29,7 @@ public final class TheCopperierAge {
 	public static void init() {
 		TCAFeatureFlags.init();
 		FeatureFlagApi.rebuild();
-		TCAAttachments.init();
+		TCAAttachmentTypes.init();
 
 		TCABlocks.init();
 		TCABlockEntityTypes.init();

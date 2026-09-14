@@ -49,5 +49,4 @@ public class VehicleEntityMixin {
 		if (!(VehicleEntity.class.cast(this) instanceof AbstractMinecart minecart)) return;
 		minecart.playSound(TCASounds.ENTITY_MINECART_BREAK.get(), 1F, (minecart.getRandom().nextFloat() * 0.3F) + 0.85F);
 	}
-
 }

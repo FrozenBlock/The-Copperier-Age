@@ -46,6 +46,7 @@ public abstract class AbstractMinecartMixin {
 	@Unique
 	private double theCopperierAge$lastSpeed;
 
+	// TODO: remove logging
 	@Inject(method = "tick", at = @At("TAIL"))
 	private void theCopperierAge$reportMotionEvents(CallbackInfo info) {
 		if (!TCAConfig.DEBUG_MINECART_MOTION.get()) return;

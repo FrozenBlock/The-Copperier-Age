@@ -19,7 +19,7 @@ package net.frozenblock.thecopperierage.mixin.entity.minecart.smoothing;
 
 import net.frozenblock.thecopperierage.entity.coupling.CouplingData;
 import net.frozenblock.thecopperierage.entity.impl.MinecartRotationSmoothing;
-import net.frozenblock.thecopperierage.registry.TCAAttachments;
+import net.frozenblock.thecopperierage.registry.TCAAttachmentTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.minecart.NewMinecartBehavior;
@@ -119,7 +119,7 @@ public class AbstractMinecartMixin implements MinecartRotationSmoothing {
 
 	@Unique
 	private static boolean theCopperierAge$isCoupled(AbstractMinecart minecart) {
-		final CouplingData coupling = minecart.frozenLib$getAttached(TCAAttachments.MINECART_COUPLING);
+		final CouplingData coupling = minecart.frozenLib$getAttached(TCAAttachmentTypes.MINECART_COUPLING);
 		return coupling != null && (coupling.isCoupledTo() || coupling.isCoupledFrom());
 	}
 
@@ -130,16 +130,19 @@ public class AbstractMinecartMixin implements MinecartRotationSmoothing {
 		return current + Mth.clamp(delta, -maxStep, maxStep);
 	}
 
+	@Unique
 	@Override
 	public boolean theCopperierAge$hasSmoothedRotation() {
 		return this.theCopperierAge$rotationInitialized;
 	}
 
+	@Unique
 	@Override
 	public float theCopperierAge$getSmoothYRot(float partialTick) {
 		return Mth.rotLerp(partialTick, this.theCopperierAge$smoothYRotO, this.theCopperierAge$smoothYRot);
 	}
 
+	@Unique
 	@Override
 	public float theCopperierAge$getSmoothXRot(float partialTick) {
 		return Mth.rotLerp(partialTick, this.theCopperierAge$smoothXRotO, this.theCopperierAge$smoothXRot);

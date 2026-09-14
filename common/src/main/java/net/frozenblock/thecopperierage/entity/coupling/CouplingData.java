@@ -29,12 +29,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 
 public record CouplingData(Optional<UUID> coupledTo, Optional<UUID> coupledFrom) {
-	public static final Codec<CouplingData> CODEC = RecordCodecBuilder.create(
-		instance -> instance.group(
-			UUIDUtil.CODEC.optionalFieldOf("coupled_to").forGetter(CouplingData::coupledTo),
-			UUIDUtil.CODEC.optionalFieldOf("coupled_from").forGetter(CouplingData::coupledFrom)
-		).apply(instance, CouplingData::new)
-	);
+	public static final Codec<CouplingData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+		UUIDUtil.CODEC.optionalFieldOf("coupled_to").forGetter(CouplingData::coupledTo),
+		UUIDUtil.CODEC.optionalFieldOf("coupled_from").forGetter(CouplingData::coupledFrom)
+	).apply(instance, CouplingData::new));
 	public static final StreamCodec<RegistryFriendlyByteBuf, CouplingData> STREAM_CODEC = StreamCodec.composite(
 		UUIDUtil.STREAM_CODEC.apply(ByteBufCodecs::optional), CouplingData::coupledTo,
 		UUIDUtil.STREAM_CODEC.apply(ByteBufCodecs::optional), CouplingData::coupledFrom,

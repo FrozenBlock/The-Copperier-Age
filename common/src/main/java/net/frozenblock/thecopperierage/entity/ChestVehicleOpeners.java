@@ -17,7 +17,7 @@
 
 package net.frozenblock.thecopperierage.entity;
 
-import net.frozenblock.thecopperierage.registry.TCAAttachments;
+import net.frozenblock.thecopperierage.registry.TCAAttachmentTypes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -37,10 +37,10 @@ public final class ChestVehicleOpeners {
 	public static void add(Entity vehicle, int delta) {
 		if (vehicle.level().isClientSide()) return;
 
-		final int current = vehicle.frozenLib$getAttachedOrCreate(TCAAttachments.CHEST_VEHICLE_OPENERS);
+		final int current = vehicle.frozenLib$getAttachedOrCreate(TCAAttachmentTypes.CHEST_VEHICLE_OPENERS);
 		final int updated = Math.max(0, current + delta);
 		if (updated == current) return;
-		vehicle.frozenLib$setAttached(TCAAttachments.CHEST_VEHICLE_OPENERS, updated);
+		vehicle.frozenLib$setAttached(TCAAttachmentTypes.CHEST_VEHICLE_OPENERS, updated);
 
 		if (current == 0) {
 			playLidSound(vehicle, SoundEvents.CHEST_OPEN);
@@ -50,7 +50,7 @@ public final class ChestVehicleOpeners {
 	}
 
 	public static boolean isOpen(Entity vehicle) {
-		final Integer openers = vehicle.frozenLib$getAttached(TCAAttachments.CHEST_VEHICLE_OPENERS);
+		final Integer openers = vehicle.frozenLib$getAttached(TCAAttachmentTypes.CHEST_VEHICLE_OPENERS);
 		return openers != null && openers > 0;
 	}
 

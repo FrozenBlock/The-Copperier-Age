@@ -35,7 +35,6 @@
     "entity.minecart.motion.AbstractMinecartMixin",
     "entity.minecart.motion.NewMinecartBehaviorMixin",
     "entity.minecart.rail.AbstractMinecartMixin",
-    "entity.minecart.rail.MinecartBehaviorAccessor",
     "entity.minecart.rail.OldMinecartBehaviorMixin",
     "entity.minecart.speed.AbstractMinecartContainerMixin",
     "entity.minecart.speed.AbstractMinecartMixin",

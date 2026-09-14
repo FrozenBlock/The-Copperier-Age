@@ -74,10 +74,6 @@ public final class TCAItems {
 		properties -> new MinecartItem(TCAEntityTypes.CRATE_MINECART.get(), properties),
 		() -> new Item.Properties().stacksTo(1)
 	);
-	public static final DeferredItem<MinecartItem> COPPER_GOLEM_STATUE_MINECART = REGISTER.registerItem(TCAItemIds.COPPER_GOLEM_STATUE_MINECART,
-		properties -> new MinecartItem(TCAEntityTypes.COPPER_GOLEM_STATUE_MINECART.get(), properties),
-		() -> new Item.Properties().stacksTo(1)
-	);
 	public static final DeferredItem<MinecartItem> DISPENSER_MINECART = REGISTER.registerItem(TCAItemIds.DISPENSER_MINECART,
 		properties -> new MinecartItem(TCAEntityTypes.DISPENSER_MINECART.get(), properties),
 		() -> new Item.Properties().stacksTo(1)

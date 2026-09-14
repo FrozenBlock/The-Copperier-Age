@@ -87,7 +87,7 @@ public class CrossRailBlock extends BaseRailBlock {
 		builder.add(SHAPE, WATERLOGGED);
 	}
 
-	public static RailShape travelShape(Level level, BlockPos pos, AbstractMinecart minecart) {
+	public static RailShape railShapeFromMotion(Level level, BlockPos pos, AbstractMinecart minecart) {
 		final boolean eastWestTrack = hasRailBeside(level, pos, Direction.EAST) || hasRailBeside(level, pos, Direction.WEST);
 		final boolean northSouthTrack = hasRailBeside(level, pos, Direction.NORTH) || hasRailBeside(level, pos, Direction.SOUTH);
 

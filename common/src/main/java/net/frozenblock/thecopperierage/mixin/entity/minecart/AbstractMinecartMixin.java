@@ -68,7 +68,7 @@ public class AbstractMinecartMixin {
 		double x, double y, double z,
 		EntityType<T> type,
 		EntitySpawnReason reason,
-		ItemStack stack,
+		ItemStack itemStack,
 		@Nullable Player player,
 		CallbackInfoReturnable<T> infoReturnable
 	) {
@@ -88,5 +88,4 @@ public class AbstractMinecartMixin {
 			}
 		}
 	}
-
 }

@@ -49,12 +49,13 @@ public class AbstractMinecartRendererMixin {
 	public <T extends AbstractMinecart, S extends MinecartRenderState> void theCopperierAge$extractCouplingRenderState(
 		T entity, S state, float partialTicks, CallbackInfo info
 	) {
-		CouplingRenderState.extract(entity, state, partialTicks);
+		CouplingRenderState.extractRenderState(entity, state, partialTicks);
 
 		// Rotation 2.0: replace vanilla's snappy step-lerp yaw/pitch with the eased values.
 		if (THECOPPERIERAGE$SMOOTHING_ENABLED
 			&& entity instanceof MinecartRotationSmoothing smoothing
-			&& smoothing.theCopperierAge$hasSmoothedRotation()) {
+			&& smoothing.theCopperierAge$hasSmoothedRotation()
+		) {
 			state.yRot = smoothing.theCopperierAge$getSmoothYRot(partialTicks);
 			state.xRot = smoothing.theCopperierAge$getSmoothXRot(partialTicks);
 		}
@@ -71,8 +72,8 @@ public class AbstractMinecartRendererMixin {
 		CameraRenderState camera,
 		CallbackInfo info
 	) {
-		CouplingRenderState.renderCoupling(poseStack, submitNodeCollector, state, state.lightCoords, CouplingRenderState.COUPLING_RENDER_STATE);
-		CouplingRenderState.renderCoupling(poseStack, submitNodeCollector, state, state.lightCoords, CouplingRenderState.COUPLING_HELD_RENDER_STATE);
+		CouplingRenderState.submit(poseStack, submitNodeCollector, state, state.lightCoords, CouplingRenderState.COUPLING_RENDER_STATE);
+		CouplingRenderState.submit(poseStack, submitNodeCollector, state, state.lightCoords, CouplingRenderState.COUPLING_HELD_RENDER_STATE);
 	}
 
 	@ModifyReturnValue(

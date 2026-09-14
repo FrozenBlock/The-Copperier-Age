@@ -79,12 +79,12 @@ public final class MinecartCouplingInteraction {
 		return true;
 	}
 
-	public static boolean isCouplingValidInLevel(Level level, AbstractMinecart selectedCart, Entity target, boolean checkEntityHitResult) {
-		if (target == null || selectedCart == null || level == null || level != selectedCart.level()) return false;
-		if (!target.isAlive() || target.isSpectator() || !selectedCart.isAlive() || selectedCart.isSpectator()) return false;
+	public static boolean isCouplingValidInLevel(Level level, AbstractMinecart selectedCart, Entity holder, boolean checkEntityHitResult) {
+		if (holder == null || selectedCart == null || level == null || level != selectedCart.level()) return false;
+		if (!holder.isAlive() || holder.isSpectator() || !selectedCart.isAlive() || selectedCart.isSpectator()) return false;
 
 		final Vec3 baseCartPos = selectedCart.position();
-		final Vec3 baseTargetPos = target.position();
+		final Vec3 baseTargetPos = holder.position();
 		if (baseCartPos.distanceTo(baseTargetPos) > MAX_PLAYER_DISTANCE) return false;
 
 		final Vec3[] startPoses = new Vec3[] {
@@ -93,7 +93,7 @@ public final class MinecartCouplingInteraction {
 		};
 		final Vec3[] targetPoses = new Vec3[] {
 			baseTargetPos.add(0D, 0.1D, 0D),
-			target.getEyePosition()
+			holder.getEyePosition()
 		};
 
 		for (Vec3 startPos : startPoses) {
@@ -118,11 +118,11 @@ public final class MinecartCouplingInteraction {
 					selectedCart,
 					startPos,
 					targetPos,
-					selectedCart.getBoundingBox().minmax(target.getBoundingBox()),
+					selectedCart.getBoundingBox().minmax(holder.getBoundingBox()),
 					EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.NO_SPECTATORS),
 					MAX_PLAYER_DISTANCE_SQR
 				);
-				if (entityResult != null && entityResult.getEntity() == target) return true;
+				if (entityResult != null && entityResult.getEntity() == holder) return true;
 			}
 		}
 

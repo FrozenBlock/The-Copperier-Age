@@ -4,7 +4,6 @@ import net.frozenblock.lib.platform.api.registry.DeferredEntityType;
 import net.frozenblock.lib.platform.api.registry.DeferredRegister;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.TCAFeatureFlags;
-import net.frozenblock.thecopperierage.entity.MinecartCopperGolemStatue;
 import net.frozenblock.thecopperierage.entity.MinecartCrate;
 import net.frozenblock.thecopperierage.entity.MinecartDispenser;
 import net.frozenblock.thecopperierage.entity.MinecartDispenserDropper;
@@ -17,12 +16,6 @@ public final class TCAEntityTypes {
 
 	public static final DeferredEntityType<MinecartCrate> CRATE_MINECART = REGISTER.register(TCAEntityTypeIds.CRATE_MINECART,
 		MinecartCrate::new,
-		MobCategory.MISC,
-		builder -> builder.sized(0.98F, 0.7F).clientTrackingRange(8).updateInterval(3)
-	);
-
-	public static final DeferredEntityType<MinecartCopperGolemStatue> COPPER_GOLEM_STATUE_MINECART = REGISTER.register(TCAEntityTypeIds.COPPER_GOLEM_STATUE_MINECART,
-		MinecartCopperGolemStatue::new,
 		MobCategory.MISC,
 		builder -> builder.sized(0.98F, 0.7F).clientTrackingRange(8).updateInterval(3)
 	);

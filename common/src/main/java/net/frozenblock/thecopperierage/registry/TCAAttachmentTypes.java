@@ -24,7 +24,7 @@ import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.entity.coupling.CouplingData;
 import net.minecraft.network.codec.ByteBufCodecs;
 
-public final class TCAAttachments {
+public final class TCAAttachmentTypes {
 	public static final DataAttachmentType<Integer> CHEST_VEHICLE_OPENERS = DataAttachmentType.create(
 		TCAConstants.id("chest_vehicle_openers"),
 		builder -> {
@@ -50,5 +50,5 @@ public final class TCAAttachments {
 
 	public static void init() {}
 
-	private TCAAttachments() {}
+	private TCAAttachmentTypes() {}
 }

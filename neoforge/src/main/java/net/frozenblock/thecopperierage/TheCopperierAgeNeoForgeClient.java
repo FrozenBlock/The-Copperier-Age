@@ -1,5 +1,6 @@
 package net.frozenblock.thecopperierage;
 
+import net.frozenblock.lib.platform.ModLoader;
 import net.frozenblock.thecopperierage.config.gui.TCAConfigGui;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -14,14 +15,16 @@ public class TheCopperierAgeNeoForgeClient {
 	public TheCopperierAgeNeoForgeClient(IEventBus modBus) {
 		TheCopperierAgeClient.init();
 
+		// AFTER register event
 		modBus.addListener(FMLClientSetupEvent.class, event -> {
 			TheCopperierAgeClient.setup();
 		});
 
-		ModLoadingContext.get().registerExtensionPoint(
-			IConfigScreenFactory.class,
-			() -> (container, parent) ->
-				TCAConfigGui.buildScreen(parent)
-		);
+		if (ModLoader.isModLoaded("cloth-config") || ModLoader.isModLoaded("cloth_config")) {
+			ModLoadingContext.get().registerExtensionPoint(
+				IConfigScreenFactory.class,
+				() -> (container, parent) -> TCAConfigGui.buildScreen(parent)
+			);
+		}
 	}
 }

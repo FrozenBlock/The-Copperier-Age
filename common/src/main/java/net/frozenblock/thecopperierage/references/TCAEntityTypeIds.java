@@ -7,7 +7,6 @@ import net.minecraft.world.entity.EntityType;
 
 public final class TCAEntityTypeIds {
 	public static final ResourceKey<EntityType<?>> CRATE_MINECART = create("crate_minecart");
-	public static final ResourceKey<EntityType<?>> COPPER_GOLEM_STATUE_MINECART = create("copper_golem_statue_minecart");
 	public static final ResourceKey<EntityType<?>> DISPENSER_MINECART = create("dispenser_minecart");
 	public static final ResourceKey<EntityType<?>> DROPPER_MINECART = create("dropper_minecart");
 	public static final ResourceKey<EntityType<?>> JUKEBOX_MINECART = create("jukebox_minecart");

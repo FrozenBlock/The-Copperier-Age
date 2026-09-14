@@ -19,7 +19,7 @@ package net.frozenblock.thecopperierage.entity.coupling;
 
 import java.util.Optional;
 import net.frozenblock.thecopperierage.entity.impl.CouplingToEntityInterface;
-import net.frozenblock.thecopperierage.registry.TCAAttachments;
+import net.frozenblock.thecopperierage.registry.TCAAttachmentTypes;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.minecraft.core.BlockPos;
@@ -361,26 +361,26 @@ public final class MinecartCouplingUtil {
 	}
 
 	public static CouplingData getCoupling(Entity entity) {
-		return entity.frozenLib$getAttachedOrCreate(TCAAttachments.MINECART_COUPLING);
+		return TCAAttachmentTypes.MINECART_COUPLING.getAttachedOrCreate(entity);
 	}
 
 	public static void coupleTo(AbstractMinecart cart1, AbstractMinecart cart2) {
-		cart1.frozenLib$setAttached(TCAAttachments.MINECART_COUPLING, getCoupling(cart1).coupleTo(cart2.getUUID()));
-		cart2.frozenLib$setAttached(TCAAttachments.MINECART_COUPLING, getCoupling(cart2).coupleFrom(cart1.getUUID()));
+		TCAAttachmentTypes.MINECART_COUPLING.set(cart1, getCoupling(cart1).coupleTo(cart2.getUUID()));
+		TCAAttachmentTypes.MINECART_COUPLING.set(cart2, getCoupling(cart2).coupleFrom(cart1.getUUID()));
 	}
 
 	public static boolean uncoupleTo(Entity cart, boolean drop) {
-		final CouplingData coupling = cart.frozenLib$getAttachedOrCreate(TCAAttachments.MINECART_COUPLING);
+		final CouplingData coupling = TCAAttachmentTypes.MINECART_COUPLING.getAttachedOrCreate(cart);
 		final boolean isCoupled = coupling.isCoupledTo();
 		if (!isCoupled) return false;
 
-		cart.frozenLib$setAttached(TCAAttachments.MINECART_COUPLING, coupling.uncoupleTo());
+		TCAAttachmentTypes.MINECART_COUPLING.set(cart, coupling.uncoupleTo());
 		final Optional<Entity> coupledTo = coupling.getCoupledTo(cart.level());
 
 		coupledTo.ifPresent(
 			entity -> {
-				final CouplingData fromCoupling = entity.frozenLib$getAttachedOrCreate(TCAAttachments.MINECART_COUPLING);
-				if (fromCoupling.isCoupledFrom(cart.getUUID())) entity.frozenLib$setAttached(TCAAttachments.MINECART_COUPLING, fromCoupling.uncoupleFrom());
+				final CouplingData fromCoupling = TCAAttachmentTypes.MINECART_COUPLING.getAttachedOrCreate(entity);
+				if (fromCoupling.isCoupledFrom(cart.getUUID())) TCAAttachmentTypes.MINECART_COUPLING.set(entity, fromCoupling.uncoupleFrom());
 			}
 		);
 
@@ -389,17 +389,17 @@ public final class MinecartCouplingUtil {
 	}
 
 	public static boolean uncoupleFrom(Entity cart, boolean drop) {
-		final CouplingData coupling = cart.frozenLib$getAttachedOrCreate(TCAAttachments.MINECART_COUPLING);
+		final CouplingData coupling = TCAAttachmentTypes.MINECART_COUPLING.getAttachedOrCreate(cart);
 		final boolean isCoupled = coupling.isCoupledFrom();
 		if (!isCoupled) return false;
 
-		cart.frozenLib$setAttached(TCAAttachments.MINECART_COUPLING, coupling.uncoupleFrom());
+		TCAAttachmentTypes.MINECART_COUPLING.set(cart, coupling.uncoupleFrom());
 		final Optional<Entity> coupledFrom = coupling.getCoupledFrom(cart.level());
 
 		coupledFrom.ifPresent(
 			entity -> {
-				final CouplingData toCoupling = entity.frozenLib$getAttachedOrCreate(TCAAttachments.MINECART_COUPLING);
-				if (toCoupling.isCoupledTo(cart.getUUID())) entity.frozenLib$setAttached(TCAAttachments.MINECART_COUPLING, toCoupling.uncoupleTo());
+				final CouplingData toCoupling = TCAAttachmentTypes.MINECART_COUPLING.getAttachedOrCreate(entity);
+				if (toCoupling.isCoupledTo(cart.getUUID())) TCAAttachmentTypes.MINECART_COUPLING.set(entity, toCoupling.uncoupleTo());
 			}
 		);
 

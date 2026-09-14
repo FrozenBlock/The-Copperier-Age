@@ -18,18 +18,13 @@
 package net.frozenblock.thecopperierage.mixin.client.chestvehicle;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.frozenblock.thecopperierage.client.renderer.entity.ChestVehicleRenderHelper;
-import net.frozenblock.thecopperierage.client.renderer.entity.state.ChestVehicleRenderStateAccess;
-import net.frozenblock.thecopperierage.entity.ChestVehicleOpeners;
-import net.frozenblock.thecopperierage.entity.impl.ChestVehicleLidInterface;
 import net.mehvahdjukaar.candlelight.api.ClientOnly;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.AbstractBoatRenderer;
 import net.minecraft.client.renderer.entity.RaftRenderer;
 import net.minecraft.client.renderer.entity.state.BoatRenderState;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -42,16 +37,10 @@ public class AbstractBoatRendererMixin {
 
 	@Inject(
 		method = "extractRenderState(Lnet/minecraft/world/entity/vehicle/boat/AbstractBoat;Lnet/minecraft/client/renderer/entity/state/BoatRenderState;F)V",
-		at = @At("TAIL")
+		at = @At("RETURN")
 	)
-	public void theCopperierAge$extractChestState(AbstractBoat boat, BoatRenderState state, float partialTicks, CallbackInfo info) {
-		if (!(state instanceof ChestVehicleRenderStateAccess chestState)) return;
-
-		final boolean isChestVehicle = boat instanceof ChestVehicleLidInterface && ChestVehicleOpeners.hasChest(boat);
-		chestState.theCopperierAge$setChestVehicle(isChestVehicle);
-		chestState.theCopperierAge$setLidOpenness(
-			isChestVehicle ? ((ChestVehicleLidInterface) boat).theCopperierAge$getLidOpenness(partialTicks) : 0F
-		);
+	public void theCopperierAge$extractChestState(AbstractBoat entity, BoatRenderState state, float partialTicks, CallbackInfo info) {
+		ChestVehicleRenderHelper.extract(entity, state, partialTicks);
 	}
 
 	@Inject(
@@ -65,30 +54,10 @@ public class AbstractBoatRendererMixin {
 	public void theCopperierAge$submitChest(
 		BoatRenderState state,
 		PoseStack poseStack,
-		SubmitNodeCollector collector,
+		SubmitNodeCollector submitNodeCollector,
 		CameraRenderState camera,
 		CallbackInfo info
 	) {
-		if (!(state instanceof ChestVehicleRenderStateAccess chestState) || !chestState.theCopperierAge$isChestVehicle()) return;
-
-		final float raftYOffset = (Object) this instanceof RaftRenderer ? ChestVehicleRenderHelper.CHEST_RAFT_Y_OFFSET : 0F;
-
-		poseStack.pushPose();
-		poseStack.translate(ChestVehicleRenderHelper.CHEST_BASE_X, ChestVehicleRenderHelper.CHEST_BASE_Y + raftYOffset, ChestVehicleRenderHelper.CHEST_BASE_Z);
-		poseStack.mulPose(Axis.YN.rotation(Mth.HALF_PI));
-		poseStack.scale(ChestVehicleRenderHelper.CHEST_SCALE, ChestVehicleRenderHelper.CHEST_SCALE, ChestVehicleRenderHelper.CHEST_SCALE);
-		poseStack.translate(-ChestVehicleRenderHelper.CHEST_PAD, 0F, -ChestVehicleRenderHelper.CHEST_PAD);
-		poseStack.translate(ChestVehicleRenderHelper.HALF_BLOCK, ChestVehicleRenderHelper.HALF_BLOCK, ChestVehicleRenderHelper.HALF_BLOCK);
-		poseStack.mulPose(Axis.XP.rotation(Mth.PI));
-		poseStack.translate(-ChestVehicleRenderHelper.HALF_BLOCK, -ChestVehicleRenderHelper.HALF_BLOCK, -ChestVehicleRenderHelper.HALF_BLOCK);
-
-		ChestVehicleRenderHelper.submitChest(
-			poseStack,
-			collector,
-			camera,
-			state.lightCoords,
-			chestState.theCopperierAge$getLidOpenness()
-		);
-		poseStack.popPose();
+		ChestVehicleRenderHelper.submitBoat(state, poseStack, submitNodeCollector, camera, (Object) this instanceof RaftRenderer);
 	}
 }

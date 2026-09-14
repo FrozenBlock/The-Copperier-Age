@@ -48,8 +48,6 @@
     "client.chestvehicle.AbstractBoatModelMixin",
     "client.chestvehicle.AbstractBoatRendererMixin",
     "client.chestvehicle.AbstractMinecartRendererMixin",
-    "client.chestvehicle.BoatRenderStateMixin",
-    "client.chestvehicle.MinecartRenderStateMixin",
     "client.copper_golem.CopperGolemModelMixin",
     "client.copper_golem.CopperGolemRendererMixin",
     "client.copper_golem.CopperGolemRenderStateMixin",

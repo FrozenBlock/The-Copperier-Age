@@ -18,7 +18,6 @@
 package net.frozenblock.thecopperierage.mixin.client.chestvehicle;
 
 import net.frozenblock.thecopperierage.client.renderer.entity.ChestVehicleRenderHelper;
-import net.frozenblock.thecopperierage.client.renderer.entity.state.ChestVehicleRenderStateAccess;
 import net.mehvahdjukaar.candlelight.api.ClientOnly;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.object.boat.AbstractBoatModel;
@@ -54,7 +53,7 @@ public class AbstractBoatModelMixin {
 	private void theCopperierAge$hideBakedChest(BoatRenderState state, CallbackInfo info) {
 		if (this.theCopperierAge$chestBottom == null || this.theCopperierAge$chestLid == null || this.theCopperierAge$chestLock == null) return;
 
-		final boolean hidden = state instanceof ChestVehicleRenderStateAccess chestState && chestState.theCopperierAge$isChestVehicle();
+		final boolean hidden = state.frozenLib$getData(ChestVehicleRenderHelper.VEHICLE_CHEST_OPENNESS) != null;
 		this.theCopperierAge$chestBottom.visible = !hidden;
 		this.theCopperierAge$chestLid.visible = !hidden;
 		this.theCopperierAge$chestLock.visible = !hidden;

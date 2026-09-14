@@ -30,7 +30,6 @@ import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.phys.AABB;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -38,9 +37,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @ClientOnly
 @Mixin(AbstractMinecartRenderer.class)
 public class AbstractMinecartRendererMixin {
-	/** Disabled: see the rotation smoothing mixin. */
-	@Unique
-	private static final boolean THECOPPERIERAGE$SMOOTHING_ENABLED = false;
 
 	@Inject(
 		method = "extractRenderState(Lnet/minecraft/world/entity/vehicle/minecart/AbstractMinecart;Lnet/minecraft/client/renderer/entity/state/MinecartRenderState;F)V",
@@ -52,7 +48,7 @@ public class AbstractMinecartRendererMixin {
 		CouplingRenderState.extractRenderState(entity, state, partialTicks);
 
 		// Rotation 2.0: replace vanilla's snappy step-lerp yaw/pitch with the eased values.
-		if (THECOPPERIERAGE$SMOOTHING_ENABLED
+		if (MinecartRotationSmoothing.THECOPPERIERAGE$SMOOTHING_ENABLED
 			&& entity instanceof MinecartRotationSmoothing smoothing
 			&& smoothing.theCopperierAge$hasSmoothedRotation()
 		) {

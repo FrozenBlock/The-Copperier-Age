@@ -24,6 +24,8 @@ package net.frozenblock.thecopperierage.entity.impl;
  * smoothing target is the cart's own rotation.
  */
 public interface MinecartRotationSmoothing {
+	/** Disabled: rotation smoothing is retained for reference but never applied. */
+	boolean THECOPPERIERAGE$SMOOTHING_ENABLED = false;
 	/** True only while smoothing is active (experimental movement + config on + initialised). */
 	boolean theCopperierAge$hasSmoothedRotation();
 

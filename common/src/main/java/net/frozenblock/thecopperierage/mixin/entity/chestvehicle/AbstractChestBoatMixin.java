@@ -40,8 +40,8 @@ public abstract class AbstractChestBoatMixin implements ChestVehicleLidInterface
 	}
 
 	@Inject(method = "stopOpen", at = @At("TAIL"))
-	public void theCopperierAge$stopOpen(ContainerUser user, CallbackInfo info) {
-		if (user.getLivingEntity() instanceof Player player && player.isSpectator()) return;
+	public void theCopperierAge$stopOpen(ContainerUser containerUser, CallbackInfo info) {
+		if (containerUser.getLivingEntity() instanceof Player player && player.isSpectator()) return;
 		ChestVehicleOpeners.add((AbstractChestBoat) (Object) this, -1);
 	}
 

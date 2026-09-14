@@ -29,8 +29,6 @@ public class AbstractBoatMixin {
 
 	@Inject(method = "tick", at = @At("TAIL"))
 	public void theCopperierAge$tickLid(CallbackInfo info) {
-		if (AbstractBoat.class.cast(this) instanceof ChestVehicleLidInterface lidAnimating) {
-			lidAnimating.theCopperierAge$tickLidController();
-		}
+		if (AbstractBoat.class.cast(this) instanceof ChestVehicleLidInterface lidAnimating) lidAnimating.theCopperierAge$tickLidController();
 	}
 }

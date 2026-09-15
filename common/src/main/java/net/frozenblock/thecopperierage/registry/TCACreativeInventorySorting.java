@@ -134,23 +134,37 @@ public final class TCACreativeInventorySorting {
 		insertAfterInRedstoneBlocks(Items.CHEST_MINECART, TCAItems.CRATE_MINECART);
 		insertAfterInRedstoneBlocks(Items.FURNACE_MINECART, TCAItems.JUKEBOX_MINECART);
 
+		insertAfterInRedstoneBlocks(Items.RAIL, TCAItems.CROSS_RAIL);
+		insertAfterInRedstoneBlocks(Items.POWERED_RAIL, TCAItems.RELAYOR_RAIL);
 		insertAfterInRedstoneBlocks(Items.ACTIVATOR_RAIL, TCAItems.COPPER_RAIL.waxed().unaffected());
 		insertAfterInRedstoneBlocks(TCAItems.COPPER_RAIL.waxed().unaffected(), TCAItems.COPPER_RAIL.waxed().exposed());
 		insertAfterInRedstoneBlocks(TCAItems.COPPER_RAIL.waxed().exposed(), TCAItems.COPPER_RAIL.waxed().weathered());
 		insertAfterInRedstoneBlocks(TCAItems.COPPER_RAIL.waxed().weathered(), TCAItems.COPPER_RAIL.waxed().oxidized());
-		insertAfterInRedstoneBlocks(TCAItems.COPPER_RAIL.waxed().oxidized(), TCAItems.CROSS_RAIL);
-		insertAfterInRedstoneBlocks(TCAItems.CROSS_RAIL, TCAItems.RELAYOR_RAIL);
+		insertAfterInRedstoneBlocks(TCAItems.COPPER_RAIL.waxed().oxidized(), TCAItems.COPPER_CROSS_RAIL.waxed().unaffected());
+		insertAfterInRedstoneBlocks(TCAItems.COPPER_CROSS_RAIL.waxed().unaffected(), TCAItems.COPPER_CROSS_RAIL.waxed().exposed());
+		insertAfterInRedstoneBlocks(TCAItems.COPPER_CROSS_RAIL.waxed().exposed(), TCAItems.COPPER_CROSS_RAIL.waxed().weathered());
+		insertAfterInRedstoneBlocks(TCAItems.COPPER_CROSS_RAIL.waxed().weathered(), TCAItems.COPPER_CROSS_RAIL.waxed().oxidized());
+
+		insertAfterInToolsAndUtilities(Items.RAIL, TCAItems.CROSS_RAIL);
+		insertAfterInToolsAndUtilities(Items.POWERED_RAIL, TCAItems.RELAYOR_RAIL);
 
 		insertAfterInToolsAndUtilities(Items.ACTIVATOR_RAIL, TCAItems.COPPER_RAIL.weathering().unaffected());
 		insertAfterInToolsAndUtilities(TCAItems.COPPER_RAIL.weathering().unaffected(), TCAItems.COPPER_RAIL.weathering().exposed());
 		insertAfterInToolsAndUtilities(TCAItems.COPPER_RAIL.weathering().exposed(), TCAItems.COPPER_RAIL.weathering().weathered());
 		insertAfterInToolsAndUtilities(TCAItems.COPPER_RAIL.weathering().weathered(), TCAItems.COPPER_RAIL.weathering().oxidized());
-		insertAfterInToolsAndUtilities(TCAItems.COPPER_RAIL.weathering().oxidized(), TCAItems.COPPER_RAIL.waxed().unaffected());
+		insertAfterInToolsAndUtilities(TCAItems.COPPER_RAIL.weathering().oxidized(), TCAItems.COPPER_CROSS_RAIL.weathering().unaffected());
+		insertAfterInToolsAndUtilities(TCAItems.COPPER_CROSS_RAIL.weathering().unaffected(), TCAItems.COPPER_CROSS_RAIL.weathering().exposed());
+		insertAfterInToolsAndUtilities(TCAItems.COPPER_CROSS_RAIL.weathering().exposed(), TCAItems.COPPER_CROSS_RAIL.weathering().weathered());
+		insertAfterInToolsAndUtilities(TCAItems.COPPER_CROSS_RAIL.weathering().weathered(), TCAItems.COPPER_CROSS_RAIL.weathering().oxidized());
+
+		insertAfterInToolsAndUtilities(TCAItems.COPPER_CROSS_RAIL.weathering().oxidized(), TCAItems.COPPER_RAIL.waxed().unaffected());
 		insertAfterInToolsAndUtilities(TCAItems.COPPER_RAIL.waxed().unaffected(), TCAItems.COPPER_RAIL.waxed().exposed());
 		insertAfterInToolsAndUtilities(TCAItems.COPPER_RAIL.waxed().exposed(), TCAItems.COPPER_RAIL.waxed().weathered());
 		insertAfterInToolsAndUtilities(TCAItems.COPPER_RAIL.waxed().weathered(), TCAItems.COPPER_RAIL.waxed().oxidized());
-		insertAfterInToolsAndUtilities(TCAItems.COPPER_RAIL.waxed().oxidized(), TCAItems.CROSS_RAIL);
-		insertAfterInToolsAndUtilities(TCAItems.CROSS_RAIL, TCAItems.RELAYOR_RAIL);
+		insertAfterInToolsAndUtilities(TCAItems.COPPER_RAIL.waxed().oxidized(), TCAItems.COPPER_CROSS_RAIL.waxed().unaffected());
+		insertAfterInToolsAndUtilities(TCAItems.COPPER_CROSS_RAIL.waxed().unaffected(), TCAItems.COPPER_CROSS_RAIL.waxed().exposed());
+		insertAfterInToolsAndUtilities(TCAItems.COPPER_CROSS_RAIL.waxed().exposed(), TCAItems.COPPER_CROSS_RAIL.waxed().weathered());
+		insertAfterInToolsAndUtilities(TCAItems.COPPER_CROSS_RAIL.waxed().weathered(), TCAItems.COPPER_CROSS_RAIL.waxed().oxidized());
 
 		// OTHER
 		insertAfterInFunctionalBlocks(Items.FURNACE, TCAItems.KILN);

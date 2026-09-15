@@ -23,6 +23,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.Vec3;
@@ -52,6 +53,16 @@ public class AbstractMinecartMixin {
 		if (state.getBlock() instanceof RelayorRailBlock) {
 			RelayorRailBlock.handleCart(level, pos, state, minecart);
 		}
+	}
+
+	@Inject(method = "tick", at = @At("TAIL"))
+	private void theCopperierAge$settleDockedCart(CallbackInfo info) {
+		final AbstractMinecart minecart = AbstractMinecart.class.cast(this);
+		if (minecart.getDeltaMovement().lengthSqr() <= 0.0D) return;
+
+		final Level level = minecart.level();
+		final BlockPos pos = minecart.getCurrentBlockPosOrRailBelow();
+		if (RelayorRailBlock.isDocked(level, pos, level.getBlockState(pos), minecart)) minecart.setDeltaMovement(Vec3.ZERO);
 	}
 
 	@ModifyVariable(method = "makeStepAlongTrack", at = @At("HEAD"), argsOnly = true)

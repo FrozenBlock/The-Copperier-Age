@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "thecopperierage:copper_rail",
+    "thecopperierage:copper_rail"
+  ],
+  "result": {
+    "id": "thecopperierage:copper_cross_rail"
+  }
+}

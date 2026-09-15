@@ -87,6 +87,10 @@
     "thecopperierage:waxed_copper_rail",
     "thecopperierage:waxed_exposed_copper_rail",
     "thecopperierage:waxed_weathered_copper_rail",
-    "thecopperierage:waxed_oxidized_copper_rail"
+    "thecopperierage:waxed_oxidized_copper_rail",
+    "thecopperierage:waxed_copper_cross_rail",
+    "thecopperierage:waxed_exposed_copper_cross_rail",
+    "thecopperierage:waxed_weathered_copper_cross_rail",
+    "thecopperierage:waxed_oxidized_copper_cross_rail"
   ]
 }

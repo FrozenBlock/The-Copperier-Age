@@ -20,7 +20,6 @@ package net.frozenblock.thecopperierage.mixin.entity.minecart.motion;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.frozenblock.thecopperierage.block.RelayorRailBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.entity.vehicle.minecart.NewMinecartBehavior;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -35,14 +34,7 @@ public class NewMinecartBehaviorMixin {
 		at = @At("RETURN")
 	)
 	private Vec3 theCopperierAge$boostAlongRelayor(Vec3 boosted, Vec3 deltaMovement, BlockPos pos, BlockState state) {
-		if (!(state.getBlock() instanceof RelayorRailBlock rail) || !state.getValue(RelayorRailBlock.POWERED)) return boosted;
-
-		final Direction direction = rail.getDirection(state);
-		final double speed = deltaMovement.horizontalDistance();
-		final double target = speed > RelayorRailBlock.MIN_MOVING_SPEED
-			? speed + RelayorRailBlock.BOOST_PER_TICK
-			: RelayorRailBlock.LAUNCH_FROM_REST;
-
-		return new Vec3(direction.getStepX() * target, deltaMovement.y, direction.getStepZ() * target);
+		if (!RelayorRailBlock.isPowered(state)) return boosted;
+		return RelayorRailBlock.boost(state, deltaMovement);
 	}
 }

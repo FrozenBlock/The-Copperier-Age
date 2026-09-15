@@ -18,7 +18,7 @@
 package net.frozenblock.thecopperierage.mixin.entity.minecart.speed;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import net.frozenblock.thecopperierage.block.CopperRailBlock;
+import net.frozenblock.thecopperierage.block.CopperRail;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.phys.Vec3;
@@ -29,11 +29,11 @@ import org.spongepowered.asm.mixin.injection.At;
 public class AbstractMinecartMixin {
 	@ModifyReturnValue(method = "getMaxSpeed(Lnet/minecraft/server/level/ServerLevel;)D", at = @At("RETURN"))
 	private double theCopperierAge$copperRailMaxSpeed(double original, ServerLevel level) {
-		return CopperRailBlock.adjustMaxSpeed(AbstractMinecart.class.cast(this), level, original);
+		return CopperRail.adjustMaxSpeed(AbstractMinecart.class.cast(this), level, original);
 	}
 
 	@ModifyReturnValue(method = "applyNaturalSlowdown", at = @At("RETURN"))
 	private Vec3 theCopperierAge$copperRailDeceleration(Vec3 result, Vec3 movement) {
-		return CopperRailBlock.applyDeceleration(AbstractMinecart.class.cast(this), movement, result);
+		return CopperRail.applyDeceleration(AbstractMinecart.class.cast(this), movement, result);
 	}
 }

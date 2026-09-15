@@ -100,20 +100,18 @@ public class RelayorRailBlock extends BaseRailBlock {
 
 	@Override
 	protected BlockState rotate(BlockState state, Rotation rotation) {
-		BlockState rotated = state;
-		if (rotation == Rotation.CLOCKWISE_180 || rotation == Rotation.COUNTERCLOCKWISE_90) {
-			rotated = rotated.setValue(DIRECTION, rotated.getValue(DIRECTION).negate());
-		}
-		return rotated.setValue(SHAPE, this.rotate(rotated.getValue(SHAPE), rotation));
+		final Direction direction = rotation.rotate(this.getDirection(state));
+		return state.setValue(SHAPE, this.rotate(state.getValue(SHAPE), rotation)).setValue(DIRECTION, signOf(direction));
 	}
 
 	@Override
 	protected BlockState mirror(BlockState state, Mirror mirror) {
-		BlockState mirrored = state;
-		if (mirror.rotation().inverts(axisOf(state.getValue(SHAPE)))) {
-			mirrored = mirrored.setValue(DIRECTION, mirrored.getValue(DIRECTION).negate());
-		}
-		return mirrored.setValue(SHAPE, this.mirror(mirrored.getValue(SHAPE), mirror));
+		final Direction direction = mirror.mirror(this.getDirection(state));
+		return state.setValue(SHAPE, this.mirror(state.getValue(SHAPE), mirror)).setValue(DIRECTION, signOf(direction));
+	}
+
+	private static DirectionSign signOf(Direction direction) {
+		return direction.getAxisDirection() == Direction.AxisDirection.NEGATIVE ? DirectionSign.NEGATIVE : DirectionSign.POSITIVE;
 	}
 
 	@Override
@@ -280,8 +278,7 @@ public class RelayorRailBlock extends BaseRailBlock {
 
 	private void dock(ServerLevel level, BlockPos pos, BlockState state, AbstractMinecart minecart) {
 		minecart.setDeltaMovement(Vec3.ZERO);
-		final RailShape shape = state.getValue(SHAPE);
-		minecart.setPos(Vec3.atBottomCenterOf(pos).add(0.0D, shape.isSlope() ? 0.6D : 0.1D, 0.0D));
+		minecart.setPos(Vec3.atBottomCenterOf(pos).add(0.0D, dockHeight(level, state), 0.0D));
 		level.setBlock(pos, state.setValue(OCCUPIED, true), UPDATE_ALL);
 		level.scheduleTick(pos, this, OCCUPIED_CHECK_INTERVAL);
 		refreshChain(level, pos);
@@ -293,6 +290,24 @@ public class RelayorRailBlock extends BaseRailBlock {
 		level.setBlock(pos, state.setValue(OCCUPIED, false), UPDATE_ALL);
 		refreshChain(level, pos);
 		updateChainComparators(level, pos);
+	}
+
+	private static double dockHeight(Level level, BlockState state) {
+		final double onRail = AbstractMinecart.useExperimentalMovement(level) ? 0.1D : 0.0625D;
+		return state.getValue(SHAPE).isSlope() ? onRail + 0.5D : onRail;
+	}
+
+	public static boolean isPowered(BlockState state) {
+		return state.getBlock() instanceof RelayorRailBlock && state.getValue(POWERED);
+	}
+
+	public static Vec3 boost(BlockState state, Vec3 deltaMovement) {
+		if (!(state.getBlock() instanceof RelayorRailBlock rail)) return deltaMovement;
+
+		final Direction direction = rail.getDirection(state);
+		final double speed = deltaMovement.horizontalDistance();
+		final double target = speed > MIN_MOVING_SPEED ? speed + BOOST_PER_TICK : LAUNCH_FROM_REST;
+		return new Vec3(direction.getStepX() * target, deltaMovement.y, direction.getStepZ() * target);
 	}
 
 	public static boolean isDocked(Level level, BlockPos pos, BlockState state, AbstractMinecart minecart) {

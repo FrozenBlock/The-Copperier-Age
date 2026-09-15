@@ -51,6 +51,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.WeatheringCopperCollection;
 
 public final class TCARecipeProvider extends FabricRecipeProvider {
 
@@ -214,7 +215,7 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.unlockedBy(RecipeProvider.getHasName(Items.IRON_INGOT), this.has(Items.IRON_INGOT))
 					.save(exporter);
 
-				this.shaped(RecipeCategory.TRANSPORTATION, TCABlocks.COPPER_RAIL.weathering().unaffected(), 16)
+				this.shaped(RecipeCategory.TRANSPORTATION, TCABlocks.COPPER_RAIL.weathering().unaffected(), 12)
 					.define('X', Ingredient.of(Items.COPPER_INGOT))
 					.define('#', Ingredient.of(Items.STICK))
 					.pattern("X X")
@@ -227,6 +228,15 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.requires(Items.RAIL, 2)
 					.unlockedBy(RecipeProvider.getHasName(Items.RAIL), this.has(Items.RAIL))
 					.save(exporter);
+
+				WeatheringCopperCollection.zipApply(
+					TCABlocks.COPPER_RAIL.weathering(),
+					TCABlocks.COPPER_CROSS_RAIL.weathering(),
+					(rail, crossRail) -> this.shapeless(RecipeCategory.TRANSPORTATION, crossRail)
+						.requires(rail.get(), 2)
+						.unlockedBy(RecipeProvider.getHasName(rail.get()), this.has(rail.get()))
+						.save(exporter)
+				);
 
 				this.shaped(RecipeCategory.TRANSPORTATION, TCABlocks.RELAYOR_RAIL, 6)
 					.define('I', Ingredient.of(Items.IRON_INGOT))

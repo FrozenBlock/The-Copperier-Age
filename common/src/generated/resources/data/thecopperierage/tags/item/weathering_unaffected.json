@@ -43,6 +43,8 @@
     "thecopperierage:weighted_pressure_plate",
     "thecopperierage:waxed_weighted_pressure_plate",
     "thecopperierage:copper_rail",
-    "thecopperierage:waxed_copper_rail"
+    "thecopperierage:waxed_copper_rail",
+    "thecopperierage:copper_cross_rail",
+    "thecopperierage:waxed_copper_cross_rail"
   ]
 }

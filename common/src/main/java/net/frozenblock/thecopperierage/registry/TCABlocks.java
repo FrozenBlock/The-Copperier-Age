@@ -24,6 +24,7 @@ import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.TCAFeatureFlags;
 import net.frozenblock.thecopperierage.block.ChimeBlock;
 import net.frozenblock.thecopperierage.block.CopperButtonBlock;
+import net.frozenblock.thecopperierage.block.CopperCrossRailBlock;
 import net.frozenblock.thecopperierage.block.CopperFanBlock;
 import net.frozenblock.thecopperierage.block.CopperFireBlock;
 import net.frozenblock.thecopperierage.block.CopperPressurePlateBlock;
@@ -38,6 +39,7 @@ import net.frozenblock.thecopperierage.block.RelayorRailBlock;
 import net.frozenblock.thecopperierage.block.StickyGearboxBlock;
 import net.frozenblock.thecopperierage.block.WeatheringChimeBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperButtonBlock;
+import net.frozenblock.thecopperierage.block.WeatheringCopperCrossRailBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperFanBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperPressurePlateBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperRailBlock;
@@ -243,6 +245,18 @@ public final class TCABlocks {
 			.sound(SoundType.METAL)
 	);
 
+	public static final WeatheringCopperCollection<DeferredBlock<? extends Block>> COPPER_CROSS_RAIL = REGISTER.registerWeatheringCopperCollection(
+		TCABlockItemIds.COPPER_CROSS_RAIL,
+		(blocks, id, factory, props) -> blocks.registerBlock(id.block(), factory, props),
+		CopperCrossRailBlock::new,
+		WeatheringCopperCrossRailBlock::new,
+		weatherState -> BlockBehaviour.Properties.of()
+			.mapColor(getMapColorForWeatherState(weatherState))
+			.noCollision()
+			.strength(0.7F)
+			.sound(SoundType.METAL)
+	);
+
 	public static final DeferredBlock<Block> RELAYOR_RAIL = REGISTER.registerBlock(TCABlockItemIds.RELAYOR_RAIL.block(),
 		RelayorRailBlock::new,
 		() -> BlockBehaviour.Properties.of()
@@ -270,6 +284,7 @@ public final class TCABlocks {
 		OxidizableBlocksRegistry.registerWeatheringCopperBlocks(asBlocks(COPPER_BUTTON));
 		OxidizableBlocksRegistry.registerWeatheringCopperBlocks(asBlocks(WEIGHTED_PRESSURE_PLATE));
 		OxidizableBlocksRegistry.registerWeatheringCopperBlocks(asBlocks(COPPER_RAIL));
+		OxidizableBlocksRegistry.registerWeatheringCopperBlocks(asBlocks(COPPER_CROSS_RAIL));
 	}
 
 	public static MapColor getMapColorForWeatherState(WeatheringCopper.WeatherState weatherState) {

@@ -18,6 +18,8 @@
 package net.frozenblock.thecopperierage.entity.coupling;
 
 import java.util.Optional;
+import net.frozenblock.thecopperierage.block.CrossRailBlock;
+import net.frozenblock.thecopperierage.block.RelayorRailBlock;
 import net.frozenblock.thecopperierage.entity.impl.CouplingToEntityInterface;
 import net.frozenblock.thecopperierage.registry.TCAAttachmentTypes;
 import net.frozenblock.thecopperierage.registry.TCAItems;
@@ -126,12 +128,14 @@ public final class MinecartCouplingUtil {
 		if (level.tickRateManager().isEntityFrozen(cart1) && level.tickRateManager().isEntityFrozen(cart2)) return true;
 
 		final float targetCouplingLength = MIN_COUPLING_LENGTH + additionalPassengerWidth;
+		final boolean pullOnly = isDockedOnRelayor(cart1) || isDockedOnRelayor(cart2);
+
 		if (isUsingExperimentalMinecartPhysics(level)) {
-			softCollisionStep(level, cart1, cart2, targetCouplingLength, EXPERIMENTAL_SOFT_CORRECTION_SCALE);
+			softCollisionStep(level, cart1, cart2, targetCouplingLength, EXPERIMENTAL_SOFT_CORRECTION_SCALE, pullOnly);
 			dampRelativeVelocity(cart1, cart2, EXPERIMENTAL_RELATIVE_DAMPING, EXPERIMENTAL_MAX_RELATIVE_CORRECTION);
 		} else {
-			softCollisionStep(level, cart1, cart2, targetCouplingLength, 1F);
-			hardCollisionStep(level, cart1, cart2, targetCouplingLength);
+			softCollisionStep(level, cart1, cart2, targetCouplingLength, 1F, pullOnly);
+			hardCollisionStep(level, cart1, cart2, targetCouplingLength, pullOnly);
 		}
 		return true;
 	}
@@ -154,7 +158,9 @@ public final class MinecartCouplingUtil {
 		return Math.max(0F, width - cartWidth);
 	}
 
-	private static void softCollisionStep(Level level, AbstractMinecart cart1, AbstractMinecart cart2, float couplingLength, float correctionScale) {
+	private static void softCollisionStep(
+		Level level, AbstractMinecart cart1, AbstractMinecart cart2, float couplingLength, float correctionScale, boolean pullOnly
+	) {
 		final boolean firstCanAddMotion = canAddMotion(cart1);
 		final boolean secondCanAddMotion = canAddMotion(cart2);
 		if (!firstCanAddMotion && !secondCanAddMotion) return;
@@ -164,11 +170,12 @@ public final class MinecartCouplingUtil {
 		final Vec3 nextCart1Pos = cart1.position().add(firstMotion);
 		final Vec3 nextCart2Pos = cart2.position().add(secondMotion);
 
-		final RailShape firstShape = getRailShape(level, nextCart1Pos);
-		final RailShape secondShape = getRailShape(level, nextCart2Pos);
+		final RailShape firstShape = getRailShape(level, nextCart1Pos, cart1);
+		final RailShape secondShape = getRailShape(level, nextCart2Pos, cart2);
 
 		final float futureStress = (float) (couplingLength - nextCart1Pos.distanceTo(nextCart2Pos));
 		if (Mth.equal(futureStress, 0D)) return;
+		if (pullOnly && futureStress > 0F) return;
 
 		for (boolean current : new boolean[] {true, false}) {
 			final boolean currentCanAddMotion = current ? firstCanAddMotion : secondCanAddMotion;
@@ -244,7 +251,9 @@ public final class MinecartCouplingUtil {
 		}
 	}
 
-	private static void hardCollisionStep(Level level, AbstractMinecart first, AbstractMinecart second, float couplingLength) {
+	private static void hardCollisionStep(Level level, AbstractMinecart first, AbstractMinecart second, float couplingLength, boolean pullOnly) {
+		if (!canAddMotion(first) && !canAddMotion(second)) return;
+
 		AbstractMinecart firstCart = first;
 		AbstractMinecart secondCart = second;
 		if (!canAddMotion(secondCart) && canAddMotion(firstCart)) {
@@ -260,6 +269,7 @@ public final class MinecartCouplingUtil {
 
 			float stress = (float) (couplingLength - cart.position().distanceTo(otherCart.position()));
 			if (Math.abs(stress) < 1F / 8F) continue;
+			if (pullOnly && stress > 0F) continue;
 
 			final Vec3 pos = cart.position();
 			final Vec3 link = otherCart.position().subtract(pos);
@@ -313,8 +323,15 @@ public final class MinecartCouplingUtil {
 	}
 
 	private static boolean canAddMotion(AbstractMinecart cart) {
+		if (isDockedOnRelayor(cart)) return false;
 		if (cart instanceof MinecartFurnace furnace) return Mth.equal((float) furnace.push.x, 0) && Mth.equal((float) furnace.push.z, 0);
 		return cart.isAlive() && !cart.noPhysics;
+	}
+
+	private static boolean isDockedOnRelayor(AbstractMinecart cart) {
+		final Level level = cart.level();
+		final BlockPos pos = cart.getCurrentBlockPosOrRailBelow();
+		return RelayorRailBlock.isDocked(level, pos, level.getBlockState(pos), cart);
 	}
 
 	private static float getMaxCartSpeed(AbstractMinecart cart) {
@@ -328,7 +345,7 @@ public final class MinecartCouplingUtil {
 	}
 
 	@Nullable
-	private static RailShape getRailShape(Level level, Vec3 vec) {
+	private static RailShape getRailShape(Level level, Vec3 vec, AbstractMinecart cart) {
 		final int x = Mth.floor(vec.x());
 		final int y = Mth.floor(vec.y());
 		final int z = Mth.floor(vec.z());
@@ -340,6 +357,7 @@ public final class MinecartCouplingUtil {
 			railState = level.getBlockState(pos);
 		}
 		if (!(railState.getBlock() instanceof BaseRailBlock railBlock)) return null;
+		if (railState.getBlock() instanceof CrossRailBlock) return CrossRailBlock.railShapeFromMotion(level, pos, cart);
 		return railState.getValue(railBlock.getShapeProperty());
 	}
 

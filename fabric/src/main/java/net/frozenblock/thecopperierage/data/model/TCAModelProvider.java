@@ -83,6 +83,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 		TCABlocks.CHIME.zipUnwaxedWaxed((block, waxedBlock) -> createChime(generator, block.get(), waxedBlock.get()));
 		TCABlocks.COPPER_RAIL.zipUnwaxedWaxed((block, waxedBlock) -> createCopperRail(generator, block.get(), waxedBlock.get()));
 		createCrossRail(generator, TCABlocks.CROSS_RAIL.get());
+		TCABlocks.COPPER_CROSS_RAIL.zipUnwaxedWaxed((block, waxedBlock) -> createCopperCrossRail(generator, block.get(), waxedBlock.get()));
 		createRelayorRail(generator, TCABlocks.RELAYOR_RAIL.get());
 		createCrate(generator, TCABlocks.CRATE.get());
 		createKiln(generator);
@@ -234,8 +235,8 @@ public final class TCAModelProvider extends FabricModelProvider {
 	private static void createRelayorRail(BlockModelGenerators generator, Block block) {
 		generator.registerSimpleFlatItemModel(block, "_locked_unconnected");
 
-		final PropertyDispatch.C2<MultiVariant, RailShape, RelayorRailBlock.Appearance> dispatch =
-			PropertyDispatch.initial(RelayorRailBlock.SHAPE, RelayorRailBlock.APPEARANCE);
+		final PropertyDispatch.C3<MultiVariant, RailShape, RelayorRailBlock.Appearance, RelayorRailBlock.DirectionSign> dispatch =
+			PropertyDispatch.initial(RelayorRailBlock.SHAPE, RelayorRailBlock.APPEARANCE, RelayorRailBlock.DIRECTION);
 
 		for (RelayorRailBlock.Appearance appearance : RelayorRailBlock.Appearance.values()) {
 			final String texture = appearance.getSerializedName();
@@ -250,23 +251,25 @@ public final class TCAModelProvider extends FabricModelProvider {
 				ModelTemplates.RAIL_RAISED_SW.createWithSuffix(block, "_" + texture, mapping, generator.modelOutput)
 			);
 
-			dispatch.select(RailShape.NORTH_SOUTH, appearance, flat);
-			dispatch.select(RailShape.EAST_WEST, appearance, flat.with(BlockModelGenerators.Y_ROT_90));
-			dispatch.select(RailShape.ASCENDING_NORTH, appearance, risingNE);
-			dispatch.select(RailShape.ASCENDING_SOUTH, appearance, risingSW);
-			dispatch.select(RailShape.ASCENDING_EAST, appearance, risingNE.with(BlockModelGenerators.Y_ROT_90));
-			dispatch.select(RailShape.ASCENDING_WEST, appearance, risingSW.with(BlockModelGenerators.Y_ROT_90));
+			final RelayorRailBlock.DirectionSign negative = RelayorRailBlock.DirectionSign.NEGATIVE;
+			final RelayorRailBlock.DirectionSign positive = RelayorRailBlock.DirectionSign.POSITIVE;
+
+			dispatch.select(RailShape.NORTH_SOUTH, appearance, negative, flat);
+			dispatch.select(RailShape.NORTH_SOUTH, appearance, positive, flat.with(BlockModelGenerators.Y_ROT_180));
+			dispatch.select(RailShape.EAST_WEST, appearance, negative, flat.with(BlockModelGenerators.Y_ROT_270));
+			dispatch.select(RailShape.EAST_WEST, appearance, positive, flat.with(BlockModelGenerators.Y_ROT_90));
+
+			dispatch.select(RailShape.ASCENDING_NORTH, appearance, negative, risingNE);
+			dispatch.select(RailShape.ASCENDING_NORTH, appearance, positive, risingSW.with(BlockModelGenerators.Y_ROT_180));
+			dispatch.select(RailShape.ASCENDING_SOUTH, appearance, negative, risingSW);
+			dispatch.select(RailShape.ASCENDING_SOUTH, appearance, positive, risingNE.with(BlockModelGenerators.Y_ROT_180));
+			dispatch.select(RailShape.ASCENDING_EAST, appearance, negative, risingSW.with(BlockModelGenerators.Y_ROT_270));
+			dispatch.select(RailShape.ASCENDING_EAST, appearance, positive, risingNE.with(BlockModelGenerators.Y_ROT_90));
+			dispatch.select(RailShape.ASCENDING_WEST, appearance, negative, risingNE.with(BlockModelGenerators.Y_ROT_270));
+			dispatch.select(RailShape.ASCENDING_WEST, appearance, positive, risingSW.with(BlockModelGenerators.Y_ROT_90));
 		}
 
-		generator.blockStateOutput.accept(
-			MultiVariantGenerator.dispatch(block)
-				.with(dispatch)
-				.with(
-					PropertyDispatch.modify(RelayorRailBlock.DIRECTION)
-						.select(RelayorRailBlock.DirectionSign.NEGATIVE, BlockModelGenerators.NOP)
-						.select(RelayorRailBlock.DirectionSign.POSITIVE, BlockModelGenerators.Y_ROT_180)
-				)
-		);
+		generator.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(dispatch));
 	}
 
 	private static void createCrossRail(BlockModelGenerators generator, Block block) {
@@ -274,6 +277,20 @@ public final class TCAModelProvider extends FabricModelProvider {
 			ModelTemplates.RAIL_FLAT.create(block, TextureMapping.rail(block), generator.modelOutput)
 		);
 		generator.registerSimpleFlatItemModel(block);
+		dispatchCrossRailStates(generator, block, flat);
+	}
+
+	private static void createCopperCrossRail(BlockModelGenerators generator, Block block, Block waxedBlock) {
+		final MultiVariant flat = BlockModelGenerators.plainVariant(
+			ModelTemplates.RAIL_FLAT.create(block, TextureMapping.rail(block), generator.modelOutput)
+		);
+		generator.registerSimpleFlatItemModel(block);
+		generator.itemModelOutput.copy(block.asItem(), waxedBlock.asItem());
+		dispatchCrossRailStates(generator, block, flat);
+		dispatchCrossRailStates(generator, waxedBlock, flat);
+	}
+
+	private static void dispatchCrossRailStates(BlockModelGenerators generator, Block block, MultiVariant flat) {
 		generator.blockStateOutput.accept(
 			MultiVariantGenerator.dispatch(block)
 				.with(

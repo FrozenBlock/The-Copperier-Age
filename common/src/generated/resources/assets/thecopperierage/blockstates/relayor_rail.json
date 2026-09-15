@@ -1,8 +1,8 @@
 {
   "variants": {
     "appearance=locked_end,direction=negative,shape=ascending_east": {
-      "model": "thecopperierage:block/relayor_rail_locked_end_raised_ne",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_locked_end_raised_sw",
+      "y": 270
     },
     "appearance=locked_end,direction=negative,shape=ascending_north": {
       "model": "thecopperierage:block/relayor_rail_locked_end_raised_ne"
@@ -11,43 +11,43 @@
       "model": "thecopperierage:block/relayor_rail_locked_end_raised_sw"
     },
     "appearance=locked_end,direction=negative,shape=ascending_west": {
-      "model": "thecopperierage:block/relayor_rail_locked_end_raised_sw",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_locked_end_raised_ne",
+      "y": 270
     },
     "appearance=locked_end,direction=negative,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_locked_end",
-      "y": 90
+      "y": 270
     },
     "appearance=locked_end,direction=negative,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_locked_end"
     },
     "appearance=locked_end,direction=positive,shape=ascending_east": {
       "model": "thecopperierage:block/relayor_rail_locked_end_raised_ne",
-      "y": 180
+      "y": 90
     },
     "appearance=locked_end,direction=positive,shape=ascending_north": {
-      "model": "thecopperierage:block/relayor_rail_locked_end_raised_ne",
+      "model": "thecopperierage:block/relayor_rail_locked_end_raised_sw",
       "y": 180
     },
     "appearance=locked_end,direction=positive,shape=ascending_south": {
-      "model": "thecopperierage:block/relayor_rail_locked_end_raised_sw",
+      "model": "thecopperierage:block/relayor_rail_locked_end_raised_ne",
       "y": 180
     },
     "appearance=locked_end,direction=positive,shape=ascending_west": {
       "model": "thecopperierage:block/relayor_rail_locked_end_raised_sw",
-      "y": 180
+      "y": 90
     },
     "appearance=locked_end,direction=positive,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_locked_end",
-      "y": 180
+      "y": 90
     },
     "appearance=locked_end,direction=positive,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_locked_end",
       "y": 180
     },
     "appearance=locked_front,direction=negative,shape=ascending_east": {
-      "model": "thecopperierage:block/relayor_rail_locked_front_raised_ne",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_locked_front_raised_sw",
+      "y": 270
     },
     "appearance=locked_front,direction=negative,shape=ascending_north": {
       "model": "thecopperierage:block/relayor_rail_locked_front_raised_ne"
@@ -56,43 +56,43 @@
       "model": "thecopperierage:block/relayor_rail_locked_front_raised_sw"
     },
     "appearance=locked_front,direction=negative,shape=ascending_west": {
-      "model": "thecopperierage:block/relayor_rail_locked_front_raised_sw",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_locked_front_raised_ne",
+      "y": 270
     },
     "appearance=locked_front,direction=negative,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_locked_front",
-      "y": 90
+      "y": 270
     },
     "appearance=locked_front,direction=negative,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_locked_front"
     },
     "appearance=locked_front,direction=positive,shape=ascending_east": {
       "model": "thecopperierage:block/relayor_rail_locked_front_raised_ne",
-      "y": 180
+      "y": 90
     },
     "appearance=locked_front,direction=positive,shape=ascending_north": {
-      "model": "thecopperierage:block/relayor_rail_locked_front_raised_ne",
+      "model": "thecopperierage:block/relayor_rail_locked_front_raised_sw",
       "y": 180
     },
     "appearance=locked_front,direction=positive,shape=ascending_south": {
-      "model": "thecopperierage:block/relayor_rail_locked_front_raised_sw",
+      "model": "thecopperierage:block/relayor_rail_locked_front_raised_ne",
       "y": 180
     },
     "appearance=locked_front,direction=positive,shape=ascending_west": {
       "model": "thecopperierage:block/relayor_rail_locked_front_raised_sw",
-      "y": 180
+      "y": 90
     },
     "appearance=locked_front,direction=positive,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_locked_front",
-      "y": 180
+      "y": 90
     },
     "appearance=locked_front,direction=positive,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_locked_front",
       "y": 180
     },
     "appearance=locked_middle,direction=negative,shape=ascending_east": {
-      "model": "thecopperierage:block/relayor_rail_locked_middle_raised_ne",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_locked_middle_raised_sw",
+      "y": 270
     },
     "appearance=locked_middle,direction=negative,shape=ascending_north": {
       "model": "thecopperierage:block/relayor_rail_locked_middle_raised_ne"
@@ -101,43 +101,43 @@
       "model": "thecopperierage:block/relayor_rail_locked_middle_raised_sw"
     },
     "appearance=locked_middle,direction=negative,shape=ascending_west": {
-      "model": "thecopperierage:block/relayor_rail_locked_middle_raised_sw",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_locked_middle_raised_ne",
+      "y": 270
     },
     "appearance=locked_middle,direction=negative,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_locked_middle",
-      "y": 90
+      "y": 270
     },
     "appearance=locked_middle,direction=negative,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_locked_middle"
     },
     "appearance=locked_middle,direction=positive,shape=ascending_east": {
       "model": "thecopperierage:block/relayor_rail_locked_middle_raised_ne",
-      "y": 180
+      "y": 90
     },
     "appearance=locked_middle,direction=positive,shape=ascending_north": {
-      "model": "thecopperierage:block/relayor_rail_locked_middle_raised_ne",
+      "model": "thecopperierage:block/relayor_rail_locked_middle_raised_sw",
       "y": 180
     },
     "appearance=locked_middle,direction=positive,shape=ascending_south": {
-      "model": "thecopperierage:block/relayor_rail_locked_middle_raised_sw",
+      "model": "thecopperierage:block/relayor_rail_locked_middle_raised_ne",
       "y": 180
     },
     "appearance=locked_middle,direction=positive,shape=ascending_west": {
       "model": "thecopperierage:block/relayor_rail_locked_middle_raised_sw",
-      "y": 180
+      "y": 90
     },
     "appearance=locked_middle,direction=positive,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_locked_middle",
-      "y": 180
+      "y": 90
     },
     "appearance=locked_middle,direction=positive,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_locked_middle",
       "y": 180
     },
     "appearance=locked_signal_end,direction=negative,shape=ascending_east": {
-      "model": "thecopperierage:block/relayor_rail_locked_signal_end_raised_ne",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_locked_signal_end_raised_sw",
+      "y": 270
     },
     "appearance=locked_signal_end,direction=negative,shape=ascending_north": {
       "model": "thecopperierage:block/relayor_rail_locked_signal_end_raised_ne"
@@ -146,43 +146,43 @@
       "model": "thecopperierage:block/relayor_rail_locked_signal_end_raised_sw"
     },
     "appearance=locked_signal_end,direction=negative,shape=ascending_west": {
-      "model": "thecopperierage:block/relayor_rail_locked_signal_end_raised_sw",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_locked_signal_end_raised_ne",
+      "y": 270
     },
     "appearance=locked_signal_end,direction=negative,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_locked_signal_end",
-      "y": 90
+      "y": 270
     },
     "appearance=locked_signal_end,direction=negative,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_locked_signal_end"
     },
     "appearance=locked_signal_end,direction=positive,shape=ascending_east": {
       "model": "thecopperierage:block/relayor_rail_locked_signal_end_raised_ne",
-      "y": 180
+      "y": 90
     },
     "appearance=locked_signal_end,direction=positive,shape=ascending_north": {
-      "model": "thecopperierage:block/relayor_rail_locked_signal_end_raised_ne",
+      "model": "thecopperierage:block/relayor_rail_locked_signal_end_raised_sw",
       "y": 180
     },
     "appearance=locked_signal_end,direction=positive,shape=ascending_south": {
-      "model": "thecopperierage:block/relayor_rail_locked_signal_end_raised_sw",
+      "model": "thecopperierage:block/relayor_rail_locked_signal_end_raised_ne",
       "y": 180
     },
     "appearance=locked_signal_end,direction=positive,shape=ascending_west": {
       "model": "thecopperierage:block/relayor_rail_locked_signal_end_raised_sw",
-      "y": 180
+      "y": 90
     },
     "appearance=locked_signal_end,direction=positive,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_locked_signal_end",
-      "y": 180
+      "y": 90
     },
     "appearance=locked_signal_end,direction=positive,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_locked_signal_end",
       "y": 180
     },
     "appearance=locked_signal_front,direction=negative,shape=ascending_east": {
-      "model": "thecopperierage:block/relayor_rail_locked_signal_front_raised_ne",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_locked_signal_front_raised_sw",
+      "y": 270
     },
     "appearance=locked_signal_front,direction=negative,shape=ascending_north": {
       "model": "thecopperierage:block/relayor_rail_locked_signal_front_raised_ne"
@@ -191,43 +191,43 @@
       "model": "thecopperierage:block/relayor_rail_locked_signal_front_raised_sw"
     },
     "appearance=locked_signal_front,direction=negative,shape=ascending_west": {
-      "model": "thecopperierage:block/relayor_rail_locked_signal_front_raised_sw",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_locked_signal_front_raised_ne",
+      "y": 270
     },
     "appearance=locked_signal_front,direction=negative,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_locked_signal_front",
-      "y": 90
+      "y": 270
     },
     "appearance=locked_signal_front,direction=negative,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_locked_signal_front"
     },
     "appearance=locked_signal_front,direction=positive,shape=ascending_east": {
       "model": "thecopperierage:block/relayor_rail_locked_signal_front_raised_ne",
-      "y": 180
+      "y": 90
     },
     "appearance=locked_signal_front,direction=positive,shape=ascending_north": {
-      "model": "thecopperierage:block/relayor_rail_locked_signal_front_raised_ne",
+      "model": "thecopperierage:block/relayor_rail_locked_signal_front_raised_sw",
       "y": 180
     },
     "appearance=locked_signal_front,direction=positive,shape=ascending_south": {
-      "model": "thecopperierage:block/relayor_rail_locked_signal_front_raised_sw",
+      "model": "thecopperierage:block/relayor_rail_locked_signal_front_raised_ne",
       "y": 180
     },
     "appearance=locked_signal_front,direction=positive,shape=ascending_west": {
       "model": "thecopperierage:block/relayor_rail_locked_signal_front_raised_sw",
-      "y": 180
+      "y": 90
     },
     "appearance=locked_signal_front,direction=positive,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_locked_signal_front",
-      "y": 180
+      "y": 90
     },
     "appearance=locked_signal_front,direction=positive,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_locked_signal_front",
       "y": 180
     },
     "appearance=locked_signal_middle,direction=negative,shape=ascending_east": {
-      "model": "thecopperierage:block/relayor_rail_locked_signal_middle_raised_ne",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_locked_signal_middle_raised_sw",
+      "y": 270
     },
     "appearance=locked_signal_middle,direction=negative,shape=ascending_north": {
       "model": "thecopperierage:block/relayor_rail_locked_signal_middle_raised_ne"
@@ -236,43 +236,43 @@
       "model": "thecopperierage:block/relayor_rail_locked_signal_middle_raised_sw"
     },
     "appearance=locked_signal_middle,direction=negative,shape=ascending_west": {
-      "model": "thecopperierage:block/relayor_rail_locked_signal_middle_raised_sw",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_locked_signal_middle_raised_ne",
+      "y": 270
     },
     "appearance=locked_signal_middle,direction=negative,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_locked_signal_middle",
-      "y": 90
+      "y": 270
     },
     "appearance=locked_signal_middle,direction=negative,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_locked_signal_middle"
     },
     "appearance=locked_signal_middle,direction=positive,shape=ascending_east": {
       "model": "thecopperierage:block/relayor_rail_locked_signal_middle_raised_ne",
-      "y": 180
+      "y": 90
     },
     "appearance=locked_signal_middle,direction=positive,shape=ascending_north": {
-      "model": "thecopperierage:block/relayor_rail_locked_signal_middle_raised_ne",
+      "model": "thecopperierage:block/relayor_rail_locked_signal_middle_raised_sw",
       "y": 180
     },
     "appearance=locked_signal_middle,direction=positive,shape=ascending_south": {
-      "model": "thecopperierage:block/relayor_rail_locked_signal_middle_raised_sw",
+      "model": "thecopperierage:block/relayor_rail_locked_signal_middle_raised_ne",
       "y": 180
     },
     "appearance=locked_signal_middle,direction=positive,shape=ascending_west": {
       "model": "thecopperierage:block/relayor_rail_locked_signal_middle_raised_sw",
-      "y": 180
+      "y": 90
     },
     "appearance=locked_signal_middle,direction=positive,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_locked_signal_middle",
-      "y": 180
+      "y": 90
     },
     "appearance=locked_signal_middle,direction=positive,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_locked_signal_middle",
       "y": 180
     },
     "appearance=locked_unconnected,direction=negative,shape=ascending_east": {
-      "model": "thecopperierage:block/relayor_rail_locked_unconnected_raised_ne",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_locked_unconnected_raised_sw",
+      "y": 270
     },
     "appearance=locked_unconnected,direction=negative,shape=ascending_north": {
       "model": "thecopperierage:block/relayor_rail_locked_unconnected_raised_ne"
@@ -281,43 +281,43 @@
       "model": "thecopperierage:block/relayor_rail_locked_unconnected_raised_sw"
     },
     "appearance=locked_unconnected,direction=negative,shape=ascending_west": {
-      "model": "thecopperierage:block/relayor_rail_locked_unconnected_raised_sw",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_locked_unconnected_raised_ne",
+      "y": 270
     },
     "appearance=locked_unconnected,direction=negative,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_locked_unconnected",
-      "y": 90
+      "y": 270
     },
     "appearance=locked_unconnected,direction=negative,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_locked_unconnected"
     },
     "appearance=locked_unconnected,direction=positive,shape=ascending_east": {
       "model": "thecopperierage:block/relayor_rail_locked_unconnected_raised_ne",
-      "y": 180
+      "y": 90
     },
     "appearance=locked_unconnected,direction=positive,shape=ascending_north": {
-      "model": "thecopperierage:block/relayor_rail_locked_unconnected_raised_ne",
+      "model": "thecopperierage:block/relayor_rail_locked_unconnected_raised_sw",
       "y": 180
     },
     "appearance=locked_unconnected,direction=positive,shape=ascending_south": {
-      "model": "thecopperierage:block/relayor_rail_locked_unconnected_raised_sw",
+      "model": "thecopperierage:block/relayor_rail_locked_unconnected_raised_ne",
       "y": 180
     },
     "appearance=locked_unconnected,direction=positive,shape=ascending_west": {
       "model": "thecopperierage:block/relayor_rail_locked_unconnected_raised_sw",
-      "y": 180
+      "y": 90
     },
     "appearance=locked_unconnected,direction=positive,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_locked_unconnected",
-      "y": 180
+      "y": 90
     },
     "appearance=locked_unconnected,direction=positive,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_locked_unconnected",
       "y": 180
     },
     "appearance=powered_end,direction=negative,shape=ascending_east": {
-      "model": "thecopperierage:block/relayor_rail_powered_end_raised_ne",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_powered_end_raised_sw",
+      "y": 270
     },
     "appearance=powered_end,direction=negative,shape=ascending_north": {
       "model": "thecopperierage:block/relayor_rail_powered_end_raised_ne"
@@ -326,43 +326,43 @@
       "model": "thecopperierage:block/relayor_rail_powered_end_raised_sw"
     },
     "appearance=powered_end,direction=negative,shape=ascending_west": {
-      "model": "thecopperierage:block/relayor_rail_powered_end_raised_sw",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_powered_end_raised_ne",
+      "y": 270
     },
     "appearance=powered_end,direction=negative,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_powered_end",
-      "y": 90
+      "y": 270
     },
     "appearance=powered_end,direction=negative,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_powered_end"
     },
     "appearance=powered_end,direction=positive,shape=ascending_east": {
       "model": "thecopperierage:block/relayor_rail_powered_end_raised_ne",
-      "y": 180
+      "y": 90
     },
     "appearance=powered_end,direction=positive,shape=ascending_north": {
-      "model": "thecopperierage:block/relayor_rail_powered_end_raised_ne",
+      "model": "thecopperierage:block/relayor_rail_powered_end_raised_sw",
       "y": 180
     },
     "appearance=powered_end,direction=positive,shape=ascending_south": {
-      "model": "thecopperierage:block/relayor_rail_powered_end_raised_sw",
+      "model": "thecopperierage:block/relayor_rail_powered_end_raised_ne",
       "y": 180
     },
     "appearance=powered_end,direction=positive,shape=ascending_west": {
       "model": "thecopperierage:block/relayor_rail_powered_end_raised_sw",
-      "y": 180
+      "y": 90
     },
     "appearance=powered_end,direction=positive,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_powered_end",
-      "y": 180
+      "y": 90
     },
     "appearance=powered_end,direction=positive,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_powered_end",
       "y": 180
     },
     "appearance=powered_front,direction=negative,shape=ascending_east": {
-      "model": "thecopperierage:block/relayor_rail_powered_front_raised_ne",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_powered_front_raised_sw",
+      "y": 270
     },
     "appearance=powered_front,direction=negative,shape=ascending_north": {
       "model": "thecopperierage:block/relayor_rail_powered_front_raised_ne"
@@ -371,43 +371,43 @@
       "model": "thecopperierage:block/relayor_rail_powered_front_raised_sw"
     },
     "appearance=powered_front,direction=negative,shape=ascending_west": {
-      "model": "thecopperierage:block/relayor_rail_powered_front_raised_sw",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_powered_front_raised_ne",
+      "y": 270
     },
     "appearance=powered_front,direction=negative,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_powered_front",
-      "y": 90
+      "y": 270
     },
     "appearance=powered_front,direction=negative,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_powered_front"
     },
     "appearance=powered_front,direction=positive,shape=ascending_east": {
       "model": "thecopperierage:block/relayor_rail_powered_front_raised_ne",
-      "y": 180
+      "y": 90
     },
     "appearance=powered_front,direction=positive,shape=ascending_north": {
-      "model": "thecopperierage:block/relayor_rail_powered_front_raised_ne",
+      "model": "thecopperierage:block/relayor_rail_powered_front_raised_sw",
       "y": 180
     },
     "appearance=powered_front,direction=positive,shape=ascending_south": {
-      "model": "thecopperierage:block/relayor_rail_powered_front_raised_sw",
+      "model": "thecopperierage:block/relayor_rail_powered_front_raised_ne",
       "y": 180
     },
     "appearance=powered_front,direction=positive,shape=ascending_west": {
       "model": "thecopperierage:block/relayor_rail_powered_front_raised_sw",
-      "y": 180
+      "y": 90
     },
     "appearance=powered_front,direction=positive,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_powered_front",
-      "y": 180
+      "y": 90
     },
     "appearance=powered_front,direction=positive,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_powered_front",
       "y": 180
     },
     "appearance=powered_middle,direction=negative,shape=ascending_east": {
-      "model": "thecopperierage:block/relayor_rail_powered_middle_raised_ne",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_powered_middle_raised_sw",
+      "y": 270
     },
     "appearance=powered_middle,direction=negative,shape=ascending_north": {
       "model": "thecopperierage:block/relayor_rail_powered_middle_raised_ne"
@@ -416,43 +416,43 @@
       "model": "thecopperierage:block/relayor_rail_powered_middle_raised_sw"
     },
     "appearance=powered_middle,direction=negative,shape=ascending_west": {
-      "model": "thecopperierage:block/relayor_rail_powered_middle_raised_sw",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_powered_middle_raised_ne",
+      "y": 270
     },
     "appearance=powered_middle,direction=negative,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_powered_middle",
-      "y": 90
+      "y": 270
     },
     "appearance=powered_middle,direction=negative,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_powered_middle"
     },
     "appearance=powered_middle,direction=positive,shape=ascending_east": {
       "model": "thecopperierage:block/relayor_rail_powered_middle_raised_ne",
-      "y": 180
+      "y": 90
     },
     "appearance=powered_middle,direction=positive,shape=ascending_north": {
-      "model": "thecopperierage:block/relayor_rail_powered_middle_raised_ne",
+      "model": "thecopperierage:block/relayor_rail_powered_middle_raised_sw",
       "y": 180
     },
     "appearance=powered_middle,direction=positive,shape=ascending_south": {
-      "model": "thecopperierage:block/relayor_rail_powered_middle_raised_sw",
+      "model": "thecopperierage:block/relayor_rail_powered_middle_raised_ne",
       "y": 180
     },
     "appearance=powered_middle,direction=positive,shape=ascending_west": {
       "model": "thecopperierage:block/relayor_rail_powered_middle_raised_sw",
-      "y": 180
+      "y": 90
     },
     "appearance=powered_middle,direction=positive,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_powered_middle",
-      "y": 180
+      "y": 90
     },
     "appearance=powered_middle,direction=positive,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_powered_middle",
       "y": 180
     },
     "appearance=powered_unconnected,direction=negative,shape=ascending_east": {
-      "model": "thecopperierage:block/relayor_rail_powered_unconnected_raised_ne",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_powered_unconnected_raised_sw",
+      "y": 270
     },
     "appearance=powered_unconnected,direction=negative,shape=ascending_north": {
       "model": "thecopperierage:block/relayor_rail_powered_unconnected_raised_ne"
@@ -461,43 +461,43 @@
       "model": "thecopperierage:block/relayor_rail_powered_unconnected_raised_sw"
     },
     "appearance=powered_unconnected,direction=negative,shape=ascending_west": {
-      "model": "thecopperierage:block/relayor_rail_powered_unconnected_raised_sw",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_powered_unconnected_raised_ne",
+      "y": 270
     },
     "appearance=powered_unconnected,direction=negative,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_powered_unconnected",
-      "y": 90
+      "y": 270
     },
     "appearance=powered_unconnected,direction=negative,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_powered_unconnected"
     },
     "appearance=powered_unconnected,direction=positive,shape=ascending_east": {
       "model": "thecopperierage:block/relayor_rail_powered_unconnected_raised_ne",
-      "y": 180
+      "y": 90
     },
     "appearance=powered_unconnected,direction=positive,shape=ascending_north": {
-      "model": "thecopperierage:block/relayor_rail_powered_unconnected_raised_ne",
+      "model": "thecopperierage:block/relayor_rail_powered_unconnected_raised_sw",
       "y": 180
     },
     "appearance=powered_unconnected,direction=positive,shape=ascending_south": {
-      "model": "thecopperierage:block/relayor_rail_powered_unconnected_raised_sw",
+      "model": "thecopperierage:block/relayor_rail_powered_unconnected_raised_ne",
       "y": 180
     },
     "appearance=powered_unconnected,direction=positive,shape=ascending_west": {
       "model": "thecopperierage:block/relayor_rail_powered_unconnected_raised_sw",
-      "y": 180
+      "y": 90
     },
     "appearance=powered_unconnected,direction=positive,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_powered_unconnected",
-      "y": 180
+      "y": 90
     },
     "appearance=powered_unconnected,direction=positive,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_powered_unconnected",
       "y": 180
     },
     "appearance=unlocked_end,direction=negative,shape=ascending_east": {
-      "model": "thecopperierage:block/relayor_rail_unlocked_end_raised_ne",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_unlocked_end_raised_sw",
+      "y": 270
     },
     "appearance=unlocked_end,direction=negative,shape=ascending_north": {
       "model": "thecopperierage:block/relayor_rail_unlocked_end_raised_ne"
@@ -506,43 +506,43 @@
       "model": "thecopperierage:block/relayor_rail_unlocked_end_raised_sw"
     },
     "appearance=unlocked_end,direction=negative,shape=ascending_west": {
-      "model": "thecopperierage:block/relayor_rail_unlocked_end_raised_sw",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_unlocked_end_raised_ne",
+      "y": 270
     },
     "appearance=unlocked_end,direction=negative,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_unlocked_end",
-      "y": 90
+      "y": 270
     },
     "appearance=unlocked_end,direction=negative,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_unlocked_end"
     },
     "appearance=unlocked_end,direction=positive,shape=ascending_east": {
       "model": "thecopperierage:block/relayor_rail_unlocked_end_raised_ne",
-      "y": 180
+      "y": 90
     },
     "appearance=unlocked_end,direction=positive,shape=ascending_north": {
-      "model": "thecopperierage:block/relayor_rail_unlocked_end_raised_ne",
+      "model": "thecopperierage:block/relayor_rail_unlocked_end_raised_sw",
       "y": 180
     },
     "appearance=unlocked_end,direction=positive,shape=ascending_south": {
-      "model": "thecopperierage:block/relayor_rail_unlocked_end_raised_sw",
+      "model": "thecopperierage:block/relayor_rail_unlocked_end_raised_ne",
       "y": 180
     },
     "appearance=unlocked_end,direction=positive,shape=ascending_west": {
       "model": "thecopperierage:block/relayor_rail_unlocked_end_raised_sw",
-      "y": 180
+      "y": 90
     },
     "appearance=unlocked_end,direction=positive,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_unlocked_end",
-      "y": 180
+      "y": 90
     },
     "appearance=unlocked_end,direction=positive,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_unlocked_end",
       "y": 180
     },
     "appearance=unlocked_middle,direction=negative,shape=ascending_east": {
-      "model": "thecopperierage:block/relayor_rail_unlocked_middle_raised_ne",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_unlocked_middle_raised_sw",
+      "y": 270
     },
     "appearance=unlocked_middle,direction=negative,shape=ascending_north": {
       "model": "thecopperierage:block/relayor_rail_unlocked_middle_raised_ne"
@@ -551,43 +551,43 @@
       "model": "thecopperierage:block/relayor_rail_unlocked_middle_raised_sw"
     },
     "appearance=unlocked_middle,direction=negative,shape=ascending_west": {
-      "model": "thecopperierage:block/relayor_rail_unlocked_middle_raised_sw",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_unlocked_middle_raised_ne",
+      "y": 270
     },
     "appearance=unlocked_middle,direction=negative,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_unlocked_middle",
-      "y": 90
+      "y": 270
     },
     "appearance=unlocked_middle,direction=negative,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_unlocked_middle"
     },
     "appearance=unlocked_middle,direction=positive,shape=ascending_east": {
       "model": "thecopperierage:block/relayor_rail_unlocked_middle_raised_ne",
-      "y": 180
+      "y": 90
     },
     "appearance=unlocked_middle,direction=positive,shape=ascending_north": {
-      "model": "thecopperierage:block/relayor_rail_unlocked_middle_raised_ne",
+      "model": "thecopperierage:block/relayor_rail_unlocked_middle_raised_sw",
       "y": 180
     },
     "appearance=unlocked_middle,direction=positive,shape=ascending_south": {
-      "model": "thecopperierage:block/relayor_rail_unlocked_middle_raised_sw",
+      "model": "thecopperierage:block/relayor_rail_unlocked_middle_raised_ne",
       "y": 180
     },
     "appearance=unlocked_middle,direction=positive,shape=ascending_west": {
       "model": "thecopperierage:block/relayor_rail_unlocked_middle_raised_sw",
-      "y": 180
+      "y": 90
     },
     "appearance=unlocked_middle,direction=positive,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_unlocked_middle",
-      "y": 180
+      "y": 90
     },
     "appearance=unlocked_middle,direction=positive,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_unlocked_middle",
       "y": 180
     },
     "appearance=unlocked_signal_end,direction=negative,shape=ascending_east": {
-      "model": "thecopperierage:block/relayor_rail_unlocked_signal_end_raised_ne",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_unlocked_signal_end_raised_sw",
+      "y": 270
     },
     "appearance=unlocked_signal_end,direction=negative,shape=ascending_north": {
       "model": "thecopperierage:block/relayor_rail_unlocked_signal_end_raised_ne"
@@ -596,43 +596,43 @@
       "model": "thecopperierage:block/relayor_rail_unlocked_signal_end_raised_sw"
     },
     "appearance=unlocked_signal_end,direction=negative,shape=ascending_west": {
-      "model": "thecopperierage:block/relayor_rail_unlocked_signal_end_raised_sw",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_unlocked_signal_end_raised_ne",
+      "y": 270
     },
     "appearance=unlocked_signal_end,direction=negative,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_unlocked_signal_end",
-      "y": 90
+      "y": 270
     },
     "appearance=unlocked_signal_end,direction=negative,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_unlocked_signal_end"
     },
     "appearance=unlocked_signal_end,direction=positive,shape=ascending_east": {
       "model": "thecopperierage:block/relayor_rail_unlocked_signal_end_raised_ne",
-      "y": 180
+      "y": 90
     },
     "appearance=unlocked_signal_end,direction=positive,shape=ascending_north": {
-      "model": "thecopperierage:block/relayor_rail_unlocked_signal_end_raised_ne",
+      "model": "thecopperierage:block/relayor_rail_unlocked_signal_end_raised_sw",
       "y": 180
     },
     "appearance=unlocked_signal_end,direction=positive,shape=ascending_south": {
-      "model": "thecopperierage:block/relayor_rail_unlocked_signal_end_raised_sw",
+      "model": "thecopperierage:block/relayor_rail_unlocked_signal_end_raised_ne",
       "y": 180
     },
     "appearance=unlocked_signal_end,direction=positive,shape=ascending_west": {
       "model": "thecopperierage:block/relayor_rail_unlocked_signal_end_raised_sw",
-      "y": 180
+      "y": 90
     },
     "appearance=unlocked_signal_end,direction=positive,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_unlocked_signal_end",
-      "y": 180
+      "y": 90
     },
     "appearance=unlocked_signal_end,direction=positive,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_unlocked_signal_end",
       "y": 180
     },
     "appearance=unlocked_signal_middle,direction=negative,shape=ascending_east": {
-      "model": "thecopperierage:block/relayor_rail_unlocked_signal_middle_raised_ne",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_unlocked_signal_middle_raised_sw",
+      "y": 270
     },
     "appearance=unlocked_signal_middle,direction=negative,shape=ascending_north": {
       "model": "thecopperierage:block/relayor_rail_unlocked_signal_middle_raised_ne"
@@ -641,35 +641,35 @@
       "model": "thecopperierage:block/relayor_rail_unlocked_signal_middle_raised_sw"
     },
     "appearance=unlocked_signal_middle,direction=negative,shape=ascending_west": {
-      "model": "thecopperierage:block/relayor_rail_unlocked_signal_middle_raised_sw",
-      "y": 90
+      "model": "thecopperierage:block/relayor_rail_unlocked_signal_middle_raised_ne",
+      "y": 270
     },
     "appearance=unlocked_signal_middle,direction=negative,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_unlocked_signal_middle",
-      "y": 90
+      "y": 270
     },
     "appearance=unlocked_signal_middle,direction=negative,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_unlocked_signal_middle"
     },
     "appearance=unlocked_signal_middle,direction=positive,shape=ascending_east": {
       "model": "thecopperierage:block/relayor_rail_unlocked_signal_middle_raised_ne",
-      "y": 180
+      "y": 90
     },
     "appearance=unlocked_signal_middle,direction=positive,shape=ascending_north": {
-      "model": "thecopperierage:block/relayor_rail_unlocked_signal_middle_raised_ne",
+      "model": "thecopperierage:block/relayor_rail_unlocked_signal_middle_raised_sw",
       "y": 180
     },
     "appearance=unlocked_signal_middle,direction=positive,shape=ascending_south": {
-      "model": "thecopperierage:block/relayor_rail_unlocked_signal_middle_raised_sw",
+      "model": "thecopperierage:block/relayor_rail_unlocked_signal_middle_raised_ne",
       "y": 180
     },
     "appearance=unlocked_signal_middle,direction=positive,shape=ascending_west": {
       "model": "thecopperierage:block/relayor_rail_unlocked_signal_middle_raised_sw",
-      "y": 180
+      "y": 90
     },
     "appearance=unlocked_signal_middle,direction=positive,shape=east_west": {
       "model": "thecopperierage:block/relayor_rail_unlocked_signal_middle",
-      "y": 180
+      "y": 90
     },
     "appearance=unlocked_signal_middle,direction=positive,shape=north_south": {
       "model": "thecopperierage:block/relayor_rail_unlocked_signal_middle",

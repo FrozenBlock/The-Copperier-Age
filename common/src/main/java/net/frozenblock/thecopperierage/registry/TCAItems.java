@@ -51,6 +51,9 @@ public final class TCAItems {
 		TCABlockItemIds.COPPER_RAIL, TCABlocks.COPPER_RAIL, REGISTER::registerSimpleBlockItem
 	);
 	public static final DeferredItem<BlockItem> CROSS_RAIL = REGISTER.registerSimpleBlockItem(TCABlockItemIds.CROSS_RAIL, TCABlocks.CROSS_RAIL);
+	public static final WeatheringCopperCollection<DeferredItem<BlockItem>> COPPER_CROSS_RAIL = WeatheringCopperCollection.zipMap(
+		TCABlockItemIds.COPPER_CROSS_RAIL, TCABlocks.COPPER_CROSS_RAIL, REGISTER::registerSimpleBlockItem
+	);
 	public static final DeferredItem<BlockItem> RELAYOR_RAIL = REGISTER.registerSimpleBlockItem(TCABlockItemIds.RELAYOR_RAIL, TCABlocks.RELAYOR_RAIL);
 
 	// ITEMS

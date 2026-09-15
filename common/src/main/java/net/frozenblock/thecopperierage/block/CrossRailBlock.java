@@ -47,7 +47,7 @@ public class CrossRailBlock extends BaseRailBlock {
 	}
 
 	@Override
-	public MapCodec<CrossRailBlock> codec() {
+	public MapCodec<? extends CrossRailBlock> codec() {
 		return CODEC;
 	}
 
@@ -88,9 +88,6 @@ public class CrossRailBlock extends BaseRailBlock {
 	}
 
 	public static RailShape railShapeFromMotion(Level level, BlockPos pos, AbstractMinecart minecart) {
-		final boolean eastWestTrack = hasRailBeside(level, pos, Direction.EAST) || hasRailBeside(level, pos, Direction.WEST);
-		final boolean northSouthTrack = hasRailBeside(level, pos, Direction.NORTH) || hasRailBeside(level, pos, Direction.SOUTH);
-
 		final Vec3 velocity = minecart.getDeltaMovement();
 		final double absX = Math.abs(velocity.x);
 		final double absZ = Math.abs(velocity.z);
@@ -98,9 +95,18 @@ public class CrossRailBlock extends BaseRailBlock {
 			? minecart.getMotionDirection().getAxis() == Direction.Axis.X
 			: absX > absZ;
 
-		if (wantsEastWest && !eastWestTrack && northSouthTrack) return RailShape.NORTH_SOUTH;
-		if (!wantsEastWest && !northSouthTrack && eastWestTrack) return RailShape.EAST_WEST;
-		return wantsEastWest ? RailShape.EAST_WEST : RailShape.NORTH_SOUTH;
+		if (wantsEastWest) {
+			if (hasTrackOn(level, pos, Direction.Axis.X)) return RailShape.EAST_WEST;
+			return hasTrackOn(level, pos, Direction.Axis.Z) ? RailShape.NORTH_SOUTH : RailShape.EAST_WEST;
+		}
+		if (hasTrackOn(level, pos, Direction.Axis.Z)) return RailShape.NORTH_SOUTH;
+		return hasTrackOn(level, pos, Direction.Axis.X) ? RailShape.EAST_WEST : RailShape.NORTH_SOUTH;
+	}
+
+	private static boolean hasTrackOn(Level level, BlockPos pos, Direction.Axis axis) {
+		return axis == Direction.Axis.X
+			? hasRailBeside(level, pos, Direction.EAST) || hasRailBeside(level, pos, Direction.WEST)
+			: hasRailBeside(level, pos, Direction.NORTH) || hasRailBeside(level, pos, Direction.SOUTH);
 	}
 
 	private static boolean hasRailBeside(Level level, BlockPos pos, Direction direction) {

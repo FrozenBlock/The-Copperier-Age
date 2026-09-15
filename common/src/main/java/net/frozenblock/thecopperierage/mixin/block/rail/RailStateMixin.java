@@ -53,6 +53,11 @@ public class RailStateMixin {
 		if (this.block instanceof CrossRailBlock) info.setReturnValue(true);
 	}
 
+	@Inject(method = "connectTo", at = @At("HEAD"), cancellable = true)
+	private void theCopperierAge$crossRailKeepsItsOwnAxis(RailState rail, CallbackInfo info) {
+		if (this.block instanceof CrossRailBlock) info.cancel();
+	}
+
 	@Inject(method = "updateConnections", at = @At("TAIL"))
 	private void theCopperierAge$crossRailConnectsOnAllSides(RailShape direction, CallbackInfo info) {
 		if (!(this.block instanceof CrossRailBlock)) return;

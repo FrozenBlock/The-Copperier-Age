@@ -52,7 +52,7 @@ public final class TCABlockLootProvider extends FabricBlockLootSubProvider {
 		TCABlocks.COPPER_RAIL.forEach(block -> this.dropSelf(block.get()));
 		this.dropSelf(TCABlocks.CROSS_RAIL.get());
 		TCABlocks.COPPER_CROSS_RAIL.forEach(block -> this.dropSelf(block.get()));
-		this.dropSelf(TCABlocks.RELAYOR_RAIL.get());
+		this.dropSelf(TCABlocks.RELAYER_RAIL.get());
 
 		this.crateDrop(TCABlocks.CRATE.get());
 

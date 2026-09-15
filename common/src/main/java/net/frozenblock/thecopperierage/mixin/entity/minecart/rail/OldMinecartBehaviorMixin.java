@@ -19,7 +19,7 @@ package net.frozenblock.thecopperierage.mixin.entity.minecart.rail;
 
 import net.frozenblock.thecopperierage.block.CopperRail;
 import net.frozenblock.thecopperierage.block.CrossRailBlock;
-import net.frozenblock.thecopperierage.block.RelayorRailBlock;
+import net.frozenblock.thecopperierage.block.RelayerRailBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
@@ -82,7 +82,7 @@ public abstract class OldMinecartBehaviorMixin extends MinecartBehavior {
 
 		final BlockPos pos = minecart.getCurrentBlockPosOrRailBelow();
 		final BlockState state = level.getBlockState(pos);
-		if (!RelayorRailBlock.isPowered(state)) return;
-		this.setDeltaMovement(RelayorRailBlock.boost(state, this.getDeltaMovement()));
+		if (!RelayerRailBlock.isPowered(state)) return;
+		this.setDeltaMovement(RelayerRailBlock.boost(state, this.getDeltaMovement()));
 	}
 }

@@ -1,13 +1,28 @@
 Please clear changelog after each release.
 Put the changelog BELOW the dashes. ANYTHING ABOVE IS IGNORED.
 -----------------
+- Revamped the Furnace Minecart.
+  - The Furnace Minecart now has five inventory slots to burn fuel from.
+    - Interacting with a Furnace Minecart will open its inventory like other containers.
+  - The propulsion of Furnace Minecarts now remains relative to the direction they were placed.
+- Added the Minecart with Jukebox.
+- Added the Minecart with Crate.
+- Vehicles with container blocks now play the same opening and closing animations and sounds as their block counterparts.
+- Added the Minecart Coupling item.
+  - Interacting with two Minecarts while holding a Minecart Coupling will link the two Minecarts together.
+  - Interacting with a coupled Minecart with a Wrench will remove the coupling.
+  - The implementation of Minecart Coupling's physics were based on and expanded off of [Create: Fly](https://modrinth.com/mod/create-fly)'s implementation.
+- Added the Cross Rail block.
+  - Minecarts passing over a Cross Rail will continue traveling in whichever direction they already were, while staying on the rail.
+- Added Copper variants of the Rail and Cross Rail blocks.
+  - As a Copper Rail oxidizes, its friction against Minecarts increases.
+    - The unaffected speed of Copper Rails is equivalent to that of regular Rails.
+- Added the Relayer Rail block.
+  - When unpowered, acts as a dock to keep Minecarts in place.
+  - When powered, directionally provides power to other Relayer Rails and pushes Minecarts automatically.
+- Added the Cupric Lantern block.
+  - Much like the Soul Lantern, is crafted using a Copper Torch instead of a Torch.
+- Added compatability for Netherier Nether, introducing Cupric variants of Golden and Netherite lanterns if both mods are present.
 - Redstone Comparators can now detect the total movement applied to Chimes.
+- Added Chimes to the `Redstone Blocks` Creative Inventory Tab.
 - Added The Camel Husk and Zombie Ostrich to the `#thecopperierage:copper_fan_weaker_push` Entity Type tag.
-- Added Cross Rails, pretty self explainitory
-- Reworked Furnace Minecarts to have an interface and inventory, sensible directional behaviours
-- Added Couplings, for tethering Minecarts together. Create: Fly was refferenced for some of the physics for this feature
-- Added the Copper variants of Rails and Cross Rails, oxidisation levels having higher friction and slowing carts exponentially
-- Added the Relayor Rail, functionally duels as a directional powered rail and a station to "dock" minecarts when unpowered
-- Improved container vehicles like chest minecarts and boats to visually and audibly open when interacted with and used
-- Added Cupric Lanterns, a standard lantern made from iron and a copper torch, similar to soul and other lantern varients
-- Added compatability for Netherier Nether, introducing Cupric varients of Golden and Netherite lanterns if both mods are present

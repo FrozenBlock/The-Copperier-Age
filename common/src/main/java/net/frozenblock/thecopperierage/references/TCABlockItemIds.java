@@ -38,7 +38,7 @@ public final class TCABlockItemIds {
     public static final WeatheringCopperCollection<BlockItemId> COPPER_RAIL = createSimpleCopper("copper_rail");
     public static final BlockItemId CROSS_RAIL = create("cross_rail");
     public static final WeatheringCopperCollection<BlockItemId> COPPER_CROSS_RAIL = createSimpleCopper("copper_cross_rail");
-    public static final BlockItemId RELAYOR_RAIL = create("relayor_rail");
+    public static final BlockItemId RELAYER_RAIL = create("relayer_rail");
 
     private static BlockItemId create(String name) {
         final Identifier id = TCAConstants.id(name);

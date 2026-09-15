@@ -19,7 +19,7 @@ package net.frozenblock.thecopperierage.entity.coupling;
 
 import java.util.Optional;
 import net.frozenblock.thecopperierage.block.CrossRailBlock;
-import net.frozenblock.thecopperierage.block.RelayorRailBlock;
+import net.frozenblock.thecopperierage.block.RelayerRailBlock;
 import net.frozenblock.thecopperierage.entity.impl.CouplingToEntityInterface;
 import net.frozenblock.thecopperierage.registry.TCAAttachmentTypes;
 import net.frozenblock.thecopperierage.registry.TCAItems;
@@ -331,7 +331,7 @@ public final class MinecartCouplingUtil {
 	private static boolean isDockedOnRelayor(AbstractMinecart cart) {
 		final Level level = cart.level();
 		final BlockPos pos = cart.getCurrentBlockPosOrRailBelow();
-		return RelayorRailBlock.isDocked(level, pos, level.getBlockState(pos), cart);
+		return RelayerRailBlock.isDocked(level, pos, level.getBlockState(pos), cart);
 	}
 
 	private static float getMaxCartSpeed(AbstractMinecart cart) {

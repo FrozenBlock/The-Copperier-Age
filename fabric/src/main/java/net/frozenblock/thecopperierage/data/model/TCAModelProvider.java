@@ -24,7 +24,7 @@ import net.frozenblock.thecopperierage.block.CopperFanBlock;
 import net.frozenblock.thecopperierage.block.CrossRailBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
 import net.frozenblock.thecopperierage.block.RedstoneGritBlock;
-import net.frozenblock.thecopperierage.block.RelayorRailBlock;
+import net.frozenblock.thecopperierage.block.RelayerRailBlock;
 import net.frozenblock.thecopperierage.block.StickyGearboxBlock;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCAItems;
@@ -83,7 +83,7 @@ public final class TCAModelProvider extends FabricModelProvider {
 		TCABlocks.COPPER_RAIL.zipUnwaxedWaxed((block, waxedBlock) -> createCopperRail(generator, block.get(), waxedBlock.get()));
 		createCrossRail(generator, TCABlocks.CROSS_RAIL.get());
 		TCABlocks.COPPER_CROSS_RAIL.zipUnwaxedWaxed((block, waxedBlock) -> createCopperCrossRail(generator, block.get(), waxedBlock.get()));
-		createRelayorRail(generator, TCABlocks.RELAYOR_RAIL.get());
+		createRelayerRail(generator, TCABlocks.RELAYER_RAIL.get());
 		createCrate(generator, TCABlocks.CRATE.get());
 
 		createCopperButton(generator, TCABlocks.COPPER_BUTTON.weathering().unaffected().get(), TCABlocks.COPPER_BUTTON.waxed().unaffected().get(), Blocks.COPPER_BLOCK.weathering().unaffected());
@@ -230,13 +230,13 @@ public final class TCAModelProvider extends FabricModelProvider {
 		);
 	}
 
-	private static void createRelayorRail(BlockModelGenerators generator, Block block) {
+	private static void createRelayerRail(BlockModelGenerators generator, Block block) {
 		generator.registerSimpleFlatItemModel(block, "_locked_unconnected");
 
-		final PropertyDispatch.C3<MultiVariant, RailShape, RelayorRailBlock.Appearance, RelayorRailBlock.DirectionSign> dispatch =
-			PropertyDispatch.initial(RelayorRailBlock.SHAPE, RelayorRailBlock.APPEARANCE, RelayorRailBlock.DIRECTION);
+		final PropertyDispatch.C3<MultiVariant, RailShape, RelayerRailBlock.Appearance, RelayerRailBlock.DirectionSign> dispatch =
+			PropertyDispatch.initial(RelayerRailBlock.SHAPE, RelayerRailBlock.APPEARANCE, RelayerRailBlock.DIRECTION);
 
-		for (RelayorRailBlock.Appearance appearance : RelayorRailBlock.Appearance.values()) {
+		for (RelayerRailBlock.Appearance appearance : RelayerRailBlock.Appearance.values()) {
 			final String texture = appearance.getSerializedName();
 			final TextureMapping mapping = TextureMapping.rail(TextureMapping.getBlockTexture(block, "_" + texture));
 			final MultiVariant flat = BlockModelGenerators.plainVariant(
@@ -249,8 +249,8 @@ public final class TCAModelProvider extends FabricModelProvider {
 				ModelTemplates.RAIL_RAISED_SW.createWithSuffix(block, "_" + texture, mapping, generator.modelOutput)
 			);
 
-			final RelayorRailBlock.DirectionSign negative = RelayorRailBlock.DirectionSign.NEGATIVE;
-			final RelayorRailBlock.DirectionSign positive = RelayorRailBlock.DirectionSign.POSITIVE;
+			final RelayerRailBlock.DirectionSign negative = RelayerRailBlock.DirectionSign.NEGATIVE;
+			final RelayerRailBlock.DirectionSign positive = RelayerRailBlock.DirectionSign.POSITIVE;
 
 			dispatch.select(RailShape.NORTH_SOUTH, appearance, negative, flat);
 			dispatch.select(RailShape.NORTH_SOUTH, appearance, positive, flat.with(BlockModelGenerators.Y_ROT_180));

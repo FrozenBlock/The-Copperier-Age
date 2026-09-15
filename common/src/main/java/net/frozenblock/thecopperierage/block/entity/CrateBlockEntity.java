@@ -19,6 +19,7 @@ package net.frozenblock.thecopperierage.block.entity;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import net.frozenblock.lib.transfer.api.TransferApi;
 import net.frozenblock.thecopperierage.block.CrateBlock;
@@ -79,8 +80,7 @@ public class CrateBlockEntity extends RandomizableContainerBlockEntity implement
 		}
 
 		@Override
-		protected void openerCountChanged(Level level, BlockPos pos, BlockState state, int prevOpenCount, int openCount) {
-		}
+		protected void openerCountChanged(Level level, BlockPos pos, BlockState state, int prevOpenCount, int openCount) {}
 
 		@Override
 		public boolean isOwnContainer(Player player) {
@@ -99,9 +99,21 @@ public class CrateBlockEntity extends RandomizableContainerBlockEntity implement
 		if (level.isClientSide()) return;
 		if (this.invalidItems.isEmpty()) return;
 
+		this.unpackLootTable(null);
+
+		final Direction facing = state.getValue(CrateBlock.FACING);
+		final Vec3 dispensePos = Vec3.atCenterOf(pos).relative(facing, 0.7D);
 		for (ItemStack stack : this.invalidItems) {
-			this.moveOut(level, pos, state, stack);
-			this.dispense(level, pos, state, Optional.of(stack), true);
+			moveOut(level, pos, state, stack);
+			dispense(
+				level,
+				dispensePos,
+				facing,
+				Optional.of(stack),
+				this,
+				true,
+				sound -> level.playSound(null, pos, sound, SoundSource.BLOCKS, 0.2F, (level.getRandom().nextFloat() * 0.25F) + 0.8F)
+			);
 		}
 	}
 
@@ -193,7 +205,7 @@ public class CrateBlockEntity extends RandomizableContainerBlockEntity implement
 		super.setItem(slot, stack);
 	}
 
-	private boolean moveOut(Level level, BlockPos pos, BlockState state, ItemStack stack) {
+	public static boolean moveOut(Level level, BlockPos pos, BlockState state, ItemStack stack) {
 		if (stack.isEmpty()) return false;
 
 		final Direction facing = state.getValue(CrateBlock.FACING);
@@ -208,34 +220,39 @@ public class CrateBlockEntity extends RandomizableContainerBlockEntity implement
 		return true;
 	}
 
-	private boolean dispense(Level level, BlockPos pos, BlockState state, Optional<ItemStack> selectedStack, boolean dispenseWholeStack) {
-		final int slot = selectedStack.isPresent() ? 0 : this.chooseNonEmptySlot(level.getRandom());
+	public static boolean dispense(
+		Level level,
+		Vec3 pos,
+		Direction facing,
+		Optional<ItemStack> selectedStack,
+		Container container,
+		boolean dispenseWholeStack,
+		Consumer<SoundEvent> onDispense
+	) {
+		final int slot = selectedStack.isPresent() ? 0 : chooseNonEmptySlot(container, level.getRandom());
 		if (slot < 0) return false;
 
-		final ItemStack stack = selectedStack.orElse(this.getItem(slot));
+		final ItemStack stack = selectedStack.orElse(container.getItem(slot));
 		if (stack.isEmpty()) return false;
 
-		final ItemStack dispensedItem = this.dispenseItem(level, pos, state, stack, dispenseWholeStack);
-		if (selectedStack.isEmpty()) this.setItem(slot, dispensedItem);
+		final ItemStack dispensedItem = dispenseItem(level, pos, facing, stack, dispenseWholeStack, onDispense);
+		if (selectedStack.isEmpty()) container.setItem(slot, dispensedItem);
 
 		return true;
 	}
 
-	private ItemStack dispenseItem(Level level, BlockPos pos, BlockState state, ItemStack stack, boolean dispenseWholeStack) {
-		final Direction facing = state.getValue(CrateBlock.FACING);
-		final Vec3 dispensePos = Vec3.atCenterOf(pos).relative(facing, 0.7D);
+	public static ItemStack dispenseItem(Level level, Vec3 pos, Direction facing, ItemStack stack, boolean dispenseWholeStack, Consumer<SoundEvent> onDispense) {
 		final ItemStack dispenseStack = dispenseWholeStack ? stack.copyAndClear() : stack.split(1);
-		DefaultDispenseItemBehavior.spawnItem(level, dispenseStack, 2, facing, dispensePos);
-		level.playSound(null, pos, TCASounds.BLOCK_CRATE_EJECT.get(), SoundSource.BLOCKS, 0.2F, (level.getRandom().nextFloat() * 0.25F) + 0.8F);
+		DefaultDispenseItemBehavior.spawnItem(level, dispenseStack, 2, facing, pos);
+		onDispense.accept(TCASounds.BLOCK_CRATE_EJECT.get());
 		return stack;
 	}
 
-	public int chooseNonEmptySlot(RandomSource random) {
-		this.unpackLootTable(null);
+	public static int chooseNonEmptySlot(Container container, RandomSource random) {
 		int slot = -1;
 		int selectionChance = 1;
-		for (int k = 0; k < this.items.size(); ++k) {
-			if (!this.items.get(k).isEmpty() && random.nextInt(selectionChance++) == 0) slot = k;
+		for (int i = 0; i < container.getContainerSize(); ++i) {
+			if (!container.getItem(i).isEmpty() && random.nextInt(selectionChance++) == 0) slot = i;
 		}
 		return slot;
 	}

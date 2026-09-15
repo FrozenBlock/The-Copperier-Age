@@ -53,7 +53,7 @@ public final class TCAItems {
 	public static final WeatheringCopperCollection<DeferredItem<BlockItem>> COPPER_CROSS_RAIL = WeatheringCopperCollection.zipMap(
 		TCABlockItemIds.COPPER_CROSS_RAIL, TCABlocks.COPPER_CROSS_RAIL, REGISTER::registerSimpleBlockItem
 	);
-	public static final DeferredItem<BlockItem> RELAYOR_RAIL = REGISTER.registerSimpleBlockItem(TCABlockItemIds.RELAYOR_RAIL, TCABlocks.RELAYOR_RAIL);
+	public static final DeferredItem<BlockItem> RELAYOR_RAIL = REGISTER.registerSimpleBlockItem(TCABlockItemIds.RELAYER_RAIL, TCABlocks.RELAYER_RAIL);
 
 	// ITEMS
 	public static final DeferredItem<WrenchItem> WRENCH = REGISTER.registerItem(TCAItemIds.WRENCH,
@@ -68,8 +68,7 @@ public final class TCAItems {
 	);
 
 	// MINECART ITEMS
-	public static final DeferredItem<Item> MINECART_COUPLING = REGISTER.registerItem(TCAItemIds.MINECART_COUPLING,
-		Item::new,
+	public static final DeferredItem<Item> MINECART_COUPLING = REGISTER.registerSimpleItem(TCAItemIds.MINECART_COUPLING,
 		() -> new Item.Properties().stacksTo(16)
 	);
 	public static final DeferredItem<MinecartItem> CRATE_MINECART = REGISTER.registerItem(TCAItemIds.CRATE_MINECART,

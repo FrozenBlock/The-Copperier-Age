@@ -60,6 +60,6 @@ public final class TCABlockItemTagsProvider extends BlockItemTagsProvider {
 		final CombinedAppender railsBuilder = this.tag(BlockItemTags.RAILS);
 		TCABlockItemIds.COPPER_RAIL.forEach(railsBuilder::add);
 		TCABlockItemIds.COPPER_CROSS_RAIL.forEach(railsBuilder::add);
-		railsBuilder.add(TCABlockItemIds.CROSS_RAIL, TCABlockItemIds.RELAYOR_RAIL);
+		railsBuilder.add(TCABlockItemIds.CROSS_RAIL, TCABlockItemIds.RELAYER_RAIL);
 	}
 }

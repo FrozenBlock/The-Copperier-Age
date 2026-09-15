@@ -141,4 +141,6 @@ public final class GearboxEntityRotationHelper {
 		livingEntity.yHeadRotO += yawDelta;
 		livingEntity.setYHeadRot(livingEntity.yHeadRot + yawDelta);
 	}
+
+	private GearboxEntityRotationHelper() {}
 }

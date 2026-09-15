@@ -78,7 +78,7 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.pattern("# #")
 					.pattern(" # ")
 					.pattern(" # ")
-					.unlockedBy(RecipeProvider.getHasName(Items.COPPER_INGOT), this.has(Items.COPPER_INGOT))
+					.unlockedBy(getHasName(Items.COPPER_INGOT), this.has(Items.COPPER_INGOT))
 					.save(exporter);
 
 				this.shaped(RecipeCategory.TOOLS, TCAItems.MINECART_COUPLING)
@@ -88,19 +88,19 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.pattern("  C")
 					.pattern(" X ")
 					.pattern("C  ")
-					.unlockedBy(RecipeProvider.getHasName(Items.MINECART), this.has(Items.MINECART))
+					.unlockedBy(getHasName(Items.MINECART), this.has(Items.MINECART))
 					.save(exporter);
 
 				this.shapeless(RecipeCategory.TRANSPORTATION, TCAItems.CRATE_MINECART)
 					.requires(Items.MINECART)
 					.requires(TCABlocks.CRATE)
-					.unlockedBy(RecipeProvider.getHasName(Items.MINECART), this.has(Items.MINECART))
+					.unlockedBy(getHasName(Items.MINECART), this.has(Items.MINECART))
 					.save(this.output);
 
 				this.shapeless(RecipeCategory.TRANSPORTATION, TCAItems.JUKEBOX_MINECART)
 					.requires(Items.MINECART)
 					.requires(Items.JUKEBOX)
-					.unlockedBy(RecipeProvider.getHasName(Items.MINECART), this.has(Items.MINECART))
+					.unlockedBy(getHasName(Items.MINECART), this.has(Items.MINECART))
 					.save(this.output);
 
 				this.shaped(RecipeCategory.DECORATIONS, TCABlocks.COPPER_CAMPFIRE)
@@ -119,7 +119,7 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.pattern("XXX")
 					.pattern("X#X")
 					.pattern("XXX")
-					.unlockedBy(RecipeProvider.getHasName(Items.COPPER_TORCH), this.has(Items.COPPER_TORCH))
+					.unlockedBy(getHasName(Items.COPPER_TORCH), this.has(Items.COPPER_TORCH))
 					.save(this.output);
 
 				this.shaped(RecipeCategory.BUILDING_BLOCKS, TCABlocks.COPPER_JACK_O_LANTERN)
@@ -193,7 +193,7 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.pattern(" T ")
 					.pattern("---")
 					.pattern("VVV")
-					.unlockedBy(RecipeProvider.getHasName(Items.AMETHYST_SHARD), this.has(Items.AMETHYST_SHARD))
+					.unlockedBy(getHasName(Items.AMETHYST_SHARD), this.has(Items.AMETHYST_SHARD))
 					.save(exporter);
 
 				this.shaped(RecipeCategory.REDSTONE, TCABlocks.CRATE, 1)
@@ -202,7 +202,7 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.pattern("I#I")
 					.pattern("# #")
 					.pattern("I#I")
-					.unlockedBy(RecipeProvider.getHasName(Items.IRON_INGOT), this.has(Items.IRON_INGOT))
+					.unlockedBy(getHasName(Items.IRON_INGOT), this.has(Items.IRON_INGOT))
 					.save(exporter);
 
 				this.shaped(RecipeCategory.TRANSPORTATION, TCABlocks.COPPER_RAIL.weathering().unaffected(), 12)
@@ -211,12 +211,12 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.pattern("X X")
 					.pattern("X#X")
 					.pattern("X X")
-					.unlockedBy(RecipeProvider.getHasName(Items.COPPER_INGOT), this.has(Items.COPPER_INGOT))
+					.unlockedBy(getHasName(Items.COPPER_INGOT), this.has(Items.COPPER_INGOT))
 					.save(exporter);
 
 				this.shapeless(RecipeCategory.TRANSPORTATION, TCABlocks.CROSS_RAIL)
 					.requires(Items.RAIL, 2)
-					.unlockedBy(RecipeProvider.getHasName(Items.RAIL), this.has(Items.RAIL))
+					.unlockedBy(getHasName(Items.RAIL), this.has(Items.RAIL))
 					.save(exporter);
 
 				WeatheringCopperCollection.zipApply(
@@ -224,11 +224,20 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					TCABlocks.COPPER_CROSS_RAIL.weathering(),
 					(rail, crossRail) -> this.shapeless(RecipeCategory.TRANSPORTATION, crossRail)
 						.requires(rail.get(), 2)
-						.unlockedBy(RecipeProvider.getHasName(rail.get()), this.has(rail.get()))
+						.unlockedBy(getHasName(rail.get()), this.has(rail.get()))
 						.save(exporter)
 				);
 
-				this.shaped(RecipeCategory.TRANSPORTATION, TCABlocks.RELAYOR_RAIL, 6)
+				WeatheringCopperCollection.zipApply(
+					TCABlocks.COPPER_RAIL.waxed(),
+					TCABlocks.COPPER_CROSS_RAIL.waxed(),
+					(rail, crossRail) -> this.shapeless(RecipeCategory.TRANSPORTATION, crossRail)
+						.requires(rail.get(), 2)
+						.unlockedBy(getHasName(rail.get()), this.has(rail.get()))
+						.save(exporter)
+				);
+
+				this.shaped(RecipeCategory.TRANSPORTATION, TCABlocks.RELAYER_RAIL, 6)
 					.define('I', Ingredient.of(Items.IRON_INGOT))
 					.define('G', Ingredient.of(Items.GOLD_INGOT))
 					.define('R', Ingredient.of(Items.REDSTONE))
@@ -236,10 +245,11 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.pattern("IRI")
 					.pattern("G#G")
 					.pattern("GRG")
-					.unlockedBy(RecipeProvider.getHasName(Items.GOLD_INGOT), this.has(Items.GOLD_INGOT))
+					.unlockedBy(getHasName(Items.GOLD_INGOT), this.has(Items.GOLD_INGOT))
 					.save(exporter);
 
 				// COPPER HORN
+				// TODO: multiloader-compliant data component-based crafting
 				this.copperHorn("recorder", Instruments.YEARN_GOAT_HORN, TCAInstruments.RECORDER_COPPER_HORN);
 				this.copperHorn("clarinet", Instruments.DREAM_GOAT_HORN, TCAInstruments.CLARINET_COPPER_HORN);
 				this.copperHorn("flute", Instruments.CALL_GOAT_HORN, TCAInstruments.FLUTE_COPPER_HORN);
@@ -252,13 +262,14 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 				RecipeExportNamespaceFix.clearCurrentGeneratingModId();
 			}
 
+			// Be careful! These only work for Fabric. NeoForge uses a different format.
 			private void copperHorn(
 				String name,
 				ResourceKey<Instrument> goatHornInstrument,
 				ResourceKey<Instrument> copperHornInstrument
 			) {
 				copperHornBuilder(copperHornInstrument)
-					.group("wilderwild_copper_horn")
+					.group("thecopperierage_copper_horn")
 					.define('C', Ingredient.of(Items.COPPER_INGOT))
 					.define('G', DefaultCustomIngredients.components(
 						Ingredient.of(Items.GOAT_HORN),

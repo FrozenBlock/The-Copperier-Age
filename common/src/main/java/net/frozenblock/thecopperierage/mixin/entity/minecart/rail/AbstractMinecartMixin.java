@@ -18,7 +18,7 @@
 package net.frozenblock.thecopperierage.mixin.entity.minecart.rail;
 
 import net.frozenblock.thecopperierage.block.CrossRailBlock;
-import net.frozenblock.thecopperierage.block.RelayorRailBlock;
+import net.frozenblock.thecopperierage.block.RelayerRailBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.MoverType;
@@ -50,8 +50,8 @@ public class AbstractMinecartMixin {
 		final BlockPos pos = minecart.getCurrentBlockPosOrRailBelow();
 		final BlockState state = level.getBlockState(pos);
 
-		if (state.getBlock() instanceof RelayorRailBlock) {
-			RelayorRailBlock.handleCart(level, pos, state, minecart);
+		if (state.getBlock() instanceof RelayerRailBlock) {
+			RelayerRailBlock.handleCart(level, pos, state, minecart);
 		}
 	}
 
@@ -62,7 +62,7 @@ public class AbstractMinecartMixin {
 
 		final Level level = minecart.level();
 		final BlockPos pos = minecart.getCurrentBlockPosOrRailBelow();
-		if (RelayorRailBlock.isDocked(level, pos, level.getBlockState(pos), minecart)) minecart.setDeltaMovement(Vec3.ZERO);
+		if (RelayerRailBlock.isDocked(level, pos, level.getBlockState(pos), minecart)) minecart.setDeltaMovement(Vec3.ZERO);
 	}
 
 	@ModifyVariable(method = "makeStepAlongTrack", at = @At("HEAD"), argsOnly = true)
@@ -80,6 +80,6 @@ public class AbstractMinecartMixin {
 		if (!(minecart.level() instanceof ServerLevel level)) return;
 
 		final BlockPos pos = minecart.getCurrentBlockPosOrRailBelow();
-		if (RelayorRailBlock.isDocked(level, pos, level.getBlockState(pos), minecart)) info.cancel();
+		if (RelayerRailBlock.isDocked(level, pos, level.getBlockState(pos), minecart)) info.cancel();
 	}
 }

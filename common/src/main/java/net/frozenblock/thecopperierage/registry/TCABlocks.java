@@ -34,7 +34,7 @@ import net.frozenblock.thecopperierage.block.CrossRailBlock;
 import net.frozenblock.thecopperierage.block.GearboxBlock;
 import net.frozenblock.thecopperierage.block.RedstoneGritBlock;
 import net.frozenblock.thecopperierage.block.RedstonePumpkinBlock;
-import net.frozenblock.thecopperierage.block.RelayorRailBlock;
+import net.frozenblock.thecopperierage.block.RelayerRailBlock;
 import net.frozenblock.thecopperierage.block.StickyGearboxBlock;
 import net.frozenblock.thecopperierage.block.WeatheringChimeBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperButtonBlock;
@@ -247,8 +247,8 @@ public final class TCABlocks {
 			.sound(SoundType.METAL)
 	);
 
-	public static final DeferredBlock<Block> RELAYOR_RAIL = REGISTER.registerBlock(TCABlockItemIds.RELAYOR_RAIL.block(),
-		RelayorRailBlock::new,
+	public static final DeferredBlock<Block> RELAYER_RAIL = REGISTER.registerBlock(TCABlockItemIds.RELAYER_RAIL.block(),
+		RelayerRailBlock::new,
 		() -> BlockBehaviour.Properties.of()
 			.mapColor(MapColor.METAL)
 			.noCollision()

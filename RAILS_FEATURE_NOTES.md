@@ -45,7 +45,7 @@ Reference: rails-revamped "Interruption rail" — stops carts and releases them 
 
 **Rows** = visual connection to neighbouring relayors (like fences), so a chain reads as one piece.
 
-**NOW IMPLEMENTED** (in `RelayorRailBlock`, driven by `mixin/entity/minecart/rail/AbstractMinecartMixin`, both movement modes):
+**NOW IMPLEMENTED** (in `RelayerRailBlock`, driven by `mixin/entity/minecart/rail/AbstractMinecartMixin`, both movement modes):
 - **Unpowered → jams the cart.** Horizontal momentum is dropped, so carts stop and queue on it.
 - **Powered → propels the cart** along `propulsionDirection`: `+0.06`/tick to a moving cart, `0.2` kick from rest (same numbers as a vanilla powered rail).
 - **Comparator = cart count across the connected run** of relayors sharing the rail's axis (`countCartsInSequence`, traced up to 64 rails each way).

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "thecopperierage:block/relayer_rail_locked_unconnected"
+  }
+}

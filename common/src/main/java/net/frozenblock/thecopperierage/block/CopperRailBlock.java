@@ -32,12 +32,10 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
 
 public class CopperRailBlock extends BaseRailBlock implements CopperRail {
-	public static final MapCodec<CopperRailBlock> CODEC = RecordCodecBuilder.mapCodec(
-		instance -> instance.group(
-			WeatheringCopper.WeatherState.CODEC.fieldOf("weathering_state").forGetter(block -> block.weatherState),
-			propertiesCodec()
-		).apply(instance, CopperRailBlock::new)
-	);
+	public static final MapCodec<CopperRailBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		WeatheringCopper.WeatherState.CODEC.fieldOf("weathering_state").forGetter(block -> block.weatherState),
+		propertiesCodec()
+	).apply(instance, CopperRailBlock::new));
 	public static final EnumProperty<RailShape> SHAPE = BlockStateProperties.RAIL_SHAPE;
 
 	public final WeatheringCopper.WeatherState weatherState;

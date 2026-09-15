@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
-  "group": "wilderwild_copper_horn",
+  "group": "thecopperierage_copper_horn",
   "key": {
     "C": "minecraft:copper_ingot",
     "G": {

@@ -36,7 +36,7 @@ public interface CopperRail {
 
 	static double speedMultiplier(WeatheringCopper.WeatherState weatherState) {
 		return switch (weatherState) {
-			case UNAFFECTED -> 1.0D;
+			case UNAFFECTED -> 1D;
 			case EXPOSED -> 0.8D;
 			case WEATHERED -> 0.6D;
 			case OXIDIZED -> 0.4D;
@@ -64,7 +64,7 @@ public interface CopperRail {
 		if (TCAConfig.DEBUG_MINECART_MOTION.get()) {
 			TCAConstants.LOGGER.info(String.format(
 				"[TCA copper cap] %-22s vehicle=%-5b %-10s maxSpeed %.4f -> %.4f",
-				minecart.getType().toString(), minecart.isVehicle(), rail.getWeatherState(), original, capped
+				minecart.getType(), minecart.isVehicle(), rail.getWeatherState(), original, capped
 			));
 		}
 		return capped;
@@ -94,7 +94,7 @@ public interface CopperRail {
 		if (TCAConfig.DEBUG_MINECART_MOTION.get()) {
 			TCAConstants.LOGGER.info(String.format(
 				"[TCA copper] %-24s %-10s ironFactor=%.4f -> %.4f  hSpeed %.4f -> %.4f",
-				minecart.getType().toString(), rail.getWeatherState(), ironFactor, adjusted, afterSpeed, afterSpeed * scale
+				minecart.getType(), rail.getWeatherState(), ironFactor, adjusted, afterSpeed, afterSpeed * scale
 			));
 		}
 		return new Vec3(after.x * scale, after.y, after.z * scale);

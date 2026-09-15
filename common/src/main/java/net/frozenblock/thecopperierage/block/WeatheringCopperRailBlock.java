@@ -26,12 +26,10 @@ import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class WeatheringCopperRailBlock extends CopperRailBlock implements WeatheringCopper {
-	public static final MapCodec<WeatheringCopperRailBlock> CODEC = RecordCodecBuilder.mapCodec(
-		instance -> instance.group(
-			WeatherState.CODEC.fieldOf("weathering_state").forGetter(WeatheringCopperRailBlock::getAge),
-			propertiesCodec()
-		).apply(instance, WeatheringCopperRailBlock::new)
-	);
+	public static final MapCodec<WeatheringCopperRailBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		WeatherState.CODEC.fieldOf("weathering_state").forGetter(WeatheringCopperRailBlock::getAge),
+		propertiesCodec()
+	).apply(instance, WeatheringCopperRailBlock::new));
 
 	public WeatheringCopperRailBlock(WeatheringCopper.WeatherState weatherState, Properties properties) {
 		super(weatherState, properties);

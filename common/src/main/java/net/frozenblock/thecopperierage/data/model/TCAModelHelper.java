@@ -31,9 +31,7 @@ import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.renderer.block.dispatch.VariantMutator;
 import static net.minecraft.client.renderer.item.ItemModel.Unbaked;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.WeatheringCopper;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 @ClientOnly
 public final class TCAModelHelper {
@@ -71,18 +69,6 @@ public final class TCAModelHelper {
 		Optional.of("_powered"),
 		TextureSlot.FRONT, TextureSlot.SIDE, TextureSlot.BOTTOM
 	);
-	// KILN
-	static final ModelTemplate KILN_MODEL = new ModelTemplate(
-		Optional.of(Identifier.withDefaultNamespace("block/orientable_with_bottom")),
-		Optional.empty(),
-		TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE, TextureSlot.FRONT
-	);
-	static final PropertyDispatch<VariantMutator> KILN_ROTATION = PropertyDispatch.modify(BlockStateProperties.HORIZONTAL_FACING)
-		.select(Direction.EAST, BlockModelGenerators.Y_ROT_90)
-		.select(Direction.SOUTH, BlockModelGenerators.Y_ROT_180)
-		.select(Direction.WEST, BlockModelGenerators.Y_ROT_270)
-		.select(Direction.NORTH, BlockModelGenerators.NOP);
-
 	public static Unbaked createOxidizableDispatch(Unbaked unaffected, Unbaked exposed, Unbaked weathered, Unbaked oxidized) {
 		return ItemModelUtils.select(
 			OxidizedItemsEnabled.INSTANCE,

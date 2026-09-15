@@ -19,7 +19,6 @@ package net.frozenblock.thecopperierage.registry;
 
 import net.frozenblock.thecopperierage.client.gui.screens.inventory.CrateScreen;
 import net.frozenblock.thecopperierage.client.gui.screens.inventory.FurnaceMinecartScreen;
-import net.frozenblock.thecopperierage.client.gui.screens.inventory.KilnScreen;
 import net.mehvahdjukaar.candlelight.api.ClientOnly;
 import net.minecraft.client.gui.screens.MenuScreens;
 
@@ -28,7 +27,6 @@ public final class TCAMenuScreens {
 
 	public static void setup() {
 		MenuScreens.register(TCAMenuTypes.CRATE.get(), CrateScreen::new);
-		MenuScreens.register(TCAMenuTypes.KILN.get(), KilnScreen::new);
 		MenuScreens.register(TCAMenuTypes.FURNACE_MINECART.get(), FurnaceMinecartScreen::new);
 	}
 

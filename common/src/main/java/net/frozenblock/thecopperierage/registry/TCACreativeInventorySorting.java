@@ -167,7 +167,6 @@ public final class TCACreativeInventorySorting {
 		insertAfterInToolsAndUtilities(TCAItems.COPPER_CROSS_RAIL.waxed().weathered(), TCAItems.COPPER_CROSS_RAIL.waxed().oxidized());
 
 		// OTHER
-		insertAfterInFunctionalBlocks(Items.FURNACE, TCAItems.KILN);
 		insertAfterInFunctionalBlocks(Items.SOUL_CAMPFIRE, TCAItems.COPPER_CAMPFIRE);
 		insertAfterInFunctionalBlocks(Items.SOUL_LANTERN, TCAItems.CUPRIC_LANTERN);
 		insertBeforeInToolsAndUtilities(Items.BRUSH, TCAItems.WRENCH);

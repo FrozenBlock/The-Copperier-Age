@@ -21,7 +21,6 @@ import net.frozenblock.lib.platform.api.registry.DeferredHolder;
 import net.frozenblock.lib.platform.api.registry.DeferredRegister;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.entity.inventory.CrateMenu;
-import net.frozenblock.thecopperierage.block.entity.inventory.KilnMenu;
 import net.frozenblock.thecopperierage.entity.inventory.FurnaceMinecartMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.flag.FeatureFlags;
@@ -32,7 +31,6 @@ public final class TCAMenuTypes {
 	private static final DeferredRegister<MenuType<?>> REGISTER = DeferredRegister.create(Registries.MENU, TCAConstants.MOD_ID);
 
 	public static final DeferredHolder<MenuType<?>, MenuType<CrateMenu>> CRATE = register("crate", CrateMenu::create);
-	public static final DeferredHolder<MenuType<?>, MenuType<KilnMenu>> KILN = register("kiln", KilnMenu::new);
 	public static final DeferredHolder<MenuType<?>, MenuType<FurnaceMinecartMenu>> FURNACE_MINECART = register("furnace_minecart", FurnaceMinecartMenu::create);
 
 	static {

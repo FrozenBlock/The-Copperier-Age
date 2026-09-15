@@ -40,8 +40,6 @@
     "entity.minecart.speed.AbstractMinecartMixin",
     "item.ItemMixin",
     "item.ItemStackMixin",
-    "recipe.RecipeManagerMixin",
-    "recipe.SingleItemRecipeAccessor",
     "worldgen.TrickierTrialsPackCheckerMixin"
   ],
   "client": [

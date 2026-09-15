@@ -45,7 +45,6 @@ import net.minecraft.client.data.models.model.TexturedModel;
 import static net.minecraft.client.renderer.item.ItemModel.Unbaked;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -86,7 +85,6 @@ public final class TCAModelProvider extends FabricModelProvider {
 		TCABlocks.COPPER_CROSS_RAIL.zipUnwaxedWaxed((block, waxedBlock) -> createCopperCrossRail(generator, block.get(), waxedBlock.get()));
 		createRelayorRail(generator, TCABlocks.RELAYOR_RAIL.get());
 		createCrate(generator, TCABlocks.CRATE.get());
-		createKiln(generator);
 
 		createCopperButton(generator, TCABlocks.COPPER_BUTTON.weathering().unaffected().get(), TCABlocks.COPPER_BUTTON.waxed().unaffected().get(), Blocks.COPPER_BLOCK.weathering().unaffected());
 		createCopperButton(generator, TCABlocks.COPPER_BUTTON.weathering().exposed().get(), TCABlocks.COPPER_BUTTON.waxed().exposed().get(), Blocks.COPPER_BLOCK.weathering().exposed());
@@ -359,40 +357,6 @@ public final class TCAModelProvider extends FabricModelProvider {
 				.with(PropertyDispatch.initial(BlockStateProperties.OPEN).select(false, model).select(true, openModel))
 				.with(BlockModelGenerators.ROTATIONS_COLUMN_WITH_FACING)
 		);
-	}
-
-	private static void createKiln(BlockModelGenerators generator) {
-		final Material furnaceTop = TextureMapping.getBlockTexture(TCABlocks.KILN.get(), "_top");
-		final Material furnaceBottom = TextureMapping.getBlockTexture(TCABlocks.KILN.get(), "_bottom");
-		final Material furnaceSide = TextureMapping.getBlockTexture(TCABlocks.KILN.get(), "_side");
-		final Material furnaceFront = TextureMapping.getBlockTexture(TCABlocks.KILN.get(), "_front");
-		final Material furnaceFrontOn = TextureMapping.getBlockTexture(TCABlocks.KILN.get(), "_front_lit");
-
-		final TextureMapping mapping = new TextureMapping()
-			.put(TextureSlot.TOP, furnaceTop)
-			.put(TextureSlot.BOTTOM, furnaceBottom)
-			.put(TextureSlot.SIDE, furnaceSide)
-			.put(TextureSlot.FRONT, furnaceFront);
-		final Identifier model = TCAModelHelper.KILN_MODEL.create(TCABlocks.KILN.get(), mapping, generator.modelOutput);
-
-		final TextureMapping litMapping = new TextureMapping()
-			.put(TextureSlot.TOP, furnaceTop)
-			.put(TextureSlot.BOTTOM, furnaceBottom)
-			.put(TextureSlot.SIDE, furnaceSide)
-			.put(TextureSlot.FRONT, furnaceFrontOn);
-		final Identifier modelOn = TCAModelHelper.KILN_MODEL.createWithSuffix(TCABlocks.KILN.get(), "_lit", litMapping, generator.modelOutput);
-
-		generator.blockStateOutput.accept(
-			MultiVariantGenerator.dispatch(TCABlocks.KILN.get())
-				.with(
-					PropertyDispatch.initial(BlockStateProperties.LIT)
-						.select(false, BlockModelGenerators.plainVariant(model))
-						.select(true, BlockModelGenerators.plainVariant(modelOn))
-				)
-				.with(TCAModelHelper.KILN_ROTATION)
-		);
-
-		generator.registerSimpleItemModel(TCABlocks.KILN.get(), model);
 	}
 
 	private static void createCopperButton(BlockModelGenerators generator, Block block, Block waxedBlock, Block originalBlock) {

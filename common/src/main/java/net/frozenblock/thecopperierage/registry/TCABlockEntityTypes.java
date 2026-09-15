@@ -26,7 +26,6 @@ import net.frozenblock.lib.platform.api.registry.DeferredRegister;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.entity.ChimeBlockEntity;
 import net.frozenblock.thecopperierage.block.entity.CrateBlockEntity;
-import net.frozenblock.thecopperierage.block.entity.KilnBlockEntity;
 import net.frozenblock.thecopperierage.block.entity.StickyGearboxBlockEntity;
 import net.frozenblock.thecopperierage.references.TCABlockEntityTypeIds;
 import net.minecraft.core.registries.Registries;
@@ -49,10 +48,6 @@ public final class TCABlockEntityTypes {
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CrateBlockEntity>> CRATE = register(TCABlockEntityTypeIds.CRATE,
 		CrateBlockEntity::new,
 		() -> List.of(TCABlocks.CRATE.get())
-	);
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<KilnBlockEntity>> KILN = register(TCABlockEntityTypeIds.KILN,
-		KilnBlockEntity::new,
-		() -> List.of(TCABlocks.KILN.get())
 	);
 
 	static {

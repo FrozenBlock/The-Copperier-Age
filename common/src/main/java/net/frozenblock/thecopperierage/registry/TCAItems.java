@@ -40,7 +40,6 @@ public final class TCAItems {
 	public static final DeferredItem<BlockItem> CRATE = REGISTER.registerSimpleBlockItem(TCABlockItemIds.CRATE, TCABlocks.CRATE,
 		() -> new Item.Properties().component(DataComponents.CONTAINER, ItemContainerContents.EMPTY)
 	);
-	public static final DeferredItem<BlockItem> KILN = REGISTER.registerSimpleBlockItem(TCABlockItemIds.KILN, TCABlocks.KILN);
 	public static final WeatheringCopperCollection<DeferredItem<BlockItem>> COPPER_BUTTON = WeatheringCopperCollection.zipMap(
 		TCABlockItemIds.COPPER_BUTTON, TCABlocks.COPPER_BUTTON, REGISTER::registerSimpleBlockItem
 	);

@@ -31,16 +31,14 @@ public final class ChestVehicleOpeners {
 	private static final float LID_SOUND_PITCH_BASE = 0.9F;
 	private static final float LID_SOUND_PITCH_VARIANCE = 0.1F;
 
-	private ChestVehicleOpeners() {
-	}
-
 	public static void add(Entity vehicle, int delta) {
 		if (vehicle.level().isClientSide()) return;
 
-		final int current = vehicle.frozenLib$getAttachedOrCreate(TCAAttachmentTypes.CHEST_VEHICLE_OPENERS);
+		final int current = TCAAttachmentTypes.CHEST_VEHICLE_OPENERS.getAttachedOrCreate(vehicle);
 		final int updated = Math.max(0, current + delta);
 		if (updated == current) return;
-		vehicle.frozenLib$setAttached(TCAAttachmentTypes.CHEST_VEHICLE_OPENERS, updated);
+
+		TCAAttachmentTypes.CHEST_VEHICLE_OPENERS.set(vehicle, updated);
 
 		if (current == 0) {
 			playLidSound(vehicle, SoundEvents.CHEST_OPEN);
@@ -50,7 +48,7 @@ public final class ChestVehicleOpeners {
 	}
 
 	public static boolean isOpen(Entity vehicle) {
-		final Integer openers = vehicle.frozenLib$getAttached(TCAAttachmentTypes.CHEST_VEHICLE_OPENERS);
+		final Integer openers = TCAAttachmentTypes.CHEST_VEHICLE_OPENERS.get(vehicle);
 		return openers != null && openers > 0;
 	}
 
@@ -71,4 +69,6 @@ public final class ChestVehicleOpeners {
 			vehicle.getRandom().nextFloat() * LID_SOUND_PITCH_VARIANCE + LID_SOUND_PITCH_BASE
 		);
 	}
+
+	private ChestVehicleOpeners() {}
 }

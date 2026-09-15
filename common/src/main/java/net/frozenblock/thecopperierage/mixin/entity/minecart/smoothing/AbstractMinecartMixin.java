@@ -42,9 +42,6 @@ public class AbstractMinecartMixin implements MinecartRotationSmoothing {
 	private static final float THECOPPERIERAGE$MAX_ROTATION_FACTOR = 2.5F;
 	@Unique
 	private static final float THECOPPERIERAGE$SNAP_DEGREES = 150.0F;
-	/** Disabled: rotation smoothing is retained for reference but never applied. */
-	@Unique
-	private static final boolean THECOPPERIERAGE$SMOOTHING_ENABLED = false;
 	@Unique
 	private static final float THECOPPERIERAGE$TURN_DEGREES_PER_TICK = 45.0F;
 

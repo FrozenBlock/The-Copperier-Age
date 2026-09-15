@@ -22,9 +22,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.frozenblock.thecopperierage.client.renderer.entity.ChestVehicleRenderHelper;
-import net.frozenblock.thecopperierage.client.renderer.entity.state.ChestVehicleRenderStateAccess;
-import net.frozenblock.thecopperierage.entity.ChestVehicleOpeners;
-import net.frozenblock.thecopperierage.entity.impl.ChestVehicleLidInterface;
 import net.mehvahdjukaar.candlelight.api.ClientOnly;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.BlockModelRenderState;
@@ -43,22 +40,10 @@ public class AbstractMinecartRendererMixin {
 
 	@Inject(
 		method = "extractRenderState(Lnet/minecraft/world/entity/vehicle/minecart/AbstractMinecart;Lnet/minecraft/client/renderer/entity/state/MinecartRenderState;F)V",
-		at = @At("TAIL")
+		at = @At("RETURN")
 	)
-	public <T extends AbstractMinecart, S extends MinecartRenderState> void theCopperierAge$extractChestState(
-		T minecart,
-		S renderState,
-		float partialTicks,
-		CallbackInfo info
-	) {
-		if (!(renderState instanceof ChestVehicleRenderStateAccess chestState)) return;
-
-		final boolean isChestVehicle = minecart instanceof ChestVehicleLidInterface && ChestVehicleOpeners.hasChest(minecart);
-
-		chestState.theCopperierAge$setChestVehicle(isChestVehicle);
-		chestState.theCopperierAge$setLidOpenness(
-			isChestVehicle ? ((ChestVehicleLidInterface) minecart).theCopperierAge$getLidOpenness(partialTicks) : 0F
-		);
+	public <T extends AbstractMinecart, S extends MinecartRenderState> void theCopperierAge$extractChestState(T entity, S state, float partialTicks, CallbackInfo info) {
+		ChestVehicleRenderHelper.extract(entity, state, partialTicks);
 	}
 
 	@WrapOperation(
@@ -70,25 +55,20 @@ public class AbstractMinecartRendererMixin {
 	)
 	public void theCopperierAge$submitChestInsteadOfDisplayBlock(
 		AbstractMinecartRenderer<?, ?> instance,
-		MinecartRenderState renderState,
-		BlockModelRenderState displayBlockModel,
+		MinecartRenderState state,
+		BlockModelRenderState blockModel,
 		PoseStack poseStack,
-		SubmitNodeCollector collector,
+		SubmitNodeCollector submitNodeCollector,
 		int lightCoords,
 		Operation<Void> original,
 		@Local(argsOnly = true) CameraRenderState camera
 	) {
-		if (!(renderState instanceof ChestVehicleRenderStateAccess chestState) || !chestState.theCopperierAge$isChestVehicle()) {
-			original.call(instance, renderState, displayBlockModel, poseStack, collector, lightCoords);
+		final Float chestOpenness = state.frozenLib$getData(ChestVehicleRenderHelper.VEHICLE_CHEST_OPENNESS);
+		if (chestOpenness == null) {
+			original.call(instance, state, blockModel, poseStack, submitNodeCollector, lightCoords);
 			return;
 		}
 
-		ChestVehicleRenderHelper.submitChest(
-			poseStack,
-			collector,
-			camera,
-			lightCoords,
-			chestState.theCopperierAge$getLidOpenness()
-		);
+		ChestVehicleRenderHelper.submit(poseStack, submitNodeCollector, camera, lightCoords, chestOpenness);
 	}
 }

@@ -7,6 +7,8 @@ Lufurrius
  - Copper Pressure Plate Concept
  - Copper Bar Retexture
  - Redstone Grit Concept, Implementation, & Textures
+ - New Minecarts
+ - New Rails & Rail Textures
 
 Zhen/zntm
  - Wrench Concept, Textures, & Sounds

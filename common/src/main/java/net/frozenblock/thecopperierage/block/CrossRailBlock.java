@@ -18,6 +18,7 @@
 package net.frozenblock.thecopperierage.block;
 
 import com.mojang.serialization.MapCodec;
+import net.frozenblock.thecopperierage.entity.impl.CrossRailAxisInterface;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
@@ -34,6 +35,7 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 public class CrossRailBlock extends BaseRailBlock {
 	public static final MapCodec<CrossRailBlock> CODEC = simpleCodec(CrossRailBlock::new);
@@ -88,19 +90,41 @@ public class CrossRailBlock extends BaseRailBlock {
 	}
 
 	public static RailShape railShapeFromMotion(Level level, BlockPos pos, AbstractMinecart minecart) {
+		return axisFor(level, pos, minecart) == Direction.Axis.X ? RailShape.EAST_WEST : RailShape.NORTH_SOUTH;
+	}
+
+	private static Direction.Axis axisFor(Level level, BlockPos pos, AbstractMinecart minecart) {
 		final Vec3 velocity = minecart.getDeltaMovement();
 		final double absX = Math.abs(velocity.x);
 		final double absZ = Math.abs(velocity.z);
-		final boolean wantsEastWest = Math.max(absX, absZ) < MIN_AXIS_SPEED
-			? minecart.getMotionDirection().getAxis() == Direction.Axis.X
-			: absX > absZ;
 
-		if (wantsEastWest) {
-			if (hasTrackOn(level, pos, Direction.Axis.X)) return RailShape.EAST_WEST;
-			return hasTrackOn(level, pos, Direction.Axis.Z) ? RailShape.NORTH_SOUTH : RailShape.EAST_WEST;
+		final Direction.Axis latched = latchedAxis(pos, minecart);
+		final boolean moving = Math.max(absX, absZ) >= MIN_AXIS_SPEED;
+
+		final Direction.Axis wanted;
+		if (latched != null) {
+			wanted = latched;
+		} else if (moving) {
+			wanted = absX > absZ ? Direction.Axis.X : Direction.Axis.Z;
+		} else {
+			wanted = minecart.getMotionDirection().getAxis() == Direction.Axis.X ? Direction.Axis.X : Direction.Axis.Z;
 		}
-		if (hasTrackOn(level, pos, Direction.Axis.Z)) return RailShape.NORTH_SOUTH;
-		return hasTrackOn(level, pos, Direction.Axis.X) ? RailShape.EAST_WEST : RailShape.NORTH_SOUTH;
+
+		final Direction.Axis axis = hasTrackOn(level, pos, wanted) || !hasTrackOn(level, pos, other(wanted)) ? wanted : other(wanted);
+		if ((latched != null || moving) && minecart instanceof CrossRailAxisInterface holder && minecart.getCurrentBlockPosOrRailBelow().equals(pos)) {
+			holder.theCopperierAge$setCrossRailAxis(pos, axis);
+		}
+		return axis;
+	}
+
+	@Nullable
+	private static Direction.Axis latchedAxis(BlockPos pos, AbstractMinecart minecart) {
+		if (!(minecart instanceof CrossRailAxisInterface holder)) return null;
+		return pos.equals(holder.theCopperierAge$getCrossRailPos()) ? holder.theCopperierAge$getCrossRailAxis() : null;
+	}
+
+	private static Direction.Axis other(Direction.Axis axis) {
+		return axis == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X;
 	}
 
 	private static boolean hasTrackOn(Level level, BlockPos pos, Direction.Axis axis) {

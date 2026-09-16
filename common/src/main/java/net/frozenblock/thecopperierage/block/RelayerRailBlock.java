@@ -57,6 +57,8 @@ public class RelayerRailBlock extends BaseRailBlock {
 	public static final double MIN_MOVING_SPEED = 0.01D;
 	private static final int MAX_CHAIN_LENGTH = 15;
 	private static final int OCCUPIED_CHECK_INTERVAL = 2;
+	private static final double DOCK_DRIFT_EPSILON = 1.0E-6D;
+	private static final double MAX_DOCK_DRIFT_CORRECTION = 0.0625D;
 
 	public RelayerRailBlock(Properties properties) {
 		super(true, properties);
@@ -277,7 +279,7 @@ public class RelayerRailBlock extends BaseRailBlock {
 
 	private void dock(ServerLevel level, BlockPos pos, BlockState state, AbstractMinecart minecart) {
 		minecart.setDeltaMovement(Vec3.ZERO);
-		minecart.setPos(Vec3.atBottomCenterOf(pos).add(0.0D, dockHeight(level, state), 0.0D));
+		minecart.setPos(dockPosition(level, pos, state));
 		level.setBlockAndUpdate(pos, state.setValue(OCCUPIED, true));
 		level.scheduleTick(pos, this, OCCUPIED_CHECK_INTERVAL);
 		refreshChain(level, pos);
@@ -295,6 +297,18 @@ public class RelayerRailBlock extends BaseRailBlock {
 	private static double dockHeight(Level level, BlockState state) {
 		final double onRail = AbstractMinecart.useExperimentalMovement(level) ? 0.1D : 0.0625D;
 		return state.getValue(SHAPE).isSlope() ? onRail + 0.5D : onRail;
+	}
+
+	private static Vec3 dockPosition(Level level, BlockPos pos, BlockState state) {
+		return Vec3.atBottomCenterOf(pos).add(0.0D, dockHeight(level, state), 0.0D);
+	}
+
+	private static void hold(Level level, BlockPos pos, BlockState state, AbstractMinecart minecart) {
+		minecart.setDeltaMovement(Vec3.ZERO);
+
+		final Vec3 dockPosition = dockPosition(level, pos, state);
+		final double drift = minecart.position().distanceToSqr(dockPosition);
+		if (drift > DOCK_DRIFT_EPSILON && drift < MAX_DOCK_DRIFT_CORRECTION) minecart.setPos(dockPosition);
 	}
 
 	public static boolean isPowered(BlockState state) {
@@ -317,8 +331,23 @@ public class RelayerRailBlock extends BaseRailBlock {
 			&& isCartOn(pos, minecart);
 	}
 
+	public static void holdDocked(Level level, BlockPos pos, BlockState state, AbstractMinecart minecart) {
+		if (!isDocked(level, pos, state, minecart)) return;
+
+		if (level instanceof ServerLevel) {
+			hold(level, pos, state, minecart);
+		} else {
+			minecart.setDeltaMovement(Vec3.ZERO);
+		}
+	}
+
+	public static boolean isDockedAt(Level level, AbstractMinecart minecart) {
+		final BlockPos pos = minecart.getCurrentBlockPosOrRailBelow();
+		return isDocked(level, pos, level.getBlockState(pos), minecart);
+	}
+
 	private static boolean isCartOn(BlockPos pos, AbstractMinecart minecart) {
-		return BlockPos.containing(minecart.position()).equals(pos);
+		return minecart.getCurrentBlockPosOrRailBelow().equals(pos);
 	}
 
 	public static boolean handleCart(ServerLevel level, BlockPos pos, BlockState state, AbstractMinecart minecart) {
@@ -330,7 +359,7 @@ public class RelayerRailBlock extends BaseRailBlock {
 		}
 
 		if (state.getValue(OCCUPIED)) {
-			minecart.setDeltaMovement(Vec3.ZERO);
+			hold(level, pos, state, minecart);
 			return true;
 		}
 

@@ -50,6 +50,8 @@ public final class MinecartCouplingUtil {
 	private static final float EXPERIMENTAL_SOFT_CORRECTION_SCALE = 0.4F;
 	private static final float EXPERIMENTAL_RELATIVE_DAMPING = 0.3F;
 	private static final float EXPERIMENTAL_MAX_RELATIVE_CORRECTION = 0.08F;
+	private static final double MAX_SLACK_RECOVERY_SPEED = 0.04D;
+	private static final double MAX_SLACK_RECOVERY_ACCELERATION = 0.01D;
 	private static final double EPSILON = 1.0E-6D;
 
 	public static boolean tryCouple(Player player, Level level, InteractionHand hand, int id1, int id2) {
@@ -131,13 +133,43 @@ public final class MinecartCouplingUtil {
 		final boolean pullOnly = isDockedOnRelayor(cart1) || isDockedOnRelayor(cart2);
 
 		if (isUsingExperimentalMinecartPhysics(level)) {
-			softCollisionStep(level, cart1, cart2, targetCouplingLength, EXPERIMENTAL_SOFT_CORRECTION_SCALE, pullOnly);
+			softCollisionStep(level, cart1, cart2, targetCouplingLength, EXPERIMENTAL_SOFT_CORRECTION_SCALE);
 			dampRelativeVelocity(cart1, cart2, EXPERIMENTAL_RELATIVE_DAMPING, EXPERIMENTAL_MAX_RELATIVE_CORRECTION);
 		} else {
-			softCollisionStep(level, cart1, cart2, targetCouplingLength, 1F, pullOnly);
-			hardCollisionStep(level, cart1, cart2, targetCouplingLength, pullOnly);
+			softCollisionStep(level, cart1, cart2, targetCouplingLength, 1F);
+			hardCollisionStep(level, cart1, cart2, targetCouplingLength);
 		}
+		if (!pullOnly) takeUpSlack(cart1, cart2, targetCouplingLength);
 		return true;
+	}
+
+	private static void takeUpSlack(AbstractMinecart cart1, AbstractMinecart cart2, float couplingLength) {
+		final boolean firstCanAddMotion = canAddMotion(cart1);
+		final boolean secondCanAddMotion = canAddMotion(cart2);
+		if (!firstCanAddMotion && !secondCanAddMotion) return;
+
+		final Vec3 link = cart2.position().subtract(cart1.position());
+		final double distance = link.length();
+		if (distance <= EPSILON) return;
+
+		final double slack = couplingLength - distance;
+		if (slack <= 0D) return;
+
+		final Vec3 linkDirection = link.scale(1D / distance);
+		final double targetSpeed = Math.min(Math.sqrt(2D * MAX_SLACK_RECOVERY_ACCELERATION * slack), MAX_SLACK_RECOVERY_SPEED);
+		final double separationSpeed = cart2.getDeltaMovement().subtract(cart1.getDeltaMovement()).dot(linkDirection);
+		final double step = Mth.clamp(targetSpeed - separationSpeed, -MAX_SLACK_RECOVERY_ACCELERATION, MAX_SLACK_RECOVERY_ACCELERATION);
+		if (Math.abs(step) <= EPSILON) return;
+
+		if (firstCanAddMotion && secondCanAddMotion) {
+			final Vec3 impulse = linkDirection.scale(step * 0.5D);
+			cart1.setDeltaMovement(clamp(cart1.getDeltaMovement().subtract(impulse), getMaxCartSpeed(cart1)));
+			cart2.setDeltaMovement(clamp(cart2.getDeltaMovement().add(impulse), getMaxCartSpeed(cart2)));
+		} else if (firstCanAddMotion) {
+			cart1.setDeltaMovement(clamp(cart1.getDeltaMovement().subtract(linkDirection.scale(step)), getMaxCartSpeed(cart1)));
+		} else {
+			cart2.setDeltaMovement(clamp(cart2.getDeltaMovement().add(linkDirection.scale(step)), getMaxCartSpeed(cart2)));
+		}
 	}
 
 	private static float getAdditionalPassengerWidth(AbstractMinecart cart1, AbstractMinecart cart2) {
@@ -159,7 +191,7 @@ public final class MinecartCouplingUtil {
 	}
 
 	private static void softCollisionStep(
-		Level level, AbstractMinecart cart1, AbstractMinecart cart2, float couplingLength, float correctionScale, boolean pullOnly
+		Level level, AbstractMinecart cart1, AbstractMinecart cart2, float couplingLength, float correctionScale
 	) {
 		final boolean firstCanAddMotion = canAddMotion(cart1);
 		final boolean secondCanAddMotion = canAddMotion(cart2);
@@ -174,8 +206,7 @@ public final class MinecartCouplingUtil {
 		final RailShape secondShape = getRailShape(level, nextCart2Pos, cart2);
 
 		final float futureStress = (float) (couplingLength - nextCart1Pos.distanceTo(nextCart2Pos));
-		if (Mth.equal(futureStress, 0D)) return;
-		if (pullOnly && futureStress > 0F) return;
+		if (futureStress > 0F || Mth.equal(futureStress, 0D)) return;
 
 		for (boolean current : new boolean[] {true, false}) {
 			final boolean currentCanAddMotion = current ? firstCanAddMotion : secondCanAddMotion;
@@ -251,7 +282,7 @@ public final class MinecartCouplingUtil {
 		}
 	}
 
-	private static void hardCollisionStep(Level level, AbstractMinecart first, AbstractMinecart second, float couplingLength, boolean pullOnly) {
+	private static void hardCollisionStep(Level level, AbstractMinecart first, AbstractMinecart second, float couplingLength) {
 		if (!canAddMotion(first) && !canAddMotion(second)) return;
 
 		AbstractMinecart firstCart = first;
@@ -268,8 +299,7 @@ public final class MinecartCouplingUtil {
 			final AbstractMinecart otherCart = current ? secondCart : firstCart;
 
 			float stress = (float) (couplingLength - cart.position().distanceTo(otherCart.position()));
-			if (Math.abs(stress) < 1F / 8F) continue;
-			if (pullOnly && stress > 0F) continue;
+			if (stress > 0F || Math.abs(stress) < 1F / 8F) continue;
 
 			final Vec3 pos = cart.position();
 			final Vec3 link = otherCart.position().subtract(pos);

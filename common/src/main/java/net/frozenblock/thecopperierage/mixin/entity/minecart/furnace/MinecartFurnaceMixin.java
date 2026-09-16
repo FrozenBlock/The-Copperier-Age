@@ -30,7 +30,6 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -44,6 +43,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.ContainerEntity;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.minecart.MinecartFurnace;
+import net.minecraft.world.entity.vehicle.minecart.NewMinecartBehavior;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
@@ -89,7 +89,15 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
     @Unique
     private static final double THECOPPERIERAGE$PUSH_MAGNITUDE = 0.0101D;
     @Unique
+    private static final double THECOPPERIERAGE$MOVING_THRESHOLD_SQR = 1.0E-4D;
+    @Unique
+    private static final double THECOPPERIERAGE$REVERSING_DOT = -0.5D;
+    @Unique
     private static final double THECOPPERIERAGE$FUELLED_COASTING = 0.975D;
+    @Unique
+    private static final double THECOPPERIERAGE$REFERENCE_SLOWDOWN = 0.975D;
+    @Unique
+    private static final double THECOPPERIERAGE$REFERENCE_RIDDEN_SLOWDOWN = 0.997D;
     @Unique
     private static final int[] THECOPPERIERAGE$SLOTS_FOR_ALL_SIDES = IntStream.range(0, THECOPPERIERAGE$CONTAINER_SIZE).toArray();
 
@@ -206,26 +214,29 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
     private void theCopperierAge$ensurePushDirection() {
         final MinecartFurnace minecartFurnace = MinecartFurnace.class.cast(this);
         if (!this.theCopperierAge$isFiniteHorizontal(minecartFurnace.push)) minecartFurnace.push = Vec3.ZERO;
-        if (!Mth.equal((float) minecartFurnace.push.x, 0F) || !Mth.equal((float) minecartFurnace.push.z, 0F)) return;
 
-        if (this.theCopperierAge$facing.lengthSqr() > 1.0E-4D) {
-            minecartFurnace.push = this.theCopperierAge$facing.scale(THECOPPERIERAGE$PUSH_MAGNITUDE);
-            return;
-        }
+        final Vec3 heading = this.theCopperierAge$currentHeading();
+        this.theCopperierAge$facing = heading;
+        minecartFurnace.push = heading.scale(THECOPPERIERAGE$PUSH_MAGNITUDE);
+    }
 
+    @Unique
+    private Vec3 theCopperierAge$currentHeading() {
+        final boolean hasFacing = this.theCopperierAge$facing.lengthSqr() > 1.0E-4D;
         final Vec3 horizontalVelocity = this.getDeltaMovement().multiply(1D, 0D, 1D);
-        if (horizontalVelocity.lengthSqr() > 1.0E-4D) {
-            minecartFurnace.push = horizontalVelocity.normalize().scale(THECOPPERIERAGE$PUSH_MAGNITUDE);
-            return;
+
+        if (horizontalVelocity.lengthSqr() > THECOPPERIERAGE$MOVING_THRESHOLD_SQR) {
+            final Vec3 travel = horizontalVelocity.normalize();
+            if (hasFacing && this.theCopperierAge$facing.dot(travel) < THECOPPERIERAGE$REVERSING_DOT) return this.theCopperierAge$facing;
+            if (travel.lengthSqr() > 1.0E-4D) return travel;
         }
+
+        if (hasFacing) return this.theCopperierAge$facing;
 
         final Vec3 facingDirection = Vec3.directionFromRotation(0F, this.getYRot()).multiply(1D, 0D, 1D);
-        if (facingDirection.lengthSqr() > 1.0E-4D) {
-            minecartFurnace.push = facingDirection.normalize().scale(THECOPPERIERAGE$PUSH_MAGNITUDE);
-            return;
-        }
+        if (facingDirection.lengthSqr() > 1.0E-4D) return facingDirection.normalize();
 
-        minecartFurnace.push = new Vec3(THECOPPERIERAGE$PUSH_MAGNITUDE, 0D, 0D);
+        return new Vec3(1D, 0D, 0D);
     }
 
     @Unique
@@ -256,7 +267,9 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
         // Direction#toYRot here put the yaw 90 degrees out, so adjustToRails' 180-degree
         // flip-detection never matched and the cart just snapped to the rail's canonical
         // direction, ignoring the chosen forward/backward facing.
-        final float yRot = 180F - (float) (Math.atan2(this.theCopperierAge$facing.z, this.theCopperierAge$facing.x) * 180D / Math.PI);
+        final float yRot = this.getBehavior() instanceof NewMinecartBehavior
+            ? 180F - (float) (Math.atan2(this.theCopperierAge$facing.z, this.theCopperierAge$facing.x) * 180D / Math.PI)
+            : (float) (Math.atan2(-this.theCopperierAge$facing.z, -this.theCopperierAge$facing.x) * 180D / Math.PI);
         this.setYRot(yRot);
         this.yRotO = yRot;
     }
@@ -287,7 +300,12 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
     @ModifyConstant(method = "applyNaturalSlowdown", constant = @Constant(doubleValue = 0.8D))
     private double theCopperierAge$fuelledCartsCoastLikeNormalCarts(double vanillaDrag) {
         if (!TCAConfig.IMPROVED_FURNACE_MINECARTS.get()) return vanillaDrag;
-        return THECOPPERIERAGE$FUELLED_COASTING;
+
+        final double slowdownFactor = this.getBehavior().getSlowdownFactor();
+        if (slowdownFactor <= 0D) return THECOPPERIERAGE$FUELLED_COASTING;
+
+        final double referenceFactor = this.isVehicle() ? THECOPPERIERAGE$REFERENCE_RIDDEN_SLOWDOWN : THECOPPERIERAGE$REFERENCE_SLOWDOWN;
+        return Math.min(1D, THECOPPERIERAGE$FUELLED_COASTING * referenceFactor / slowdownFactor);
     }
 
     @ModifyReturnValue(method = "getMaxSpeed(Lnet/minecraft/server/level/ServerLevel;)D", at = @At("RETURN"))

@@ -29,10 +29,13 @@ import static net.minecraft.client.data.models.BlockModelGenerators.*;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.model.ModelTemplate;
+import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -121,6 +124,8 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 		GENERATING_COPPER_BUTTON = true;
 		TCABlocks.COPPER_BUTTON.zipUnwaxedWaxed((block, waxedBlock) -> createCopperButtonOverrides(generator, block.get(), waxedBlock.get()));
 		GENERATING_COPPER_BUTTON = false;
+
+		TCABlocks.WEIGHTED_PRESSURE_PLATE.zipUnwaxedWaxed((block, waxedBlock) -> createWeightedPressurePlateOverrides(generator, block.get(), waxedBlock.get()));
 	}
 
 	@Override
@@ -201,5 +206,26 @@ public final class TCAPackModelProvider extends FabricModelProvider {
 
 	private static void createCopperButtonOverrides(BlockModelGenerators generator, Block block, Block waxedBlock) {
 		TCAModelProvider.createCopperButton(generator, block, waxedBlock, block, COPPER_BUTTON_MODEL, COPPER_BUTTON_PRESSED_MODEL, COPPER_BUTTON_INVENTORY_MODEL);
+	}
+
+	private static void createWeightedPressurePlateOverrides(BlockModelGenerators generator, Block block, Block waxedBlock) {
+		final TextureMapping textureMapping = TextureMapping.defaultTexture(block);
+
+		final Identifier model = ModelTemplates.PRESSURE_PLATE_UP.create(block, textureMapping, generator.modelOutput);
+		final Identifier pressedModel = ModelTemplates.PRESSURE_PLATE_DOWN.create(block, textureMapping, generator.modelOutput);
+		final Identifier waxedModel = ModelTemplates.PRESSURE_PLATE_UP.create(waxedBlock, textureMapping, generator.modelOutput);
+		final Identifier waxedPressedModel = ModelTemplates.PRESSURE_PLATE_DOWN.create(waxedBlock, textureMapping, generator.modelOutput);
+
+		generator.blockStateOutput.accept(
+			MultiVariantGenerator.dispatch(block)
+				.with(createEmptyOrFullDispatch(BlockStateProperties.POWER, 1, plainVariant(pressedModel), plainVariant(model)))
+		);
+		generator.blockStateOutput.accept(
+			MultiVariantGenerator.dispatch(waxedBlock)
+				.with(createEmptyOrFullDispatch(BlockStateProperties.POWER, 1, plainVariant(waxedPressedModel), plainVariant(waxedModel)))
+		);
+
+		generator.registerSimpleItemModel(block, model);
+		generator.registerSimpleItemModel(waxedBlock, waxedModel);
 	}
 }

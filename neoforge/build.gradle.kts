@@ -82,6 +82,10 @@ tasks {
         options.isFork = true
         options.isIncremental = true
     }
+
+    processResources {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
 }
 
 dependencies {

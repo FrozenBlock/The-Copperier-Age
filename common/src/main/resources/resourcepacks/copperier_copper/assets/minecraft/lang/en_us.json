@@ -1,4 +1,8 @@
 {
   "block.minecraft.copper_torch": "Cupric Torch",
-  "block.minecraft.copper_wall_torch": "Cupric Wall Torch"
+  "block.minecraft.copper_wall_torch": "Cupric Wall Torch",
+
+  "block.minecraft.rail": "Iron Rail",
+  "block.minecraft.lantern": "Iron Lantern",
+  "block.minecraft.soul_lantern": "Iron Soul Lantern"
 }

@@ -7,6 +7,7 @@ Put the changelog BELOW the dashes. ANYTHING ABOVE IS IGNORED.
   - The propulsion of Furnace Minecarts now remains relative to the direction they were placed.
 - Added the Minecart with Jukebox.
 - Added the Minecart with Crate.
+- Minecarts now have unique sounds for being placed and broken.
 - Vehicles with container blocks now play the same opening and closing animations and sounds as their block counterparts.
 - Added the Minecart Coupling item.
   - Interacting with two Minecarts while holding a Minecart Coupling will link the two Minecarts together.

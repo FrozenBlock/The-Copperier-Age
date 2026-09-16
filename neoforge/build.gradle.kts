@@ -126,6 +126,13 @@ upload {
         changelog.set(changelogText)
     }
 
+    curseforge {
+        dependencies {
+            required("frozenlib")
+            optional("cloth-config")
+        }
+    }
+
     modrinth {
         dependencies {
             required("frozenlib")

@@ -141,6 +141,17 @@ upload {
         changelog = changelogText
     }
 
+    curseforge {
+        dependencies {
+            required("fabric-api")
+            required("frozenlib")
+            optional("cloth-config")
+            optional("modmenu")
+            optional("simple-copper-pipes")
+            optional("glowtone")
+        }
+    }
+
     modrinth {
         dependencies {
             required("fabric-api")

@@ -15,20 +15,15 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.entity.impl;
+package net.frozenblock.thecopperierage.registry;
 
-import net.minecraft.core.Direction;
-import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+import net.frozenblock.thecopperierage.TCAConstants;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.damagesource.DamageType;
 
-public interface FurnaceMinecartFacingInterface {
-	void theCopperierAge$setFacing(Vec3 facing);
+public final class TCADamageTypes {
+	public static final ResourceKey<DamageType> MINECART_IMPACT = ResourceKey.create(Registries.DAMAGE_TYPE, TCAConstants.id("minecart_impact"));
 
-	@Nullable
-	Direction theCopperierAge$getSyncedFacing();
-
-	@Nullable
-	Direction theCopperierAge$getDisplayFacing();
-
-	void theCopperierAge$setDisplayFacing(@Nullable Direction facing);
+	private TCADamageTypes() {}
 }

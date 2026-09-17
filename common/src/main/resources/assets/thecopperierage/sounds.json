@@ -336,6 +336,13 @@
     ],
     "subtitle": "subtitles.entity.minecart.break"
   },
+  "entity.minecart.hit": {
+    "sounds": [
+      "thecopperierage:entity/minecart/break1",
+      "thecopperierage:entity/minecart/break2"
+    ],
+    "subtitle": "subtitles.entity.minecart.hit"
+  },
   "entity.minecart.couple": {
     "sounds": [
       "thecopperierage:entity/minecart/link1",

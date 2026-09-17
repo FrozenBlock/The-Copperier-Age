@@ -1,5 +1,5 @@
 /*
- * Copyright 2025-2026 FrozenBlock
+ * Copyright 2026 FrozenBlock
  * This file is part of The Copperier Age.
  *
  * This program is free software; you can modify it under
@@ -19,6 +19,7 @@ package net.frozenblock.thecopperierage.mixin.entity.minecart.speed;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.frozenblock.thecopperierage.block.CopperRail;
+import net.frozenblock.thecopperierage.entity.MinecartTrainFriction;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecartContainer;
 import net.minecraft.world.phys.Vec3;
@@ -29,6 +30,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public class AbstractMinecartContainerMixin {
 	@ModifyReturnValue(method = "applyNaturalSlowdown", at = @At("RETURN"))
 	private Vec3 theCopperierAge$copperRailDeceleration(Vec3 result, Vec3 movement) {
-		return CopperRail.applyDeceleration(AbstractMinecart.class.cast(this), movement, result);
+		final AbstractMinecart minecart = AbstractMinecart.class.cast(this);
+		return MinecartTrainFriction.apply(minecart, movement, CopperRail.applyDeceleration(minecart, movement, result));
 	}
 }

@@ -17,18 +17,10 @@
 
 package net.frozenblock.thecopperierage.entity.impl;
 
-import net.minecraft.core.Direction;
-import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+public interface MinecartHeadingInterface {
+	boolean theCopperierAge$hasRiderHeading();
 
-public interface FurnaceMinecartFacingInterface {
-	void theCopperierAge$setFacing(Vec3 facing);
+	float theCopperierAge$getRiderHeading();
 
-	@Nullable
-	Direction theCopperierAge$getSyncedFacing();
-
-	@Nullable
-	Direction theCopperierAge$getDisplayFacing();
-
-	void theCopperierAge$setDisplayFacing(@Nullable Direction facing);
+	float theCopperierAge$getRiderTurn();
 }

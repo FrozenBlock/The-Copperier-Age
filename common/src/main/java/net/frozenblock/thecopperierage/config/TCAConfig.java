@@ -44,6 +44,8 @@ public final class TCAConfig {
 	public static final ConfigEntry<Boolean> WAXED_ITEM_ICON_OVERLAY = CONFIG.unsyncableEntry("waxedItemIconOverlay", EntryType.BOOL, true);
 	public static final ConfigEntry<Boolean> EXTRA_ITEM_ICON_OVERLAYS = CONFIG.unsyncableEntry("extraItemIconOverlays", EntryType.BOOL, false);
 	public static final ConfigEntry<Boolean> IMPROVED_FURNACE_MINECARTS = CONFIG.entry("improvedFurnaceMinecarts", EntryType.BOOL, true);
+	public static final ConfigEntry<Boolean> MINECART_COLLISIONS = CONFIG.entry("minecartCollisions", EntryType.BOOL, true);
+	public static final ConfigEntry<Boolean> MINECART_CAMERA_FOLLOWS_MOTION = CONFIG.unsyncableEntry("minecartCameraFollowsMotion", EntryType.BOOL, true);
 	public static final ConfigEntry<Boolean> DEBUG_MINECART_MOTION = CONFIG.entry("debugMinecartMotion", EntryType.BOOL, false);
 
 	private TCAConfig() {}

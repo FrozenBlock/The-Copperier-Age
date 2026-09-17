@@ -18,41 +18,28 @@
 package net.frozenblock.thecopperierage.entity.coupling;
 
 import java.util.Optional;
-import net.frozenblock.thecopperierage.block.CrossRailBlock;
-import net.frozenblock.thecopperierage.block.RelayerRailBlock;
+import net.frozenblock.thecopperierage.entity.MinecartImpacts;
 import net.frozenblock.thecopperierage.entity.impl.CouplingToEntityInterface;
 import net.frozenblock.thecopperierage.registry.TCAAttachmentTypes;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.frozenblock.thecopperierage.registry.TCASounds;
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
-import net.minecraft.world.entity.vehicle.minecart.MinecartFurnace;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseRailBlock;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public final class MinecartCouplingUtil {
-	private static final int MAX_COUPLING_DISTANCE = 3;
-	private static final float MIN_COUPLING_LENGTH = 1.5F;
-	private static final float MAX_HARD_CORRECTION_PER_TICK = 1.75F;
-	private static final float EXPERIMENTAL_SOFT_CORRECTION_SCALE = 0.4F;
-	private static final float EXPERIMENTAL_RELATIVE_DAMPING = 0.3F;
-	private static final float EXPERIMENTAL_MAX_RELATIVE_CORRECTION = 0.08F;
-	private static final double MAX_SLACK_RECOVERY_SPEED = 0.04D;
-	private static final double MAX_SLACK_RECOVERY_ACCELERATION = 0.01D;
-	private static final double EPSILON = 1.0E-6D;
+	private static final double MAX_COUPLING_DISTANCE = 3D;
+	private static final double MAX_COUPLING_LENGTH = 1.5D;
+	private static final double CART_WIDTH = 0.98D;
+	private static final int MISSING_PARTNER_GRACE_TICKS = 10;
 
 	public static boolean tryCouple(Player player, Level level, InteractionHand hand, int id1, int id2) {
 		final ItemStack stack = player.getItemInHand(hand);
@@ -95,317 +82,87 @@ public final class MinecartCouplingUtil {
 	}
 
 	public static void tickCoupling(AbstractMinecart cart) {
-		final CouplingData coupling = getCoupling(cart);
+		if (!(cart instanceof CouplingToEntityInterface access)) return;
 
-		coupling.getCoupledTo(cart.level())
+		final CouplingData coupling = getCoupling(cart);
+		if (!(cart.level() instanceof ServerLevel level)) {
+			access.theCopperierAge$setCoupledTo(coupling.getCoupledTo(cart.level()).filter(Entity::isAlive).orElse(null));
+			return;
+		}
+
+		access.theCopperierAge$setCoupledTo(null);
+		if (!coupling.hasAnyCoupling()) access.theCopperierAge$setTrainSize(1);
+		boolean queued = false;
+		if (coupling.isCoupledTo()) {
+			final Entity partner = coupling.getCoupledTo(level).orElse(null);
+			if (partner == null) {
+				if (access.theCopperierAge$incrementMissingCoupledTo() > MISSING_PARTNER_GRACE_TICKS) uncoupleTo(cart, true);
+			} else {
+				access.theCopperierAge$resetMissingCoupledTo();
+				if (partner instanceof AbstractMinecart other && isLinkIntact(level, cart, other)) {
+					access.theCopperierAge$setCoupledTo(other);
+					MinecartCouplingPhysics.queue(level, cart);
+					queued = true;
+				} else {
+					uncoupleTo(cart, true);
+				}
+			}
+		} else {
+			access.theCopperierAge$resetMissingCoupledTo();
+		}
+
+		if (coupling.isCoupledFrom()) {
+			final Entity partner = coupling.getCoupledFrom(level).orElse(null);
+			if (partner == null) {
+				if (access.theCopperierAge$incrementMissingCoupledFrom() > MISSING_PARTNER_GRACE_TICKS) uncoupleFrom(cart, true);
+			} else {
+				access.theCopperierAge$resetMissingCoupledFrom();
+				if (!(partner instanceof AbstractMinecart other) || !isLinkIntact(level, cart, other)) uncoupleFrom(cart, true);
+			}
+		} else {
+			access.theCopperierAge$resetMissingCoupledFrom();
+		}
+
+		if (!queued && MinecartImpacts.enabled()) MinecartCouplingPhysics.queue(level, cart);
+	}
+
+	private static boolean isLinkIntact(ServerLevel level, AbstractMinecart cart1, AbstractMinecart cart2) {
+		if (!cart1.isAlive() || !cart2.isAlive() || cart1.level() != level || cart2.level() != level) return false;
+		return cart1.distanceTo(cart2) < MAX_COUPLING_DISTANCE + getCouplingPadding(cart1, cart2);
+	}
+
+	@Nullable
+	public static AbstractMinecart getCoupledToCart(AbstractMinecart cart) {
+		return getCoupling(cart).getCoupledTo(cart.level())
 			.filter(entity -> entity instanceof AbstractMinecart)
 			.map(AbstractMinecart.class::cast)
-			.ifPresentOrElse(
-				cart2 -> {
-					if (!tickCoupling(cart.level(), cart, cart2)) {
-						uncoupleTo(cart, true);
-					} else {
-						if (cart instanceof CouplingToEntityInterface coupleInterface) coupleInterface.theCopperierAge$setCoupledTo(cart2);
-					}
-				},
-				() -> {
-					uncoupleTo(cart, !cart.isFirstTick());
-					if (cart instanceof CouplingToEntityInterface coupleInterface) coupleInterface.theCopperierAge$setCoupledTo(null);
-				});
-
-		coupling.getCoupledFrom(cart.level())
-			.filter(entity -> entity instanceof AbstractMinecart)
-			.map(AbstractMinecart.class::cast).ifPresentOrElse(
-				cart2 -> {},
-				() -> {
-					if (coupling.isCoupledFrom()) uncoupleFrom(cart, true);
-				});
+			.orElse(null);
 	}
 
-	private static boolean tickCoupling(Level level, AbstractMinecart cart1, AbstractMinecart cart2) {
-		if (!cart1.isAlive() || !cart2.isAlive()) return false;
-
-		final float additionalPassengerWidth = getAdditionalPassengerWidth(cart1, cart2);
-		if (cart1.distanceTo(cart2) >= MAX_COUPLING_DISTANCE + additionalPassengerWidth) return false;
-		if (level.tickRateManager().isEntityFrozen(cart1) && level.tickRateManager().isEntityFrozen(cart2)) return true;
-
-		final float targetCouplingLength = MIN_COUPLING_LENGTH + additionalPassengerWidth;
-		final boolean pullOnly = isDockedOnRelayor(cart1) || isDockedOnRelayor(cart2);
-
-		if (isUsingExperimentalMinecartPhysics(level)) {
-			softCollisionStep(level, cart1, cart2, targetCouplingLength, EXPERIMENTAL_SOFT_CORRECTION_SCALE);
-			dampRelativeVelocity(cart1, cart2, EXPERIMENTAL_RELATIVE_DAMPING, EXPERIMENTAL_MAX_RELATIVE_CORRECTION);
-		} else {
-			softCollisionStep(level, cart1, cart2, targetCouplingLength, 1F);
-			hardCollisionStep(level, cart1, cart2, targetCouplingLength);
-		}
-		if (!pullOnly) takeUpSlack(cart1, cart2, targetCouplingLength);
-		return true;
+	public static boolean areCoupledTogether(Entity first, Entity second) {
+		if (!(first instanceof AbstractMinecart) || !(second instanceof AbstractMinecart)) return false;
+		return getCoupling(first).hasAnyCoupling(second.getUUID()) || getCoupling(second).hasAnyCoupling(first.getUUID());
 	}
 
-	private static void takeUpSlack(AbstractMinecart cart1, AbstractMinecart cart2, float couplingLength) {
-		final boolean firstCanAddMotion = canAddMotion(cart1);
-		final boolean secondCanAddMotion = canAddMotion(cart2);
-		if (!firstCanAddMotion && !secondCanAddMotion) return;
-
-		final Vec3 link = cart2.position().subtract(cart1.position());
-		final double distance = link.length();
-		if (distance <= EPSILON) return;
-
-		final double slack = couplingLength - distance;
-		if (slack <= 0D) return;
-
-		final Vec3 linkDirection = link.scale(1D / distance);
-		final double targetSpeed = Math.min(Math.sqrt(2D * MAX_SLACK_RECOVERY_ACCELERATION * slack), MAX_SLACK_RECOVERY_SPEED);
-		final double separationSpeed = cart2.getDeltaMovement().subtract(cart1.getDeltaMovement()).dot(linkDirection);
-		final double step = Mth.clamp(targetSpeed - separationSpeed, -MAX_SLACK_RECOVERY_ACCELERATION, MAX_SLACK_RECOVERY_ACCELERATION);
-		if (Math.abs(step) <= EPSILON) return;
-
-		if (firstCanAddMotion && secondCanAddMotion) {
-			final Vec3 impulse = linkDirection.scale(step * 0.5D);
-			cart1.setDeltaMovement(clamp(cart1.getDeltaMovement().subtract(impulse), getMaxCartSpeed(cart1)));
-			cart2.setDeltaMovement(clamp(cart2.getDeltaMovement().add(impulse), getMaxCartSpeed(cart2)));
-		} else if (firstCanAddMotion) {
-			cart1.setDeltaMovement(clamp(cart1.getDeltaMovement().subtract(linkDirection.scale(step)), getMaxCartSpeed(cart1)));
-		} else {
-			cart2.setDeltaMovement(clamp(cart2.getDeltaMovement().add(linkDirection.scale(step)), getMaxCartSpeed(cart2)));
-		}
+	public static double getMaxCouplingLength(AbstractMinecart cart1, AbstractMinecart cart2) {
+		return MAX_COUPLING_LENGTH + getCouplingPadding(cart1, cart2);
 	}
 
-	private static float getAdditionalPassengerWidth(AbstractMinecart cart1, AbstractMinecart cart2) {
-		final float cartWidth = 0.98F;
-		float width = 0F;
-		final Entity passenger1 = cart1.getFirstPassenger();
-		if (passenger1 != null) {
-			final AABB boundingBox = passenger1.getBoundingBox();
-			width = (float) Math.max(width, (boundingBox.getXsize() + boundingBox.getZsize()) * 0.5D);
-		}
-
-		final Entity passenger2 = cart2.getFirstPassenger();
-		if (passenger2 != null) {
-			final AABB boundingBox = passenger2.getBoundingBox();
-			width = (float) Math.max(width, (boundingBox.getXsize() + boundingBox.getZsize()) * 0.5D);
-		}
-
-		return Math.max(0F, width - cartWidth);
+	public static double getMinCouplingLength(AbstractMinecart cart1, AbstractMinecart cart2) {
+		return MinecartCouplingPhysics.CONTACT_DISTANCE + getCouplingPadding(cart1, cart2);
 	}
 
-	private static void softCollisionStep(
-		Level level, AbstractMinecart cart1, AbstractMinecart cart2, float couplingLength, float correctionScale
-	) {
-		final boolean firstCanAddMotion = canAddMotion(cart1);
-		final boolean secondCanAddMotion = canAddMotion(cart2);
-		if (!firstCanAddMotion && !secondCanAddMotion) return;
-
-		Vec3 firstMotion = clamp(cart1.getDeltaMovement(), 1F);
-		Vec3 secondMotion = clamp(cart2.getDeltaMovement(), 1F);
-		final Vec3 nextCart1Pos = cart1.position().add(firstMotion);
-		final Vec3 nextCart2Pos = cart2.position().add(secondMotion);
-
-		final RailShape firstShape = getRailShape(level, nextCart1Pos, cart1);
-		final RailShape secondShape = getRailShape(level, nextCart2Pos, cart2);
-
-		final float futureStress = (float) (couplingLength - nextCart1Pos.distanceTo(nextCart2Pos));
-		if (futureStress > 0F || Mth.equal(futureStress, 0D)) return;
-
-		for (boolean current : new boolean[] {true, false}) {
-			final boolean currentCanAddMotion = current ? firstCanAddMotion : secondCanAddMotion;
-			final boolean otherCanAddMotion = current ? secondCanAddMotion : firstCanAddMotion;
-			if (!currentCanAddMotion) continue;
-
-			final AbstractMinecart cart = current ? cart1 : cart2;
-			final Vec3 currentPos = current ? nextCart1Pos : nextCart2Pos;
-			final Vec3 otherPos = current ? nextCart2Pos : nextCart1Pos;
-			final Vec3 link = otherPos.subtract(currentPos);
-			if (link.lengthSqr() <= EPSILON) continue;
-
-			float correctionMagnitude = -futureStress / 2F;
-			if (!otherCanAddMotion) correctionMagnitude *= 2F;
-			correctionMagnitude *= correctionScale;
-
-			Vec3 correction;
-			final RailShape shape = current ? firstShape : secondShape;
-			if (shape != null) {
-				final Vec3 railVec = getRailVec(shape, cart.getPosition(1F).subtract(cart.getPosition(0F)).y <= 0D);
-				correction = followLinkOnRail(link, currentPos, correctionMagnitude, railVec).subtract(currentPos);
-			} else {
-				correction = link.normalize().scale(correctionMagnitude);
-			}
-
-			final float maxSpeed = current ? getMaxCartSpeed(cart1) : getMaxCartSpeed(cart2);
-			correction = clamp(correction, maxSpeed);
-			if (current) {
-				firstMotion = firstMotion.add(correction);
-			} else {
-				secondMotion = secondMotion.add(correction);
-			}
-		}
-
-		cart1.setDeltaMovement(clamp(firstMotion, getMaxCartSpeed(cart1)));
-		cart2.setDeltaMovement(clamp(secondMotion, getMaxCartSpeed(cart2)));
+	public static double getCouplingPadding(AbstractMinecart cart1, AbstractMinecart cart2) {
+		final double width = Math.max(getPassengerWidth(cart1), getPassengerWidth(cart2));
+		return Math.max(0D, width - CART_WIDTH);
 	}
 
-	private static void dampRelativeVelocity(AbstractMinecart first, AbstractMinecart second, float dampingScale, float maxCorrection) {
-		final boolean firstCanAddMotion = canAddMotion(first);
-		final boolean secondCanAddMotion = canAddMotion(second);
-		if (!firstCanAddMotion && !secondCanAddMotion) return;
+	private static double getPassengerWidth(AbstractMinecart cart) {
+		final Entity passenger = cart.getFirstPassenger();
+		if (passenger == null) return 0D;
 
-		final Vec3 link = second.position().subtract(first.position());
-		final double linkLengthSq = link.lengthSqr();
-		if (linkLengthSq <= EPSILON) return;
-
-		final Vec3 linkDirection = link.scale(1D / Math.sqrt(linkLengthSq));
-		final double relativeSpeed = second.getDeltaMovement().subtract(first.getDeltaMovement()).dot(linkDirection);
-		if (Math.abs(relativeSpeed) <= EPSILON) return;
-
-		final double correction = Mth.clamp(relativeSpeed * dampingScale, -maxCorrection, maxCorrection);
-		if (Math.abs(correction) <= EPSILON) return;
-
-		if (firstCanAddMotion && secondCanAddMotion) {
-			final Vec3 impulse = linkDirection.scale(correction * 0.5D);
-			first.setDeltaMovement(clamp(first.getDeltaMovement().add(impulse), getMaxCartSpeed(first)));
-			second.setDeltaMovement(clamp(second.getDeltaMovement().subtract(impulse), getMaxCartSpeed(second)));
-		} else if (firstCanAddMotion) {
-			final Vec3 impulse = linkDirection.scale(correction);
-			first.setDeltaMovement(clamp(first.getDeltaMovement().add(impulse), getMaxCartSpeed(first)));
-		} else {
-			final Vec3 impulse = linkDirection.scale(correction);
-			second.setDeltaMovement(clamp(second.getDeltaMovement().subtract(impulse), getMaxCartSpeed(second)));
-		}
-	}
-
-	private static boolean isUsingExperimentalMinecartPhysics(Level level) {
-		try {
-			return AbstractMinecart.useExperimentalMovement(level);
-		} catch (Throwable ignored) {
-			return false;
-		}
-	}
-
-	private static void hardCollisionStep(Level level, AbstractMinecart first, AbstractMinecart second, float couplingLength) {
-		if (!canAddMotion(first) && !canAddMotion(second)) return;
-
-		AbstractMinecart firstCart = first;
-		AbstractMinecart secondCart = second;
-		if (!canAddMotion(secondCart) && canAddMotion(firstCart)) {
-			final AbstractMinecart swap = firstCart;
-			firstCart = secondCart;
-			secondCart = swap;
-		}
-
-		boolean firstLoop = true;
-		for (boolean current : new boolean[] {true, false, true}) {
-			final AbstractMinecart cart = current ? firstCart : secondCart;
-			final AbstractMinecart otherCart = current ? secondCart : firstCart;
-
-			float stress = (float) (couplingLength - cart.position().distanceTo(otherCart.position()));
-			if (stress > 0F || Math.abs(stress) < 1F / 8F) continue;
-
-			final Vec3 pos = cart.position();
-			final Vec3 link = otherCart.position().subtract(pos);
-			if (link.lengthSqr() <= EPSILON) continue;
-
-			float correctionMagnitude = firstLoop ? -stress / 2F : -stress;
-			if (!canAddMotion(cart)) correctionMagnitude /= 2F;
-
-			Vec3 correction = link.normalize().scale(correctionMagnitude);
-			correction = clamp(correction, Math.min(MAX_HARD_CORRECTION_PER_TICK, getMaxCartSpeed(cart)));
-			cart.move(MoverType.SELF, correction);
-			//cart.setDeltaMovement(cart.getDeltaMovement().scale(0.95F));
-
-			firstLoop = false;
-		}
-	}
-
-	private static Vec3 followLinkOnRail(Vec3 link, Vec3 cartPos, float diffToReduce, Vec3 railAxis) {
-		final double dotProduct = railAxis.dot(link);
-		if (Double.isNaN(dotProduct) || dotProduct == 0D || diffToReduce == 0D) return cartPos;
-
-		final Vec3 axis = railAxis.scale(-Math.signum(dotProduct));
-		final Vec3 center = cartPos.add(link);
-		final double radius = link.length() - diffToReduce;
-		final Vec3 intersectSphere = intersectSphere(cartPos, axis, center, radius);
-
-		if (intersectSphere == null) return cartPos.add(project(link, axis));
-
-		return intersectSphere;
-	}
-
-	@Nullable
-	private static Vec3 intersectSphere(Vec3 lineOrigin, Vec3 lineDirection, Vec3 sphereCenter, double sphereRadius) {
-		final double directionLengthSq = lineDirection.lengthSqr();
-		if (directionLengthSq <= EPSILON || sphereRadius <= 0) return null;
-
-		final Vec3 delta = lineOrigin.subtract(sphereCenter);
-		final double a = directionLengthSq;
-		final double b = 2D * delta.dot(lineDirection);
-		final double c = delta.lengthSqr() - sphereRadius * sphereRadius;
-		final double discriminant = b * b - 4D * a * c;
-		if (discriminant < 0D) return null;
-
-		final double sqrtDiscriminant = Math.sqrt(discriminant);
-		final double t1 = (-b - sqrtDiscriminant) / (2D * a);
-		final double t2 = (-b + sqrtDiscriminant) / (2D * a);
-		double t = t1;
-		if (Math.abs(t2) < Math.abs(t1)) t = t2;
-
-		return lineOrigin.add(lineDirection.scale(t));
-	}
-
-	private static boolean canAddMotion(AbstractMinecart cart) {
-		if (isDockedOnRelayor(cart)) return false;
-		if (cart instanceof MinecartFurnace furnace) return Mth.equal((float) furnace.push.x, 0) && Mth.equal((float) furnace.push.z, 0);
-		return cart.isAlive() && !cart.noPhysics;
-	}
-
-	private static boolean isDockedOnRelayor(AbstractMinecart cart) {
-		final Level level = cart.level();
-		final BlockPos pos = cart.getCurrentBlockPosOrRailBelow();
-		return RelayerRailBlock.isDocked(level, pos, level.getBlockState(pos), cart);
-	}
-
-	private static float getMaxCartSpeed(AbstractMinecart cart) {
-		return cart.isInWater() ? 0.2F : 0.4F;
-	}
-
-	private static Vec3 clamp(Vec3 vec, float maxLength) {
-		final double length = vec.length();
-		if (length <= maxLength || length <= EPSILON) return vec;
-		return vec.scale(maxLength / length);
-	}
-
-	@Nullable
-	private static RailShape getRailShape(Level level, Vec3 vec, AbstractMinecart cart) {
-		final int x = Mth.floor(vec.x());
-		final int y = Mth.floor(vec.y());
-		final int z = Mth.floor(vec.z());
-
-		BlockPos pos = new BlockPos(x, y - 1, z);
-		BlockState railState = level.getBlockState(pos);
-		if (!railState.is(BlockTags.RAILS)) {
-			pos = pos.above();
-			railState = level.getBlockState(pos);
-		}
-		if (!(railState.getBlock() instanceof BaseRailBlock railBlock)) return null;
-		if (railState.getBlock() instanceof CrossRailBlock) return CrossRailBlock.railShapeFromMotion(level, pos, cart);
-		return railState.getValue(railBlock.getShapeProperty());
-	}
-
-	private static Vec3 getRailVec(RailShape shape, boolean descending) {
-		return switch (shape) {
-			case EAST_WEST -> new Vec3(1D, 0D, 0D);
-			case ASCENDING_EAST, ASCENDING_WEST -> new Vec3(1D, descending? 1D : -1D, 0D);
-			case NORTH_SOUTH -> new Vec3(0D, 0D, 1D);
-			case ASCENDING_NORTH, ASCENDING_SOUTH -> new Vec3(0D, descending? 1D : -1D, 1D);
-			case NORTH_EAST, SOUTH_WEST -> new Vec3(1D, 0D, 1D).normalize();
-			case NORTH_WEST, SOUTH_EAST -> new Vec3(1D, 0D, -1D).normalize();
-		};
-	}
-
-	private static Vec3 project(Vec3 vec, Vec3 onto) {
-		final double denominator = onto.lengthSqr();
-		if (denominator <= EPSILON) return Vec3.ZERO;
-		return onto.scale(vec.dot(onto) / denominator);
+		final AABB boundingBox = passenger.getBoundingBox();
+		return (boundingBox.getXsize() + boundingBox.getZsize()) * 0.5D;
 	}
 
 	public static CouplingData getCoupling(Entity entity) {

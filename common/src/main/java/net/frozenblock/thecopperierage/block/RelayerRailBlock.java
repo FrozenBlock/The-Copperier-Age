@@ -55,10 +55,14 @@ public class RelayerRailBlock extends BaseRailBlock {
 	public static final double LAUNCH_FROM_REST = 0.2D;
 	public static final double BOOST_PER_TICK = 0.06D;
 	public static final double MIN_MOVING_SPEED = 0.01D;
+	public static final double WRONG_WAY_BRAKE = 0.5D;
+	public static final double MIN_BRAKED_SPEED = 0.03D;
 	private static final int MAX_CHAIN_LENGTH = 15;
 	private static final int OCCUPIED_CHECK_INTERVAL = 2;
 	private static final double DOCK_DRIFT_EPSILON = 1.0E-6D;
-	private static final double MAX_DOCK_DRIFT_CORRECTION = 0.0625D;
+	private static final double DOCK_SETTLE_DISTANCE = 0.02D;
+	private static final double DOCK_APPROACH_DECELERATION = 0.08D;
+	private static final double MIN_DOCK_APPROACH_SPEED = 0.05D;
 
 	public RelayerRailBlock(Properties properties) {
 		super(true, properties);
@@ -278,8 +282,7 @@ public class RelayerRailBlock extends BaseRailBlock {
 	}
 
 	private void dock(ServerLevel level, BlockPos pos, BlockState state, AbstractMinecart minecart) {
-		minecart.setDeltaMovement(Vec3.ZERO);
-		minecart.setPos(dockPosition(level, pos, state));
+		approach(level, pos, state, minecart);
 		level.setBlockAndUpdate(pos, state.setValue(OCCUPIED, true));
 		level.scheduleTick(pos, this, OCCUPIED_CHECK_INTERVAL);
 		refreshChain(level, pos);
@@ -307,8 +310,37 @@ public class RelayerRailBlock extends BaseRailBlock {
 		minecart.setDeltaMovement(Vec3.ZERO);
 
 		final Vec3 dockPosition = dockPosition(level, pos, state);
-		final double drift = minecart.position().distanceToSqr(dockPosition);
-		if (drift > DOCK_DRIFT_EPSILON && drift < MAX_DOCK_DRIFT_CORRECTION) minecart.setPos(dockPosition);
+		if (minecart.position().distanceToSqr(dockPosition) > DOCK_DRIFT_EPSILON) minecart.setPos(dockPosition);
+	}
+
+	private static void approach(Level level, BlockPos pos, BlockState state, AbstractMinecart minecart) {
+		final Vec3 dockPosition = dockPosition(level, pos, state);
+		final Direction.Axis axis = axisOf(state.getValue(SHAPE));
+		final double remaining = axis == Direction.Axis.X ? dockPosition.x - minecart.getX() : dockPosition.z - minecart.getZ();
+		final double distance = Math.abs(remaining);
+		if (distance < DOCK_SETTLE_DISTANCE) {
+			hold(level, pos, state, minecart);
+			return;
+		}
+
+		final Vec3 velocity = minecart.getDeltaMovement();
+		final double speed = Math.max(velocity.horizontalDistance(), MIN_DOCK_APPROACH_SPEED);
+		final double target = Math.min(distance, Math.min(speed, Math.sqrt(2D * DOCK_APPROACH_DECELERATION * distance)));
+		final double along = Math.signum(remaining) * target;
+		minecart.setDeltaMovement(axis == Direction.Axis.X ? new Vec3(along, velocity.y, 0D) : new Vec3(0D, velocity.y, along));
+	}
+
+	private static boolean isSettled(Level level, BlockPos pos, BlockState state, AbstractMinecart minecart) {
+		final Vec3 dockPosition = dockPosition(level, pos, state);
+		final double dx = dockPosition.x - minecart.getX();
+		final double dz = dockPosition.z - minecart.getZ();
+		return dx * dx + dz * dz < DOCK_SETTLE_DISTANCE * DOCK_SETTLE_DISTANCE;
+	}
+
+	private static boolean hasOtherSettledCart(Level level, BlockPos pos, BlockState state, AbstractMinecart minecart) {
+		return level.getEntitiesOfClass(AbstractMinecart.class, new AABB(pos).inflate(0.5D), other -> other != minecart && isCartOn(pos, other))
+			.stream()
+			.anyMatch(other -> isSettled(level, pos, state, other));
 	}
 
 	public static boolean isPowered(BlockState state) {
@@ -319,16 +351,32 @@ public class RelayerRailBlock extends BaseRailBlock {
 		if (!(state.getBlock() instanceof RelayerRailBlock rail)) return deltaMovement;
 
 		final Direction direction = rail.getDirection(state);
-		final double speed = deltaMovement.horizontalDistance();
-		final double target = speed > MIN_MOVING_SPEED ? speed + BOOST_PER_TICK : LAUNCH_FROM_REST;
-		return new Vec3(direction.getStepX() * target, deltaMovement.y, direction.getStepZ() * target);
+		if (deltaMovement.horizontalDistance() <= MIN_MOVING_SPEED) {
+			return new Vec3(direction.getStepX() * LAUNCH_FROM_REST, deltaMovement.y, direction.getStepZ() * LAUNCH_FROM_REST);
+		}
+
+		final double along = deltaMovement.x * direction.getStepX() + deltaMovement.z * direction.getStepZ();
+		if (along < 0D) {
+			final Vec3 braked = new Vec3(deltaMovement.x * WRONG_WAY_BRAKE, deltaMovement.y, deltaMovement.z * WRONG_WAY_BRAKE);
+			return braked.horizontalDistance() < MIN_BRAKED_SPEED ? new Vec3(0D, deltaMovement.y, 0D) : braked;
+		}
+		return deltaMovement.add(direction.getStepX() * BOOST_PER_TICK, 0D, direction.getStepZ() * BOOST_PER_TICK);
 	}
 
-	public static boolean isDocked(Level level, BlockPos pos, BlockState state, AbstractMinecart minecart) {
+	public static boolean isCaptured(Level level, BlockPos pos, BlockState state, AbstractMinecart minecart) {
 		return state.getBlock() instanceof RelayerRailBlock
 			&& state.getValue(OCCUPIED)
 			&& !state.getValue(POWERED)
 			&& isCartOn(pos, minecart);
+	}
+
+	public static boolean isCaptured(Level level, AbstractMinecart minecart) {
+		final BlockPos pos = minecart.getCurrentBlockPosOrRailBelow();
+		return isCaptured(level, pos, level.getBlockState(pos), minecart);
+	}
+
+	public static boolean isDocked(Level level, BlockPos pos, BlockState state, AbstractMinecart minecart) {
+		return isCaptured(level, pos, state, minecart) && isSettled(level, pos, state, minecart);
 	}
 
 	public static void holdDocked(Level level, BlockPos pos, BlockState state, AbstractMinecart minecart) {
@@ -359,7 +407,12 @@ public class RelayerRailBlock extends BaseRailBlock {
 		}
 
 		if (state.getValue(OCCUPIED)) {
-			hold(level, pos, state, minecart);
+			if (isSettled(level, pos, state, minecart)) {
+				hold(level, pos, state, minecart);
+				return true;
+			}
+			if (hasOtherSettledCart(level, pos, state, minecart)) return false;
+			approach(level, pos, state, minecart);
 			return true;
 		}
 

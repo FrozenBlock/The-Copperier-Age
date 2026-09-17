@@ -1,5 +1,5 @@
 /*
- * Copyright 2025-2026 FrozenBlock
+ * Copyright 2026 FrozenBlock
  * This file is part of The Copperier Age.
  *
  * This program is free software; you can modify it under
@@ -19,21 +19,42 @@ package net.frozenblock.thecopperierage.mixin.entity.minecart.coupling;
 
 import net.frozenblock.thecopperierage.entity.coupling.MinecartCouplingUtil;
 import net.frozenblock.thecopperierage.entity.impl.CouplingToEntityInterface;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AbstractMinecart.class)
-public class AbstractMinecartMixin implements CouplingToEntityInterface {
+public abstract class AbstractMinecartMixin implements CouplingToEntityInterface {
+
+	@Shadow
+	protected abstract double getMaxSpeed(ServerLevel level);
 
 	@Unique
 	@Nullable
 	private Entity theCopperierAge$coupledTo = null;
+	@Unique
+	@Nullable
+	private Vec3 theCopperierAge$tickStartPosition = null;
+	@Unique
+	private int theCopperierAge$trainSize = 1;
+	@Unique
+	private int theCopperierAge$missingCoupledToTicks;
+	@Unique
+	private int theCopperierAge$missingCoupledFromTicks;
+
+	@Inject(method = "tick", at = @At("HEAD"))
+	private void theCopperierAge$recordTickStart(CallbackInfo info) {
+		final AbstractMinecart minecart = AbstractMinecart.class.cast(this);
+		if (!minecart.level().isClientSide()) this.theCopperierAge$tickStartPosition = minecart.position();
+	}
 
 	@Inject(
 		method = "tick",
@@ -44,8 +65,12 @@ public class AbstractMinecartMixin implements CouplingToEntityInterface {
 		)
 	)
 	private void theCopperierAge$tickCoupling(CallbackInfo info) {
-		final AbstractMinecart minecart = AbstractMinecart.class.cast(this);
-		MinecartCouplingUtil.tickCoupling(minecart);
+		MinecartCouplingUtil.tickCoupling(AbstractMinecart.class.cast(this));
+	}
+
+	@Inject(method = "push(Lnet/minecraft/world/entity/Entity;)V", at = @At("HEAD"), cancellable = true)
+	private void theCopperierAge$ignoreCoupledPartnerCollision(Entity entity, CallbackInfo info) {
+		if (MinecartCouplingUtil.areCoupledTogether(AbstractMinecart.class.cast(this), entity)) info.cancel();
 	}
 
 	@Unique
@@ -59,5 +84,54 @@ public class AbstractMinecartMixin implements CouplingToEntityInterface {
 	@Override
 	public Entity theCopperierAge$getCoupledTo() {
 		return this.theCopperierAge$coupledTo;
+	}
+
+	@Unique
+	@Override
+	public double theCopperierAge$getMaxSpeed(ServerLevel level) {
+		return this.getMaxSpeed(level);
+	}
+
+	@Unique
+	@Nullable
+	@Override
+	public Vec3 theCopperierAge$getTickStartPosition() {
+		return this.theCopperierAge$tickStartPosition;
+	}
+
+	@Unique
+	@Override
+	public int theCopperierAge$getTrainSize() {
+		return this.theCopperierAge$trainSize;
+	}
+
+	@Unique
+	@Override
+	public void theCopperierAge$setTrainSize(int size) {
+		this.theCopperierAge$trainSize = Math.max(1, size);
+	}
+
+	@Unique
+	@Override
+	public int theCopperierAge$incrementMissingCoupledTo() {
+		return ++this.theCopperierAge$missingCoupledToTicks;
+	}
+
+	@Unique
+	@Override
+	public void theCopperierAge$resetMissingCoupledTo() {
+		this.theCopperierAge$missingCoupledToTicks = 0;
+	}
+
+	@Unique
+	@Override
+	public int theCopperierAge$incrementMissingCoupledFrom() {
+		return ++this.theCopperierAge$missingCoupledFromTicks;
+	}
+
+	@Unique
+	@Override
+	public void theCopperierAge$resetMissingCoupledFrom() {
+		this.theCopperierAge$missingCoupledFromTicks = 0;
 	}
 }

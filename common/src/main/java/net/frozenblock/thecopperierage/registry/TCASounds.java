@@ -44,6 +44,7 @@ public final class TCASounds {
 	public static final DeferredSoundEvent ENTITY_MINECART_COUPLE = register("entity.minecart.couple");
 	public static final DeferredSoundEvent ENTITY_MINECART_UNCOUPLE = register("entity.minecart.uncouple");
 	public static final DeferredSoundEvent ENTITY_MINECART_COUPLE_BREAK = register("entity.minecart.couple_break");
+	public static final DeferredSoundEvent ENTITY_MINECART_HIT = register("entity.minecart.hit");
 
 	// ENTITY
 	public static final DeferredSoundEvent ENTITY_COPPER_GOLEM_BUTTON_PRESS = register("entity.copper_golem.button_press");

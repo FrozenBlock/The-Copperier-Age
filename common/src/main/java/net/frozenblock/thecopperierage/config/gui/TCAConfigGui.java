@@ -59,6 +59,9 @@ public final class TCAConfigGui {
 		category.addEntry(booleanEntry(builder, "better_copper_tooltips", TCAConfig.BETTER_COPPER_TOOLTIPS));
 		category.addEntry(booleanEntry(builder, "waxed_item_icon_overlay", TCAConfig.WAXED_ITEM_ICON_OVERLAY));
 		category.addEntry(booleanEntry(builder, "extra_item_icon_overlays", TCAConfig.EXTRA_ITEM_ICON_OVERLAYS));
+		category.addEntry(booleanEntry(builder, "improved_furnace_minecarts", TCAConfig.IMPROVED_FURNACE_MINECARTS));
+		category.addEntry(booleanEntry(builder, "minecart_collisions", TCAConfig.MINECART_COLLISIONS));
+		category.addEntry(booleanEntry(builder, "minecart_camera_follows_motion", TCAConfig.MINECART_CAMERA_FOLLOWS_MOTION));
 	}
 
 	public static Screen buildScreen(Screen parent) {

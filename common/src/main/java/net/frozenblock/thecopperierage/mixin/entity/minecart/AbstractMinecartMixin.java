@@ -24,7 +24,6 @@ import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
-import net.minecraft.world.entity.vehicle.minecart.NewMinecartBehavior;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -73,19 +72,6 @@ public class AbstractMinecartMixin {
 		CallbackInfoReturnable<T> infoReturnable
 	) {
 		if (player == null) return;
-		final T minecart = infoReturnable.getReturnValue();
-		if (minecart instanceof FurnaceMinecartFacingInterface facing) {
-			facing.theCopperierAge$setFacing(player.getLookAngle());
-
-			// createMinecart runs adjustToRails BEFORE this hook, which queues a lerp step
-			// carrying the rail's canonical yaw -- set before we knew the facing. Left in place,
-			// the client interpolates (and the rotation smoothing sweeps) through that yaw on
-			// spawn, so the furnace visibly swings up to 180 degrees to reach its facing. Drop
-			// the stale step: the entity already holds the correct facing yaw for the spawn
-			// packet, and the first tick's adjustToRails re-adds a facing-consistent step.
-			if (minecart.getBehavior() instanceof NewMinecartBehavior behavior) {
-				behavior.lerpSteps.clear();
-			}
-		}
+		if (infoReturnable.getReturnValue() instanceof FurnaceMinecartFacingInterface facing) facing.theCopperierAge$setFacing(player.getLookAngle());
 	}
 }

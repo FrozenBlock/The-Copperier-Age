@@ -1,5 +1,5 @@
 /*
- * Copyright 2025-2026 FrozenBlock
+ * Copyright 2026 FrozenBlock
  * This file is part of The Copperier Age.
  *
  * This program is free software; you can modify it under
@@ -17,7 +17,9 @@
 
 package net.frozenblock.thecopperierage.entity.impl;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public interface CouplingToEntityInterface {
@@ -25,4 +27,21 @@ public interface CouplingToEntityInterface {
 
 	@Nullable
 	Entity theCopperierAge$getCoupledTo();
+
+	double theCopperierAge$getMaxSpeed(ServerLevel level);
+
+	@Nullable
+	Vec3 theCopperierAge$getTickStartPosition();
+
+	int theCopperierAge$getTrainSize();
+
+	void theCopperierAge$setTrainSize(int size);
+
+	int theCopperierAge$incrementMissingCoupledTo();
+
+	void theCopperierAge$resetMissingCoupledTo();
+
+	int theCopperierAge$incrementMissingCoupledFrom();
+
+	void theCopperierAge$resetMissingCoupledFrom();
 }

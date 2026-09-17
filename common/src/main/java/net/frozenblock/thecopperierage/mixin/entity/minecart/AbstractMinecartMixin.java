@@ -17,7 +17,9 @@
 
 package net.frozenblock.thecopperierage.mixin.entity.minecart;
 
-import net.frozenblock.thecopperierage.entity.impl.FurnaceMinecartFacingInterface;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.sugar.Local;
+import net.frozenblock.thecopperierage.entity.impl.MinecartFacingHelper;
 import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -28,12 +30,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AbstractMinecart.class)
 public class AbstractMinecartMixin {
+
+	@Shadow
+	private boolean onRails;
 
 	@Inject(
 		method = "createMinecart",
@@ -47,7 +53,7 @@ public class AbstractMinecartMixin {
 		double x, double y, double z,
 		EntityType<T> type,
 		EntitySpawnReason reason,
-		ItemStack stack,
+		ItemStack itemStack,
 		@Nullable Player player,
 		CallbackInfoReturnable<T> infoReturnable
 	) {
@@ -61,17 +67,14 @@ public class AbstractMinecartMixin {
 		);
 	}
 
-	@Inject(method = "createMinecart", at = @At("RETURN"))
-	private static <T extends AbstractMinecart> void theCopperierAge$setFurnaceFacing(
-		Level level,
-		double x, double y, double z,
-		EntityType<T> type,
-		EntitySpawnReason reason,
-		ItemStack itemStack,
-		@Nullable Player player,
-		CallbackInfoReturnable<T> infoReturnable
+	@ModifyReturnValue(method = "createMinecart", at = @At("RETURN"))
+	private static <T extends AbstractMinecart> @Nullable T theCopperierAge$setFurnaceFacing(
+		@Nullable T original,
+		@Local(argsOnly = true) @Nullable Player player
 	) {
-		if (player == null) return;
-		if (infoReturnable.getReturnValue() instanceof FurnaceMinecartFacingInterface facing) facing.theCopperierAge$setFacing(player.getLookAngle());
+		if (original instanceof AbstractMinecart minecart && player != null) {
+			MinecartFacingHelper.setFacing(minecart, player.getLookAngle(), facing -> {});
+		};
+		return original;
 	}
 }

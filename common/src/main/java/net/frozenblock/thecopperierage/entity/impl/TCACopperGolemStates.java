@@ -19,11 +19,12 @@ package net.frozenblock.thecopperierage.entity.impl;
 
 import net.minecraft.world.entity.animal.golem.CopperGolemState;
 
-public class TCACopperGolemStates {
+public final class TCACopperGolemStates {
 	public static CopperGolemState PRESSING_BUTTON;
 
 	static {
 		CopperGolemState.values();
 	}
 
+	private TCACopperGolemStates() {}
 }

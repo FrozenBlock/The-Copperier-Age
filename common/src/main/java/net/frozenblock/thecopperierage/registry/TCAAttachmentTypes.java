@@ -22,7 +22,9 @@ import net.frozenblock.lib.platform.api.attachment.DataAttachmentSyncPredicate;
 import net.frozenblock.lib.platform.api.attachment.DataAttachmentType;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.entity.coupling.CouplingData;
+import net.minecraft.core.Direction;
 import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.world.phys.Vec3;
 
 public final class TCAAttachmentTypes {
 	public static final DataAttachmentType<Integer> CHEST_VEHICLE_OPENERS = DataAttachmentType.create(
@@ -45,6 +47,28 @@ public final class TCAAttachmentTypes {
 			builder.persistent(CouplingData.CODEC);
 			builder.syncWith(CouplingData.STREAM_CODEC, DataAttachmentSyncPredicate.all());
 			builder.initializer(() -> CouplingData.EMPTY);
+		}
+	);
+	public static final DataAttachmentType<Vec3> MINECART_FACING = DataAttachmentType.create(
+		TCAConstants.id("minecart_facing"),
+		builder -> {
+			builder.persistent(Vec3.CODEC);
+			builder.syncWith(Vec3.STREAM_CODEC, DataAttachmentSyncPredicate.all());
+			builder.initializer(() -> Vec3.ZERO);
+		}
+	);
+	public static final DataAttachmentType<Direction> MINECART_FACING_SYNCED = DataAttachmentType.create(
+		TCAConstants.id("minecart_facing_synced"),
+		builder -> {
+			builder.persistent(Direction.CODEC);
+			builder.syncWith(Direction.STREAM_CODEC, DataAttachmentSyncPredicate.all());
+		}
+	);
+	public static final DataAttachmentType<Direction> MINECART_FACING_DISPLAY = DataAttachmentType.create(
+		TCAConstants.id("minecart_facing_display"),
+		builder -> {
+			builder.persistent(Direction.CODEC);
+			builder.syncWith(Direction.STREAM_CODEC, DataAttachmentSyncPredicate.all());
 		}
 	);
 

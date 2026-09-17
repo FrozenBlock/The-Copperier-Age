@@ -15,15 +15,16 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.entity;
+package net.frozenblock.thecopperierage.entity.impl;
 
 import java.util.List;
 import net.frozenblock.thecopperierage.block.CopperRail;
 import net.frozenblock.thecopperierage.config.TCAConfig;
-import net.frozenblock.thecopperierage.entity.impl.CouplingToEntityInterface;
+import net.frozenblock.thecopperierage.registry.TCADamageTypes;
 import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
@@ -93,11 +94,22 @@ public final class MinecartImpacts {
 		final double transferredSpeed = closing * cartShare;
 
 		final double damage = Math.min(MAX_DAMAGE, DAMAGE_PER_TRANSFERRED_SPEED * (closing - IMPACT_SPEED_THRESHOLD) * cartShare * frictionFactor(cart));
-		if (damage > 0D) entity.hurtServer(level, MinecartImpactDamageSource.create(level, cart), (float) damage);
+		if (damage < 0D) return 0D;
 
-		final double upwards = Math.min(MAX_KNOCKBACK_UP, transferredSpeed * KNOCKBACK_UP_PER_SPEED);
-		entity.push(normal.x * transferredSpeed, upwards, normal.z * transferredSpeed);
-		entity.hurtMarked = true;
+		final DamageSource damageSource = level.damageSources().source(
+			// TODO: lewd detection
+			TCADamageTypes.MINECART_IMPACT,
+			cart.getFirstPassenger() != null
+				? cart.getFirstPassenger()
+				: cart
+		);
+		if (!entity.hurtServer(level, damageSource, (float) damage)) return 0D;
+
+		entity.knockback(transferredSpeed, normal.x, normal.z, damageSource, (float) damage);
+
+		// TODO: is there another way to do this while respecting overriden implementations of .knockback? (Creaking, Dragon, Sulfur Cube)
+		//final double upwards = Math.min(MAX_KNOCKBACK_UP, transferredSpeed * KNOCKBACK_UP_PER_SPEED);
+		//entity.push(normal.x * transferredSpeed, upwards, normal.z * transferredSpeed);
 
 		final Vec3 cartVelocity = cart.getDeltaMovement();
 		final double cartLoss = closing * entityShare;

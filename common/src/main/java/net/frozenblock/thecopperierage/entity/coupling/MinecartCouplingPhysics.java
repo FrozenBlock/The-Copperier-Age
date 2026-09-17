@@ -26,7 +26,7 @@ import java.util.Set;
 import net.frozenblock.lib.event.api.events.TickEvents;
 import net.frozenblock.thecopperierage.block.RelayerRailBlock;
 import net.frozenblock.thecopperierage.config.TCAConfig;
-import net.frozenblock.thecopperierage.entity.MinecartImpacts;
+import net.frozenblock.thecopperierage.entity.impl.MinecartImpacts;
 import net.frozenblock.thecopperierage.entity.MinecartTrackHelper;
 import net.frozenblock.thecopperierage.entity.impl.CouplingToEntityInterface;
 import net.minecraft.server.level.ServerLevel;

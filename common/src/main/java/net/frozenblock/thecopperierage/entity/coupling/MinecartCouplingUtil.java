@@ -18,7 +18,7 @@
 package net.frozenblock.thecopperierage.entity.coupling;
 
 import java.util.Optional;
-import net.frozenblock.thecopperierage.entity.MinecartImpacts;
+import net.frozenblock.thecopperierage.entity.impl.MinecartImpacts;
 import net.frozenblock.thecopperierage.entity.impl.CouplingToEntityInterface;
 import net.frozenblock.thecopperierage.registry.TCAAttachmentTypes;
 import net.frozenblock.thecopperierage.registry.TCAItems;

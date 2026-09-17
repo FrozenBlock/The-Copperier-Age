@@ -7,6 +7,7 @@ Put the changelog BELOW the dashes. ANYTHING ABOVE IS IGNORED.
   - The propulsion of Furnace Minecarts now remains relative to the direction they were placed.
 - Added the Minecart with Jukebox.
 - Added the Minecart with Crate.
+- Minecarts now have unique sounds for being placed and broken.
 - Vehicles with container blocks now play the same opening and closing animations and sounds as their block counterparts.
 - Added the Minecart Coupling item.
   - Interacting with two Minecarts while holding a Minecart Coupling will link the two Minecarts together.
@@ -23,6 +24,8 @@ Put the changelog BELOW the dashes. ANYTHING ABOVE IS IGNORED.
 - Added the Cupric Lantern block.
   - Much like the Soul Lantern, is crafted using a Copper Torch instead of a Torch.
 - Added compatability for Netherier Nether, introducing Cupric variants of Golden and Netherite lanterns if both mods are present.
+- The Rail, Lantern, and Soul Lantern blocks have been renamed to Iron Rail, Iron Lantern, and Iron Soul Lantern while the internal `Copperier Copper` Resource Pack is enabled.
+- All Copper Pressure Plates have been given a new texture while the internal `Copperier Copper` Resource Pack is enabled.
 - Redstone Comparators can now detect the total movement applied to Chimes.
 - Added Chimes to the `Redstone Blocks` Creative Inventory Tab.
 - Added The Camel Husk and Zombie Ostrich to the `#thecopperierage:copper_fan_weaker_push` Entity Type tag.

@@ -8,7 +8,7 @@ issueTrackerURL="https://github.com/FrozenBlock/TheCopperierAge/issues"
     version="${mod_version}"
     displayName="The Copperier Age"
     displayURL="https://modrinth.com/mod/the-copperier-age"
-    logoFile="assets/thecopperierage/icon.png"
+    iconFile="assets/thecopperierage/icon.png"
     authors="Lunade/AViewFromTheTop, Lufurrius"
     description='''
 Expends and enhances the theme of The Copper Age drop. New blocks and mechanics, many tweaks, and awesome optional retextures!

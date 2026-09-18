@@ -18,6 +18,8 @@
 package net.frozenblock.thecopperierage.client;
 
 import java.util.function.Supplier;
+import net.frozenblock.lib.renderer.blockentity.BlockEntityRendererRegistry;
+import net.frozenblock.lib.renderer.entity.EntityRendererRegistry;
 import net.frozenblock.lib.renderer.model.ModelLayerRegistry;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.client.model.ChimeModel;
@@ -28,8 +30,6 @@ import net.mehvahdjukaar.candlelight.api.ClientOnly;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.object.cart.MinecartModel;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.MinecartRenderer;
 
 @ClientOnly
@@ -42,24 +42,21 @@ public final class TCAModelLayers {
 
 	public static void init() {
 		ModelLayerRegistry.register(CHIME, ChimeModel::createLayerDefinition);
+		BlockEntityRendererRegistry.register(TCABlockEntityTypes.CHIME, ChimeRenderer::new);
 
 		final Supplier<LayerDefinition> minecartBodyLayer = MinecartModel::createBodyLayer;
+
 		ModelLayerRegistry.register(CRATE_MINECART, minecartBodyLayer);
+		EntityRendererRegistry.register(TCAEntityTypes.CRATE_MINECART, context -> new MinecartRenderer(context, CRATE_MINECART));
+
 		ModelLayerRegistry.register(DISPENSER_MINECART, minecartBodyLayer);
+		EntityRendererRegistry.register(TCAEntityTypes.DISPENSER_MINECART, context -> new MinecartRenderer(context, DISPENSER_MINECART));
+
 		ModelLayerRegistry.register(DROPPER_MINECART, minecartBodyLayer);
+		EntityRendererRegistry.register(TCAEntityTypes.DROPPER_MINECART, context -> new MinecartRenderer(context, DROPPER_MINECART));
+
 		ModelLayerRegistry.register(JUKEBOX_MINECART, minecartBodyLayer);
-	}
-
-	/**
-	 * Registries MUST be populated before this. Runs during NeoForge's setup event.
-	 */
-	public static void setup() {
-		BlockEntityRenderers.register(TCABlockEntityTypes.CHIME.get(), ChimeRenderer::new);
-
-		EntityRenderers.register(TCAEntityTypes.CRATE_MINECART.get(), context -> new MinecartRenderer(context, CRATE_MINECART));
-		EntityRenderers.register(TCAEntityTypes.DISPENSER_MINECART.get(), context -> new MinecartRenderer(context, DISPENSER_MINECART));
-		EntityRenderers.register(TCAEntityTypes.DROPPER_MINECART.get(), context -> new MinecartRenderer(context, DROPPER_MINECART));
-		EntityRenderers.register(TCAEntityTypes.JUKEBOX_MINECART.get(), context -> new MinecartRenderer(context, JUKEBOX_MINECART));
+		EntityRendererRegistry.register(TCAEntityTypes.JUKEBOX_MINECART, context -> new MinecartRenderer(context, JUKEBOX_MINECART));
 	}
 
 	private static ModelLayerLocation create(String name) {

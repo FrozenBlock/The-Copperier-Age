@@ -36,14 +36,14 @@ import net.minecraft.world.level.block.entity.DropperBlockEntity;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class MinecartDispenserDropper extends AbstractMinecartDispenser {
+public class MinecartDropper extends AbstractMinecartDispenser {
 	private static final DefaultDispenseItemBehavior DISPENSE_BEHAVIOR = new DefaultDispenseItemBehavior();
 
-	public MinecartDispenserDropper(EntityType<? extends MinecartDispenserDropper> entityType, Level level) {
+	public MinecartDropper(EntityType<? extends MinecartDropper> entityType, Level level) {
 		super(entityType, level);
 	}
 
-	public MinecartDispenserDropper(Level level, double x, double y, double z) {
+	public MinecartDropper(Level level, double x, double y, double z) {
 		this(TCAEntityTypes.DROPPER_MINECART.get(), level);
 		this.setPos(x, y, z);
 	}

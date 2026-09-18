@@ -17,37 +17,30 @@
 
 package net.frozenblock.thecopperierage.registry;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Supplier;
-import net.frozenblock.lib.platform.api.registry.DeferredHolder;
+import net.frozenblock.lib.platform.api.registry.DeferredBlockEntityType;
 import net.frozenblock.lib.platform.api.registry.DeferredRegister;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.entity.ChimeBlockEntity;
 import net.frozenblock.thecopperierage.block.entity.CrateBlockEntity;
 import net.frozenblock.thecopperierage.block.entity.StickyGearboxBlockEntity;
 import net.frozenblock.thecopperierage.references.TCABlockEntityTypeIds;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public final class TCABlockEntityTypes {
-	private static final DeferredRegister<BlockEntityType<?>> REGISTER = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, TCAConstants.MOD_ID);
+	private static final DeferredRegister.BlockEntities REGISTER = DeferredRegister.createBlockEntities(TCAConstants.MOD_ID);
 
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ChimeBlockEntity>> CHIME = register(TCABlockEntityTypeIds.CHIME,
+	public static final DeferredBlockEntityType<ChimeBlockEntity> CHIME = REGISTER.register(TCABlockEntityTypeIds.CHIME,
 		ChimeBlockEntity::new,
-		() -> TCABlocks.asBlocks(TCABlocks.CHIME).asList()
+		() -> TCABlocks.CHIME.map(Supplier::get).asList()
 	);
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<StickyGearboxBlockEntity>> STICKY_GEARBOX = register(TCABlockEntityTypeIds.STICKY_GEARBOX,
+	public static final DeferredBlockEntityType<StickyGearboxBlockEntity> STICKY_GEARBOX = REGISTER.register(TCABlockEntityTypeIds.STICKY_GEARBOX,
 		StickyGearboxBlockEntity::new,
-		() -> TCABlocks.asBlocks(TCABlocks.STICKY_GEARBOX).asList()
+		() -> TCABlocks.STICKY_GEARBOX.map(Supplier::get).asList()
 	);
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CrateBlockEntity>> CRATE = register(TCABlockEntityTypeIds.CRATE,
+	public static final DeferredBlockEntityType<CrateBlockEntity> CRATE = REGISTER.register(TCABlockEntityTypeIds.CRATE,
 		CrateBlockEntity::new,
-		() -> List.of(TCABlocks.CRATE.get())
+		List.of(TCABlocks.CRATE)
 	);
 
 	static {
@@ -55,14 +48,6 @@ public final class TCABlockEntityTypes {
 	}
 
 	public static void init() {}
-
-	private static <T extends BlockEntity> DeferredHolder<BlockEntityType<?>, BlockEntityType<T>> register(
-		ResourceKey<BlockEntityType<?>> id,
-		BlockEntityType.BlockEntitySupplier<T> builder,
-		Supplier<Collection<Block>> blocks
-	) {
-		return REGISTER.register(id, () -> new BlockEntityType<>(builder, Set.copyOf(blocks.get())));
-	}
 
 	private TCABlockEntityTypes() {}
 }

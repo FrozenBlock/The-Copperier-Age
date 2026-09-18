@@ -6,7 +6,7 @@ import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.TCAFeatureFlags;
 import net.frozenblock.thecopperierage.entity.MinecartCrate;
 import net.frozenblock.thecopperierage.entity.MinecartDispenser;
-import net.frozenblock.thecopperierage.entity.MinecartDispenserDropper;
+import net.frozenblock.thecopperierage.entity.MinecartDropper;
 import net.frozenblock.thecopperierage.entity.MinecartJukebox;
 import net.frozenblock.thecopperierage.references.TCAEntityTypeIds;
 import net.minecraft.world.entity.MobCategory;
@@ -26,8 +26,8 @@ public final class TCAEntityTypes {
 		builder -> builder.sized(0.98F, 0.7F).clientTrackingRange(8).updateInterval(3)
 	);
 
-	public static final DeferredEntityType<MinecartDispenserDropper> DROPPER_MINECART = REGISTER.register(TCAEntityTypeIds.DROPPER_MINECART,
-		MinecartDispenserDropper::new,
+	public static final DeferredEntityType<MinecartDropper> DROPPER_MINECART = REGISTER.register(TCAEntityTypeIds.DROPPER_MINECART,
+		MinecartDropper::new,
 		MobCategory.MISC,
 		builder -> builder.sized(0.98F, 0.7F).clientTrackingRange(8).updateInterval(3)
 	);

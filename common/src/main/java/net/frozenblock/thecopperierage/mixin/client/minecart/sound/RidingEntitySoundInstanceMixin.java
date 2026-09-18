@@ -48,7 +48,7 @@ public abstract class RidingEntitySoundInstanceMixin extends AbstractTickableSou
 	@Inject(method = "tick", at = @At("HEAD"))
 	public void theCopperierAge$interpolateVolume(CallbackInfo info) {
 		final boolean inRecession = this.volume == this.volumeMin;
-		this.theCopperierAge$currentVolume += (this.volume - this.theCopperierAge$currentVolume) * (inRecession ? 0.5F : 0.25F);
+		this.theCopperierAge$currentVolume += (this.volume - this.theCopperierAge$currentVolume) * (inRecession ? 0.3F : 0.15F);
 	}
 
 	@Unique

@@ -76,7 +76,7 @@ public class AbstractMinecartRendererMixin {
 		method = "getBoundingBoxForCulling(Lnet/minecraft/world/entity/vehicle/minecart/AbstractMinecart;F)Lnet/minecraft/world/phys/AABB;",
 		at = @At("RETURN")
 	)
-	public AABB theCopperierAge$modifyBoundingBoxForCulling(AABB original, AbstractMinecart entity) {
+	public AABB theCopperierAge$modifyBoundingBoxForCulling(AABB original, AbstractMinecart entity, float partialTick) {
 		return MinecartCouplingClientHandler.modifyBoundingBoxForCoupling(entity, original);
 	}
 }

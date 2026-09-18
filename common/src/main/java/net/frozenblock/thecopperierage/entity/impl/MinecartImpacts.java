@@ -118,7 +118,7 @@ public final class MinecartImpacts {
 		);
 		if (!entity.hurtServer(level, damageSource, (float) damage)) return 0D;
 
-		entity.knockback(transferredSpeed, normal.x, normal.z, damageSource, (float) damage);
+		entity.knockback(transferredSpeed, -normal.x, -normal.z, damageSource, (float) damage);
 
 		// TODO: is there another way to do this while respecting overriden implementations of .knockback? (Creaking, Dragon, Sulfur Cube)
 		//final double upwards = Math.min(MAX_KNOCKBACK_UP, transferredSpeed * KNOCKBACK_UP_PER_SPEED);

@@ -19,6 +19,7 @@ package net.frozenblock.thecopperierage.mixin.entity.minecart.impact;
 
 import net.frozenblock.thecopperierage.block.RelayerRailBlock;
 import net.frozenblock.thecopperierage.entity.MinecartImpacts;
+import net.frozenblock.thecopperierage.entity.coupling.MinecartCouplingUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
@@ -84,7 +85,8 @@ public abstract class AbstractMinecartMixin {
 
 	@Inject(method = "push(Lnet/minecraft/world/entity/Entity;)V", at = @At("HEAD"), cancellable = true)
 	private void theCopperierAge$solveCartCollisionsElsewhere(Entity entity, CallbackInfo info) {
-		if (entity instanceof AbstractMinecart && MinecartImpacts.enabled()) info.cancel();
+		if (!(entity instanceof AbstractMinecart other)) return;
+		if (MinecartImpacts.isSolverHandled(AbstractMinecart.class.cast(this), other)) info.cancel();
 	}
 
 	@Inject(method = "canCollideWith", at = @At("HEAD"), cancellable = true)
@@ -92,7 +94,12 @@ public abstract class AbstractMinecartMixin {
 		if (!MinecartImpacts.enabled()) return;
 
 		final AbstractMinecart cart = AbstractMinecart.class.cast(this);
-		if (entity instanceof AbstractMinecart || MinecartImpacts.shouldPassThrough(cart, entity)) info.setReturnValue(false);
+		if (entity instanceof AbstractMinecart other) {
+			if (MinecartCouplingUtil.areCoupledTogether(cart, other) || MinecartImpacts.isSolverHandled(cart, other)) info.setReturnValue(false);
+			return;
+		}
+
+		if (MinecartImpacts.shouldPassThrough(cart, entity)) info.setReturnValue(false);
 	}
 
 	@Unique

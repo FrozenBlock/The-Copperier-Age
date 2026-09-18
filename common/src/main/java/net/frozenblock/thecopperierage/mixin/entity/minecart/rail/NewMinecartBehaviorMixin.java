@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.mixin.entity.minecart.motion;
+package net.frozenblock.thecopperierage.mixin.entity.minecart.rail;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.frozenblock.thecopperierage.block.RelayerRailBlock;

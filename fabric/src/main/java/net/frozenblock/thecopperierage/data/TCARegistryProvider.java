@@ -38,6 +38,8 @@ final class TCARegistryProvider extends FabricDynamicRegistryProvider {
 		entries.addAll(asLookup(entries.getLookup(Registries.INSTRUMENT)));
 		TCAConstants.log("Adding finalized template pools to datagen", true);
 		entries.addAll(asLookup(entries.getLookup(Registries.TEMPLATE_POOL)));
+		TCAConstants.log("Adding finalized damage types to datagen", true);
+		entries.addAll(asLookup(entries.getLookup(Registries.DAMAGE_TYPE)));
 		TCAConstants.log("Adding finalized config predicate providers to datagen", true);
 		entries.addAll(asLookup(entries.getLookup(FrozenLibRegistries.CONFIG_PREDICATE_PROVIDER)));
 		TCAConstants.log("Adding finalized fire types to datagen", true);

@@ -18,8 +18,8 @@
 package net.frozenblock.thecopperierage.mixin.entity.minecart.impact;
 
 import net.frozenblock.thecopperierage.block.RelayerRailBlock;
-import net.frozenblock.thecopperierage.entity.MinecartImpacts;
 import net.frozenblock.thecopperierage.entity.coupling.MinecartCouplingUtil;
+import net.frozenblock.thecopperierage.entity.impl.MinecartImpacts;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;

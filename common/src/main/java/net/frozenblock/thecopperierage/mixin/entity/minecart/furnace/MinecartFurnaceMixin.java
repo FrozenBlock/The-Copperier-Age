@@ -50,6 +50,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.component.CookingFuel;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -200,8 +201,8 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
 	private LootContext theCopperierAge$getLootContext(ServerLevel level) {
 		return new LootContext.Builder(
 			new LootParams.Builder(level)
-				.withParameter(LootContextParams.THIS_ENTITY, this)
 				.withParameter(LootContextParams.BLOCK_STATE, this.getDisplayBlockState())
+				.withParameter(LootContextParams.BLOCK_ENTITY, new FurnaceBlockEntity(this.blockPosition(), this.getDisplayBlockState()))
 				.withParameter(LootContextParams.ORIGIN, this.position())
 				.withParameter(LootContextParams.CONTAINER, this)
 				.create(LootContextParamSets.CONTAINER_PROCESS)

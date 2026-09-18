@@ -154,6 +154,7 @@ public final class MinecartImpacts {
 
 	public static void playImpactSound(ServerLevel level, AbstractMinecart cart, Vec3 pos, double speed) {
 		if (cart.isSilent() || !enabled()) return;
+
 		final float volume = (float) Mth.clamp(speed / FULL_SOUND_VOLUME_SPEED, MIN_SOUND_VOLUME, 1D);
 		level.playSound(
 			null,

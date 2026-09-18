@@ -338,8 +338,26 @@
   },
   "entity.minecart.hit": {
     "sounds": [
-      "thecopperierage:entity/minecart/break1",
-      "thecopperierage:entity/minecart/break2"
+      {
+        "name": "thecopperierage:entity/minecart/break1",
+        "volume": 0.8,
+        "pitch": 0.85
+      },
+      {
+        "name": "thecopperierage:entity/minecart/break1",
+        "volume": 0.8,
+        "pitch": 0.75
+      },
+      {
+        "name": "thecopperierage:entity/minecart/break2",
+        "volume": 0.8,
+        "pitch": 0.85
+      },
+      {
+        "name": "thecopperierage:entity/minecart/break2",
+        "volume": 0.8,
+        "pitch": 0.75
+      }
     ],
     "subtitle": "subtitles.entity.minecart.hit"
   },

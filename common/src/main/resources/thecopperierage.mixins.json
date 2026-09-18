@@ -36,6 +36,8 @@
     "entity.minecart.furnace.MinecartFurnaceMixin",
     "entity.minecart.impact.AbstractMinecartMixin",
     "entity.minecart.motion.NewMinecartBehaviorMixin",
+    "entity.minecart.place.MinecartDispenseItemBehaviorMixin",
+    "entity.minecart.place.MinecartItemMixin",
     "entity.minecart.rail.AbstractMinecartMixin",
     "entity.minecart.rail.OldMinecartBehaviorMixin",
     "entity.minecart.rotation.NewMinecartBehaviorMixin",

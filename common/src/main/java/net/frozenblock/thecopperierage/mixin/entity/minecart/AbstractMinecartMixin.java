@@ -19,7 +19,7 @@ package net.frozenblock.thecopperierage.mixin.entity.minecart;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import net.frozenblock.thecopperierage.entity.impl.MinecartFacingHelper;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.api.MinecartFacingHelper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import org.jetbrains.annotations.Nullable;

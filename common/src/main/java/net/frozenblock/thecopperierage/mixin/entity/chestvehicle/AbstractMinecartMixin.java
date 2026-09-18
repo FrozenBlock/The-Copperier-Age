@@ -17,7 +17,7 @@
 
 package net.frozenblock.thecopperierage.mixin.entity.chestvehicle;
 
-import net.frozenblock.thecopperierage.entity.impl.ChestVehicleLidInterface;
+import net.frozenblock.thecopperierage.entity.vehicle.chest.impl.ChestVehicleLidInterface;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

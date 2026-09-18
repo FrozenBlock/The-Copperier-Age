@@ -17,8 +17,8 @@
 
 package net.frozenblock.thecopperierage.mixin.entity.minecart.smoothing;
 
-import net.frozenblock.thecopperierage.entity.coupling.CouplingData;
-import net.frozenblock.thecopperierage.entity.impl.MinecartRotationSmoothing;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.coupling.CouplingData;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.impl.MinecartRotationSmoothing;
 import net.frozenblock.thecopperierage.registry.TCAAttachmentTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;

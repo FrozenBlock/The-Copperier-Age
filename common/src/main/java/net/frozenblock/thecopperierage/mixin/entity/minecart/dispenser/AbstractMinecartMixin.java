@@ -19,7 +19,7 @@ package net.frozenblock.thecopperierage.mixin.entity.minecart.dispenser;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import java.util.Optional;
-import net.frozenblock.thecopperierage.entity.AbstractMinecartDispenser;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.AbstractMinecartDispenser;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;

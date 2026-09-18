@@ -21,7 +21,7 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.frozenblock.thecopperierage.client.coupling.MinecartCouplingClientHandler;
 import net.frozenblock.thecopperierage.client.renderer.entity.state.CouplingRenderState;
-import net.frozenblock.thecopperierage.entity.impl.MinecartRotationSmoothing;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.impl.MinecartRotationSmoothing;
 import net.mehvahdjukaar.candlelight.api.ClientOnly;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.AbstractMinecartRenderer;

@@ -19,7 +19,7 @@ package net.frozenblock.thecopperierage.mixin.entity.minecart.rail;
 
 import net.frozenblock.thecopperierage.block.CrossRailBlock;
 import net.frozenblock.thecopperierage.block.RelayerRailBlock;
-import net.frozenblock.thecopperierage.entity.impl.CrossRailAxisInterface;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.impl.CrossRailAxisInterface;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;

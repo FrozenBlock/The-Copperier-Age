@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.entity.impl;
+package net.frozenblock.thecopperierage.entity.vehicle.minecart.coupling;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;

@@ -15,10 +15,9 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.entity.impl;
+package net.frozenblock.thecopperierage.entity.vehicle.minecart.api;
 
 import java.util.function.Consumer;
-import net.frozenblock.thecopperierage.entity.MinecartTrackHelper;
 import net.frozenblock.thecopperierage.registry.TCAAttachmentTypes;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;

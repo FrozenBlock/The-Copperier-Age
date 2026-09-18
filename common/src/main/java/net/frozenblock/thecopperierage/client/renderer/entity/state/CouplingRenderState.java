@@ -24,7 +24,7 @@ import net.frozenblock.lib.renderer.FrozenLibRenderTypes;
 import net.frozenblock.lib.renderer.RenderStateDataKey;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.client.coupling.MinecartCouplingClientHandler;
-import net.frozenblock.thecopperierage.entity.impl.CouplingToEntityInterface;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.coupling.CouplingToEntityInterface;
 import net.mehvahdjukaar.candlelight.api.ClientOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;

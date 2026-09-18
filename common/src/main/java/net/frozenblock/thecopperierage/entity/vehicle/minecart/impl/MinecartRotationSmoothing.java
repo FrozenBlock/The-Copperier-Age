@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.entity.impl;
+package net.frozenblock.thecopperierage.entity.vehicle.minecart.impl;
 
 /**
  * Implemented on {@code AbstractMinecart} (client-side) to provide an eased render rotation that

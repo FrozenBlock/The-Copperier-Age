@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.entity.coupling;
+package net.frozenblock.thecopperierage.entity.vehicle.minecart.coupling;
 
 import net.frozenblock.thecopperierage.client.coupling.MinecartCouplingClientHandler;
 import net.frozenblock.thecopperierage.registry.TCAItems;

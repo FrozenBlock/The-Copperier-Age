@@ -17,7 +17,7 @@
 
 package net.frozenblock.thecopperierage.block;
 
-import net.frozenblock.thecopperierage.entity.impl.CrossRailAxisInterface;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.impl.CrossRailAxisInterface;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;

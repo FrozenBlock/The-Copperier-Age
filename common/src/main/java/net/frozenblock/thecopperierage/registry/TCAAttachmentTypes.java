@@ -21,7 +21,7 @@ import com.mojang.serialization.Codec;
 import net.frozenblock.lib.platform.api.attachment.DataAttachmentSyncPredicate;
 import net.frozenblock.lib.platform.api.attachment.DataAttachmentType;
 import net.frozenblock.thecopperierage.TCAConstants;
-import net.frozenblock.thecopperierage.entity.coupling.CouplingData;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.coupling.CouplingData;
 import net.minecraft.core.Direction;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.world.phys.Vec3;

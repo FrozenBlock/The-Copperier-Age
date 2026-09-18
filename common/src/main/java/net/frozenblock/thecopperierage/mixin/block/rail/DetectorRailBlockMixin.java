@@ -19,7 +19,7 @@ package net.frozenblock.thecopperierage.mixin.block.rail;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.frozenblock.thecopperierage.entity.MinecartJukebox;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.MinecartJukebox;
 import net.minecraft.world.Container;
 import net.minecraft.world.level.block.DetectorRailBlock;
 import org.spongepowered.asm.mixin.Mixin;

@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.entity;
+package net.frozenblock.thecopperierage.entity.vehicle.chest.api;
 
 import net.frozenblock.thecopperierage.registry.TCAAttachmentTypes;
 import net.minecraft.sounds.SoundEvent;

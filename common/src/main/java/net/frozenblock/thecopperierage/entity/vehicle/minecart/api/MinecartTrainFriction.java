@@ -15,9 +15,9 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.entity;
+package net.frozenblock.thecopperierage.entity.vehicle.minecart.api;
 
-import net.frozenblock.thecopperierage.entity.impl.CouplingToEntityInterface;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.coupling.CouplingToEntityInterface;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.phys.Vec3;
 

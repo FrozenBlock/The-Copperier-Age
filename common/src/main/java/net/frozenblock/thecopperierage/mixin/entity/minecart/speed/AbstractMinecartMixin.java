@@ -19,7 +19,7 @@ package net.frozenblock.thecopperierage.mixin.entity.minecart.speed;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.frozenblock.thecopperierage.block.CopperRail;
-import net.frozenblock.thecopperierage.entity.MinecartTrainFriction;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.api.MinecartTrainFriction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.phys.Vec3;

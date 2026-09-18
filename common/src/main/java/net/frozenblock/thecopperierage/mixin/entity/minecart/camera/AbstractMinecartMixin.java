@@ -17,7 +17,7 @@
 
 package net.frozenblock.thecopperierage.mixin.entity.minecart.camera;
 
-import net.frozenblock.thecopperierage.entity.impl.MinecartHeadingInterface;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.impl.MinecartHeadingInterface;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import org.spongepowered.asm.mixin.Mixin;

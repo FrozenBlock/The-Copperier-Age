@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.entity.coupling;
+package net.frozenblock.thecopperierage.entity.vehicle.minecart.coupling;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,9 +27,8 @@ import java.util.WeakHashMap;
 import net.frozenblock.lib.event.api.events.TickEvents;
 import net.frozenblock.thecopperierage.block.RelayerRailBlock;
 import net.frozenblock.thecopperierage.config.TCAConfig;
-import net.frozenblock.thecopperierage.entity.impl.MinecartImpacts;
-import net.frozenblock.thecopperierage.entity.MinecartTrackHelper;
-import net.frozenblock.thecopperierage.entity.impl.CouplingToEntityInterface;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.api.MinecartImpacts;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.api.MinecartTrackHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;

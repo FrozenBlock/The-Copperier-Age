@@ -15,11 +15,10 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.entity.coupling;
+package net.frozenblock.thecopperierage.entity.vehicle.minecart.coupling;
 
 import java.util.Optional;
-import net.frozenblock.thecopperierage.entity.impl.MinecartImpacts;
-import net.frozenblock.thecopperierage.entity.impl.CouplingToEntityInterface;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.api.MinecartImpacts;
 import net.frozenblock.thecopperierage.registry.TCAAttachmentTypes;
 import net.frozenblock.thecopperierage.registry.TCAItems;
 import net.frozenblock.thecopperierage.registry.TCASounds;

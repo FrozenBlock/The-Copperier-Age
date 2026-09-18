@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.entity;
+package net.frozenblock.thecopperierage.entity.vehicle.minecart;
 
 import net.frozenblock.thecopperierage.registry.TCAEntityTypes;
 import net.frozenblock.thecopperierage.registry.TCAItems;

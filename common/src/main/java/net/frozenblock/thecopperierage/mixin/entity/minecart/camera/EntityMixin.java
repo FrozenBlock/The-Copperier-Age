@@ -18,7 +18,7 @@
 package net.frozenblock.thecopperierage.mixin.entity.minecart.camera;
 
 import net.frozenblock.thecopperierage.config.TCAConfig;
-import net.frozenblock.thecopperierage.entity.impl.MinecartHeadingInterface;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.impl.MinecartHeadingInterface;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;

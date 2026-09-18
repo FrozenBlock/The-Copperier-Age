@@ -21,7 +21,7 @@ import net.frozenblock.lib.platform.api.registry.DeferredHolder;
 import net.frozenblock.lib.platform.api.registry.DeferredRegister;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.entity.inventory.CrateMenu;
-import net.frozenblock.thecopperierage.entity.inventory.FurnaceMinecartMenu;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.inventory.FurnaceMinecartMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.AbstractContainerMenu;

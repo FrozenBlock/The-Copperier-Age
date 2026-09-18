@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import net.frozenblock.lib.event.api.events.client.ClientTickEvents;
-import net.frozenblock.thecopperierage.entity.MinecartJukebox;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.MinecartJukebox;
 import net.mehvahdjukaar.candlelight.api.ClientOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.EntityBoundSoundInstance;

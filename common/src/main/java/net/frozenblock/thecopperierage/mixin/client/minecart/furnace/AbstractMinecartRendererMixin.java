@@ -18,7 +18,7 @@
 package net.frozenblock.thecopperierage.mixin.client.minecart.furnace;
 
 import net.frozenblock.thecopperierage.config.TCAConfig;
-import net.frozenblock.thecopperierage.entity.impl.MinecartFacingHelper;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.api.MinecartFacingHelper;
 import net.mehvahdjukaar.candlelight.api.ClientOnly;
 import net.minecraft.client.renderer.block.BlockModelResolver;
 import net.minecraft.client.renderer.entity.AbstractMinecartRenderer;

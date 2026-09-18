@@ -2,7 +2,7 @@ package net.frozenblock.thecopperierage;
 
 import net.frozenblock.lib.feature_flag.api.FeatureFlagApi;
 import net.frozenblock.thecopperierage.config.TCAConfig;
-import net.frozenblock.thecopperierage.entity.coupling.MinecartCouplingPhysics;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.coupling.MinecartCouplingPhysics;
 import net.frozenblock.thecopperierage.item.api.OxidizableItemHelper;
 import net.frozenblock.thecopperierage.levelgen.structure.modification.TCAStructureModifications;
 import net.frozenblock.thecopperierage.networking.TCANetworking;

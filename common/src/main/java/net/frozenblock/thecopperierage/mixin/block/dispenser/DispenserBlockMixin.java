@@ -18,7 +18,7 @@
 package net.frozenblock.thecopperierage.mixin.block.dispenser;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import net.frozenblock.thecopperierage.entity.MinecartDispenseContext;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.impl.MinecartDispenseContext;
 import net.minecraft.core.Position;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.phys.Vec3;

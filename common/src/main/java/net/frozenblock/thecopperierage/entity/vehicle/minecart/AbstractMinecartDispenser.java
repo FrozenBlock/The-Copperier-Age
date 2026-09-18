@@ -15,8 +15,9 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.entity;
+package net.frozenblock.thecopperierage.entity.vehicle.minecart;
 
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.impl.MinecartDispenseContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.dispenser.BlockSource;

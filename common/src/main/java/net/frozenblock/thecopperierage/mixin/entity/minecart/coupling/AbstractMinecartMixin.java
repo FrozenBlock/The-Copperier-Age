@@ -17,8 +17,8 @@
 
 package net.frozenblock.thecopperierage.mixin.entity.minecart.coupling;
 
-import net.frozenblock.thecopperierage.entity.coupling.MinecartCouplingUtil;
-import net.frozenblock.thecopperierage.entity.impl.CouplingToEntityInterface;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.coupling.MinecartCouplingUtil;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.coupling.CouplingToEntityInterface;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;

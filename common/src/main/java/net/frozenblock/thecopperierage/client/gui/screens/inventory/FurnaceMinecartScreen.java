@@ -18,7 +18,7 @@
 package net.frozenblock.thecopperierage.client.gui.screens.inventory;
 
 import net.frozenblock.thecopperierage.TCAConstants;
-import net.frozenblock.thecopperierage.entity.inventory.FurnaceMinecartMenu;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.inventory.FurnaceMinecartMenu;
 import net.mehvahdjukaar.candlelight.api.ClientOnly;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;

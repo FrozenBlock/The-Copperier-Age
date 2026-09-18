@@ -18,7 +18,7 @@
 package net.frozenblock.thecopperierage.networking.packet;
 
 import net.frozenblock.thecopperierage.TCAConstants;
-import net.frozenblock.thecopperierage.entity.coupling.MinecartCouplingUtil;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.coupling.MinecartCouplingUtil;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;

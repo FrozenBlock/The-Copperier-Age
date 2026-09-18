@@ -15,7 +15,7 @@
  * along with this program; if not, see <https://github.com/FrozenBlock/Licenses>.
  */
 
-package net.frozenblock.thecopperierage.entity;
+package net.frozenblock.thecopperierage.entity.vehicle.minecart.impl;
 
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -30,9 +30,6 @@ public final class MinecartDispenseContext {
 	@Nullable
 	private static Vec3 offset;
 
-	private MinecartDispenseContext() {
-	}
-
 	public static void begin(Vec3 dispenseOffset) {
 		offset = dispenseOffset;
 	}
@@ -45,4 +42,6 @@ public final class MinecartDispenseContext {
 	public static Vec3 offset() {
 		return offset;
 	}
+
+	private MinecartDispenseContext() {}
 }

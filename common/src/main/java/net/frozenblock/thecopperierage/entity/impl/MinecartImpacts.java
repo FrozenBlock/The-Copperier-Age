@@ -46,10 +46,21 @@ public final class MinecartImpacts {
 	private static final double MIN_SOUND_VOLUME = 0.35D;
 	private static final double FULL_SOUND_VOLUME_SPEED = 0.4D;
 	private static final double OVERLAP_MARGIN = 0.02D;
+	private static final double STACKED_VERTICAL_OVERLAP = 0.2D;
 	private static final double MIN_SEPARATION_SQR = 1.0E-4D;
 
 	public static boolean enabled() {
 		return TCAConfig.MINECART_COLLISIONS.get();
+	}
+
+	public static boolean isSolverHandled(AbstractMinecart cart, AbstractMinecart other) {
+		return enabled() && cart.isOnRails() && other.isOnRails() && !isStacked(cart, other);
+	}
+
+	public static boolean isStacked(Entity first, Entity second) {
+		final AABB firstBox = first.getBoundingBox();
+		final AABB secondBox = second.getBoundingBox();
+		return Math.min(firstBox.maxY, secondBox.maxY) - Math.max(firstBox.minY, secondBox.minY) < STACKED_VERTICAL_OVERLAP;
 	}
 
 	public static double closingSpeed(AbstractMinecart cart, Entity entity) {
@@ -63,6 +74,8 @@ public final class MinecartImpacts {
 	public static boolean shouldPassThrough(AbstractMinecart cart, Entity entity) {
 		if (!enabled() || !(entity instanceof LivingEntity) || !entity.isPushable()) return false;
 		if (cart.hasPassenger(entity) || entity.isPassenger()) return false;
+
+		if (cart.getDeltaMovement().horizontalDistanceSqr() < IMPACT_SPEED_THRESHOLD * IMPACT_SPEED_THRESHOLD) return false;
 		if (cart.getBoundingBox().intersects(entity.getBoundingBox())) return true;
 		return closingSpeed(cart, entity) >= IMPACT_SPEED_THRESHOLD;
 	}

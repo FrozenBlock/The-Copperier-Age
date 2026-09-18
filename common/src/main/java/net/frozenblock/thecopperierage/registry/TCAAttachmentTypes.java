@@ -57,11 +57,11 @@ public final class TCAAttachmentTypes {
 			builder.initializer(() -> Vec3.ZERO);
 		}
 	);
-	public static final DataAttachmentType<Direction> MINECART_FACING_SYNCED = DataAttachmentType.create(
-		TCAConstants.id("minecart_facing_synced"),
+	public static final DataAttachmentType<Boolean> MINECART_ENGINE_REVERSED = DataAttachmentType.create(
+		TCAConstants.id("minecart_engine_reversed"),
 		builder -> {
-			builder.persistent(Direction.CODEC);
-			builder.syncWith(Direction.STREAM_CODEC, DataAttachmentSyncPredicate.all());
+			builder.persistent(Codec.BOOL);
+			builder.initializer(() -> false);
 		}
 	);
 	public static final DataAttachmentType<Direction> MINECART_FACING_DISPLAY = DataAttachmentType.create(

@@ -23,6 +23,7 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.WeakHashMap;
 import net.frozenblock.lib.event.api.events.TickEvents;
 import net.frozenblock.thecopperierage.block.RelayerRailBlock;
 import net.frozenblock.thecopperierage.config.TCAConfig;
@@ -55,7 +56,7 @@ public final class MinecartCouplingPhysics {
 	private static final float MIN_LERP_STEP_WEIGHT = 1.0E-3F;
 	private static final double EPSILON = 1.0E-7D;
 
-	private static final Map<ServerLevel, List<AbstractMinecart>> QUEUED_CARTS = new IdentityHashMap<>();
+	private static final Map<ServerLevel, List<AbstractMinecart>> QUEUED_CARTS = new WeakHashMap<>();
 
 	public static void init() {
 		TickEvents.END_LEVEL_TICK.register(MinecartCouplingPhysics::solve);
@@ -93,10 +94,10 @@ public final class MinecartCouplingPhysics {
 				Body.union(first, second);
 			}
 
-			if (!collisions) continue;
+			if (!collisions || !cart.isOnRails()) continue;
 			for (AbstractMinecart other : level.getEntitiesOfClass(AbstractMinecart.class, cart.getBoundingBox().inflate(CONTACT_SEARCH_RADIUS), other -> other != cart && other.isAlive())) {
 				if (other.getId() < cart.getId() && queuedSet.contains(other)) continue;
-				if (MinecartCouplingUtil.areCoupledTogether(cart, other)) continue;
+				if (MinecartCouplingUtil.areCoupledTogether(cart, other) || !MinecartImpacts.isSolverHandled(cart, other)) continue;
 
 				final Body first = bodies.computeIfAbsent(cart, unused -> new Body(level, cart, experimental));
 				final Body second = bodies.computeIfAbsent(other, unused -> new Body(level, other, experimental));

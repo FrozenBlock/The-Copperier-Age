@@ -55,8 +55,8 @@ public class AbstractMinecartRendererMixin {
 		if (!MinecartFacingHelper.isFurnaceMinecart(entity)) return;
 		if (!TCAConfig.IMPROVED_FURNACE_MINECARTS.get()) return;
 
-		final Direction facing = MinecartFacingHelper.getSyncedFacing(entity);
-		if (facing == null) return;
+		final Vec3 facing = MinecartFacingHelper.getFacing(entity);
+		if (!MinecartFacingHelper.hasFacing(facing)) return;
 
 		final BlockState displayState = entity.getDisplayBlockState();
 		if (!displayState.hasProperty(FurnaceBlock.FACING)) return;

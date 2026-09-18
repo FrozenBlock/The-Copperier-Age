@@ -148,7 +148,6 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
 		final MinecartFurnace minecartFurnace = MinecartFurnace.class.cast(this);
 		if (!this.theCopperierAge$isFiniteHorizontal(minecartFurnace.push)) minecartFurnace.push = Vec3.ZERO;
 
-		MinecartFacingHelper.alignFacingToTrack(minecartFurnace, this.theCopperierAge$onFacingSet);
 		if (this.fuel <= 0 && !RelayerRailBlock.isCaptured(this.level(), minecartFurnace)) {
 			for (int slot = 0; slot < this.theCopperierAge$inventory.size(); slot++) {
 				if (this.theCopperierAge$tryConsumeFuel(slot)) break;
@@ -158,7 +157,15 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
 		minecartFurnace.push = this.fuel > 0 && MinecartFacingHelper.hasFacing(this)
 			? MinecartFacingHelper.getFacing(this).scale(THECOPPERIERAGE$TARGET_SPEED)
 			: Vec3.ZERO;
-		MinecartFacingHelper.syncFacing(minecartFurnace);
+	}
+
+	@Inject(method = "tick", at = @At("TAIL"))
+	private void theCopperierAge$alignFacing(CallbackInfo info) {
+		if (this.level().isClientSide()) return;
+		if (!TCAConfig.IMPROVED_FURNACE_MINECARTS.get()) return;
+
+		final MinecartFurnace minecartFurnace = MinecartFurnace.class.cast(this);
+		MinecartFacingHelper.alignFacingToTrack(minecartFurnace, this.theCopperierAge$onFacingSet);
 	}
 
 	@Unique

@@ -44,13 +44,16 @@ import net.frozenblock.thecopperierage.block.WeatheringCopperPressurePlateBlock;
 import net.frozenblock.thecopperierage.block.WeatheringCopperRailBlock;
 import net.frozenblock.thecopperierage.block.WeatheringGearboxBlock;
 import net.frozenblock.thecopperierage.block.WeatheringStickyGearboxBlock;
+import net.frozenblock.thecopperierage.block.rotation.WrenchDispenseItemBehavior;
 import net.frozenblock.thecopperierage.references.TCABlockIds;
 import net.frozenblock.thecopperierage.references.TCABlockItemIds;
+import net.minecraft.core.dispenser.MinecartDispenseItemBehavior;
 import net.minecraft.util.ColorRGBA;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.CarvedPumpkinBlock;
+import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.LanternBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.WeatheringCopper;
@@ -264,7 +267,7 @@ public final class TCABlocks {
 
 	public static void init() {}
 
-	public static void setupBlockProperties() {
+	public static void setup() {
 		BlockEntityTypes.CAMPFIRE.frozenLib$addValidBlock(TCABlocks.COPPER_CAMPFIRE.get());
 
 		OxidizableBlocksRegistry.registerWeatheringCopperBlocks(asBlocks(GEARBOX));
@@ -275,6 +278,13 @@ public final class TCABlocks {
 		OxidizableBlocksRegistry.registerWeatheringCopperBlocks(asBlocks(WEIGHTED_PRESSURE_PLATE));
 		OxidizableBlocksRegistry.registerWeatheringCopperBlocks(asBlocks(COPPER_RAIL));
 		OxidizableBlocksRegistry.registerWeatheringCopperBlocks(asBlocks(COPPER_CROSS_RAIL));
+
+		DispenserBlock.registerBehavior(TCAItems.CRATE_MINECART.get(), new MinecartDispenseItemBehavior(TCAEntityTypes.CRATE_MINECART.get()));
+		DispenserBlock.registerBehavior(TCAItems.DISPENSER_MINECART.get(), new MinecartDispenseItemBehavior(TCAEntityTypes.DISPENSER_MINECART.get()));
+		DispenserBlock.registerBehavior(TCAItems.DROPPER_MINECART.get(), new MinecartDispenseItemBehavior(TCAEntityTypes.DROPPER_MINECART.get()));
+		DispenserBlock.registerBehavior(TCAItems.JUKEBOX_MINECART.get(), new MinecartDispenseItemBehavior(TCAEntityTypes.JUKEBOX_MINECART.get()));
+
+		DispenserBlock.registerBehavior(TCAItems.WRENCH.get(), new WrenchDispenseItemBehavior());
 	}
 
 	public static MapColor getMapColorForWeatherState(WeatheringCopper.WeatherState weatherState) {

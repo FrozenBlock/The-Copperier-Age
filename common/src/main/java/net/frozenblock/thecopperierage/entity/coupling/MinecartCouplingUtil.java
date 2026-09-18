@@ -123,7 +123,7 @@ public final class MinecartCouplingUtil {
 			access.theCopperierAge$resetMissingCoupledFrom();
 		}
 
-		if (!queued && MinecartImpacts.enabled()) MinecartCouplingPhysics.queue(level, cart);
+		if (!queued && cart.isOnRails() && MinecartImpacts.enabled()) MinecartCouplingPhysics.queue(level, cart);
 	}
 
 	private static boolean isLinkIntact(ServerLevel level, AbstractMinecart cart1, AbstractMinecart cart2) {

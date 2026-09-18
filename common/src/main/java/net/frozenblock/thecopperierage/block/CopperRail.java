@@ -115,16 +115,19 @@ public interface CopperRail {
 
 	@Nullable
 	static CopperRail railUnder(AbstractMinecart minecart, Level level) {
+		final CopperRail onRail = railAt(level, minecart.getCurrentBlockPosOrRailBelow());
+		if (onRail != null) return onRail;
+
 		final BlockPos cartPos = minecart.blockPosition();
-		final BlockPos[] candidates = {
-			minecart.getCurrentBlockPosOrRailBelow(),
-			cartPos,
-			cartPos.below(),
-			cartPos.above()
-		};
-		for (BlockPos candidate : candidates) {
-			if (level.getBlockState(candidate).getBlock() instanceof CopperRail rail) return rail;
-		}
-		return null;
+		final CopperRail atCart = railAt(level, cartPos);
+		if (atCart != null) return atCart;
+
+		final CopperRail below = railAt(level, cartPos.below());
+		return below != null ? below : railAt(level, cartPos.above());
+	}
+
+	@Nullable
+	private static CopperRail railAt(Level level, BlockPos pos) {
+		return level.getBlockState(pos).getBlock() instanceof CopperRail rail ? rail : null;
 	}
 }

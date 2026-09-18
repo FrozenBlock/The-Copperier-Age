@@ -57,6 +57,7 @@ public class StickyGearboxBlockEntity extends BlockEntity {
 		final int interval = TCAConfig.STICKY_GEARBOX_ROTATION_INTERVAL.get();
 		stickyGearbox.ticksSinceActive += 1;
 		if (stickyGearbox.ticksSinceActive % interval != 0) return;
+
 		final boolean isDoubleActivation = (stickyGearbox.ticksSinceActive % (interval * 2)) != 0;
 		final Direction facing = state.getValue(StickyGearboxBlock.FACING);
 		final Direction.Axis facingAxis = facing.getAxis();

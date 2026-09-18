@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thecopperierage:trumpet_copper_horn"
+        "recipes": "thecopperierage:trumpet_copper_horn"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

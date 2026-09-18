@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thecopperierage:waxed_exposed_chime_from_honeycomb"
+        "recipes": "thecopperierage:waxed_exposed_chime_from_honeycomb"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

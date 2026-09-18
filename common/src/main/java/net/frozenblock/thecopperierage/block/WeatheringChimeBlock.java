@@ -17,8 +17,6 @@
 
 package net.frozenblock.thecopperierage.block;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -26,18 +24,7 @@ import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class WeatheringChimeBlock extends ChimeBlock implements WeatheringCopper {
-	public static final MapCodec<WeatheringChimeBlock> CODEC = RecordCodecBuilder.mapCodec(
-		instance -> instance.group(
-			WeatherState.CODEC.fieldOf("weathering_state").forGetter(WeatheringChimeBlock::getAge),
-			propertiesCodec()
-		).apply(instance, WeatheringChimeBlock::new)
-	);
 	private final WeatherState weatherState;
-
-	@Override
-	public MapCodec<? extends WeatheringChimeBlock> codec() {
-		return CODEC;
-	}
 
 	public WeatheringChimeBlock(WeatherState weatherState, Properties properties) {
 		super(properties);

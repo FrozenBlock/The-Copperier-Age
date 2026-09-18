@@ -340,9 +340,9 @@ public final class TCAModelProvider extends FabricModelProvider {
 
 	private static void createCrate(BlockModelGenerators generator, Block block) {
 		final Material topOpenTexture = TextureMapping.getBlockTexture(block, "_top_open");
-		final MultiVariant model = BlockModelGenerators.plainVariant(TexturedModel.CUBE_TOP_BOTTOM.create(block, generator.modelOutput));
+		final MultiVariant model = BlockModelGenerators.plainVariant(TexturedModel.CUBE_BOTTOM_TOP.create(block, generator.modelOutput));
 		final MultiVariant openModel = BlockModelGenerators.plainVariant(
-			TexturedModel.CUBE_TOP_BOTTOM
+			TexturedModel.CUBE_BOTTOM_TOP
 				.get(block)
 				.updateTextures(textureMapping -> textureMapping.put(TextureSlot.TOP, topOpenTexture))
 				.createWithSuffix(block, "_open", generator.modelOutput)

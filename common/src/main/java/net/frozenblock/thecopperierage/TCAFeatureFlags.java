@@ -17,7 +17,7 @@
 
 package net.frozenblock.thecopperierage;
 
-import net.frozenblock.lib.FrozenBools;
+import net.frozenblock.lib.FrozenLibEarlyConstants;
 import net.frozenblock.lib.feature_flag.api.FeatureFlagApi;
 import net.minecraft.world.flag.FeatureFlag;
 import net.minecraft.world.flag.FeatureFlagSet;
@@ -27,7 +27,9 @@ public final class TCAFeatureFlags {
 	public static final FeatureFlag THE_COPPERIER_AGE = FeatureFlagApi.builder.create(TCAConstants.id(TCAConstants.MOD_ID));
 	public static final FeatureFlagSet THE_COPPERIER_AGE_FLAG_SET = FeatureFlagSet.of(THE_COPPERIER_AGE);
 
-	public static final FeatureFlag FEATURE_FLAG = FrozenBools.IS_DATAGEN ? THE_COPPERIER_AGE : FeatureFlags.VANILLA;
+	public static final FeatureFlag FEATURE_FLAG = FrozenLibEarlyConstants.IS_DATAGEN ? THE_COPPERIER_AGE : FeatureFlags.VANILLA;
 
 	public static void init() {}
+
+	private TCAFeatureFlags() {}
 }

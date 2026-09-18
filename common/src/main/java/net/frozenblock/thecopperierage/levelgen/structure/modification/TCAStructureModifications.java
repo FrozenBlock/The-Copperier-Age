@@ -17,64 +17,19 @@
 
 package net.frozenblock.thecopperierage.levelgen.structure.modification;
 
-import com.google.common.collect.ImmutableList;
 import net.frozenblock.lib.levelgen.structure.api.pools.TemplatePoolApi;
-import net.frozenblock.lib.levelgen.structure.api.processor.BlockStateRespectingProcessorRule;
-import net.frozenblock.lib.levelgen.structure.api.processor.BlockStateRespectingRuleProcessor;
-import net.frozenblock.lib.levelgen.structure.api.processor.StructureProcessorApi;
 import net.frozenblock.thecopperierage.TCAConstants;
-import net.frozenblock.thecopperierage.config.TCAConfig;
-import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCAResources;
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.ProcessorLists;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.levelgen.structure.BuiltinStructures;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
-import net.minecraft.world.level.levelgen.structure.templatesystem.AlwaysTrueTest;
-import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 
 public final class TCAStructureModifications {
 
-	public static void setup() {
-		final Identifier trialChambers = BuiltinStructures.TRIAL_CHAMBERS.identifier();
-
-		if (TCAConfig.COPPER_BUTTONS_IN_TRIAL_CHAMBERS.get()) {
-			StructureProcessorApi.addProcessor(
-				trialChambers,
-				new BlockStateRespectingRuleProcessor(
-					ImmutableList.of(
-						new BlockStateRespectingProcessorRule(new BlockMatchTest(Blocks.OAK_BUTTON), AlwaysTrueTest.INSTANCE, TCABlocks.COPPER_BUTTON.waxed().unaffected().get())
-					)
-				)
-			);
-		}
-
-		if (TCAConfig.COPPER_CHESTS_IN_TRIAL_CHAMBERS.get()) {
-			StructureProcessorApi.addProcessor(
-				trialChambers,
-				new BlockStateRespectingRuleProcessor(
-					ImmutableList.of(
-						new BlockStateRespectingProcessorRule(new BlockMatchTest(Blocks.CHEST), AlwaysTrueTest.INSTANCE, Blocks.COPPER_CHEST.waxed().unaffected())
-					)
-				)
-			);
-		}
-
-		if (TCAConfig.COPPER_PRESSURE_PLATES_IN_TRIAL_CHAMBERS.get()) {
-			StructureProcessorApi.addProcessor(
-				trialChambers,
-				new BlockStateRespectingRuleProcessor(
-					ImmutableList.of(
-						new BlockStateRespectingProcessorRule(new BlockMatchTest(Blocks.OAK_PRESSURE_PLATE), AlwaysTrueTest.INSTANCE, TCABlocks.WEIGHTED_PRESSURE_PLATE.waxed().unaffected().get())
-					)
-				)
-			);
-		}
-
+	public static void init() {
 		TemplatePoolApi.ADD_ADDITIONAL_TEMPLATE_POOLS.register((processorLookup, context) -> {
 			if (!TCAResources.HAS_TRICKIER_TRIALS_PACK) return;
 
@@ -83,7 +38,7 @@ public final class TCAStructureModifications {
 				.orElseGet(() -> processorLookup.getOrThrow(ProcessorLists.EMPTY));
 
 			final Identifier hallway = Identifier.withDefaultNamespace("trial_chambers/hallway");
-			final Identifier end =Identifier.withDefaultNamespace("trial_chambers/chambers/end");
+			final Identifier end = Identifier.withDefaultNamespace("trial_chambers/chambers/end");
 
 			// Trials
 			context.addElement(

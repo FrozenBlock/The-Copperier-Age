@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thecopperierage:waxed_weathered_gearbox"
+        "recipes": "thecopperierage:waxed_weathered_gearbox"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

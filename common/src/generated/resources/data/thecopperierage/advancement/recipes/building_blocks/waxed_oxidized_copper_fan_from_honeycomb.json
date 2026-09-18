@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thecopperierage:waxed_oxidized_copper_fan_from_honeycomb"
+        "recipes": "thecopperierage:waxed_oxidized_copper_fan_from_honeycomb"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

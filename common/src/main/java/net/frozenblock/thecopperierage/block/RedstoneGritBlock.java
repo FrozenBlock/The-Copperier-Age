@@ -17,8 +17,6 @@
 
 package net.frozenblock.thecopperierage.block;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.frozenblock.thecopperierage.registry.TCABlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -40,15 +38,6 @@ public class RedstoneGritBlock extends ColoredFallingBlock {
 	public static final int MAX_STABILITY = 10;
 	private static final int DESTABALIZING_TICK_DELAY = 2;
     public static final IntegerProperty STABILITY = TCABlockStateProperties.STABILITY;
-    public static final MapCodec<RedstoneGritBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		ColorRGBA.CODEC.fieldOf("falling_dust_color").forGetter(redstoneGritBlock -> redstoneGritBlock.dustColor),
-		propertiesCodec()
-	).apply(instance, RedstoneGritBlock::new));
-
-    @Override
-    public MapCodec<RedstoneGritBlock> codec() {
-        return CODEC;
-    }
 
     public RedstoneGritBlock(ColorRGBA color, Properties properties) {
         super(color, properties);

@@ -28,6 +28,7 @@ import net.frozenblock.thecopperierage.item.crafting.ItemWaxRecipe;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.frozenblock.thecopperierage.registry.TCAInstruments;
 import net.frozenblock.thecopperierage.registry.TCAItems;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;
@@ -38,6 +39,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.SpecialRecipeBuilder;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EntityType;
@@ -48,6 +50,7 @@ import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.InstrumentComponent;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -60,14 +63,14 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 	}
 
 	@Override
-	protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries, RecipeOutput exporter) {
-		return new RecipeProvider(registries, exporter) {
+	protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries, BootstrapContext<Recipe<?>> recipeOutput, BootstrapContext<Advancement> advancementOutput) {
+		return new RecipeProvider(recipeOutput, advancementOutput) {
 			@Override
 			public void buildRecipes() {
 				RecipeExportNamespaceFix.setCurrentGeneratingModId(TCAConstants.MOD_ID);
 
-				final HolderGetter<EntityType<?>> entityTypes = this.registries.lookupOrThrow(Registries.ENTITY_TYPE);
-				final HolderGetter<Item> items = this.registries.lookupOrThrow(Registries.ITEM);
+				final HolderGetter<EntityType<?>> entityTypes = this.output.lookup(Registries.ENTITY_TYPE);
+				final HolderGetter<Item> items = this.output.lookup(Registries.ITEM);
 
 				SpecialRecipeBuilder.special(ItemWaxRecipe::new).save(this.output, "equipment_wax");
 				this.waxRecipes(TCAFeatureFlags.THE_COPPERIER_AGE_FLAG_SET);
@@ -79,7 +82,7 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.pattern(" # ")
 					.pattern(" # ")
 					.unlockedBy(getHasName(Items.COPPER_INGOT), this.has(Items.COPPER_INGOT))
-					.save(exporter);
+					.save(this.output);
 
 				this.shaped(RecipeCategory.TOOLS, TCAItems.MINECART_COUPLING)
 					.group("minecart_coupling")
@@ -89,7 +92,7 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.pattern(" X ")
 					.pattern("C  ")
 					.unlockedBy(getHasName(Items.MINECART), this.has(Items.MINECART))
-					.save(exporter);
+					.save(this.output);
 
 				this.shapeless(RecipeCategory.TRANSPORTATION, TCAItems.CRATE_MINECART)
 					.requires(Items.MINECART)
@@ -154,37 +157,37 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.unlockedBy("has_copper_nugget", this.has(Items.COPPER_NUGGET))
 					.save(this.output);
 
-				createCopperPressurePlateRecipe(this, exporter, TCABlocks.WEIGHTED_PRESSURE_PLATE.weathering().unaffected().get(), Items.COPPER_INGOT);
+				createCopperPressurePlateRecipe(this, this.output, TCABlocks.WEIGHTED_PRESSURE_PLATE.weathering().unaffected().get(), Items.COPPER_INGOT);
 
-				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.weathering().unaffected().get(), Blocks.COPPER_BLOCK.weathering().unaffected());
-				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.weathering().exposed().get(), Blocks.COPPER_BLOCK.weathering().exposed());
-				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.weathering().weathered().get(), Blocks.COPPER_BLOCK.weathering().weathered());
-				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.weathering().oxidized().get(), Blocks.COPPER_BLOCK.weathering().oxidized());
+				createGearboxRecipe(this, this.output, TCABlocks.GEARBOX.weathering().unaffected().get(), Blocks.COPPER_BLOCK.weathering().unaffected());
+				createGearboxRecipe(this, this.output, TCABlocks.GEARBOX.weathering().exposed().get(), Blocks.COPPER_BLOCK.weathering().exposed());
+				createGearboxRecipe(this, this.output, TCABlocks.GEARBOX.weathering().weathered().get(), Blocks.COPPER_BLOCK.weathering().weathered());
+				createGearboxRecipe(this, this.output, TCABlocks.GEARBOX.weathering().oxidized().get(), Blocks.COPPER_BLOCK.weathering().oxidized());
 
-				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.waxed().unaffected().get(), Blocks.COPPER_BLOCK.waxed().unaffected());
-				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.waxed().exposed().get(), Blocks.COPPER_BLOCK.waxed().exposed());
-				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.waxed().weathered().get(), Blocks.COPPER_BLOCK.waxed().weathered());
-				createGearboxRecipe(this, exporter, TCABlocks.GEARBOX.waxed().oxidized().get(), Blocks.COPPER_BLOCK.waxed().oxidized());
+				createGearboxRecipe(this, this.output, TCABlocks.GEARBOX.waxed().unaffected().get(), Blocks.COPPER_BLOCK.waxed().unaffected());
+				createGearboxRecipe(this, this.output, TCABlocks.GEARBOX.waxed().exposed().get(), Blocks.COPPER_BLOCK.waxed().exposed());
+				createGearboxRecipe(this, this.output, TCABlocks.GEARBOX.waxed().weathered().get(), Blocks.COPPER_BLOCK.waxed().weathered());
+				createGearboxRecipe(this, this.output, TCABlocks.GEARBOX.waxed().oxidized().get(), Blocks.COPPER_BLOCK.waxed().oxidized());
 
-				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.weathering().unaffected().get(), TCABlocks.GEARBOX.weathering().unaffected().get());
-				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.weathering().exposed().get(), TCABlocks.GEARBOX.weathering().exposed().get());
-				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.weathering().weathered().get(), TCABlocks.GEARBOX.weathering().weathered().get());
-				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.weathering().oxidized().get(), TCABlocks.GEARBOX.weathering().oxidized().get());
+				createStickyGearboxRecipe(this, this.output, TCABlocks.STICKY_GEARBOX.weathering().unaffected().get(), TCABlocks.GEARBOX.weathering().unaffected().get());
+				createStickyGearboxRecipe(this, this.output, TCABlocks.STICKY_GEARBOX.weathering().exposed().get(), TCABlocks.GEARBOX.weathering().exposed().get());
+				createStickyGearboxRecipe(this, this.output, TCABlocks.STICKY_GEARBOX.weathering().weathered().get(), TCABlocks.GEARBOX.weathering().weathered().get());
+				createStickyGearboxRecipe(this, this.output, TCABlocks.STICKY_GEARBOX.weathering().oxidized().get(), TCABlocks.GEARBOX.weathering().oxidized().get());
 
-				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.waxed().unaffected().get(), TCABlocks.GEARBOX.waxed().unaffected().get());
-				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.waxed().exposed().get(), TCABlocks.GEARBOX.waxed().exposed().get());
-				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.waxed().weathered().get(), TCABlocks.GEARBOX.waxed().weathered().get());
-				createStickyGearboxRecipe(this, exporter, TCABlocks.STICKY_GEARBOX.waxed().oxidized().get(), TCABlocks.GEARBOX.waxed().oxidized().get());
+				createStickyGearboxRecipe(this, this.output, TCABlocks.STICKY_GEARBOX.waxed().unaffected().get(), TCABlocks.GEARBOX.waxed().unaffected().get());
+				createStickyGearboxRecipe(this, this.output, TCABlocks.STICKY_GEARBOX.waxed().exposed().get(), TCABlocks.GEARBOX.waxed().exposed().get());
+				createStickyGearboxRecipe(this, this.output, TCABlocks.STICKY_GEARBOX.waxed().weathered().get(), TCABlocks.GEARBOX.waxed().weathered().get());
+				createStickyGearboxRecipe(this, this.output, TCABlocks.STICKY_GEARBOX.waxed().oxidized().get(), TCABlocks.GEARBOX.waxed().oxidized().get());
 
-				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.weathering().unaffected().get(), Blocks.COPPER_BLOCK.weathering().unaffected());
-				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.weathering().exposed().get(), Blocks.COPPER_BLOCK.weathering().exposed());
-				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.weathering().weathered().get(), Blocks.COPPER_BLOCK.weathering().weathered());
-				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.weathering().oxidized().get(), Blocks.COPPER_BLOCK.weathering().oxidized());
+				createCopperFanRecipe(this, this.output, TCABlocks.COPPER_FAN.weathering().unaffected().get(), Blocks.COPPER_BLOCK.weathering().unaffected());
+				createCopperFanRecipe(this, this.output, TCABlocks.COPPER_FAN.weathering().exposed().get(), Blocks.COPPER_BLOCK.weathering().exposed());
+				createCopperFanRecipe(this, this.output, TCABlocks.COPPER_FAN.weathering().weathered().get(), Blocks.COPPER_BLOCK.weathering().weathered());
+				createCopperFanRecipe(this, this.output, TCABlocks.COPPER_FAN.weathering().oxidized().get(), Blocks.COPPER_BLOCK.weathering().oxidized());
 
-				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.waxed().unaffected().get(), Blocks.COPPER_BLOCK.waxed().unaffected());
-				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.waxed().exposed().get(), Blocks.COPPER_BLOCK.waxed().exposed());
-				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.waxed().weathered().get(), Blocks.COPPER_BLOCK.waxed().weathered());
-				createCopperFanRecipe(this, exporter, TCABlocks.COPPER_FAN.waxed().oxidized().get(), Blocks.COPPER_BLOCK.waxed().oxidized());
+				createCopperFanRecipe(this, this.output, TCABlocks.COPPER_FAN.waxed().unaffected().get(), Blocks.COPPER_BLOCK.waxed().unaffected());
+				createCopperFanRecipe(this, this.output, TCABlocks.COPPER_FAN.waxed().exposed().get(), Blocks.COPPER_BLOCK.waxed().exposed());
+				createCopperFanRecipe(this, this.output, TCABlocks.COPPER_FAN.waxed().weathered().get(), Blocks.COPPER_BLOCK.waxed().weathered());
+				createCopperFanRecipe(this, this.output, TCABlocks.COPPER_FAN.waxed().oxidized().get(), Blocks.COPPER_BLOCK.waxed().oxidized());
 
 				this.shaped(RecipeCategory.DECORATIONS, TCABlocks.CHIME.weathering().unaffected(), 1)
 					.define('-', Ingredient.of(Items.COPPER_INGOT))
@@ -194,7 +197,7 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.pattern("---")
 					.pattern("VVV")
 					.unlockedBy(getHasName(Items.AMETHYST_SHARD), this.has(Items.AMETHYST_SHARD))
-					.save(exporter);
+					.save(this.output);
 
 				this.shaped(RecipeCategory.REDSTONE, TCABlocks.CRATE, 1)
 					.define('#', Ingredient.of(items.getOrThrow(ItemTags.PLANKS)))
@@ -203,7 +206,7 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.pattern("# #")
 					.pattern("I#I")
 					.unlockedBy(getHasName(Items.IRON_INGOT), this.has(Items.IRON_INGOT))
-					.save(exporter);
+					.save(this.output);
 
 				this.shaped(RecipeCategory.TRANSPORTATION, TCABlocks.COPPER_RAIL.weathering().unaffected(), 12)
 					.define('X', Ingredient.of(Items.COPPER_INGOT))
@@ -212,12 +215,12 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.pattern("X#X")
 					.pattern("X X")
 					.unlockedBy(getHasName(Items.COPPER_INGOT), this.has(Items.COPPER_INGOT))
-					.save(exporter);
+					.save(this.output);
 
 				this.shapeless(RecipeCategory.TRANSPORTATION, TCABlocks.CROSS_RAIL)
 					.requires(Items.RAIL, 2)
 					.unlockedBy(getHasName(Items.RAIL), this.has(Items.RAIL))
-					.save(exporter);
+					.save(this.output);
 
 				WeatheringCopperCollection.zipApply(
 					TCABlocks.COPPER_RAIL.weathering(),
@@ -225,7 +228,7 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					(rail, crossRail) -> this.shapeless(RecipeCategory.TRANSPORTATION, crossRail)
 						.requires(rail.get(), 2)
 						.unlockedBy(getHasName(rail.get()), this.has(rail.get()))
-						.save(exporter)
+						.save(this.output)
 				);
 
 				WeatheringCopperCollection.zipApply(
@@ -234,7 +237,7 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					(rail, crossRail) -> this.shapeless(RecipeCategory.TRANSPORTATION, crossRail)
 						.requires(rail.get(), 2)
 						.unlockedBy(getHasName(rail.get()), this.has(rail.get()))
-						.save(exporter)
+						.save(this.output)
 				);
 
 				this.shaped(RecipeCategory.TRANSPORTATION, TCABlocks.RELAYER_RAIL, 6)
@@ -246,7 +249,7 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.pattern("G#G")
 					.pattern("GRG")
 					.unlockedBy(getHasName(Items.GOLD_INGOT), this.has(Items.GOLD_INGOT))
-					.save(exporter);
+					.save(this.output);
 
 				// COPPER HORN
 				// TODO: multiloader-compliant data component-based crafting
@@ -274,24 +277,24 @@ public final class TCARecipeProvider extends FabricRecipeProvider {
 					.define('G', DefaultCustomIngredients.components(
 						Ingredient.of(Items.GOAT_HORN),
 						DataComponentPatch.builder()
-							.set(DataComponents.INSTRUMENT, new InstrumentComponent(this.registries.lookupOrThrow(Registries.INSTRUMENT).getOrThrow(goatHornInstrument)))
+							.set(DataComponents.INSTRUMENT, new InstrumentComponent(this.output.lookup(Registries.INSTRUMENT).getOrThrow(goatHornInstrument)))
 							.build()
 					))
 					.pattern("CGC")
 					.pattern(" C ")
 					.unlockedBy(getHasName(Items.GOAT_HORN), this.has(Items.GOAT_HORN))
-					.save(exporter, TCAConstants.string(name + "_copper_horn"));
+					.save(this.output, TCAConstants.string(name + "_copper_horn"));
 			}
 
 			private ShapedRecipeBuilder copperHornBuilder(ResourceKey<Instrument> instrument) {
 				return new ShapedRecipeBuilder(
-					this.registries.lookupOrThrow(Registries.ITEM),
+					this.output.lookup(Registries.ITEM),
 					RecipeCategory.TOOLS,
 					new ItemStackTemplate(
 						TCAItems.COPPER_HORN.get(),
 						DataComponentPatch.builder().set(
 							DataComponents.INSTRUMENT,
-							new InstrumentComponent(this.registries.lookupOrThrow(Registries.INSTRUMENT).getOrThrow(instrument))
+							new InstrumentComponent(this.output.lookup(Registries.INSTRUMENT).getOrThrow(instrument))
 						).build())
 				);
 			}

@@ -14,7 +14,6 @@
     "block.gearbox.SulfurCubeLookControlMixin",
     "block.rail.DetectorRailBlockMixin",
     "block.rail.RailStateMixin",
-    "block.redstone.RedstoneWireBlockMixin",
     "block.redstone_ore.BlockBehaviourMixin",
     "datafix.DataFixersMixin",
     "datafix.v4533Mixin",

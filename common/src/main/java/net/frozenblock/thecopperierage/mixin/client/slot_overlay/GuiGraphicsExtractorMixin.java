@@ -17,7 +17,7 @@
 
 package net.frozenblock.thecopperierage.mixin.client.slot_overlay;
 
-import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import it.unimi.dsi.fastutil.objects.Reference2ByteMap;
 import it.unimi.dsi.fastutil.objects.Reference2ByteOpenHashMap;
 import net.frozenblock.thecopperierage.TCAConstants;
@@ -46,7 +46,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class GuiGraphicsExtractorMixin {
 
 	@Shadow
-	public abstract void blitSprite(RenderPipeline renderPipeline, Identifier resourceLocation, int i, int j, int k, int l);
+	public abstract void blitSprite(RenderPipeline renderPipeline, Identifier location, int x, int y, int width, int height);
 
 	@Unique
 	private static final Identifier THECOPPERIERAGE$WAXED_OVERLAY = TCAConstants.id("container/slot_waxed_overlay");
@@ -75,11 +75,11 @@ public abstract class GuiGraphicsExtractorMixin {
 			shift = At.Shift.AFTER
 		)
 	)
-	private void theCopperierAge$blitWaxedOverlay(LivingEntity owner, Level level, ItemStack stack, int x, int y, int seed, CallbackInfo info) {
+	private void theCopperierAge$blitWaxedOverlay(LivingEntity owner, Level level, ItemStack itemStack, int x, int y, int seed, CallbackInfo info) {
 		if (!TCAConfig.WAXED_ITEM_ICON_OVERLAY.get()) return;
 
-		final Item item = stack.getItem();
-		if (OxidizableItemHelper.isWaxed(stack)) {
+		final Item item = itemStack.getItem();
+		if (OxidizableItemHelper.isWaxed(itemStack)) {
 			this.blitSprite(RenderPipelines.GUI_TEXTURED, THECOPPERIERAGE$WAXED_OVERLAY, x - 3, y - 3, 24, 24);
 		}
 		if (TCAConfig.EXTRA_ITEM_ICON_OVERLAYS.get()) {

@@ -17,7 +17,6 @@
 
 package net.frozenblock.thecopperierage.block;
 
-import com.mojang.serialization.MapCodec;
 import net.frozenblock.thecopperierage.block.entity.StickyGearboxBlockEntity;
 import net.frozenblock.thecopperierage.registry.TCABlockEntityTypes;
 import net.minecraft.core.BlockPos;
@@ -28,15 +27,8 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Unique;
 
 public class StickyGearboxBlock extends GearboxBlock implements EntityBlock {
-	public static final MapCodec<StickyGearboxBlock> CODEC = simpleCodec(StickyGearboxBlock::new);
-
-	@Override
-	public MapCodec<? extends StickyGearboxBlock> codec() {
-		return CODEC;
-	}
 
 	public StickyGearboxBlock(Properties properties) {
 		super(properties);
@@ -48,7 +40,6 @@ public class StickyGearboxBlock extends GearboxBlock implements EntityBlock {
 		return new StickyGearboxBlockEntity(pos, state);
 	}
 
-	@Unique
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		if (level.isClientSide() || type != TCABlockEntityTypes.STICKY_GEARBOX.get()) return null;

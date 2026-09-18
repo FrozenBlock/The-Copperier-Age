@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thecopperierage:wrench"
+        "recipes": "thecopperierage:wrench"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

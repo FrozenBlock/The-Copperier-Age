@@ -17,6 +17,7 @@
 
 package net.frozenblock.thecopperierage.mixin.entity.minecart.furnace;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import net.frozenblock.thecopperierage.block.RelayerRailBlock;
@@ -25,6 +26,7 @@ import net.frozenblock.thecopperierage.entity.impl.MinecartFacingHelper;
 import net.frozenblock.thecopperierage.entity.inventory.FurnaceMinecartMenu;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -46,9 +48,15 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.component.CookingFuel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ResolvableInt;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -156,7 +164,9 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
 	@Unique
 	private boolean theCopperierAge$tryConsumeFuel(int slot) {
 		final ItemStack stack = this.theCopperierAge$inventory.get(slot);
-		final int burnDuration = this.level().fuelValues().burnDuration(stack);
+		if (stack == null || stack.isEmpty()) return false;
+
+		final int burnDuration = this.theCopperierAge$getBurnDuration((ServerLevel) this.level(), stack);
 		if (burnDuration <= 0) return false;
 
 		final ItemStackTemplate remainderTemplate = stack.getItem().getCraftingRemainder();
@@ -172,6 +182,23 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
 		this.theCopperierAge$fuelDuration = Math.max(THECOPPERIERAGE$MIN_BURN_DURATION, burnDuration);
 		this.setChanged();
 		return true;
+	}
+
+	@Unique
+	private int theCopperierAge$getBurnDuration(ServerLevel level, ItemStack fuelItem) {
+		return ResolvableInt.getFromItem(fuelItem, DataComponents.COOKING_FUEL, CookingFuel::burnTime, this.theCopperierAge$getLootContext(level), 0);
+	}
+
+	@Unique
+	private LootContext theCopperierAge$getLootContext(ServerLevel level) {
+		return new LootContext.Builder(
+			new LootParams.Builder(level)
+				.withParameter(LootContextParams.THIS_ENTITY, this)
+				.withParameter(LootContextParams.BLOCK_STATE, this.getDisplayBlockState())
+				.withParameter(LootContextParams.ORIGIN, this.position())
+				.withParameter(LootContextParams.CONTAINER, this)
+				.create(LootContextParamSets.CONTAINER_PROCESS)
+		).create(Optional.empty());
 	}
 
 	@Unique

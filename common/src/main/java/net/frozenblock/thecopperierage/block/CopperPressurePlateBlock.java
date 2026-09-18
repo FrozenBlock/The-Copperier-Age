@@ -17,8 +17,6 @@
 
 package net.frozenblock.thecopperierage.block;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -40,12 +38,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 public class CopperPressurePlateBlock extends BasePressurePlateBlock {
-	public static final MapCodec<CopperPressurePlateBlock> CODEC = RecordCodecBuilder.mapCodec(
-		instance -> instance.group(
-			WeatheringCopper.WeatherState.CODEC.fieldOf("weathering_state").forGetter(copperPressurePlateBlock -> copperPressurePlateBlock.weatherState),
-			propertiesCodec()
-		).apply(instance, CopperPressurePlateBlock::new)
-	);
 	public static final IntegerProperty POWER = BlockStateProperties.POWER;
 	protected final WeatheringCopper.WeatherState weatherState;
 	private final int slotsPerPower;
@@ -55,11 +47,6 @@ public class CopperPressurePlateBlock extends BasePressurePlateBlock {
 		this.weatherState = weatherState;
 		this.slotsPerPower = getSlotsPerPower(weatherState);
 		this.registerDefaultState(this.stateDefinition.any().setValue(POWER, 0));
-	}
-
-	@Override
-	public MapCodec<? extends CopperPressurePlateBlock> codec() {
-		return CODEC;
 	}
 
 	@Override

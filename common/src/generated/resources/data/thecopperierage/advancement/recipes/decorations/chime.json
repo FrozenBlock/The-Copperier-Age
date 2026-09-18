@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thecopperierage:chime"
+        "recipes": "thecopperierage:chime"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

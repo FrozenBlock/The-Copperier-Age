@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thecopperierage:cross_rail"
+        "recipes": "thecopperierage:cross_rail"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

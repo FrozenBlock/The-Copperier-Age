@@ -17,7 +17,6 @@
 
 package net.frozenblock.thecopperierage.block;
 
-import com.mojang.serialization.MapCodec;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,7 +45,6 @@ import net.minecraft.world.level.redstone.Orientation;
 import org.jetbrains.annotations.Nullable;
 
 public class GearboxBlock extends DirectionalBlock {
-    public static final MapCodec<GearboxBlock> CODEC = simpleCodec(GearboxBlock::new);
 	public static final IntegerProperty POWER = BlockStateProperties.POWER;
 	private static final GearboxBlockEvaluator EVALUATOR = new GearboxBlockEvaluator();
 
@@ -57,11 +55,6 @@ public class GearboxBlock extends DirectionalBlock {
 				.setValue(FACING, Direction.NORTH)
 				.setValue(POWER, 0)
 		);
-    }
-
-    @Override
-    public MapCodec<? extends GearboxBlock> codec() {
-        return CODEC;
     }
 
 	@Override
@@ -100,7 +93,7 @@ public class GearboxBlock extends DirectionalBlock {
 	}
 
 	@Override
-	protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState replacingState, boolean movedByPistons) {
+	protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState replacingState, boolean movedByPiston) {
 		if (level.isClientSide() || state.is(replacingState.getBlock())) return;
 		level.scheduleTick(pos, this, 1);
 	}
@@ -160,6 +153,13 @@ public class GearboxBlock extends DirectionalBlock {
 	@Override
 	protected int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
 		return state.getValue(POWER) > 0 && state.getValue(FACING) == direction ? 15 : 0;
+	}
+
+	@Override
+	protected boolean shouldRedstoneWireConnectTo(BlockState state, BlockGetter level, BlockPos pos, @Nullable Direction direction) {
+		// Only allow connection if this direction doesn't match the top face of the Gearbox
+		final Direction outputFace = state.getValue(FACING).getOpposite();
+		return direction != outputFace;
 	}
 
 	@Override

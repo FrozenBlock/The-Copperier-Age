@@ -17,7 +17,6 @@
 
 package net.frozenblock.thecopperierage.block;
 
-import com.mojang.serialization.MapCodec;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import net.frozenblock.thecopperierage.block.entity.ChimeBlockEntity;
@@ -64,7 +63,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class ChimeBlock extends BaseEntityBlock {
-	public static final MapCodec<ChimeBlock> CODEC = simpleCodec(ChimeBlock::new);
 	public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
 	public static final EnumProperty<ChimeAttachType> ATTACHMENT = TCABlockStateProperties.CHIME_ATTACHMENT;
 	private static final VoxelShape SUPPORT_CHAIN_SHAPE = Block.box(7D, 12D, 7D, 9D, 16D, 9D);
@@ -78,11 +76,6 @@ public class ChimeBlock extends BaseEntityBlock {
 
 	public ChimeBlock(Properties properties) {
 		super(properties);
-	}
-
-	@Override
-	protected MapCodec<? extends ChimeBlock> codec() {
-		return CODEC;
 	}
 
 	@Override

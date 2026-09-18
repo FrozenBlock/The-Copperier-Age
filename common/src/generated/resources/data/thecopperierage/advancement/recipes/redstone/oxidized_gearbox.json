@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thecopperierage:oxidized_gearbox"
+        "recipes": "thecopperierage:oxidized_gearbox"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

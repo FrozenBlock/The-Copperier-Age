@@ -35,5 +35,4 @@ public class CopperButtonBlock extends ButtonBlock {
 			case OXIDIZED -> 40;
 		};
 	}
-
 }

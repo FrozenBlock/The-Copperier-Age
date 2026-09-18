@@ -17,7 +17,6 @@
 
 package net.frozenblock.thecopperierage.block;
 
-import com.mojang.serialization.MapCodec;
 import java.util.List;
 import java.util.Optional;
 import net.frozenblock.thecopperierage.block.entity.CrateBlockEntity;
@@ -64,15 +63,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class CrateBlock extends BaseEntityBlock {
-	public static final MapCodec<CrateBlock> CODEC = simpleCodec(CrateBlock::new);
 	public static final Identifier CONTENTS = Identifier.withDefaultNamespace("contents");
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
 	public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
-
-	@Override
-	public MapCodec<CrateBlock> codec() {
-		return CODEC;
-	}
 
 	public CrateBlock(Properties properties) {
 		super(properties);
@@ -84,7 +77,7 @@ public class CrateBlock extends BaseEntityBlock {
 
 		final DataComponentMap components = stack.getComponents();
 		if (!components.getOrDefault(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY).isEmpty()) return SlotResult.FAILURE_CONTAINER_ITEM;
-		if (components.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).allItemsCopyStream().findAny().isPresent()) return SlotResult.FAILURE_CONTAINER_ITEM;
+		if (components.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).itemCopies().findAny().isPresent()) return SlotResult.FAILURE_CONTAINER_ITEM;
 
 		final Item item = stack.getItem();
 		if (container.hasAnyMatching(containerStack -> !containerStack.isEmpty() && !containerStack.is(item))) return SlotResult.FAILURE_MISMATCHING_ITEM;

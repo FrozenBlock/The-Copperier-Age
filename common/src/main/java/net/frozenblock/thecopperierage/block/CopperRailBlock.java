@@ -17,8 +17,6 @@
 
 package net.frozenblock.thecopperierage.block;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
@@ -32,10 +30,6 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
 
 public class CopperRailBlock extends BaseRailBlock implements CopperRail {
-	public static final MapCodec<CopperRailBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		WeatheringCopper.WeatherState.CODEC.fieldOf("weathering_state").forGetter(block -> block.weatherState),
-		propertiesCodec()
-	).apply(instance, CopperRailBlock::new));
 	public static final EnumProperty<RailShape> SHAPE = BlockStateProperties.RAIL_SHAPE;
 
 	public final WeatheringCopper.WeatherState weatherState;
@@ -44,11 +38,6 @@ public class CopperRailBlock extends BaseRailBlock implements CopperRail {
 		super(false, properties);
 		this.weatherState = weatherState;
 		this.registerDefaultState(this.stateDefinition.any().setValue(SHAPE, RailShape.NORTH_SOUTH).setValue(WATERLOGGED, false));
-	}
-
-	@Override
-	public MapCodec<? extends CopperRailBlock> codec() {
-		return CODEC;
 	}
 
 	@Override

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thecopperierage:relayer_rail"
+        "recipes": "thecopperierage:relayer_rail"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

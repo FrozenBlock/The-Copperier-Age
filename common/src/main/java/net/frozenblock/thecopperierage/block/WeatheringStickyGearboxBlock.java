@@ -17,8 +17,6 @@
 
 package net.frozenblock.thecopperierage.block;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -27,16 +25,7 @@ import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class WeatheringStickyGearboxBlock extends StickyGearboxBlock implements EntityBlock, WeatheringCopper {
-	public static final MapCodec<WeatheringStickyGearboxBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		WeatheringCopper.WeatherState.CODEC.fieldOf("weathering_state").forGetter(WeatheringStickyGearboxBlock::getAge),
-		propertiesCodec()
-	).apply(instance, WeatheringStickyGearboxBlock::new));
 	private final WeatheringCopper.WeatherState weatherState;
-
-	@Override
-	public MapCodec<? extends WeatheringStickyGearboxBlock> codec() {
-		return CODEC;
-	}
 
 	public WeatheringStickyGearboxBlock(WeatheringCopper.WeatherState weatherState, Properties properties) {
 		super(properties);

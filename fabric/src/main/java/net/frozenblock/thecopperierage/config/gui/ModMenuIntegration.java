@@ -19,7 +19,7 @@ package net.frozenblock.thecopperierage.config.gui;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
-import net.frozenblock.lib.FrozenBools;
+import net.frozenblock.lib.FrozenLibEarlyConstants;
 import net.mehvahdjukaar.candlelight.api.ClientOnly;
 import net.minecraft.client.gui.screens.Screen;
 
@@ -28,8 +28,7 @@ public final class ModMenuIntegration implements ModMenuApi {
 
 	@Override
     public ConfigScreenFactory<Screen> getModConfigScreenFactory() {
-        if (FrozenBools.HAS_CLOTH_CONFIG) return TCAConfigGui::buildScreen;
+        if (FrozenLibEarlyConstants.HAS_CLOTH_CONFIG) return TCAConfigGui::buildScreen;
         return screen -> null;
     }
-
 }

@@ -51,32 +51,55 @@ public class ChimeRenderer<T extends ChimeBlockEntity> implements BlockEntityRen
 	}
 
 	@Override
-	public void submit(ChimeRenderState renderState, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState cameraState) {
+	public void submit(ChimeRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraState) {
 		poseStack.pushPose();
 		poseStack.translate(0.5F, 1.5F, 0.5F);
-		poseStack.mulPose(Axis.XP.rotationDegrees(-180F));
-		poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.visualDirection.toYRot()));
+		poseStack.rotate(Axis.XP.rotationDegrees(-180F));
+		poseStack.rotate(Axis.YP.rotationDegrees(-state.visualDirection.toYRot()));
 
-		collector.submitModel(
+		submitNodeCollector.submitModel(
 			this.model,
-			renderState,
+			state,
 			poseStack,
-			this.model.renderType(renderState.texture),
-			renderState.lightCoords,
+			this.model.renderType(state.texture),
+			state.lightCoords,
 			OverlayTexture.NO_OVERLAY,
-			0,
-			renderState.breakProgress
+			0
 		);
-		collector.submitModel(
+		if (state.breakProgress != null) {
+			submitNodeCollector.order(1).submitCrumblingOverlay(
+				this.model,
+				state,
+				poseStack,
+				this.model.renderType(state.texture),
+				state.lightCoords,
+				OverlayTexture.NO_OVERLAY,
+				-1,
+				state.breakProgress
+			);
+		}
+
+		submitNodeCollector.submitModel(
 			this.chainsModel,
-			renderState,
+			state,
 			poseStack,
-			this.chainsModel.renderType(renderState.texture),
-			renderState.lightCoords,
+			this.chainsModel.renderType(state.texture),
+			state.lightCoords,
 			OverlayTexture.NO_OVERLAY,
-			0,
-			renderState.breakProgress
+			0
 		);
+		if (state.breakProgress != null) {
+			submitNodeCollector.order(1).submitCrumblingOverlay(
+				this.chainsModel,
+				state,
+				poseStack,
+				this.chainsModel.renderType(state.texture),
+				state.lightCoords,
+				OverlayTexture.NO_OVERLAY,
+				-1,
+				state.breakProgress
+			);
+		}
 
 		poseStack.popPose();
 	}

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thecopperierage:waxed_oxidized_sticky_gearbox"
+        "recipes": "thecopperierage:waxed_oxidized_sticky_gearbox"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

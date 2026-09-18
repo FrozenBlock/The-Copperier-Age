@@ -23,15 +23,13 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootSubProvider;
 import net.frozenblock.thecopperierage.registry.TCABlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 public final class TCABlockLootProvider extends FabricBlockLootSubProvider {
 
@@ -41,8 +39,6 @@ public final class TCABlockLootProvider extends FabricBlockLootSubProvider {
 
 	@Override
 	public void generate() {
-		final HolderLookup.RegistryLookup<Enchantment> enchantments = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
-
 		TCABlocks.GEARBOX.forEach(block -> this.dropSelf(block.get()));
 		TCABlocks.STICKY_GEARBOX.forEach(block -> this.dropSelf(block.get()));
 		TCABlocks.COPPER_FAN.forEach(block -> this.dropSelf(block.get()));
@@ -68,7 +64,7 @@ public final class TCABlockLootProvider extends FabricBlockLootSubProvider {
 			LootTable.lootTable().withPool(
 				this.applyExplosionCondition(
 					block,
-					LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(
+					LootPool.lootPool().setRolls(ContextIntProviders.exactly(1)).add(
 						LootItem.lootTableItem(block).apply(
 							CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
 								.include(DataComponents.CUSTOM_NAME)
@@ -82,5 +78,4 @@ public final class TCABlockLootProvider extends FabricBlockLootSubProvider {
 			)
 		);
 	}
-
 }

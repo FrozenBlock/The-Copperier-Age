@@ -20,7 +20,7 @@ package net.frozenblock.thecopperierage.data.tag;
 import java.util.concurrent.CompletableFuture;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
-import net.frozenblock.lib.FrozenLibConstants;
+import net.frozenblock.lib.FrozenLibEarlyConstants;
 import net.frozenblock.lib.tag.api.ConventionalEntityTypeTags;
 import net.frozenblock.lib.tag.api.FrozenLibEntityTypeTags;
 import net.frozenblock.thecopperierage.references.TCAEntityTypeIds;
@@ -54,9 +54,9 @@ public final class TCAEntityTypeTagsProvider extends FabricTagsProvider.EntityTy
 			.add(EntityTypeIds.GHAST)
 			.add(EntityTypeIds.HAPPY_GHAST)
 			.addOptionalTag(FrozenLibEntityTypeTags.HOGLINS)
-			.addOptional(getKey(FrozenLibConstants.WILDER_WILD_MOD_ID, "ostrich"))
-			.addOptional(getKey(FrozenLibConstants.WILDER_WILD_MOD_ID, "zombie_ostrich"))
-			.addOptional(getKey(FrozenLibConstants.NETHERIER_NETHER_MOD_ID, "lurker"));
+			.addOptional(getKey(FrozenLibEarlyConstants.WILDER_WILD_MOD_ID, "ostrich"))
+			.addOptional(getKey(FrozenLibEarlyConstants.WILDER_WILD_MOD_ID, "zombie_ostrich"))
+			.addOptional(getKey(FrozenLibEarlyConstants.NETHERIER_NETHER_MOD_ID, "lurker"));
 
 		this.builder(TCAEntityTypeTags.COPPER_FAN_CANNOT_PUSH)
 			.add(EntityTypeIds.WITHER)

@@ -17,7 +17,6 @@
 
 package net.frozenblock.thecopperierage.block;
 
-import com.mojang.serialization.MapCodec;
 import net.frozenblock.thecopperierage.entity.impl.CrossRailAxisInterface;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -38,19 +37,12 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class CrossRailBlock extends BaseRailBlock {
-	public static final MapCodec<CrossRailBlock> CODEC = simpleCodec(CrossRailBlock::new);
 	public static final EnumProperty<RailShape> SHAPE = EnumProperty.create("shape", RailShape.class, RailShape.NORTH_SOUTH, RailShape.EAST_WEST);
-
 	private static final double MIN_AXIS_SPEED = 1.0E-4D;
 
 	public CrossRailBlock(Properties properties) {
 		super(true, properties);
 		this.registerDefaultState(this.stateDefinition.any().setValue(SHAPE, RailShape.NORTH_SOUTH).setValue(WATERLOGGED, false));
-	}
-
-	@Override
-	public MapCodec<? extends CrossRailBlock> codec() {
-		return CODEC;
 	}
 
 	@Override

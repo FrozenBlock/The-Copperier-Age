@@ -84,8 +84,8 @@ public final class CouplingRenderState {
 		poseStack.translate(0F, TWO_PIXELS, 0F);
 
 		poseStack.pushPose();
-		poseStack.mulPose(Axis.YP.rotation(yRot));
-		poseStack.mulPose(Axis.XP.rotation(xRot));
+		poseStack.rotate(Axis.YP.rotation(yRot));
+		poseStack.rotate(Axis.XP.rotation(xRot));
 
 		float x1 = Mth.cos(Mth.PI) * ONE_AND_A_HALF_PIXELS;
 		float x2 = Mth.cos(0F) * ONE_AND_A_HALF_PIXELS;

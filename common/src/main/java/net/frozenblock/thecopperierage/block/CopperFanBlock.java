@@ -17,8 +17,6 @@
 
 package net.frozenblock.thecopperierage.block;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -68,12 +66,6 @@ public class CopperFanBlock extends DirectionalBlock {
 	public static final double WIND_INTENSITY_SUCK_SCALE = 0.8D;
 	public static final double WIND_INTENSITY_SUCK = WIND_INTENSITY * WIND_INTENSITY_SUCK_SCALE;
 	private static final Predicate<Entity> EFFECT_PREDICATE = EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.NO_SPECTATORS);
-	public static final MapCodec<CopperFanBlock> CODEC = RecordCodecBuilder.mapCodec(
-		instance -> instance.group(
-			WeatheringCopper.WeatherState.CODEC.fieldOf("weathering_state").forGetter(copperFanBlock -> copperFanBlock.weatherState),
-			propertiesCodec()
-		).apply(instance, CopperFanBlock::new)
-	);
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
 	public final WeatheringCopper.WeatherState weatherState;
@@ -126,11 +118,6 @@ public class CopperFanBlock extends DirectionalBlock {
 			case OXIDIZED -> 7;
 		};
 	}
-
-	@Override
-    public MapCodec<? extends CopperFanBlock> codec() {
-        return CODEC;
-    }
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {

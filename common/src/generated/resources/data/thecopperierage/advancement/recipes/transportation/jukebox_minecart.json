@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thecopperierage:jukebox_minecart"
+        "recipes": "thecopperierage:jukebox_minecart"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

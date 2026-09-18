@@ -17,28 +17,14 @@
 
 package net.frozenblock.thecopperierage.block;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.level.block.WeatheringCopper;
 
 public class CopperCrossRailBlock extends CrossRailBlock implements CopperRail {
-	public static final MapCodec<CopperCrossRailBlock> CODEC = RecordCodecBuilder.mapCodec(
-		instance -> instance.group(
-			WeatheringCopper.WeatherState.CODEC.fieldOf("weathering_state").forGetter(block -> block.weatherState),
-			propertiesCodec()
-		).apply(instance, CopperCrossRailBlock::new)
-	);
-
 	public final WeatheringCopper.WeatherState weatherState;
 
 	public CopperCrossRailBlock(WeatheringCopper.WeatherState weatherState, Properties properties) {
 		super(properties);
 		this.weatherState = weatherState;
-	}
-
-	@Override
-	public MapCodec<? extends CopperCrossRailBlock> codec() {
-		return CODEC;
 	}
 
 	@Override

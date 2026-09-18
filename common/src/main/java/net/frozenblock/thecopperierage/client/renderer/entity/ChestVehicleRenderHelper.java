@@ -93,11 +93,11 @@ public final class ChestVehicleRenderHelper {
 
 		poseStack.pushPose();
 		poseStack.translate(CHEST_BASE_X, CHEST_BASE_Y + raftYOffset, CHEST_BASE_Z);
-		poseStack.mulPose(Axis.YN.rotation(Mth.HALF_PI));
+		poseStack.rotate(Axis.YN.rotation(Mth.HALF_PI));
 		poseStack.scale(CHEST_SCALE, CHEST_SCALE, CHEST_SCALE);
 		poseStack.translate(-CHEST_PAD, 0F, -CHEST_PAD);
 		poseStack.translate(HALF_BLOCK, HALF_BLOCK, HALF_BLOCK);
-		poseStack.mulPose(Axis.XP.rotation(Mth.PI));
+		poseStack.rotate(Axis.XP.rotation(Mth.PI));
 		poseStack.translate(-HALF_BLOCK, -HALF_BLOCK, -HALF_BLOCK);
 
 		submit(

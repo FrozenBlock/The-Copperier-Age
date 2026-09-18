@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thecopperierage:waxed_exposed_copper_fan"
+        "recipes": "thecopperierage:waxed_exposed_copper_fan"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

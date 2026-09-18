@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thecopperierage:sax_copper_horn"
+        "recipes": "thecopperierage:sax_copper_horn"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -17,7 +17,8 @@
 
 package net.frozenblock.thecopperierage.block;
 
-import com.mojang.serialization.MapCodec;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -45,7 +46,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class RelayerRailBlock extends BaseRailBlock {
-	public static final MapCodec<RelayerRailBlock> CODEC = simpleCodec(RelayerRailBlock::new);
 	public static final EnumProperty<RailShape> SHAPE = BlockStateProperties.RAIL_SHAPE_STRAIGHT;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final BooleanProperty OCCUPIED = BlockStateProperties.OCCUPIED;
@@ -75,11 +75,6 @@ public class RelayerRailBlock extends BaseRailBlock {
 				.setValue(APPEARANCE, Appearance.LOCKED_UNCONNECTED)
 				.setValue(WATERLOGGED, false)
 		);
-	}
-
-	@Override
-	public MapCodec<RelayerRailBlock> codec() {
-		return CODEC;
 	}
 
 	@Override
@@ -338,9 +333,11 @@ public class RelayerRailBlock extends BaseRailBlock {
 	}
 
 	private static boolean hasOtherSettledCart(Level level, BlockPos pos, BlockState state, AbstractMinecart minecart) {
-		return level.getEntitiesOfClass(AbstractMinecart.class, new AABB(pos).inflate(0.5D), other -> other != minecart && isCartOn(pos, other))
-			.stream()
-			.anyMatch(other -> isSettled(level, pos, state, other));
+		return level.getEntitiesOfClass(
+			AbstractMinecart.class,
+				new AABB(pos).inflate(0.5D),
+				other -> other != minecart && isCartOn(pos, other)
+		).stream().anyMatch(other -> isSettled(level, pos, state, other));
 	}
 
 	public static boolean isPowered(BlockState state) {
@@ -441,7 +438,7 @@ public class RelayerRailBlock extends BaseRailBlock {
 		final BlockState state = level.getBlockState(pos);
 		if (!(state.getBlock() instanceof RelayerRailBlock rail)) return;
 
-		final java.util.List<BlockPos> chain = new java.util.ArrayList<>();
+		final List<BlockPos> chain = new ArrayList<>();
 		rail.forEachInChain(level, pos, state, (chainPos, chainState) -> chain.add(chainPos));
 
 		int occupiedCount = 0;

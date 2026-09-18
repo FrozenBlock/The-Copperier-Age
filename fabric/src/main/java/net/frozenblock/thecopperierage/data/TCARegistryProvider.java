@@ -44,6 +44,8 @@ final class TCARegistryProvider extends FabricDynamicRegistryProvider {
 		entries.addAll(asLookup(entries.getLookup(FrozenLibRegistries.CONFIG_PREDICATE_PROVIDER)));
 		TCAConstants.log("Adding finalized fire types to datagen", true);
 		entries.addAll(asLookup(entries.getLookup(FrozenLibRegistries.FIRE_TYPE)));
+		TCAConstants.log("Adding finalized structure processor list additions to datagen", true);
+		entries.addAll(asLookup(entries.getLookup(FrozenLibRegistries.STRUCTURE_PROCESSOR_LIST_ADDITION)));
 	}
 
 	public static <T> HolderLookup.RegistryLookup<T> asLookup(HolderGetter<T> getter) {

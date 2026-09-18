@@ -34,15 +34,15 @@ public final class TCAInstruments {
 	public static final ResourceKey<Instrument> TRUMPET_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("trumpet_copper_horn"));
 	public static final ResourceKey<Instrument> TROMBONE_COPPER_HORN = ResourceKey.create(Registries.INSTRUMENT, TCAConstants.id("trombone_copper_horn"));
 
-	public static void bootstrap(BootstrapContext<Instrument> registry) {
-		Instruments.register(registry, RECORDER_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_RECORDER.asHolder(), 32767, 64F);
-		Instruments.register(registry, FLUTE_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_FLUTE.asHolder(), 32767, 64F);
-		Instruments.register(registry, OBOE_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_OBOE.asHolder(), 32767, 64F);
-		Instruments.register(registry, CLARINET_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_CLARINET.asHolder(), 32767, 64F);
-		Instruments.register(registry, SAX_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_SAX.asHolder(), 32767, 64F);
-		Instruments.register(registry, TRUMPET_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_TRUMPET.asHolder(), 32767, 64F);
-		Instruments.register(registry, TROMBONE_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_TROMBONE.asHolder(), 32767, 64F);
-		Instruments.register(registry, TUBA_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_TUBA.asHolder(), 32767, 64F);
+	public static void bootstrap(BootstrapContext<Instrument> context) {
+		Instruments.register(context, RECORDER_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_RECORDER.asHolder(), 32767, 64F, 0);
+		Instruments.register(context, FLUTE_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_FLUTE.asHolder(), 32767, 64F, 0);
+		Instruments.register(context, OBOE_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_OBOE.asHolder(), 32767, 64F, 0);
+		Instruments.register(context, CLARINET_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_CLARINET.asHolder(), 32767, 64F, 0);
+		Instruments.register(context, SAX_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_SAX.asHolder(), 32767, 64F, 0);
+		Instruments.register(context, TRUMPET_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_TRUMPET.asHolder(), 32767, 64F, 0);
+		Instruments.register(context, TROMBONE_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_TROMBONE.asHolder(), 32767, 64F, 0);
+		Instruments.register(context, TUBA_COPPER_HORN, TCASounds.ITEM_COPPER_HORN_TUBA.asHolder(), 32767, 64F, 0);
 	}
 
 	private TCAInstruments() {}

@@ -60,12 +60,12 @@ public abstract class EntityMixin {
 	}
 
 	@Unique
-	private static void theCopperierAge$turnBodyInHeadingFrame(LivingEntity living, float heading, float turn) {
-		final float previousOffset = Mth.wrapDegrees(living.yBodyRotO - (heading - turn));
-		final float headOffset = Mth.wrapDegrees(living.getYRot() - heading);
+	private static void theCopperierAge$turnBodyInHeadingFrame(LivingEntity entity, float heading, float turn) {
+		final float previousOffset = Mth.wrapDegrees(entity.yBodyRotO - (heading - turn));
+		final float headOffset = Mth.wrapDegrees(entity.getYRot() - heading);
 
 		float targetOffset = Math.abs(headOffset) > THECOPPERIERAGE$FACING_BACKWARDS_DEGREES ? 180F : 0F;
-		if (living.attackAnim > 0F) targetOffset = headOffset;
+		if (entity.isSwinging()) targetOffset = headOffset;
 
 		float offset = previousOffset + Mth.wrapDegrees(targetOffset - previousOffset) * THECOPPERIERAGE$BODY_TURN_RATE;
 		final float headDifference = Mth.wrapDegrees(headOffset - offset);
@@ -73,6 +73,6 @@ public abstract class EntityMixin {
 			offset += headDifference - Mth.sign(headDifference) * THECOPPERIERAGE$MAX_HEAD_ROTATION;
 		}
 
-		living.setYBodyRot(Mth.wrapDegrees(heading + offset));
+		entity.setYBodyRot(Mth.wrapDegrees(heading + offset));
 	}
 }

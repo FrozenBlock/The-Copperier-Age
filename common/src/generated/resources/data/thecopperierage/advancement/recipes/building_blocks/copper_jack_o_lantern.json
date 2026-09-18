@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thecopperierage:copper_jack_o_lantern"
+        "recipes": "thecopperierage:copper_jack_o_lantern"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

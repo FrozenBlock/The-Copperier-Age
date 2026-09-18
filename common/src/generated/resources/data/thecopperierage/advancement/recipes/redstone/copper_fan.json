@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thecopperierage:copper_fan"
+        "recipes": "thecopperierage:copper_fan"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

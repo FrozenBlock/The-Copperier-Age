@@ -49,6 +49,7 @@ public final class TheCopperierAge {
 		TCAMenuTypes.init();
 		TCASoundPredicates.init();
 		TCAWindDisturbances.init();
+		TCAStructureModifications.init();
 		TCANetworking.init();
 		TCAResources.init();
 
@@ -58,7 +59,6 @@ public final class TheCopperierAge {
 	public static void setup() {
 		TCABlocks.setupBlockProperties();
 		TCACreativeInventorySorting.setup();
-		TCAStructureModifications.setup();
 	}
 
 	private TheCopperierAge() {}

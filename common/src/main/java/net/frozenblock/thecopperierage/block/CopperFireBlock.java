@@ -17,7 +17,6 @@
 
 package net.frozenblock.thecopperierage.block;
 
-import com.mojang.serialization.MapCodec;
 import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.tag.TCABlockTags;
 import net.frozenblock.thecopperierage.tag.TCAEntityTypeTags;
@@ -39,15 +38,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class CopperFireBlock extends BaseFireBlock {
-    public static final MapCodec<CopperFireBlock> CODEC = simpleCodec(CopperFireBlock::new);
 
     public CopperFireBlock(Properties properties) {
         super(properties, 1F);
-    }
-
-    @Override
-    public MapCodec<CopperFireBlock> codec() {
-        return CODEC;
     }
 
 	@Override
@@ -56,9 +49,9 @@ public class CopperFireBlock extends BaseFireBlock {
 		LevelReader level,
 		ScheduledTickAccess ticks,
 		BlockPos pos,
-		Direction direction,
-		BlockPos neighborPos,
-		BlockState neighborState,
+		Direction directionToNeighbour,
+		BlockPos neighbourPos,
+		BlockState neighbourState,
 		RandomSource random
 	) {
 		return this.canSurvive(state, level, pos) ? this.defaultBlockState() : Blocks.AIR.defaultBlockState();

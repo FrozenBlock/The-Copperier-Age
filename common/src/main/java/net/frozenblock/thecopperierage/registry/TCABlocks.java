@@ -95,7 +95,7 @@ public final class TCABlocks {
 			.sound(SoundType.LANTERN)
 			.lightLevel(state -> 15)
 			.noOcclusion()
-			.pushReaction(PushReaction.DESTROY)
+			.pushReaction(PushReaction.POPPED)
 	);
 
 	public static final DeferredBlock<Block> COPPER_JACK_O_LANTERN = REGISTER.registerBlock(TCABlockItemIds.COPPER_JACK_O_LANTERN.block(),
@@ -106,7 +106,7 @@ public final class TCABlocks {
 			.sound(SoundType.WOOD)
 			.lightLevel(state -> 15)
 			.isValidSpawn(Blocks::always)
-			.pushReaction(PushReaction.DESTROY)
+			.pushReaction(PushReaction.POPPED)
 	);
 
 	public static final DeferredBlock<Block> REDSTONE_JACK_O_LANTERN = REGISTER.registerBlock(TCABlockItemIds.REDSTONE_JACK_O_LANTERN.block(),
@@ -117,7 +117,7 @@ public final class TCABlocks {
 			.sound(SoundType.WOOD)
 			.lightLevel(state -> 7)
 			.isValidSpawn(Blocks::always)
-			.pushReaction(PushReaction.DESTROY)
+			.pushReaction(PushReaction.POPPED)
 			.isRedstoneConductor(Blocks::never)
 	);
 
@@ -128,7 +128,7 @@ public final class TCABlocks {
 			.strength(1F)
 			.sound(SoundType.SAND)
 			.isValidSpawn(Blocks::always)
-			.pushReaction(PushReaction.NORMAL)
+			.instrument(NoteBlockInstrument.SNARE)
 			.isRedstoneConductor(Blocks::never)
 	);
 
@@ -199,7 +199,7 @@ public final class TCABlocks {
 			.mapColor(MapColor.NONE)
 			.strength(0.5F)
 			.noCollision()
-			.pushReaction(PushReaction.DESTROY)
+			.pushReaction(PushReaction.POPPED)
 	);
 
 	public static final WeatheringCopperCollection<DeferredBlock<? extends Block>> WEIGHTED_PRESSURE_PLATE = REGISTER.registerWeatheringCopperCollection(
@@ -211,7 +211,7 @@ public final class TCABlocks {
 			.mapColor(getMapColorForWeatherState(weatherState))
 			.strength(0.5F)
 			.noCollision()
-			.pushReaction(PushReaction.DESTROY)
+			.pushReaction(PushReaction.POPPED)
 	);
 
 	public static final WeatheringCopperCollection<DeferredBlock<? extends Block>> COPPER_RAIL = REGISTER.registerWeatheringCopperCollection(

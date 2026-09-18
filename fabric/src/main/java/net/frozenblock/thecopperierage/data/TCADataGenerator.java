@@ -36,6 +36,7 @@ import net.frozenblock.thecopperierage.registry.TCAConfigPredicates;
 import net.frozenblock.thecopperierage.registry.TCADamageTypes;
 import net.frozenblock.thecopperierage.registry.TCAFireTypes;
 import net.frozenblock.thecopperierage.registry.TCAInstruments;
+import net.frozenblock.thecopperierage.registry.TCAStructureProcessorListAdditions;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 
@@ -74,6 +75,7 @@ public final class TCADataGenerator implements DataGeneratorEntrypoint {
 		registryBuilder.add(Registries.DAMAGE_TYPE, TCADamageTypes::bootstrap);
 		registryBuilder.add(FrozenLibRegistries.CONFIG_PREDICATE_PROVIDER, TCAConfigPredicates::bootstrap);
 		registryBuilder.add(FrozenLibRegistries.FIRE_TYPE, TCAFireTypes::bootstrap);
+		registryBuilder.add(FrozenLibRegistries.STRUCTURE_PROCESSOR_LIST_ADDITION, TCAStructureProcessorListAdditions::bootstrap);
 	}
 
 	@Override

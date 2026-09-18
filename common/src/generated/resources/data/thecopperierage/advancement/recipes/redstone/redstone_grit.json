@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "thecopperierage:redstone_grit"
+        "recipes": "thecopperierage:redstone_grit"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

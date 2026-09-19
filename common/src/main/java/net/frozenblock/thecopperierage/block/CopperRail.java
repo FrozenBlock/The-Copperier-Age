@@ -17,6 +17,7 @@
 
 package net.frozenblock.thecopperierage.block;
 
+import net.frozenblock.lib.platform.ModLoader;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.minecraft.core.BlockPos;
@@ -61,7 +62,7 @@ public interface CopperRail {
 		if (rail == null) return original;
 
 		final double capped = original * speedMultiplier(rail.getWeatherState());
-		if (TCAConfig.DEBUG_MINECART_MOTION.get()) {
+		if (TCAConfig.DEBUG_MINECART_MOTION.get() && ModLoader.isDevelopmentEnvironment()) {
 			TCAConstants.LOGGER.info(String.format(
 				"[TCA copper cap] %-22s vehicle=%-5b %-10s maxSpeed %.4f -> %.4f",
 				minecart.getType(), minecart.isVehicle(), rail.getWeatherState(), original, capped
@@ -91,7 +92,7 @@ public interface CopperRail {
 		final double adjusted = decelerationFactor(rail.getWeatherState(), ironFactor);
 		final double scale = adjusted / ironFactor;
 
-		if (TCAConfig.DEBUG_MINECART_MOTION.get()) {
+		if (TCAConfig.DEBUG_MINECART_MOTION.get() && ModLoader.isDevelopmentEnvironment()) {
 			TCAConstants.LOGGER.info(String.format(
 				"[TCA copper] %-24s %-10s ironFactor=%.4f -> %.4f  hSpeed %.4f -> %.4f",
 				minecart.getType(), rail.getWeatherState(), ironFactor, adjusted, afterSpeed, afterSpeed * scale

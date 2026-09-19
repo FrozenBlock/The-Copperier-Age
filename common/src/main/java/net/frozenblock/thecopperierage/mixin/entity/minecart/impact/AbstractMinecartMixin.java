@@ -17,6 +17,7 @@
 
 package net.frozenblock.thecopperierage.mixin.entity.minecart.impact;
 
+import net.frozenblock.lib.platform.ModLoader;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.RelayerRailBlock;
 import net.frozenblock.thecopperierage.config.TCAConfig;
@@ -87,7 +88,7 @@ public abstract class AbstractMinecartMixin {
 
 	@Inject(method = "tick", at = @At("TAIL"))
 	private void theCopperierAge$debugSlopeMotion(CallbackInfo info) {
-		if (!TCAConfig.DEBUG_MINECART_MOTION.get()) return;
+		if (!TCAConfig.DEBUG_MINECART_MOTION.get() || !ModLoader.isDevelopmentEnvironment()) return;
 
 		final AbstractMinecart cart = AbstractMinecart.class.cast(this);
 		if (!(cart.level() instanceof ServerLevel level)) return;

@@ -9,7 +9,6 @@ checkstyle {
     toolVersion = "10.20.2"
 }
 
-
 val mod_id: String by project
 val mod_version: String by project
 val subproject_prefix: String by project
@@ -31,7 +30,6 @@ base {
 
 val release = findProperty("releaseType") == "stable"
 
-version = getModVersion()
 group = maven_group
 
 tasks.jar {
@@ -49,9 +47,10 @@ repositories {
 }
 
 neoforge {
-    dependOn(project(":{$subproject_prefix}-common"))
-    accessWidener(project(":{$subproject_prefix}-common"))
+    dependOn(project(":$subproject_prefix-common"))
+    accessWidener(project(":$subproject_prefix-common"))
 }
+
 
 neoForge {
     accessTransformers {} // Required for transitive AW to apply!
@@ -66,13 +65,13 @@ neoForge {
 
 dependencies {
     // FrozenLib
-    api("net.frozenblock:frozenlib-neoforge:${frozenlib_version}")?.let {
+    api("net.frozenblock:frozenlib-neoforge:$frozenlib_version")?.let {
         accessTransformers(it)
         interfaceInjectionData(it)
     }
 
     // Cloth Config
-    compileOnly("me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}")
+    compileOnly("me.shedaniel.cloth:cloth-config-neoforge:$cloth_config_version")
 }
 
 val githubActions: Boolean = System.getenv("GITHUB_ACTIONS") == "true"
@@ -105,15 +104,6 @@ artifacts {
     archives(javadocJar)
 }
 
-fun getModVersion(): String {
-    var version = "$mod_version-mc$minecraft_version"
-
-    if (!release)
-        version += "-unstable"
-
-    return version
-}
-
 val changelogText = run {
     val split = rootProject.file("CHANGELOG.md").readText().split("-----------------")
     check(split.size == 2) { "Malformed changelog" }
@@ -122,7 +112,7 @@ val changelogText = run {
 
 upload {
     maven {
-        name.set("{$mod_id}-neoforge")
+        name.set("$mod_id-neoforge")
     }
 
     forEach {

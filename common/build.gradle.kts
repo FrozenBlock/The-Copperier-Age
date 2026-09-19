@@ -23,13 +23,13 @@ neoForge {
 
 dependencies {
     // FrozenLib
-    compileOnly("net.frozenblock:frozenlib-common:${frozenlib_version}")?.let {
+    compileOnly("net.frozenblock:frozenlib-common:$frozenlib_version")?.let {
         accessTransformers(it)
         interfaceInjectionData(it)
     }
 
     // Cloth Config
-    compileOnly("me.shedaniel.cloth:cloth-config:${cloth_config_version}")
+    compileOnly("me.shedaniel.cloth:cloth-config:$cloth_config_version")
 }
 
 val githubActions: Boolean = System.getenv("GITHUB_ACTIONS") == "true"
@@ -57,5 +57,5 @@ configurations {
 }
 
 upload.maven {
-    name.set("{$mod_id}-common")
+    name.set("$mod_id-common")
 }

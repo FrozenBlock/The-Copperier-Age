@@ -29,8 +29,6 @@ base {
     archivesName = archives_base_name
 }
 
-val release = findProperty("releaseType") == "stable"
-
 version = getModVersion()
 group = maven_group
 
@@ -39,10 +37,10 @@ tasks.jar {
 }
 
 fabric {
-    dependOn(project("{$subproject_prefix}-common"))
-    accessWidener(project(":{$subproject_prefix}-common"))
+    dependOn(project(":$subproject_prefix-common"))
+    accessWidener(project(":$subproject_prefix-common"))
     dataGen {
-        owner = project(":{$subproject_prefix}-common")
+        owner = project(":$subproject_prefix-common")
         splitSourceSet("datagen")
     }
 }
@@ -92,6 +90,16 @@ dependencies {
 val githubActions: Boolean = System.getenv("GITHUB_ACTIONS") == "true"
 val licenseChecks: Boolean = githubActions
 
+tasks {
+    license {
+        if (licenseChecks) {
+            rule(rootProject.file("codeformat/HEADER"))
+
+            include("**/*.java")
+        }
+    }
+}
+
 java {
     sourceCompatibility = JavaVersion.VERSION_25
     targetCompatibility = JavaVersion.VERSION_25
@@ -104,6 +112,8 @@ artifacts {
     archives(sourcesJar)
     archives(javadocJar)
 }
+
+val release = findProperty("releaseType") == "stable"
 
 fun getModVersion(): String {
     var version = "$mod_version-mc$minecraft_version"
@@ -123,7 +133,7 @@ val changelogText = run {
 
 upload {
     maven {
-        name.set("{$mod_id}-fabric")
+        name.set("$mod_id-fabric")
     }
 
     forEach {

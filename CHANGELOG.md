@@ -21,6 +21,7 @@ Put the changelog BELOW the dashes. ANYTHING ABOVE IS IGNORED.
 - Added the Relayer Rail block.
   - When unpowered, acts as a dock to keep Minecarts in place.
   - When powered, directionally provides power to other Relayer Rails and pushes Minecarts automatically.
+- The sound played while riding inside a Minecart now changes its volume smoothly instead of abruptly.
 - Added the Cupric Lantern block.
   - Much like the Soul Lantern, is crafted using a Copper Torch instead of a Torch.
 - Added compatability for Netherier Nether, introducing Cupric variants of Golden and Netherite lanterns if both mods are present.

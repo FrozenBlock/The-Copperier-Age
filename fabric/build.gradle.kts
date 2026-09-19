@@ -9,17 +9,13 @@ checkstyle {
     toolVersion = "10.20.2"
 }
 
-val githubActions: Boolean = System.getenv("GITHUB_ACTIONS") == "true"
-val licenseChecks: Boolean = githubActions
-
-val fabric_loader_version: String by project
-val min_fabric_loader_version: String by project
-
 val mod_id: String by project
 val mod_version: String by project
+val subproject_prefix: String by project
 val minecraft_version: String by project
 val maven_group: String by project
 val archives_base_name: String by project
+val fabric_loader_version: String by project
 
 val fabric_api_version: String by project
 val frozenlib_version: String by project
@@ -33,8 +29,6 @@ base {
     archivesName = archives_base_name
 }
 
-val release = findProperty("releaseType") == "stable"
-
 version = getModVersion()
 group = maven_group
 
@@ -43,10 +37,10 @@ tasks.jar {
 }
 
 fabric {
-    dependOn(project(":tca-common"))
-    accessWidener(project(":tca-common"))
+    dependOn(project(":$subproject_prefix-common"))
+    accessWidener(project(":$subproject_prefix-common"))
     dataGen {
-        owner = project(":tca-common")
+        owner = project(":$subproject_prefix-common")
         splitSourceSet("datagen")
     }
 }
@@ -77,6 +71,10 @@ repositories {
 }
 
 dependencies {
+    // Fabric
+    implementation("net.fabricmc:fabric-loader:${fabric_loader_version}")
+    implementation("net.fabricmc.fabric-api:fabric-api:${fabric_api_version}")
+
     // FrozenLib
     api("net.frozenblock:frozenlib-fabric:${frozenlib_version}")
 
@@ -93,6 +91,9 @@ dependencies {
     compileOnly("de.maxhenkel.voicechat:voicechat-api:$voicechat_api_version")
 }
 
+val githubActions: Boolean = System.getenv("GITHUB_ACTIONS") == "true"
+val licenseChecks: Boolean = githubActions
+
 tasks {
     license {
         if (licenseChecks) {
@@ -103,22 +104,20 @@ tasks {
     }
 }
 
-val applyLicenses: Task by tasks
-val test: Task by tasks
-val runClient: Task by tasks
-
-val sourcesJar: Jar by tasks
-val javadocJar: Jar by tasks
-
 java {
     sourceCompatibility = JavaVersion.VERSION_25
     targetCompatibility = JavaVersion.VERSION_25
 }
 
+val sourcesJar: Jar by tasks
+val javadocJar: Jar by tasks
+
 artifacts {
     archives(sourcesJar)
     archives(javadocJar)
 }
+
+val release = findProperty("releaseType") == "stable"
 
 fun getModVersion(): String {
     var version = "$mod_version-mc$minecraft_version"
@@ -138,7 +137,7 @@ val changelogText = run {
 
 upload {
     maven {
-        name.set("thecopperierage-fabric")
+        name.set("$mod_id-fabric")
     }
 
     forEach {

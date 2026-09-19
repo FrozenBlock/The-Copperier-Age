@@ -23,7 +23,6 @@ public final class TheCopperierAgeClient {
 	}
 
 	public static void setup() {
-		TCAModelLayers.setup();
 		TCAMenuScreens.setup();
 	}
 

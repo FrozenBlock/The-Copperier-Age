@@ -11,6 +11,7 @@ checkstyle {
 
 val mod_id: String by project
 val mod_version: String by project
+val subproject_prefix: String by project
 val minecraft_version: String by project
 val maven_group: String by project
 val archives_base_name: String by project
@@ -29,7 +30,6 @@ base {
 
 val release = findProperty("releaseType") == "stable"
 
-version = getModVersion()
 group = maven_group
 
 tasks.jar {
@@ -47,9 +47,10 @@ repositories {
 }
 
 neoforge {
-    dependOn(project(":tca-common"))
-    accessWidener(project(":tca-common"))
+    dependOn(project(":$subproject_prefix-common"))
+    accessWidener(project(":$subproject_prefix-common"))
 }
+
 
 neoForge {
     accessTransformers {} // Required for transitive AW to apply!
@@ -62,10 +63,19 @@ neoForge {
     }
 }
 
+dependencies {
+    // FrozenLib
+    api("net.frozenblock:frozenlib-neoforge:$frozenlib_version")?.let {
+        accessTransformers(it)
+        interfaceInjectionData(it)
+    }
+
+    // Cloth Config
+    compileOnly("me.shedaniel.cloth:cloth-config-neoforge:$cloth_config_version")
+}
+
 val githubActions: Boolean = System.getenv("GITHUB_ACTIONS") == "true"
 val licenseChecks: Boolean = githubActions
-
-val applyLicenses: Task by tasks
 
 tasks {
     license {
@@ -76,25 +86,9 @@ tasks {
         }
     }
 
-    withType(JavaCompile::class) {
-        options.encoding = "UTF-8"
-        options.release = 25
-        options.isFork = true
-        options.isIncremental = true
-    }
-
     processResources {
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
-}
-
-dependencies {
-    api("net.frozenblock:frozenlib-neoforge:${frozenlib_version}")?.let {
-        accessTransformers(it)
-        interfaceInjectionData(it)
-    }
-
-    compileOnly("me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}")
 }
 
 java {
@@ -102,13 +96,12 @@ java {
     targetCompatibility = JavaVersion.VERSION_25
 }
 
-fun getModVersion(): String {
-    var version = "$mod_version-mc$minecraft_version"
+val sourcesJar: Jar by tasks
+val javadocJar: Jar by tasks
 
-    if (!release)
-        version += "-unstable"
-
-    return version
+artifacts {
+    archives(sourcesJar)
+    archives(javadocJar)
 }
 
 val changelogText = run {
@@ -119,7 +112,7 @@ val changelogText = run {
 
 upload {
     maven {
-        name.set("thecopperierage-neoforge")
+        name.set("$mod_id-neoforge")
     }
 
     forEach {
@@ -130,6 +123,8 @@ upload {
         dependencies {
             required("frozenlib")
             optional("cloth-config")
+            optional("simple-copper-pipes")
+            optional("glowtone")
         }
     }
 
@@ -137,6 +132,8 @@ upload {
         dependencies {
             required("frozenlib")
             optional("cloth-config")
+            optional("simple-copper-pipes")
+            optional("glowtone")
         }
     }
 }

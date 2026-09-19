@@ -120,7 +120,7 @@ public final class MinecartCouplingPhysics {
 
 		for (Body body : bodies.values()) body.apply();
 		if (collisions) {
-			for (Link link : links) link.playBufferImpact();
+			for (Link link : links) link.tryPlayBufferImpact();
 		}
 	}
 
@@ -220,10 +220,9 @@ public final class MinecartCouplingPhysics {
 			this.second.accelerate(-lambda * this.second.inverseMass * secondGradient);
 		}
 
-		private void playBufferImpact() {
+		private void tryPlayBufferImpact() {
 			if (this.bufferImpact < MinecartImpacts.IMPACT_SPEED_THRESHOLD) return;
-			final Vec3 soundPos = Mth.lerp(0.5D, this.first.cart.position(), this.second.cart.position());
-			MinecartImpacts.playImpactSound(this.level, this.first.cart, soundPos, this.bufferImpact);
+			MinecartImpacts.tryPlayCartImpactSoundAndSetCooldowns(this.level, this.first.cart, this.second.cart, this.bufferImpact);
 		}
 	}
 

@@ -10,16 +10,8 @@ checkstyle {
 }
 
 val mod_id: String by project
-val minecraft_version: String by project
-val fabric_loader_version: String by project
-
 val frozenlib_version: String by project
 val cloth_config_version: String by project
-
-val githubActions: Boolean = System.getenv("GITHUB_ACTIONS") == "true"
-val licenseChecks: Boolean = githubActions
-
-val applyLicenses: Task by tasks
 
 common {
     accessWidener()
@@ -29,6 +21,20 @@ neoForge {
     accessTransformers {} // Required for transitive AW to apply!
 }
 
+dependencies {
+    // FrozenLib
+    compileOnly("net.frozenblock:frozenlib-common:$frozenlib_version")?.let {
+        accessTransformers(it)
+        interfaceInjectionData(it)
+    }
+
+    // Cloth Config
+    compileOnly("me.shedaniel.cloth:cloth-config:$cloth_config_version")
+}
+
+val githubActions: Boolean = System.getenv("GITHUB_ACTIONS") == "true"
+val licenseChecks: Boolean = githubActions
+
 tasks {
     license {
         if (licenseChecks) {
@@ -37,19 +43,6 @@ tasks {
             include("**/*.java")
         }
     }
-}
-
-dependencies {
-    compileOnly("net.frozenblock:frozenlib-common:${frozenlib_version}")?.let {
-        accessTransformers(it)
-        interfaceInjectionData(it)
-    }
-
-    compileOnly("net.fabricmc:sponge-mixin:0.17.3+mixin.0.8.7")
-    compileOnly("io.github.llamalad7:mixinextras-common:0.5.3")
-    annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.3")
-
-    compileOnly("me.shedaniel.cloth:cloth-config:${cloth_config_version}")
 }
 
 configurations {
@@ -64,5 +57,5 @@ configurations {
 }
 
 upload.maven {
-    name.set("thecopperierage-common")
+    name.set("$mod_id-common")
 }

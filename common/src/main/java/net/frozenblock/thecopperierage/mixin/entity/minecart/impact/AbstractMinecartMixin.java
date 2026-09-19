@@ -20,9 +20,10 @@ package net.frozenblock.thecopperierage.mixin.entity.minecart.impact;
 import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.RelayerRailBlock;
 import net.frozenblock.thecopperierage.config.TCAConfig;
-import net.frozenblock.thecopperierage.entity.vehicle.minecart.coupling.MinecartCouplingUtil;
 import net.frozenblock.thecopperierage.entity.vehicle.minecart.api.MinecartImpacts;
 import net.frozenblock.thecopperierage.entity.vehicle.minecart.api.MinecartTrackHelper;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.coupling.MinecartCouplingUtil;
+import net.frozenblock.thecopperierage.registry.TCAAttachmentTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
@@ -38,24 +39,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(AbstractMinecart.class)
 public abstract class AbstractMinecartMixin {
 	@Unique
-	private static final int THECOPPERIERAGE$SOUND_COOLDOWN_TICKS = 6;
-	@Unique
 	private static final double THECOPPERIERAGE$HALT_MIN_SPEED = 0.2D;
 	@Unique
 	private static final double THECOPPERIERAGE$HALT_SPEED_DROP = 0.15D;
 
 	@Unique
-	private int theCopperierAge$impactSoundCooldown;
-	@Unique
-	private double theCopperierAge$speedBeforeTick;
+	private double theCopperierAge$previousStepLength;
 
 	@Inject(method = "tick", at = @At("HEAD"))
 	private void theCopperierAge$recordSpeedBeforeTick(CallbackInfo info) {
 		final AbstractMinecart cart = AbstractMinecart.class.cast(this);
 		if (cart.level().isClientSide()) return;
 
-		if (this.theCopperierAge$impactSoundCooldown > 0) this.theCopperierAge$impactSoundCooldown--;
-		this.theCopperierAge$speedBeforeTick = cart.getDeltaMovement().horizontalDistance();
+		final int impactSoundCooldown = TCAAttachmentTypes.MINECART_IMPACT_SOUND_COOLDOWN.getAttachedOrElse(cart, 0);
+		if (impactSoundCooldown > 0) TCAAttachmentTypes.MINECART_IMPACT_SOUND_COOLDOWN.set(cart, impactSoundCooldown - 1);
 	}
 
 	@Inject(
@@ -79,12 +76,13 @@ public abstract class AbstractMinecartMixin {
 		final AbstractMinecart cart = AbstractMinecart.class.cast(this);
 		if (!(cart.level() instanceof ServerLevel level)) return;
 
-		final double speedBefore = this.theCopperierAge$speedBeforeTick;
-		final double drop = speedBefore - cart.getDeltaMovement().horizontalDistance();
-		if (speedBefore < THECOPPERIERAGE$HALT_MIN_SPEED || drop < THECOPPERIERAGE$HALT_SPEED_DROP) return;
+		final double previousStep = this.theCopperierAge$previousStepLength;
+		this.theCopperierAge$previousStepLength = MinecartImpacts.getStepDelta(cart).horizontalDistance();
+		final double stepDifference = previousStep - theCopperierAge$previousStepLength;
+		if (previousStep < THECOPPERIERAGE$HALT_MIN_SPEED || stepDifference < THECOPPERIERAGE$HALT_SPEED_DROP) return;
 		if (!cart.horizontalCollision && !RelayerRailBlock.isDockedAt(level, cart)) return;
 
-		this.theCopperierAge$playImpactSound(level, cart.position(), drop);
+		//this.theCopperierAge$playImpactSound(level, cart.position(), stepDifference);
 	}
 
 	@Inject(method = "tick", at = @At("TAIL"))
@@ -140,8 +138,10 @@ public abstract class AbstractMinecartMixin {
 
 	@Unique
 	private void theCopperierAge$playImpactSound(ServerLevel level, Vec3 pos, double speed) {
-		if (this.theCopperierAge$impactSoundCooldown > 0) return;
-		this.theCopperierAge$impactSoundCooldown = THECOPPERIERAGE$SOUND_COOLDOWN_TICKS;
-		MinecartImpacts.playImpactSound(level, AbstractMinecart.class.cast(this), pos, speed);
+		final AbstractMinecart cart = AbstractMinecart.class.cast(this);
+		if (TCAAttachmentTypes.MINECART_IMPACT_SOUND_COOLDOWN.getAttachedOrElse(cart, 0) > 0) return;
+
+		TCAAttachmentTypes.MINECART_IMPACT_SOUND_COOLDOWN.set(cart, MinecartImpacts.IMPACT_SOUND_COOLDOWN_TICKS);
+		MinecartImpacts.playImpactSound(level, cart, pos, speed);
 	}
 }

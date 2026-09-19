@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "${mod_id}",
-  "version": "${version}",
-  "name": "The Copperier Age",
+  "version": "${mod_version}",
+  "name": "${mod_name}",
   "description": "Expends and enhances the theme of The Copper Age drop. New blocks and mechanics, many tweaks, and awesome optional retextures!",
   "authors": [
     "Lunade/AViewFromTheTop",
@@ -14,11 +14,11 @@
     "voxelotl"
   ],
   "contact": {
-    "homepage": "https://modrinth.com/mod/the-copperier-age",
-    "sources": "https://github.com/FrozenBlock/TheCopperierAge",
-    "issues": "https://github.com/FrozenBlock/TheCopperierAge/issues"
+    "homepage": "${mod_url}",
+    "sources": "${source_url}",
+    "issues": "${issues_url}"
   },
-  "license": "FrozenBlock Modding Oasis License v1.0",
+  "license": "${mod_license}",
   "icon": "assets/thecopperierage/icon.png",
   "environment": "*",
   "entrypoints": {

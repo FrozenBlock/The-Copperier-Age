@@ -27,16 +27,34 @@ checkstyle {
     toolVersion = "10.20.2"
 }
 
+val mod_id: String by project
+val mod_name: String by project
+val mod_version: String by project
+val subproject_prefix: String by project
+val license: String by project
+val mod_url: String by project
+val source_url: String by project
+val issues_url: String by project
+val protocol_version: String by project
 val min_fabric_loader_version: String by project
 val minecraft_version: String by project
-val protocol_version: String by project
+
+val fabric_api_version: String by project
 val frozenlib_version: String by project
 
 mod {
+    additional.add("mod_id", mod_id)
+    additional.add("mod_version", mod_version)
+    additional.add("mod_name", mod_name)
+    additional.add("mod_license", license)
+    additional.add("mod_url", mod_url)
+    additional.add("source_url", source_url)
+    additional.add("issues_url", issues_url)
+    additional.add("protocol_version", protocol_version)
     additional.add("fabric_loader_version", ">=$min_fabric_loader_version")
+    additional.add("fabric_api_version", ">=$fabric_api_version")
     additional.add("minecraft_version", "~$minecraft_version-")
     additional.add("frozenlib_version", ">=${frozenlib_version.split('-').firstOrNull()}-")
-    additional.add("protocol_version")
 }
 
 val changelogText = run {
@@ -50,14 +68,14 @@ fun mainJarTask(project: Project) =
     else project.tasks.named("jar")
 
 val githubRelease by tasks.registering {
-    val fabricJar = mainJarTask(project(":tca-fabric"))
-    val neoforgeJar = mainJarTask(project(":tca-neoforge"))
+    val fabricJar = mainJarTask(project(":$subproject_prefix-fabric"))
+    val neoforgeJar = mainJarTask(project(":$subproject_prefix-neoforge"))
     dependsOn(fabricJar, neoforgeJar)
 
     val token = env["GITHUB_TOKEN"]
     val repository = mod.repository.get()
-    val tag = project(":tca-fabric").version.toString()
-    val releaseTitle = "The Copperier Age $tag"
+    val tag = project(":$subproject_prefix-fabric").version.toString()
+    val releaseTitle = "$mod_name $tag"
     val isPrerelease = mod.releaseType.get() != "release"
     val commitish = env["GITHUB_SHA"]
 
@@ -122,7 +140,7 @@ subprojects {
 
     dependencies {
         compileOnly("net.frozenblock:candlelight:+")
-        compileOnly("net.frozenblock:frozenlib-common:${frozenlib_version}")
+        compileOnly("net.frozenblock:frozenlib-common:$frozenlib_version")
     }
 
     repositories {

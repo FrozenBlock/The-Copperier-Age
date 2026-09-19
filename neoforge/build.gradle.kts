@@ -9,7 +9,11 @@ checkstyle {
     toolVersion = "10.20.2"
 }
 
-val mod_id: String by project
+val githubActions: Boolean = System.getenv("GITHUB_ACTIONS") == "true"
+val licenseChecks: Boolean = githubActions
+
+val applyLicenses: Task by tasks
+
 val mod_version: String by project
 val minecraft_version: String by project
 val maven_group: String by project
@@ -62,10 +66,16 @@ neoForge {
     }
 }
 
-val githubActions: Boolean = System.getenv("GITHUB_ACTIONS") == "true"
-val licenseChecks: Boolean = githubActions
+dependencies {
+    // FrozenLib
+    api("net.frozenblock:frozenlib-neoforge:${frozenlib_version}")?.let {
+        accessTransformers(it)
+        interfaceInjectionData(it)
+    }
 
-val applyLicenses: Task by tasks
+    // Cloth Config
+    compileOnly("me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}")
+}
 
 tasks {
     license {
@@ -76,25 +86,9 @@ tasks {
         }
     }
 
-    withType(JavaCompile::class) {
-        options.encoding = "UTF-8"
-        options.release = 25
-        options.isFork = true
-        options.isIncremental = true
-    }
-
     processResources {
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
-}
-
-dependencies {
-    api("net.frozenblock:frozenlib-neoforge:${frozenlib_version}")?.let {
-        accessTransformers(it)
-        interfaceInjectionData(it)
-    }
-
-    compileOnly("me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}")
 }
 
 java {

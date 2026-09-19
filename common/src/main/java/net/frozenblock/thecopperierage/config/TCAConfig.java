@@ -22,6 +22,7 @@ import net.frozenblock.lib.config.v2.config.ConfigSettings;
 import net.frozenblock.lib.config.v2.entry.ConfigEntry;
 import net.frozenblock.lib.config.v2.entry.EntryType;
 import net.frozenblock.lib.config.v2.registry.ID;
+import net.frozenblock.lib.platform.ModLoader;
 import net.frozenblock.thecopperierage.TCAConstants;
 
 public final class TCAConfig {
@@ -47,6 +48,10 @@ public final class TCAConfig {
 	public static final ConfigEntry<Boolean> MINECART_COLLISIONS = CONFIG.entry("minecartCollisions", EntryType.BOOL, true);
 	public static final ConfigEntry<Boolean> MINECART_CAMERA_FOLLOWS_MOTION = CONFIG.unsyncableEntry("minecartCameraFollowsMotion", EntryType.BOOL, true);
 	public static final ConfigEntry<Boolean> DEBUG_MINECART_MOTION = CONFIG.entry("debugMinecartMotion", EntryType.BOOL, false);
+
+	static {
+		if (!ModLoader.isDevelopmentEnvironment()) DEBUG_MINECART_MOTION.modify(entry -> entry.value = false);
+	}
 
 	private TCAConfig() {}
 }

@@ -74,15 +74,15 @@ public final class TCAConstants {
 	/**
 	 * @return A text component for use in a Config GUI
 	 */
-	public static Component text(String key) {
-		return Component.translatable("option." + MOD_ID + "." + key);
+	public static Component text(String key, Object... args) {
+		return Component.translatable("option." + MOD_ID + "." + key, args);
 	}
 
 	/**
 	 * @return A tooltip component for use in a Config GUI
 	 */
-	public static Component tooltip(String key) {
-		return Component.translatable("tooltip." + MOD_ID + "." + key);
+	public static Component tooltip(String key, Object... args) {
+		return Component.translatable("tooltip." + MOD_ID + "." + key, args);
 	}
 
 	public static MutableComponent itemComponent(String key) {

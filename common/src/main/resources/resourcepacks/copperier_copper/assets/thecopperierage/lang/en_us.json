@@ -6,6 +6,7 @@
   "block.thecopperierage.cross_rail": "Iron Cross Rail",
   "block.thecopperierage.cupric_lantern": "Iron Cupric Lantern",
 
+  "tooltip.thecopperierage.copper_fire": "Contains options for Cupric Fire.",
   "option.thecopperierage.copper_fire_enabled": "Cupric Fire",
   "tooltip.thecopperierage.copper_fire_enabled": "Whether Fire will turn into Cupric Fire when above a Copper block.",
   "option.thecopperierage.copper_fire_poisons": "Cupric Fire Poisons Mobs",

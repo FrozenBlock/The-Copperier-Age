@@ -9,12 +9,10 @@ checkstyle {
     toolVersion = "10.20.2"
 }
 
-val githubActions: Boolean = System.getenv("GITHUB_ACTIONS") == "true"
-val licenseChecks: Boolean = githubActions
 
-val applyLicenses: Task by tasks
-
+val mod_id: String by project
 val mod_version: String by project
+val subproject_prefix: String by project
 val minecraft_version: String by project
 val maven_group: String by project
 val archives_base_name: String by project
@@ -51,8 +49,8 @@ repositories {
 }
 
 neoforge {
-    dependOn(project(":tca-common"))
-    accessWidener(project(":tca-common"))
+    dependOn(project(":{$subproject_prefix}-common"))
+    accessWidener(project(":{$subproject_prefix}-common"))
 }
 
 neoForge {
@@ -77,6 +75,9 @@ dependencies {
     compileOnly("me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}")
 }
 
+val githubActions: Boolean = System.getenv("GITHUB_ACTIONS") == "true"
+val licenseChecks: Boolean = githubActions
+
 tasks {
     license {
         if (licenseChecks) {
@@ -96,6 +97,14 @@ java {
     targetCompatibility = JavaVersion.VERSION_25
 }
 
+val sourcesJar: Jar by tasks
+val javadocJar: Jar by tasks
+
+artifacts {
+    archives(sourcesJar)
+    archives(javadocJar)
+}
+
 fun getModVersion(): String {
     var version = "$mod_version-mc$minecraft_version"
 
@@ -113,7 +122,7 @@ val changelogText = run {
 
 upload {
     maven {
-        name.set("thecopperierage-neoforge")
+        name.set("{$mod_id}-neoforge")
     }
 
     forEach {
@@ -124,6 +133,8 @@ upload {
         dependencies {
             required("frozenlib")
             optional("cloth-config")
+            optional("simple-copper-pipes")
+            optional("glowtone")
         }
     }
 
@@ -131,6 +142,8 @@ upload {
         dependencies {
             required("frozenlib")
             optional("cloth-config")
+            optional("simple-copper-pipes")
+            optional("glowtone")
         }
     }
 }

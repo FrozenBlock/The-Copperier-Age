@@ -20,6 +20,7 @@ package net.frozenblock.thecopperierage.entity.impl;
 import java.util.List;
 import net.frozenblock.thecopperierage.block.CopperRail;
 import net.frozenblock.thecopperierage.config.TCAConfig;
+import net.frozenblock.thecopperierage.registry.TCAAttachmentTypes;
 import net.frozenblock.thecopperierage.registry.TCADamageTypes;
 import net.frozenblock.thecopperierage.registry.TCASounds;
 import net.minecraft.server.level.ServerLevel;
@@ -33,6 +34,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public final class MinecartImpacts {
+	public static final int IMPACT_SOUND_COOLDOWN_TICKS = 6;
 	public static final double IMPACT_SPEED_THRESHOLD = 0.15D;
 	private static final double DAMAGE_PER_TRANSFERRED_SPEED = 20D;
 	private static final double MAX_DAMAGE = 10D;
@@ -72,7 +74,7 @@ public final class MinecartImpacts {
 		final Vec3 toEntity = entity.position().subtract(cart.position()).horizontal();
 		if (toEntity.lengthSqr() < MIN_SEPARATION_SQR) return 0D;
 
-		final Vec3 relativeVelocity = cart.getDeltaMovement().subtract(entity.getDeltaMovement()).horizontal();
+		final Vec3 relativeVelocity = getStepDelta(cart).subtract(getStepDelta(entity)).horizontal();
 		return relativeVelocity.dot(toEntity.normalize());
 	}
 
@@ -80,14 +82,14 @@ public final class MinecartImpacts {
 		if (!enabled() || !(entity instanceof LivingEntity) || !entity.isPushable()) return false;
 		if (cart.hasPassenger(entity) || entity.isPassenger()) return false;
 
-		if (cart.getDeltaMovement().horizontalDistanceSqr() < IMPACT_SPEED_THRESHOLD * IMPACT_SPEED_THRESHOLD) return false;
+		if (getStepDelta(cart).horizontalDistanceSqr() < IMPACT_SPEED_THRESHOLD * IMPACT_SPEED_THRESHOLD) return false;
 		if (cart.getBoundingBox().intersects(entity.getBoundingBox())) return true;
 		return closingSpeed(cart, entity) >= IMPACT_SPEED_THRESHOLD;
 	}
 
 	public static double runOverEntities(ServerLevel level, AbstractMinecart cart) {
 		if (!enabled() || cart.noPhysics) return 0D;
-		if (cart.getDeltaMovement().horizontalDistanceSqr() < IMPACT_SPEED_THRESHOLD * IMPACT_SPEED_THRESHOLD) return 0D;
+		if (getStepDelta(cart).horizontalDistanceSqr() < IMPACT_SPEED_THRESHOLD * IMPACT_SPEED_THRESHOLD) return 0D;
 
 		final List<LivingEntity> hits = level.getEntitiesOfClass(
 			LivingEntity.class,
@@ -104,7 +106,7 @@ public final class MinecartImpacts {
 		final double closing = closingSpeed(cart, entity);
 		if (closing < IMPACT_SPEED_THRESHOLD) return 0D;
 
-		final Vec3 normal = entity.position().subtract(cart.position()).horizontal().normalize();
+		final Vec3 normal = cart.position().subtract(entity.position()).horizontal().normalize();
 		final double cartMass = massOf(cart);
 		final double entityMass = massOf(entity);
 		final double cartShare = cartMass / (cartMass + entityMass);
@@ -117,21 +119,19 @@ public final class MinecartImpacts {
 		final DamageSource damageSource = level.damageSources().source(
 			// TODO: lewd detection
 			TCADamageTypes.MINECART_IMPACT,
-			cart.getFirstPassenger() != null
-				? cart.getFirstPassenger()
-				: cart
+			cart,
+			cart.getFirstPassenger()
 		);
 		if (!entity.hurtServer(level, damageSource, (float) damage)) return 0D;
 
-		entity.knockback(transferredSpeed, -normal.x, -normal.z, damageSource, (float) damage);
+		entity.knockback(transferredSpeed, normal.x, normal.z, damageSource, (float) damage);
 
 		// TODO: is there another way to do this while respecting overriden implementations of .knockback? (Creaking, Dragon, Sulfur Cube)
 		//final double upwards = Math.min(MAX_KNOCKBACK_UP, transferredSpeed * KNOCKBACK_UP_PER_SPEED);
 		//entity.push(normal.x * transferredSpeed, upwards, normal.z * transferredSpeed);
 
-		final Vec3 cartVelocity = cart.getDeltaMovement();
 		final double cartLoss = closing * entityShare;
-		cart.setDeltaMovement(cartVelocity.x - normal.x * cartLoss, cartVelocity.y, cartVelocity.z - normal.z * cartLoss);
+		cart.addDeltaMovement(new Vec3(normal.x * cartLoss, 0D, normal.z * cartLoss));
 		return closing;
 	}
 
@@ -157,6 +157,10 @@ public final class MinecartImpacts {
 		return Mth.clamp(retention / REFERENCE_RETENTION, MIN_FRICTION_FACTOR, 1D);
 	}
 
+	public static Vec3 getStepDelta(Entity entity) {
+		return entity.position().subtract(entity.oldPosition());
+	}
+
 	public static void playImpactSound(ServerLevel level, AbstractMinecart cart, Vec3 pos, double speed) {
 		if (cart.isSilent() || !enabled()) return;
 
@@ -169,6 +173,19 @@ public final class MinecartImpacts {
 			volume,
 			(cart.getRandom().nextFloat() * 0.2F) + 0.9F
 		);
+	}
+
+	public static void tryPlayCartImpactSoundAndSetCooldowns(ServerLevel level, AbstractMinecart cart1, AbstractMinecart cart2, double bufferImpact) {
+		if (TCAAttachmentTypes.MINECART_IMPACT_SOUND_COOLDOWN.getAttachedOrElse(cart1, 0) > 0) return;
+		if (TCAAttachmentTypes.MINECART_IMPACT_SOUND_COOLDOWN.getAttachedOrElse(cart2, 0) > 0) return;
+
+		final Vec3 soundPos = Mth.lerp(0.5D, cart1.position(), cart2.position());
+
+		final AbstractMinecart soundSourceCart = cart1.isSilent() ? cart2 : cart1;
+		playImpactSound(level, soundSourceCart, soundPos, bufferImpact);
+
+		TCAAttachmentTypes.MINECART_IMPACT_SOUND_COOLDOWN.set(cart1, IMPACT_SOUND_COOLDOWN_TICKS);
+		TCAAttachmentTypes.MINECART_IMPACT_SOUND_COOLDOWN.set(cart2, IMPACT_SOUND_COOLDOWN_TICKS);
 	}
 
 	private MinecartImpacts() {}

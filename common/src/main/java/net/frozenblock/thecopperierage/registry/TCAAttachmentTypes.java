@@ -71,6 +71,10 @@ public final class TCAAttachmentTypes {
 			builder.syncWith(Direction.STREAM_CODEC, DataAttachmentSyncPredicate.all());
 		}
 	);
+	public static final DataAttachmentType<Integer> MINECART_IMPACT_SOUND_COOLDOWN = DataAttachmentType.create(
+		TCAConstants.id("minecart_impact_sound_cooldown"),
+		builder -> {}
+	);
 
 	public static void init() {}
 

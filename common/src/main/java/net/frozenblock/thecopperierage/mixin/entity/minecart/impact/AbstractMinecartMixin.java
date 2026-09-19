@@ -17,12 +17,16 @@
 
 package net.frozenblock.thecopperierage.mixin.entity.minecart.impact;
 
+import net.frozenblock.thecopperierage.TCAConstants;
 import net.frozenblock.thecopperierage.block.RelayerRailBlock;
+import net.frozenblock.thecopperierage.config.TCAConfig;
 import net.frozenblock.thecopperierage.entity.vehicle.minecart.coupling.MinecartCouplingUtil;
 import net.frozenblock.thecopperierage.entity.vehicle.minecart.api.MinecartImpacts;
+import net.frozenblock.thecopperierage.entity.vehicle.minecart.api.MinecartTrackHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
+import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -81,6 +85,38 @@ public abstract class AbstractMinecartMixin {
 		if (!cart.horizontalCollision && !RelayerRailBlock.isDockedAt(level, cart)) return;
 
 		this.theCopperierAge$playImpactSound(level, cart.position(), drop);
+	}
+
+	@Inject(method = "tick", at = @At("TAIL"))
+	private void theCopperierAge$debugSlopeMotion(CallbackInfo info) {
+		if (!TCAConfig.DEBUG_MINECART_MOTION.get()) return;
+
+		final AbstractMinecart cart = AbstractMinecart.class.cast(this);
+		if (!(cart.level() instanceof ServerLevel level)) return;
+
+		final RailShape shape = MinecartTrackHelper.railShapeUnder(cart);
+		if (shape == null || !shape.isSlope()) return;
+
+		AbstractMinecart nearest = null;
+		double nearestDistance = Double.MAX_VALUE;
+		for (AbstractMinecart other : level.getEntitiesOfClass(AbstractMinecart.class, cart.getBoundingBox().inflate(2D), candidate -> candidate != cart)) {
+			final double distance = other.position().distanceTo(cart.position());
+			if (distance < nearestDistance) {
+				nearestDistance = distance;
+				nearest = other;
+			}
+		}
+		if (nearest == null) return;
+
+		final Vec3 pos = cart.position();
+		final Vec3 velocity = cart.getDeltaMovement();
+		TCAConstants.LOGGER.info(String.format(
+			"[TCA slope] t=%d id=%d shape=%s rails=%b pos=(%.4f,%.4f,%.4f) v=(%.4f,%.4f,%.4f) hCol=%b vCol=%b near=%d dist=%.4f solver=%b",
+			level.getGameTime(), cart.getId(), shape.getSerializedName(), cart.isOnRails(),
+			pos.x, pos.y, pos.z, velocity.x, velocity.y, velocity.z,
+			cart.horizontalCollision, cart.verticalCollision,
+			nearest.getId(), nearestDistance, MinecartImpacts.isSolverHandled(cart, nearest)
+		));
 	}
 
 	@Inject(method = "push(Lnet/minecraft/world/entity/Entity;)V", at = @At("HEAD"), cancellable = true)

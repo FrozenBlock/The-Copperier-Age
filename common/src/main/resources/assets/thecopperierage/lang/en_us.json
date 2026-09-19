@@ -59,7 +59,7 @@
   "option.thecopperierage.minecart_camera_follows_motion": "Minecarts Rotate Riders",
   "tooltip.thecopperierage.minecart_camera_follows_motion": "Whether entities get turned along with the Minecart they are riding.",
   "option.thecopperierage.minecart_collisions": "Minecart Collisions",
-  "tooltip.thecopperierage.minecart_collisions": "Whether Minecarts have physical collision with other entities. \nMinecarts that bump into each other transfer their momentum instead of stopping dead, and fast Minecarts run over the mobs and players, damaging and knocking them back. \nImpacts scale with the speed and size of the train and are softened by high friction rails.",
+  "tooltip.thecopperierage.minecart_collisions": "Whether Minecarts have physical collision with other entities and fixes some bugs. \nMinecarts that bump into each other transfer their momentum instead of stopping dead, and fast Minecarts run over the mobs and players, damaging and knocking them back. \nImpacts scale with the speed and size of the train and are softened by high friction rails.",
   "option.thecopperierage.debug_minecart_motion": "Debug Minecart Motion",
   "tooltip.thecopperierage.debug_minecart_motion": "Logs a line to the console whenever an experimental minecart suddenly reverses travel direction, with the surrounding physics state. \nleave off for normal play.",
 

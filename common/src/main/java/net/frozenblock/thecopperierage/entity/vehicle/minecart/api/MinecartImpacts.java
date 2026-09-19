@@ -48,6 +48,7 @@ public final class MinecartImpacts {
 	private static final double FULL_SOUND_VOLUME_SPEED = 0.4D;
 	private static final double OVERLAP_MARGIN = 0.02D;
 	private static final double STACKED_VERTICAL_OVERLAP = 0.2D;
+	private static final double STACKED_HORIZONTAL_RADIUS = 0.5D;
 	private static final double MIN_SEPARATION_SQR = 1.0E-4D;
 
 	public static boolean enabled() {
@@ -61,7 +62,11 @@ public final class MinecartImpacts {
 	public static boolean isStacked(Entity first, Entity second) {
 		final AABB firstBox = first.getBoundingBox();
 		final AABB secondBox = second.getBoundingBox();
-		return Math.min(firstBox.maxY, secondBox.maxY) - Math.max(firstBox.minY, secondBox.minY) < STACKED_VERTICAL_OVERLAP;
+		if (Math.min(firstBox.maxY, secondBox.maxY) - Math.max(firstBox.minY, secondBox.minY) >= STACKED_VERTICAL_OVERLAP) return false;
+
+		final double dx = first.getX() - second.getX();
+		final double dz = first.getZ() - second.getZ();
+		return (dx * dx) + (dz * dz) < STACKED_HORIZONTAL_RADIUS * STACKED_HORIZONTAL_RADIUS;
 	}
 
 	public static double closingSpeed(AbstractMinecart cart, Entity entity) {

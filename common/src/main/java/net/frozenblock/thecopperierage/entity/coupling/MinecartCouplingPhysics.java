@@ -34,6 +34,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.minecart.NewMinecartBehavior;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,13 +42,13 @@ public final class MinecartCouplingPhysics {
 	public static final double CONTACT_DISTANCE = 0.99D;
 	private static final int SOLVER_ITERATIONS = 6;
 	private static final double RELAXATION = 0.6D;
-	private static final double CONTACT_RESTITUTION = 0.5D;
-	private static final double RESTITUTION_MIN_APPROACH = 0.1D;
+	private static final double CONTACT_RESTITUTION = 0.2D;
+	private static final double RESTITUTION_MIN_APPROACH = 0.15D;
 	private static final double VELOCITY_TOLERANCE = 1.0E-5D;
 	private static final double COUPLING_POSITION_THRESHOLD = 0.3D;
-	private static final double CONTACT_POSITION_THRESHOLD = 0.02D;
+	private static final double CONTACT_POSITION_THRESHOLD = 0.06D;
 	private static final double POSITION_CORRECTION_RATE = 0.5D;
-	private static final double MAX_POSITION_CORRECTION_PER_TICK = 0.2D;
+	private static final double MAX_POSITION_CORRECTION_PER_TICK = 0.06D;
 	private static final double CONTACT_SEARCH_RADIUS = 0.6D;
 	private static final double MAX_SLOPE_RISE = 1.5D;
 	private static final double RIDDEN_MOVE_SCALE = 0.75D;
@@ -228,6 +229,7 @@ public final class MinecartCouplingPhysics {
 	}
 
 	private static final class Body {
+		private final ServerLevel level;
 		private final AbstractMinecart cart;
 		private final double inverseMass;
 		private final double maxSpeed;
@@ -244,6 +246,7 @@ public final class MinecartCouplingPhysics {
 		private int size = 1;
 
 		private Body(ServerLevel level, AbstractMinecart cart, boolean experimental) {
+			this.level = level;
 			this.cart = cart;
 			this.experimental = experimental;
 			this.position = cart.position();
@@ -326,9 +329,17 @@ public final class MinecartCouplingPhysics {
 			if (remaining <= 0D) return;
 
 			final double clamped = Mth.clamp(amount, -remaining, remaining);
-			this.position = this.position.add(this.slopeTangent.scale(clamped));
+			final Vec3 candidate = this.position.add(this.slopeTangent.scale(clamped));
+			if (!this.canOccupy(candidate)) return;
+
+			this.position = candidate;
 			this.shifted += Math.abs(clamped);
 			this.dirty = true;
+		}
+
+		private boolean canOccupy(Vec3 candidate) {
+			final AABB box = this.cart.getBoundingBox().move(candidate.subtract(this.cart.position()));
+			return this.level.noCollision(this.cart, box);
 		}
 
 		private void accelerate(double amount) {

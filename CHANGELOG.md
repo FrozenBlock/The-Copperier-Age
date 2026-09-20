@@ -8,6 +8,10 @@ Put the changelog BELOW the dashes. ANYTHING ABOVE IS IGNORED.
 - Added the Minecart with Jukebox.
 - Added the Minecart with Crate.
 - Minecarts now have unique sounds for being placed and broken.
+- The sounds played by Minecarts while moving now change in volume smoothly instead of abruptly.
+- Entities and Players inside Minecarts now rotate along with their movement.
+  - Added a config option to toggle this behavior.
+  - Removed the Vanilla accessibility option providing similar behavior, as its implementation is locked behind the `Minecart Improvements` experiment and snaps the camera around too quickly.
 - Vehicles with container blocks now play the same opening and closing animations and sounds as their block counterparts.
 - Added the Minecart Coupling item.
   - Interacting with two Minecarts while holding a Minecart Coupling will link the two Minecarts together.
@@ -21,7 +25,6 @@ Put the changelog BELOW the dashes. ANYTHING ABOVE IS IGNORED.
 - Added the Relayer Rail block.
   - When unpowered, acts as a dock to keep Minecarts in place.
   - When powered, directionally provides power to other Relayer Rails and pushes Minecarts automatically.
-- The sounds played by Minecarts while moving now change in volume smoothly instead of abruptly.
 - Added the Cupric Lantern block.
   - Much like the Soul Lantern, is crafted using a Copper Torch instead of a Torch.
 - Added compatability for Netherier Nether, introducing Cupric variants of Golden and Netherite lanterns if both mods are present.

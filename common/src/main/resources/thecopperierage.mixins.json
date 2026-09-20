@@ -54,6 +54,8 @@
     "client.copper_golem.CopperGolemRendererMixin",
     "client.copper_golem.CopperGolemRenderStateMixin",
     "client.gearbox.LocalPlayerGearboxRotationMixin",
+    "client.minecart.camera.AccessibilityOptionsScreenMixin",
+    "client.minecart.camera.LocalPlayerMixin",
     "client.minecart.coupling.AbstractMinecartRendererMixin",
     "client.minecart.furnace.AbstractMinecartRendererMixin",
     "client.minecart.sound.AbstractSoundInstanceMixin",

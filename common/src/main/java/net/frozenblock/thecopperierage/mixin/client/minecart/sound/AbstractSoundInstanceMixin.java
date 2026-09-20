@@ -18,7 +18,7 @@
 package net.frozenblock.thecopperierage.mixin.client.minecart.sound;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import net.frozenblock.thecopperierage.client.resources.sounds.InterpolatedVolumeSoundInstance;
+import net.frozenblock.thecopperierage.client.resources.sounds.InterpolatedAttributeSoundInstance;
 import net.mehvahdjukaar.candlelight.api.ClientOnly;
 import net.minecraft.client.resources.sounds.AbstractSoundInstance;
 import org.objectweb.asm.Opcodes;
@@ -38,8 +38,8 @@ public abstract class AbstractSoundInstanceMixin {
 		)
 	)
 	public float theCopperierAge$getInterpolatedVolume(float original) {
-		if (AbstractSoundInstance.class.cast(this) instanceof InterpolatedVolumeSoundInstance soundInterface) {
-			if (soundInterface.theCopperierAge$useInterpolation()) return soundInterface.theCopperierAge$getInterpolatedVolume();
+		if (AbstractSoundInstance.class.cast(this) instanceof InterpolatedAttributeSoundInstance soundInterface) {
+			if (soundInterface.theCopperierAge$interpolateVolume()) return soundInterface.theCopperierAge$interpolatedVolume();
 		}
 
 		return original;

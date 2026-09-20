@@ -33,6 +33,15 @@ public interface CouplingToEntityInterface {
 	@Nullable
 	Vec3 theCopperierAge$getTickStartPosition();
 
+	@Nullable
+	Vec3 theCopperierAge$getBlockedDirection();
+
+	long theCopperierAge$getBlockedTick();
+
+	void theCopperierAge$setBlocked(Vec3 direction, long gameTime);
+
+	boolean theCopperierAge$isTerrainJammed();
+
 	int theCopperierAge$getTrainSize();
 
 	void theCopperierAge$setTrainSize(int size);

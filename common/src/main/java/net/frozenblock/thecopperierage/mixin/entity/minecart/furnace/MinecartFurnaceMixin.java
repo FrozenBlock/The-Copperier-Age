@@ -21,6 +21,7 @@ import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import net.frozenblock.thecopperierage.block.RelayerRailBlock;
 import net.frozenblock.thecopperierage.config.TCAConfig;
+import net.frozenblock.thecopperierage.entity.impl.CouplingToEntityInterface;
 import net.frozenblock.thecopperierage.entity.impl.MinecartFacingHelper;
 import net.frozenblock.thecopperierage.entity.inventory.FurnaceMinecartMenu;
 import net.minecraft.core.Direction;
@@ -78,6 +79,20 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
 	private static final double THECOPPERIERAGE$WATER_TARGET_SCALE = 0.5D;
 	@Unique
 	private static final double THECOPPERIERAGE$MAX_THRUST = 0.1D;
+	@Unique
+	private static final double THECOPPERIERAGE$CLEARANCE = 1.15D;
+	@Unique
+	private static final double THECOPPERIERAGE$LATERAL_TOLERANCE = 0.6D;
+	@Unique
+	private static final double THECOPPERIERAGE$MIN_PUSH_SQR = 1.0E-7D;
+	@Unique
+	private static final double THECOPPERIERAGE$STALLED_FORWARD_SPEED = 0.02D;
+	@Unique
+	private static final double THECOPPERIERAGE$BLOCKED_ALIGNMENT = 0.5D;
+	@Unique
+	private static final long THECOPPERIERAGE$BLOCKED_MEMORY_TICKS = 2L;
+	@Unique
+	private static final double THECOPPERIERAGE$OMNI_BLOCK_SQR = 1.0E-6D;
 	@Unique
 	private static final int[] THECOPPERIERAGE$SLOTS_FOR_ALL_SIDES = IntStream.range(0, THECOPPERIERAGE$CONTAINER_SIZE).toArray();
 
@@ -202,6 +217,43 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
 	}
 
 	@Unique
+	private boolean theCopperierAge$isThrustBlocked(Vec3 facing) {
+		final Vec3 position = this.position();
+		final AbstractMinecart self = AbstractMinecart.class.cast(this);
+		for (AbstractMinecart other : this.level().getEntitiesOfClass(
+			AbstractMinecart.class,
+			this.getBoundingBox().inflate(THECOPPERIERAGE$CLEARANCE),
+			candidate -> candidate != self && candidate instanceof MinecartFurnace
+		)) {
+			final Vec3 toOther = other.position().subtract(position);
+			final double ahead = (toOther.x * facing.x) + (toOther.z * facing.z);
+			if (ahead <= 0D || ahead > THECOPPERIERAGE$CLEARANCE) continue;
+
+			final double lateral = Math.abs((toOther.x * facing.z) - (toOther.z * facing.x));
+			if (lateral > THECOPPERIERAGE$LATERAL_TOLERANCE) continue;
+
+			final Vec3 otherPush = ((MinecartFurnace) other).push;
+			if (otherPush.lengthSqr() < THECOPPERIERAGE$MIN_PUSH_SQR) continue;
+			if (((otherPush.x * facing.x) + (otherPush.z * facing.z)) >= 0D) continue;
+
+			return true;
+		}
+		return false;
+	}
+
+	@Unique
+	private boolean theCopperierAge$isContactBlocked(Vec3 facing) {
+		if (!(AbstractMinecart.class.cast(this) instanceof CouplingToEntityInterface access)) return false;
+
+		final Vec3 blocked = access.theCopperierAge$getBlockedDirection();
+		if (blocked == null) return false;
+		if (this.level().getGameTime() - access.theCopperierAge$getBlockedTick() > THECOPPERIERAGE$BLOCKED_MEMORY_TICKS) return false;
+
+		return blocked.lengthSqr() < THECOPPERIERAGE$OMNI_BLOCK_SQR
+			|| (blocked.x * facing.x) + (blocked.z * facing.z) > THECOPPERIERAGE$BLOCKED_ALIGNMENT;
+	}
+
+	@Unique
 	private boolean theCopperierAge$isFiniteHorizontal(Vec3 vec) {
 		return Double.isFinite(vec.x()) && Double.isFinite(vec.z());
 	}
@@ -214,9 +266,13 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart implements C
 		if (this.fuel > 0 && MinecartFacingHelper.hasFacing(this) && !RelayerRailBlock.isCaptured(this.level(), this)) {
 			final Vec3 facing = MinecartFacingHelper.getFacing(this);
 			final double targetSpeed = this.isInWater() ? THECOPPERIERAGE$TARGET_SPEED * THECOPPERIERAGE$WATER_TARGET_SCALE : THECOPPERIERAGE$TARGET_SPEED;
-			final double forwardSpeed = result.x * facing.x + result.z * facing.z;
-			final double thrust = Mth.clamp(targetSpeed - forwardSpeed, 0D, THECOPPERIERAGE$MAX_THRUST);
-			if (thrust > 0D) result = result.add(facing.x * thrust, 0D, facing.z * thrust);
+			final double forwardSpeed = (result.x * facing.x) + (result.z * facing.z);
+			final boolean stalled = this.theCopperierAge$isContactBlocked(facing)
+				|| (forwardSpeed <= THECOPPERIERAGE$STALLED_FORWARD_SPEED && this.theCopperierAge$isThrustBlocked(facing));
+			if (!stalled) {
+				final double thrust = Mth.clamp(targetSpeed - forwardSpeed, 0D, THECOPPERIERAGE$MAX_THRUST);
+				if (thrust > 0D) result = result.add(facing.x * thrust, 0D, facing.z * thrust);
+			}
 		}
 
 		info.setReturnValue(result);

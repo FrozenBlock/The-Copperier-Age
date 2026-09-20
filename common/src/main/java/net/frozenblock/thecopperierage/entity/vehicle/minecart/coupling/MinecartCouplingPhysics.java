@@ -18,6 +18,7 @@
 package net.frozenblock.thecopperierage.entity.vehicle.minecart.coupling;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -40,8 +41,7 @@ import org.jetbrains.annotations.Nullable;
 public final class MinecartCouplingPhysics {
 	public static final double CONTACT_DISTANCE = 0.99D;
 	private static final int SOLVER_ITERATIONS = 6;
-	private static final double RELAXATION = 0.6D;
-	private static final double CONTACT_RESTITUTION = 0.2D;
+	private static final double CONTACT_RESTITUTION = 0D;
 	private static final double RESTITUTION_MIN_APPROACH = 0.15D;
 	private static final double VELOCITY_TOLERANCE = 1.0E-5D;
 	private static final double COUPLING_POSITION_THRESHOLD = 0.3D;
@@ -49,9 +49,15 @@ public final class MinecartCouplingPhysics {
 	private static final double POSITION_CORRECTION_RATE = 0.5D;
 	private static final double MAX_POSITION_CORRECTION_PER_TICK = 0.06D;
 	private static final double CONTACT_SEARCH_RADIUS = 0.6D;
+	private static final double CONTACT_ENGAGED_SLACK = 0.6D;
+	private static final double BLOCK_ALIGNMENT = 0.5D;
+	private static final double CONTACT_BAND = 0.05D;
 	private static final double MAX_SLOPE_RISE = 1.5D;
 	private static final double RIDDEN_MOVE_SCALE = 0.75D;
 	private static final double MIN_MOVING_SPEED_SQR = 1.0E-8D;
+	private static final double JAM_SPEED_SQR = 1.0E-6D;
+	private static final double JAM_DISPLACEMENT_SQR = 1.0E-6D;
+	private static final double ESCAPE_PROBE = 0.1D;
 	private static final double MIN_DISPLACEMENT_SQR = 1.0E-6D;
 	private static final float MIN_LERP_STEP_WEIGHT = 1.0E-3F;
 	private static final double EPSILON = 1.0E-7D;
@@ -120,6 +126,7 @@ public final class MinecartCouplingPhysics {
 
 		for (Body body : bodies.values()) body.apply();
 		if (collisions) {
+			propagateBlocked(links, bodies.values(), level.getGameTime());
 			for (Link link : links) link.tryPlayBufferImpact();
 		}
 	}
@@ -192,13 +199,14 @@ public final class MinecartCouplingPhysics {
 
 			double error;
 			if (predictedDistance > this.maxLength) {
-				final double target = this.maxLength + Math.max(0D, currentDistance - this.maxLength) * (1D - RELAXATION);
+				final double target = Math.max(this.maxLength, currentDistance);
 				error = predictedDistance - target;
 				if (error <= VELOCITY_TOLERANCE) return;
 			} else if (predictedDistance < this.minLength) {
 				final double approach = currentDistance - predictedDistance;
-				double target = this.minLength - Math.max(0D, this.minLength - currentDistance) * (1D - RELAXATION);
-				if (this.restitution > 0D && approach > RESTITUTION_MIN_APPROACH) {
+				double target = Math.min(this.minLength, currentDistance);
+				final boolean touching = currentDistance <= this.minLength + CONTACT_BAND;
+				if (this.restitution > 0D && touching && approach > RESTITUTION_MIN_APPROACH) {
 					target = Math.max(target, currentDistance + this.restitution * approach);
 				}
 				error = predictedDistance - target;
@@ -220,6 +228,17 @@ public final class MinecartCouplingPhysics {
 			this.second.accelerate(-lambda * this.second.inverseMass * secondGradient);
 		}
 
+		private boolean propagateBlocked() {
+			if (Double.isFinite(this.maxLength)) return false;
+
+			final Vec3 delta = this.second.position.subtract(this.first.position).horizontal();
+			final double distance = delta.length();
+			if (distance < EPSILON || distance > this.minLength + CONTACT_ENGAGED_SLACK) return false;
+
+			final Vec3 normal = delta.scale(1D / distance);
+			return this.first.blockToward(normal, this.second) | this.second.blockToward(normal.scale(-1D), this.first);
+		}
+
 		private void tryPlayBufferImpact() {
 			if (this.bufferImpact < MinecartImpacts.IMPACT_SPEED_THRESHOLD) return;
 			MinecartImpacts.tryPlayCartImpactSoundAndSetCooldowns(this.level, this.first.cart, this.second.cart, this.bufferImpact);
@@ -229,7 +248,6 @@ public final class MinecartCouplingPhysics {
 	private static final class Body {
 		private final ServerLevel level;
 		private final AbstractMinecart cart;
-		private final double inverseMass;
 		private final double maxSpeed;
 		private final double moveScale;
 		private final boolean experimental;
@@ -237,6 +255,10 @@ public final class MinecartCouplingPhysics {
 		@Nullable
 		private Vec3 tangent;
 		private Vec3 slopeTangent = Vec3.ZERO;
+		@Nullable
+		private Vec3 blocked;
+		private double inverseMass;
+		private boolean jammed;
 		private double speed;
 		private double shifted;
 		private boolean dirty;
@@ -248,15 +270,15 @@ public final class MinecartCouplingPhysics {
 			this.cart = cart;
 			this.experimental = experimental;
 			this.position = cart.position();
-			this.inverseMass = isImmovable(level, cart) ? 0D : 1D;
 			this.moveScale = !experimental && cart.isVehicle() ? RIDDEN_MOVE_SCALE : 1D;
 
 			final CouplingToEntityInterface access = cart instanceof CouplingToEntityInterface couplingAccess ? couplingAccess : null;
 			this.maxSpeed = access != null ? access.theCopperierAge$getMaxSpeed(level) : 0.4D;
 
 			final Vec3 tickStart = access != null ? access.theCopperierAge$getTickStartPosition() : null;
+			final Vec3 displacement = tickStart != null ? this.position.subtract(tickStart) : Vec3.ZERO;
+
 			if (tickStart != null) {
-				final Vec3 displacement = this.position.subtract(tickStart);
 				final Vec3 horizontal = displacement.horizontal();
 				if (horizontal.lengthSqr() > MIN_DISPLACEMENT_SQR) {
 					final double length = horizontal.length();
@@ -270,6 +292,18 @@ public final class MinecartCouplingPhysics {
 				final MinecartTrackHelper.TrackTangent track = MinecartTrackHelper.tangentUnder(cart);
 				if (track != null) this.setTangent(track.horizontal(), track.slope());
 			}
+
+			this.jammed = this.isJammed(access, displacement);
+			this.inverseMass = isImmovable(level, cart) || this.jammed ? 0D : 1D;
+		}
+
+		private boolean isJammed(@Nullable CouplingToEntityInterface access, Vec3 displacement) {
+			if (access == null || this.tangent == null || !access.theCopperierAge$isTerrainJammed()) return false;
+			if (this.cart.getDeltaMovement().horizontalDistanceSqr() >= JAM_SPEED_SQR) return false;
+			if (displacement.horizontal().lengthSqr() >= JAM_DISPLACEMENT_SQR) return false;
+
+			return !this.canOccupy(this.position.add(this.slopeTangent.scale(ESCAPE_PROBE)))
+				|| !this.canOccupy(this.position.subtract(this.slopeTangent.scale(ESCAPE_PROBE)));
 		}
 
 		private Body root() {
@@ -323,21 +357,44 @@ public final class MinecartCouplingPhysics {
 		private void shift(double amount) {
 			if (this.inverseMass <= 0D || Math.abs(amount) < EPSILON) return;
 
-			final double remaining = MAX_POSITION_CORRECTION_PER_TICK - this.shifted;
-			if (remaining <= 0D) return;
+			final double target = Mth.clamp(this.shifted + amount, -MAX_POSITION_CORRECTION_PER_TICK, MAX_POSITION_CORRECTION_PER_TICK);
+			final double applied = target - this.shifted;
+			if (Math.abs(applied) < EPSILON) return;
 
-			final double clamped = Mth.clamp(amount, -remaining, remaining);
-			final Vec3 candidate = this.position.add(this.slopeTangent.scale(clamped));
+			final Vec3 candidate = this.position.add(this.slopeTangent.scale(applied));
 			if (!this.canOccupy(candidate)) return;
 
 			this.position = candidate;
-			this.shifted += Math.abs(clamped);
+			this.shifted = target;
 			this.dirty = true;
 		}
 
 		private boolean canOccupy(Vec3 candidate) {
 			final AABB box = this.cart.getBoundingBox().move(candidate.subtract(this.cart.position()));
 			return this.level.noCollision(this.cart, box);
+		}
+
+		private boolean blocksToward(Vec3 direction) {
+			if (this.inverseMass > 0D) return this.blocked != null && this.blocked.dot(direction) > BLOCK_ALIGNMENT;
+			if (!this.jammed) return true;
+			return !this.canOccupy(this.position.add(direction.scale(ESCAPE_PROBE)));
+		}
+
+		private boolean blockToward(Vec3 direction, Body neighbour) {
+			if (this.inverseMass <= 0D || !neighbour.blocksToward(direction)) return false;
+			if (this.blocked != null && this.blocked.dot(direction) > BLOCK_ALIGNMENT) return false;
+
+			this.blocked = direction;
+			return true;
+		}
+
+		private void publishBlocked(long gameTime) {
+			if (!(this.cart instanceof CouplingToEntityInterface access)) return;
+			if (this.inverseMass <= 0D) {
+				access.theCopperierAge$setBlocked(Vec3.ZERO, gameTime);
+			} else if (this.blocked != null) {
+				access.theCopperierAge$setBlocked(this.blocked, gameTime);
+			}
 		}
 
 		private void accelerate(double amount) {
@@ -353,14 +410,24 @@ public final class MinecartCouplingPhysics {
 			final Vec3 newVelocity = new Vec3(this.tangent.x * this.speed, velocity.y, this.tangent.z * this.speed);
 			this.cart.setDeltaMovement(newVelocity);
 
-			if (this.shifted <= 0D) return;
+			final double magnitude = Math.abs(this.shifted);
+			if (magnitude <= 0D) return;
 			this.cart.setPos(this.position);
 			if (this.experimental && this.cart.getBehavior() instanceof NewMinecartBehavior behavior) {
 				behavior.lerpSteps.add(new NewMinecartBehavior.MinecartStep(
-					this.position, newVelocity, this.cart.getYRot(), this.cart.getXRot(), Math.max((float) this.shifted, MIN_LERP_STEP_WEIGHT)
+					this.position, newVelocity, this.cart.getYRot(), this.cart.getXRot(), Math.max((float) magnitude, MIN_LERP_STEP_WEIGHT)
 				));
 			}
 		}
+	}
+
+	private static void propagateBlocked(List<Link> links, Collection<Body> bodies, long gameTime) {
+		boolean changed = true;
+		for (int pass = 0; changed && pass < bodies.size(); pass++) {
+			changed = false;
+			for (Link link : links) changed |= link.propagateBlocked();
+		}
+		for (Body body : bodies) body.publishBlocked(gameTime);
 	}
 
 	private static boolean isImmovable(ServerLevel level, AbstractMinecart cart) {

@@ -34,6 +34,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(AbstractMinecart.class)
 public abstract class AbstractMinecartMixin implements CouplingToEntityInterface {
 
+	@Unique
+	private static final double THECOPPERIERAGE$JAM_DISPLACEMENT_SQR = 1.0E-6D;
+
 	@Shadow
 	protected abstract double getMaxSpeed(ServerLevel level);
 
@@ -43,6 +46,13 @@ public abstract class AbstractMinecartMixin implements CouplingToEntityInterface
 	@Unique
 	@Nullable
 	private Vec3 theCopperierAge$tickStartPosition = null;
+	@Unique
+	@Nullable
+	private Vec3 theCopperierAge$blockedDirection;
+	@Unique
+	private long theCopperierAge$blockedTick = Long.MIN_VALUE;
+	@Unique
+	private boolean theCopperierAge$terrainJammed;
 	@Unique
 	private int theCopperierAge$trainSize = 1;
 	@Unique
@@ -66,6 +76,22 @@ public abstract class AbstractMinecartMixin implements CouplingToEntityInterface
 	)
 	private void theCopperierAge$tickCoupling(CallbackInfo info) {
 		MinecartCouplingUtil.tickCoupling(AbstractMinecart.class.cast(this));
+	}
+
+	@Inject(method = "tick", at = @At("TAIL"))
+	private void theCopperierAge$trackTerrainJam(CallbackInfo info) {
+		final AbstractMinecart minecart = AbstractMinecart.class.cast(this);
+		if (minecart.level().isClientSide()) return;
+
+		if (minecart.horizontalCollision) {
+			this.theCopperierAge$terrainJammed = true;
+			return;
+		}
+
+		final Vec3 tickStart = this.theCopperierAge$tickStartPosition;
+		if (tickStart != null && minecart.position().subtract(tickStart).horizontal().lengthSqr() > THECOPPERIERAGE$JAM_DISPLACEMENT_SQR) {
+			this.theCopperierAge$terrainJammed = false;
+		}
 	}
 
 	@Inject(method = "push(Lnet/minecraft/world/entity/Entity;)V", at = @At("HEAD"), cancellable = true)
@@ -97,6 +123,32 @@ public abstract class AbstractMinecartMixin implements CouplingToEntityInterface
 	@Override
 	public Vec3 theCopperierAge$getTickStartPosition() {
 		return this.theCopperierAge$tickStartPosition;
+	}
+
+	@Unique
+	@Nullable
+	@Override
+	public Vec3 theCopperierAge$getBlockedDirection() {
+		return this.theCopperierAge$blockedDirection;
+	}
+
+	@Unique
+	@Override
+	public long theCopperierAge$getBlockedTick() {
+		return this.theCopperierAge$blockedTick;
+	}
+
+	@Unique
+	@Override
+	public void theCopperierAge$setBlocked(Vec3 direction, long gameTime) {
+		this.theCopperierAge$blockedDirection = direction;
+		this.theCopperierAge$blockedTick = gameTime;
+	}
+
+	@Unique
+	@Override
+	public boolean theCopperierAge$isTerrainJammed() {
+		return this.theCopperierAge$terrainJammed;
 	}
 
 	@Unique

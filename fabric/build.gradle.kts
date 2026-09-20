@@ -45,10 +45,6 @@ fabric {
     }
 }
 
-mod {
-    additional.add("minecraft_version", "~26.3-")
-}
-
 loom {
     enableTransitiveAccessWideners = true
     interfaceInjection {

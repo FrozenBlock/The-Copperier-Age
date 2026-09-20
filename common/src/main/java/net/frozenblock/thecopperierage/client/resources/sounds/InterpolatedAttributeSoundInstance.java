@@ -17,8 +17,8 @@
 
 package net.frozenblock.thecopperierage.client.resources.sounds;
 
-public interface InterpolatedVolumeSoundInstance {
-	boolean theCopperierAge$useInterpolation();
+public interface InterpolatedAttributeSoundInstance {
+	boolean theCopperierAge$interpolateVolume();
 
-	float theCopperierAge$getInterpolatedVolume();
+	float theCopperierAge$interpolatedVolume();
 }

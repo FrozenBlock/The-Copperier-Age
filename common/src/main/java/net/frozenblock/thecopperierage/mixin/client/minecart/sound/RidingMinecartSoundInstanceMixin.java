@@ -17,7 +17,7 @@
 
 package net.frozenblock.thecopperierage.mixin.client.minecart.sound;
 
-import net.frozenblock.thecopperierage.client.resources.sounds.InterpolatedVolumeSoundInstance;
+import net.frozenblock.thecopperierage.client.resources.sounds.InterpolatedAttributeSoundInstance;
 import net.mehvahdjukaar.candlelight.api.ClientOnly;
 import net.minecraft.client.resources.sounds.RidingMinecartSoundInstance;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,11 +25,11 @@ import org.spongepowered.asm.mixin.Unique;
 
 @ClientOnly
 @Mixin(RidingMinecartSoundInstance.class)
-public abstract class RidingMinecartSoundInstanceMixin implements InterpolatedVolumeSoundInstance {
+public abstract class RidingMinecartSoundInstanceMixin implements InterpolatedAttributeSoundInstance {
 
 	@Unique
 	@Override
-	public boolean theCopperierAge$useInterpolation() {
+	public boolean theCopperierAge$interpolateVolume() {
 		return true;
 	}
 }

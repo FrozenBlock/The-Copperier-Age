@@ -58,6 +58,7 @@
     "client.minecart.coupling.AbstractMinecartRendererMixin",
     "client.minecart.furnace.AbstractMinecartRendererMixin",
     "client.minecart.sound.AbstractSoundInstanceMixin",
+    "client.minecart.sound.MinecartSoundInstanceMixin",
     "client.minecart.sound.RidingEntitySoundInstanceMixin",
     "client.minecart.sound.RidingMinecartSoundInstanceMixin",
     "client.oxidized_armor.EquipmentLayerRendererMixin",
